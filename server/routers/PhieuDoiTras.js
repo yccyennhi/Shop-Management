@@ -1,15 +1,15 @@
 import express from "express";
 import {
-    getPhieuDoiTra,
-    createPhieuDouTra,
-    updatePhieuDouTra,
-} from "../controllers/PhieuDouTra.js";
+  getPhieuDoiTra,
+  createPhieuDoiTra,
+  updatePhieuDoiTra,
+} from "../controllers/PhieuDoiTra.js";
 
 const router = express.Router();
-//http://localhost:5001/PhieuDouTras
+//http://localhost:5001/PhieuDoiTras
 
 router.get("/", getPhieuDoiTra);
-router.post("/", createPhieuDouTra);
-router.post("/update", updatePhieuDouTra);
+router.post("/", createPhieuDoiTra);
+router.post("/update", updatePhieuDoiTra);
 
 export default router;

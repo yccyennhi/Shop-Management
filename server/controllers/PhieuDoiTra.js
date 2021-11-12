@@ -1,38 +1,38 @@
 import { PhieuDoiTraModel } from "../models/PhieuDoiTraModel";
 
 export const getPhieuDoiTra = async (req, res) => {
-    try {
-        const PhieuDoiTras = await PhieuDoiTraModel.find();
-        console.log("PhieuDoiTras", PhieuDoiTras);
-        res.status(200).json(PhieuDoiTras);
-    } catch (err) {
-        res.status(500).json({ error: err });
-    }
+  try {
+    const PhieuDoiTras = await PhieuDoiTraModel.find();
+    console.log("PhieuDoiTras", PhieuDoiTras);
+    res.status(200).json(PhieuDoiTras);
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
 };
 
 export const createPhieuDoiTra = async (req, res) => {
-    try {
-        const newPhieuDoiTra = req.body;
+  try {
+    const newPhieuDoiTra = req.body;
 
-        const PhieuDoiTra = new PhieuDoiTraModel(newPhieuDoiTra);
-        await PhieuDoiTra.save();
+    const PhieuDoiTra = new PhieuDoiTraModel(newPhieuDoiTra);
+    await PhieuDoiTra.save();
 
-        res.status(200).json(PhieuDoiTra);
-    } catch (err) {
-        res.status(500).json({ error: err });
-    }
+    res.status(200).json(PhieuDoiTra);
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
 };
 
 export const updatePhieuDoiTra = async (req, res) => {
-    try {
-        const updatePhieuDoiTra = req.body;
-        const phieudoitra = await PhieuDoiTraModel.findOneAndUpdate(
-            { _id: updatePhieuDoiTra._id },
-            updatePhieuDoiTra,
-            { new: true }
-        );
-        res.status(200).json(phieudoitra);
-    } catch (err) {
-        res.status(500).json({ error: err });
-    }
+  try {
+    const updatePhieuDoiTra = req.body;
+    const phieudoitra = await PhieuDoiTraModel.findOneAndUpdate(
+      { _id: updatePhieuDoiTra._id },
+      updatePhieuDoiTra,
+      { new: true }
+    );
+    res.status(200).json(phieudoitra);
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
 };

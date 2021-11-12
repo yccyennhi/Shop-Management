@@ -1,12 +1,9 @@
-import { useDispatch} from 'react-redux';
 
-import * as actions from './redux/actions';
+import HangHoaPage from "./pages/HangHoaPage/HangHoaPage.js";
 
 
 function App() {
-  const dispatch = useDispatch();
-  dispatch(actions.getSanPhams.getSanPhamsRequest());
-  return <p>jgkbgjg</p>
+  return <HangHoaPage />
 }
 
 export default App;

@@ -12,6 +12,7 @@ export default function SanPhamsReducer(state = INIT_STATE.SanPhams, action) {
       return {
         ...state,
         isLoading: false,
+        data: action.payload,
       };
     case getType(getSanPhams.getSanPhamsFailure):
       return {

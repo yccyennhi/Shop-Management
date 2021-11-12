@@ -8,6 +8,6 @@ router.get('/', getPosts);
 
 router.post('/', createPost);
 
-router.post('/update', updatePost);
+//router.post('/update', updatePost);
 
 export default router;

@@ -35,11 +35,9 @@ function Menubar() {
             <Menu.Item key="subitem12">option8</Menu.Item>
           </SubMenu>
 
-          <SubMenu key="sub4" icon={<UserOutlined />} title="Đối tác">
-            <Menu.Item key="subitem13">option5</Menu.Item>
-            <Menu.Item key="subitem14">option6</Menu.Item>
-            <Menu.Item key="subitem15">option7</Menu.Item>
-            <Menu.Item key="subitem16">option8</Menu.Item>
+          <SubMenu key="sub4" icon={<UserOutlined />} title="Khuyến mãi">
+            {/* <Link tp='/KhuyenMais'>
+            </Link> */}
           </SubMenu>
 
           <SubMenu key="sub5" icon={<UserOutlined />} title="Nhân viên">

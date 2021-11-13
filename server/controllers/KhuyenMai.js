@@ -1,4 +1,4 @@
-import { KhuyenMaiModel } from "../models/KhuyenMaiModel";
+import { KhuyenMaiModel } from "../models/KhuyenMaiModel.js";
 
 export const getKhuyenMais = async (req, res) => {
   try {

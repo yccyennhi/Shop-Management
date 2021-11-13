@@ -3,7 +3,7 @@ import {
   getKhuyenMais,
   createKhuyenMai,
   updateKhuyenMai,
-} from "../controllers/KhuyenMai";
+} from "../controllers/KhuyenMai.js";
 
 const router = express.Router();
 //http://localhost:500/KhuyenMai

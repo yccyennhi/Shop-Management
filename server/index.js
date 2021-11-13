@@ -4,7 +4,7 @@ import bodyParser from "body-parser";
 import posts from "./routers/posts.js";
 
 import SanPhams from "./routers/SanPhams.js";
-import KhuyenMais from "./routers/KhuyenMai.js"
+import KhuyenMais from "./routers/KhuyenMais.js"
 
 import mongoose from "mongoose";
 

@@ -15,3 +15,9 @@ export const getHoaDons = createActions({
     getHoaDonsSuccess: (payload) => payload,
     getHoaDonsFailure: (err) => err,
 });
+
+export const getKhuyenMais = createActions({
+    getKhuyenMaisRequest: undefined,
+    getKhuyenMaisSuccess: (payload) => payload,
+    getKhuyenMaisFailure: (err) => err,
+});

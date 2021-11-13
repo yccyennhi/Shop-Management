@@ -8,7 +8,7 @@ import {
   PlusOutlined,
   ImportOutlined,
   DownloadOutlined,
-  RestOutlined
+  RestOutlined,
 } from "@ant-design/icons";
 import HangHoatable from "../../components/table/HangHoatable/HangHoatable.js";
 import Menubar from "../../components/header/Menubar/Menubar";
@@ -31,16 +31,12 @@ export default function HangHoaPage() {
       </Layout>
       <Layout>
         <Content style={{ padding: "0px 50px 50px 50px" }}>
-        <PageHeader className="site-page-header" title="Hàng hóa" />,
-
+          <PageHeader className="site-page-header" title="Hàng hóa" />,
           <div className="site-layout-content">
             <Row justify="end">
               <Space>
                 <Button type="primary" icon={<PlusOutlined />}>
                   Thêm hàng hóa
-                </Button>
-                <Button type="primary" icon={<RestOutlined />}>
-                  Xóa hàng hóa
                 </Button>
                 <Button type="primary" icon={<ImportOutlined />}>
                   Import
@@ -50,11 +46,10 @@ export default function HangHoaPage() {
                 </Button>
               </Space>
             </Row>
-              <HangHoatable />
+            <HangHoatable />
           </div>
         </Content>
-        <Footer style={{ textAlign: "center" }}>
-        </Footer>
+        <Footer style={{ textAlign: "center" }}></Footer>
       </Layout>
       ,
     </>

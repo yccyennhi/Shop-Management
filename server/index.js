@@ -2,8 +2,10 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import posts from "./routers/posts.js";
-
+import KhachHangs from "./routers/KhachHangs.js";
+import NhanViens from "./routers/NhanViens.js";
 import SanPhams from "./routers/SanPhams.js";
+import TaiKhoans from "./routers/TaiKhoans.js";
 import mongoose from "mongoose";
 
 const app = express();
@@ -16,7 +18,10 @@ app.use(bodyParser.json({ limit: "30mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "30mb" }));
 
 app.use("/posts", posts);
+app.use("/KhachHangs", KhachHangs);
+app.use("/NhanViens", NhanViens),
 app.use("/SanPhams", SanPhams);
+app.use("/TaiKhoans", TaiKhoans);
 
 mongoose
   .connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })

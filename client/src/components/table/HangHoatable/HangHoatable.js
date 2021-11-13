@@ -270,8 +270,8 @@ function HangHoatable() {
       </span>
       <Table
         loading={false}
-        pagination={false}
-        scroll={{ x: 200, y: 500 }}
+        pagination={true}
+        scroll={{ x: 1500, y: 500 }}
         columns={columns}
         rowSelection={rowSelection}
         expandable={{

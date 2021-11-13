@@ -6,6 +6,7 @@ import KhachHangs from "./routers/KhachHangs.js";
 import NhanViens from "./routers/NhanViens.js";
 import SanPhams from "./routers/SanPhams.js";
 import TaiKhoans from "./routers/TaiKhoans.js";
+import KhuyenMais from "./routers/KhuyenMai.js"
 import mongoose from "mongoose";
 
 const app = express();
@@ -22,6 +23,7 @@ app.use("/KhachHangs", KhachHangs);
 app.use("/NhanViens", NhanViens),
 app.use("/SanPhams", SanPhams);
 app.use("/TaiKhoans", TaiKhoans);
+app.use("/KhuyenMais",KhuyenMais);
 
 mongoose
   .connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })

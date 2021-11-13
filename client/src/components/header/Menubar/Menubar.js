@@ -29,10 +29,10 @@ function Menubar() {
           </SubMenu>
 
           <SubMenu key="sub3" icon={<SwapOutlined />} title="Giao dịch">
-            <Menu.Item key="subitem9">option5</Menu.Item>
-            <Menu.Item key="subitem10">option6</Menu.Item>
-            <Menu.Item key="subitem11">option7</Menu.Item>
-            <Menu.Item key="subitem12">option8</Menu.Item>
+            <Menu.Item key="subitem9">Đặt hàng</Menu.Item>
+            <Menu.Item key="subitem10">Hóa Đơn</Menu.Item>
+            <Menu.Item key="subitem11">Trả hàng</Menu.Item>
+            <Menu.Item key="subitem12">Nhập hàng</Menu.Item>
           </SubMenu>
 
           <SubMenu key="sub4" icon={<UserOutlined />} title="Đối tác">

@@ -25,6 +25,7 @@ const schema = new mongoose.Schema(
         DiemTru: {
             type: Number,
             required: false,
+            default: 0,
         },
         TongTienHang: {
             type: Number,
@@ -34,6 +35,10 @@ const schema = new mongoose.Schema(
             type: Number,
             required: true,
         },
+        ThoiGian: {
+            type: Date,
+            required: true,
+        }
     },
     { timestamps: true }
 );

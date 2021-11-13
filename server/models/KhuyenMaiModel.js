@@ -5,22 +5,22 @@ const schema = new mongoose.Schema(
         MaKM: {
             type: String,
             required: true,
+            unique: true,
         },
         TenKM: {
             type: String,
             required: true,
         },
-        MaSp: {
-            type= String,
-            required: true,
-        },
-
+       MaSp: {
+           type: mongoose.Schema.Types.ObjectId,
+            ref:"sanphams",
+       },
         NgayBD: {
-            type: timestamps,
+            type: Date,
             required: true,
         },
         NgayKT: {
-            type: timestamps,
+            type: Date,
             required: true
         },
         //Gia tri hoa don toi thieu

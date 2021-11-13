@@ -1,7 +1,9 @@
-export const getPosts = (req, res) => {
+import { PostModel } from '../models/PostModel.js'
+
+export const getPosts = async(req, res) => {
     res.send('ROUTER SUCCESS');
 };
 
-export const createPost = (req, res) => {
+export const createPost = async (req, res) => {
     res.send('ROUTER SUCCESS');
 };

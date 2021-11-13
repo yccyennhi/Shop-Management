@@ -1,4 +1,4 @@
-import { takeLatest, call } from "redux-saga/effects";
+import { takeLatest, call, put } from "redux-saga/effects";
 import * as actions from "../actions";
 import * as api from "../../api";
 
@@ -12,6 +12,7 @@ function* fetchSanPhamsSaga(action) {
   // }
   const SanPhams = yield call(api.fetchSanPhams);
   console.log("[SanPhams]", SanPhams);
+  yield put(actions.getSanPhams.getSanPhamsSuccess(SanPhams));
 }
 
 function* mySaga() {

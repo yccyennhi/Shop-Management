@@ -9,3 +9,9 @@ export const getSanPhams = createActions({
     getSanPhamsSuccess: (payload) => payload,
     getSanPhamsFailure: (err) => err,
 });
+
+export const getHoaDons = createActions({
+    getHoaDonsRequest: undefined,
+    getHoaDonsSuccess: (payload) => payload,
+    getHoaDonsFailure: (err) => err,
+});

@@ -4,6 +4,8 @@ import bodyParser from "body-parser";
 import posts from "./routers/posts.js";
 
 import SanPhams from "./routers/SanPhams.js";
+import KhuyenMais from "./routers/KhuyenMai.js"
+
 import mongoose from "mongoose";
 
 const app = express();
@@ -17,6 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true, limit: "30mb" }));
 
 app.use("/posts", posts);
 app.use("/SanPhams", SanPhams);
+app.use("/KhuyenMais",KhuyenMais);
 
 mongoose
   .connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })

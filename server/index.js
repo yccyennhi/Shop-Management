@@ -6,7 +6,7 @@ import KhachHangs from "./routers/KhachHangs.js";
 import NhanViens from "./routers/NhanViens.js";
 import SanPhams from "./routers/SanPhams.js";
 import TaiKhoans from "./routers/TaiKhoans.js";
-import KhuyenMais from "./routers/KhuyenMai.js"
+import KhuyenMais from "./routers/KhuyenMais.js"
 import mongoose from "mongoose";
 
 const app = express();

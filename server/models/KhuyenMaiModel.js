@@ -11,16 +11,16 @@ const schema = new mongoose.Schema(
             required: true,
         },
         MaSp: {
-            type= String,
+            type: String,
             required: true,
         },
 
         NgayBD: {
-            type: timestamps,
+            type: Date,
             required: true,
         },
         NgayKT: {
-            type: timestamps,
+            type: Date,
             required: true
         },
         //Gia tri hoa don toi thieu

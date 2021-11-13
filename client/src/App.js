@@ -4,6 +4,7 @@ import { Menu, Layout, Breadcrumb, Col, Row, Button } from "antd";
 import Menubar from "./components/header/Menubar/Menubar";
 import Headerbar from "./components/header/Headerbar/Headerbar";
 import HangHoaPage from "./pages/HangHoaPage/HangHoaPage";
+import KhuyenMaiPage from "./pages/KhuyenMaiPage/KhuyenMaiPage";
 
 function App() {
 const { Header, Content, Footer } = Layout;
@@ -25,6 +26,7 @@ const { SubMenu } = Menu;
             <div className="site-layout-content">
               <Switch>
                 <Route path ='/' exact component={HangHoaPage}/>
+                <Route path='/KhuyenMai' exact component={KhuyenMaiPage}/>
               </Switch>
             </div>
           </Content>

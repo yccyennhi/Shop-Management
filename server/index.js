@@ -9,7 +9,12 @@ import CTHDs from "./routers/CTHDs.js";
 import PhieuDoiTras from "./routers/PhieuDoiTras.js";
 import CTPDTs from "./routers/CTPDTs.js";
 
-
+import posts from "./routers/posts.js";
+import KhachHangs from "./routers/KhachHangs.js";
+import NhanViens from "./routers/NhanViens.js";
+import SanPhams from "./routers/SanPhams.js";
+import TaiKhoans from "./routers/TaiKhoans.js";
+import KhuyenMais from "./routers/KhuyenMais.js"
 import mongoose from "mongoose";
 
 const app = express();
@@ -22,11 +27,15 @@ app.use(bodyParser.json({ limit: "30mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "30mb" }));
 
 app.use("/posts", posts);
+app.use("/KhachHangs", KhachHangs);
+app.use("/NhanViens", NhanViens),
 app.use("/SanPhams", SanPhams);
 app.use("/HoaDons", HoaDons);
 app.use("/CTHDs",CTHDs);
 app.use("/PhieuDoiTras",PhieuDoiTras);
 app.use("/CTPDTs",CTPDTs);
+app.use("/TaiKhoans", TaiKhoans);
+app.use("/KhuyenMais",KhuyenMais);
 
 mongoose
   .connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })

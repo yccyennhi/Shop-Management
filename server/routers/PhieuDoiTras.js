@@ -6,7 +6,7 @@ import {
 } from "../controllers/PhieuDoiTra.js";
 
 const router = express.Router();
-//http://localhost:5001/PhieuDouTras
+//http://localhost:5001/PhieuDoiTras
 
 router.get("/", getPhieuDoiTra);
 router.post("/", createPhieuDoiTra);

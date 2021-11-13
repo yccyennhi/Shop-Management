@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Table, Input, Row, Switch, Radio, Form, Space } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { Table, Input, Row, Button, Dropdown, message, Menu, Switch, Radio, Form, Space } from "antd";
+import { SearchOutlined , DownOutlined} from "@ant-design/icons";
 const { Search } = Input;
 
 function HangHoatable() {
@@ -256,18 +256,48 @@ function HangHoatable() {
       });
     },
   };
-
+  const hasSelected = selectedRowKeys.length > 0;
+  function handleButtonClick(e) {
+    message.info('Click on left button.');
+    console.log('click left button', e);
+  }
+  
+  function handleMenuClick(e) {
+    message.info('Click on menu item.');
+    console.log('click', e);
+  }
+  
+  const menu = (
+    <Menu onClick={handleMenuClick}>
+      <Menu.Item key="1" >
+        1st menu item
+      </Menu.Item>
+      <Menu.Item key="2" >
+        2nd menu item
+      </Menu.Item>
+      <Menu.Item key="3" >
+        3rd menu item
+      </Menu.Item>
+    </Menu>
+  );
   return (
     <div>
       <Row>
         
       </Row>
-
-      <span style={{ marginLeft: 8 }}>
-        {selectedRowKeys.length > 0
-          ? `Có ${selectedRowKeys.length} hàng hóa được chọn`
-          : ""}
-      </span>
+      <div style={{ marginBottom: 16 }}>
+      <Dropdown overlay={menu} disabled={!hasSelected}>
+      <Button>
+        Thao tác <DownOutlined />
+      </Button>
+    </Dropdown>
+          
+          <span style={{ marginLeft: 8 }}>
+            {hasSelected ? `Có ${selectedRowKeys.length} hàng hóa được chọn` : ''}
+          </span>
+        </div>
+     
+      
       <Table
         loading={false}
         pagination={true}

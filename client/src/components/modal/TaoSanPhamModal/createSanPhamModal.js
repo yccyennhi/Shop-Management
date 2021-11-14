@@ -23,13 +23,13 @@ const { Option } = Select;
 
 const formItemLayout = {
   labelCol: { span: 6 },
-  wrapperCol: { span: 14 },
+  wrapperCol: { span: 17 },
 };
 const validateMessages = {
   required: "${label} is required!",
   types: {
     email: "${label} is not a valid email!",
-    number: "${label} không phải là số hợp lê!",
+    number: "${label} không phải là số hợp lệ!",
   },
   number: {
     range: "${label} phải nằm trong khoảng từ ${min} đến ${max}",
@@ -65,17 +65,42 @@ const Uploader = () => {
 };
 
 export default function TaoSanPhamModal() {
+  const [form] = Form.useForm();
+
   const [data, setData] = React.useState({
     MaSP: "",
     TenSP: "",
     MauSac: "",
     LoaiHang: "",
     Size: 0,
+    GiaVon: 0,
+    GiaBan: 0,
+    TonKho: 0,
+    TrangThai: 0,
+    BaoHanh: 0,
+    HinhAnh: "",
+    MoTa: "",
   });
   const dispatch = useDispatch();
 
   const { isShow } = useSelector(TaoSanPhamModalState$);
   const handleCancel = React.useCallback(() => {
+    setData({
+      MaSP: "",
+      TenSP: "",
+      MauSac: "",
+      LoaiHang: "",
+      Size: 0,
+      GiaVon: 0,
+      GiaBan: 0,
+      TonKho: 0,
+      TrangThai: 0,
+      BaoHanh: 0,
+      HinhAnh: "",
+      MoTa: "",
+    });
+    form.resetFields();
+
     dispatch(hideTaoSanPhamModal());
   }, [dispatch]);
 
@@ -93,7 +118,11 @@ export default function TaoSanPhamModal() {
         onCancel={handleCancel}
         onOk={handleOk}
       >
-        <Form {...formItemLayout} validateMessages={validateMessages}>
+        <Form
+          {...formItemLayout}
+          validateMessages={validateMessages}
+          form={form}
+        >
           <Form.Item
             name="MaSP"
             label="Mã hàng"
@@ -109,7 +138,7 @@ export default function TaoSanPhamModal() {
           >
             <Input
               placeholder="Nhập mã hàng"
-              data={data.MaSP}
+              value={data.MaSP}
               onChange={(e) => setData({ ...data, MaSP: e.target.value })}
             />
           </Form.Item>
@@ -128,7 +157,7 @@ export default function TaoSanPhamModal() {
           >
             <Input
               placeholder="Nhập tên hàng"
-              data={data.TenSP}
+              value={data.TenSP}
               onChange={(e) => setData({ ...data, TenSP: e.target.value })}
             />
           </Form.Item>
@@ -142,7 +171,7 @@ export default function TaoSanPhamModal() {
             ]}
           >
             <InputNumber
-              data={data.Size}
+              value={data.Size}
               onChange={(e) => setData({ ...data, Size: e })}
               style={{ width: 120 }}
               placeholder="Nhập size"
@@ -162,7 +191,7 @@ export default function TaoSanPhamModal() {
             ]}
           >
             <Input
-              data={data.MauSac}
+              value={data.MauSac}
               onChange={(e) => setData({ ...data, MauSac: e.target.value })}
               placeholder="Nhập màu"
             />
@@ -181,7 +210,7 @@ export default function TaoSanPhamModal() {
             ]}
           >
             <Input
-              data={data.LoaiHang}
+              value={data.LoaiHang}
               onChange={(e) => setData({ ...data, LoaiHang: e.target.value })}
               placeholder="Nhập loại hàng"
             />
@@ -195,31 +224,35 @@ export default function TaoSanPhamModal() {
               {
                 type: "number",
                 min: 0,
-                max: 100000000,
+                max: 999999999,
               },
             ]}
           >
-            <Space direction="horizontal">
-              <InputNumber style={{ width: 120 }} defaultValue={1000} />
-              VNĐ
-            </Space>
+            <InputNumber
+              value={data.GiaVon}
+              onChange={(e) => setData({ ...data, GiaVon: e })}
+              style={{ width: 120 }}
+              placeholder="VNĐ"
+            />
           </Form.Item>
           <Form.Item
             name="GiaBan"
             label="Giá bán"
             rules={[
-              { required: true, message: "Vui lòng nhập giá vốn" },
+              { required: true, message: "Vui lòng nhập giá bán" },
               {
                 type: "number",
                 min: 0,
-                max: 100000000,
+                max: 999999999,
               },
             ]}
           >
-            <Space direction="horizontal">
-              <InputNumber style={{ width: 120 }} defaultValue={1000} />
-              VNĐ
-            </Space>
+            <InputNumber
+              value={data.GiaBan}
+              onChange={(e) => setData({ ...data, GiaBan: e })}
+              style={{ width: 120 }}
+              placeholder="VNĐ"
+            />
           </Form.Item>
           <Form.Item
             name="TonKho"
@@ -234,7 +267,12 @@ export default function TaoSanPhamModal() {
               },
             ]}
           >
-            <InputNumber style={{ width: 120 }} defaultValue={0} />
+            <InputNumber
+              value={data.TonKho}
+              onChange={(e) => setData({ ...data, TonKho: e })}
+              style={{ width: 120 }}
+              defaultValue={0}
+            />
           </Form.Item>
           <Form.Item
             name="TrangThai"
@@ -242,7 +280,11 @@ export default function TaoSanPhamModal() {
             tooltip="Trạng thái kinh doanh sản phẩm"
             rules={[{ required: true, message: "Vui lòng chọn trạng thái" }]}
           >
-            <Select placeholder="Chọn trạng thái">
+            <Select
+              placeholder="Chọn trạng thái"
+              value={data.TrangThai}
+              onChange={(e) => setData({ ...data, TrangThai: e })}
+            >
               <Option value="0">Ngừng kinh doanh</Option>
               <Option value="1">Hết hàng</Option>
               <Option value="2">Đang kinh doanh</Option>
@@ -254,13 +296,21 @@ export default function TaoSanPhamModal() {
             tooltip="Trạng thái bảo hành của sản phẩm"
             rules={[{ required: true, message: "Vui lòng chọn bảo hành" }]}
           >
-            <Select placeholder="Chọn bảo hành">
+            <Select
+              placeholder="Chọn bảo hành"
+              value={data.BaoHanh}
+              onChange={(e) => setData({ ...data, BaoHanh: e })}
+            >
               <Option value="0">Không bảo hành</Option>
               <Option value="1">Có bảo hành</Option>
             </Select>
           </Form.Item>
           <Form.Item name="MoTa" label="Mô tả">
-            <Input placeholder="Nhập mô tả" />
+            <Input
+              value={data.MoTa}
+              onChange={(e) => setData({ ...data, MoTa: e.target.value })}
+              placeholder="Nhập mô tả"
+            />
           </Form.Item>
           <Form.Item
             wrapperCol={{ offset: 6, span: 16 }}

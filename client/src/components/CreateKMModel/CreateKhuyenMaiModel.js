@@ -60,11 +60,11 @@ const CreateKhuyenMaiForm = () => {
           </Form.Item>
           <span className="ant-form-text"> %</span>
         </Form.Item>
-        <Form.Item label="Trạng thái thái" valuePropName="checked">
+        <Form.Item label="Trạng thái" valuePropName="checked">
           <Switch />
         </Form.Item>
-        <Form.Item label="Button">
-          <Button>Button</Button>
+        <Form.Item {...buttonItemLayout}>
+          <Button type="primary">Submit</Button>
         </Form.Item>
       </Form>
     </>

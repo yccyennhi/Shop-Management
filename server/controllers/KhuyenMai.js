@@ -2,10 +2,8 @@ import { KhuyenMaiModel } from "../models/KhuyenMaiModel.js";
 
 export const getKhuyenMais = async (req, res) => {
   try {
-    const KhuyenMais = await KhuyenMaiModel.find();
-    
-    console.log("KhuyenMais", KhuyenMais);
 
+   const KhuyenMais = await KhuyenMaiModel.find();
     res.status(200).json(KhuyenMais);
   } catch (err) {
     res.status(500).json({ error: err });

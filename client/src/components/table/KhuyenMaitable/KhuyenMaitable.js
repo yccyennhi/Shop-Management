@@ -2,38 +2,21 @@ import React, { useState } from "react";
 import { Table, Input, Row, PageHeader, Descriptions, Tag } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 
-import { useDispatch, useSelector } from 'react-redux';
-import * as actions from '../../../redux/actions';
+import { useDispatch, useSelector } from "react-redux";
+import * as actions from "../../../redux/actions";
 
-import { KhuyenMaisState$ } from '../../../redux/selectors';
+import { KhuyenMaisState$ } from "../../../redux/selectors";
 const { Search } = Input;
 
 function KhuyenMaitable() {
-  
   const dispatch = useDispatch();
   const KhuyenMais = useSelector(KhuyenMaisState$);
 
   React.useEffect(() => {
     dispatch(actions.getKhuyenMais.getKhuyenMaisRequest());
   }, [dispatch]);
-
- console.log('KhuyenMais nè',KhuyenMais);
-
-//   const [dataSource, setDataSource] = useState([
-//  {
-//     key: 0,
-//       MaKM: "a",
-//       TenKM: "a",
-//       NgayBD: new Date(Date.now()).toLocaleDateString(),
-//       NgayKT: new Date(Date.now()).toLocaleDateString(),
-//       GiaTri: 0,
-//       PhanTram: 0,
-//       TrangThai: false,
-//       SoLuong:0,
-//     },
-//   ]);
-
-  const [dataSource, setDataSource] = useState(KhuyenMais);
+  
+ const dataSource = KhuyenMais;
 
   const columns = [
     {
@@ -111,9 +94,9 @@ function KhuyenMaitable() {
     },
     {
       title: "Ngày bắt đầu",
-      dataIndex: "NgayKT",
-      key: "NgayKT",
-      sorter: (a, b) => a.NgayKT - b.NgayKT,
+      dataIndex: "NgayBD",
+      key: "NgayBD",
+      sorter: (a, b) => a.NgayBD - b.NgayBD,
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
         return (
           <Search
@@ -141,9 +124,10 @@ function KhuyenMaitable() {
         return <SearchOutlined />;
       },
       onFilter: (value, record) => {
-        return record.NgayKT == value;
+        return record.NgayBD == value;
       },
     },
+
     {
       title: "Ngày kết thúc",
       dataIndex: "NgayKT",
@@ -190,12 +174,11 @@ function KhuyenMaitable() {
       sorter: (a, b) => a.TrangThai - b.TrangThai,
     },
   ];
+
   const [select, setSelect] = useState({
     selectedRowKeys: [],
     loading: false,
   });
-
-  console.log("selectedRowKeys", select);
 
   const { selectedRowKeys, loading } = select;
 
@@ -227,32 +210,43 @@ function KhuyenMaitable() {
         expandable={{
           expandedRowRender: (record) => {
             return (
-              <PageHeader className="site-page-header" title={record.TenKM} 
-              tags={<Tag color="blue"> {record.TrangThai == false ? "Ch­ưa kích hoạt" : "Đã kích hoạt"} </Tag>}
-              subTitle={record.MaKM}
-             >
-              <Descriptions size="small" column={2}>
-              <Descriptions.Item label="Ngày bắt đầu">
-                  {record.NgayBD}
-                </Descriptions.Item>
-                <Descriptions.Item label="Ngày kết thúc">
-                  {record.NgayKT}
-                </Descriptions.Item>
-                <Descriptions.Item label="Số lượng">
-                  {record.SoLuong}
-                </Descriptions.Item>
-                <Descriptions.Item label="Trị giá hóa đơn">
-                  {record.GiaTri}
-                </Descriptions.Item>
-                <Descriptions.Item label="Phần trăm giảm">
-                  {record.PhanTram}
-                </Descriptions.Item>
-              </Descriptions>
-            </PageHeader>
+              <PageHeader
+                className="site-page-header"
+                title={record.TenKM}
+                tags={
+                  <Tag color="blue">
+                    {" "}
+                    {record.TrangThai == false
+                      ? "Ch­ưa kích hoạt"
+                      : "Đã kích hoạt"}{" "}
+                  </Tag>
+                }
+                subTitle={record.MaKM}
+              >
+                <Descriptions size="small" column={2}>
+                  <Descriptions.Item label="Ngày bắt đầu">
+                    {record.NgayBD}
+                  </Descriptions.Item>
+                  <Descriptions.Item label="Ngày kết thúc">
+                    {record.NgayKT}
+                  </Descriptions.Item>
+                  <Descriptions.Item label="Trị giá hóa đơn">
+                    {record.GiaTri}
+                  </Descriptions.Item>
+                  <Descriptions.Item label="Phần trăm giảm">
+                    {record.PhanTram}
+                  </Descriptions.Item>
+                  
+                  <Descriptions.Item label="Số lượng">
+                    {record.SoLuong}
+                  </Descriptions.Item>
+                </Descriptions>
+              </PageHeader>
             );
           },
           rowExpandable: (record) => record.TenKM !== "Not Expandable",
         }}
+         rowKey= "_id"
         dataSource={dataSource}
       ></Table>
     </div>

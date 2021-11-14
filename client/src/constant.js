@@ -1,3 +1,4 @@
+
 export const BACKEND_URL = "http://localhost:5000";
 export const FRONTEND_URL = "http://localhost:3000";
 
@@ -22,7 +23,12 @@ export const INIT_STATE = {
         isLoading: false,
         data:[],
     },
+<<<<<<< Updated upstream
     Modal:{
         isShow: false,
+=======
+    TaoSanPhamModal: {
+        isShow: false
+>>>>>>> Stashed changes
     }
 };

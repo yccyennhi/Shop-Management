@@ -55,12 +55,25 @@ function* fetchKhuyenMaisSaga(action) {
   }
 }
 
+function* TaoSanPhamSaga(action) {
+  try {
+    const TaoSP = yield call(api.TaoSanPham, action.payload);
+    console.log('[Sanpham]', TaoSP.data);
+    yield put(actions.TaoSanPham.TaoSanPhamSuccess(TaoSP.data));
+  } catch (err) {
+    console.error(err);
+    yield put(actions.TaoSanPham.TaoSanPhamFailure(err));
+  }
+}
+
 function* mySaga() {
   yield takeLatest(actions.getKhachHangs.getKhachHangsRequest, fetchKhachHangsSaga);
   yield takeLatest(actions.getNhanViens.getNhanViensRequest, fetchNhanViensSaga);
   yield takeLatest(actions.getSanPhams.getSanPhamsRequest, fetchSanPhamsSaga);
   yield takeLatest(actions.getTaiKhoans.getTaiKhoansRequest, fetchTaiKhoansSaga);
   yield takeLatest(actions.getKhuyenMais.getKhuyenMaisRequest, fetchKhuyenMaisSaga);
+  yield takeLatest(actions.TaoSanPham.TaoSanPhamRequest, TaoSanPhamSaga);
+
 }
 
 export default mySaga;

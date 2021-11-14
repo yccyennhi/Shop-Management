@@ -14,16 +14,24 @@ const schema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    LoaiHang: {
+      type: String,
+      required: true,
+    },
     HinhAnh: String,
     Size: {
       type: Number,
       required: true,
     },
-    SoLuong: {
+    TonKho: {
       type: Number,
       default: 0,
     },
     GiaBan: {
+      type: Number,
+      default: 0,
+    },
+    GiaVon: {
       type: Number,
       default: 0,
     },
@@ -32,8 +40,12 @@ const schema = new mongoose.Schema(
       default: "",
     },
     TrangThai: {
-      type: String,
-      default: "Hết hàng",
+      type: Number,
+      default: 0,
+    },
+    BaoHanh: {
+      type: Number,
+      default: 0,
     },
   },
   { timestamps: true }

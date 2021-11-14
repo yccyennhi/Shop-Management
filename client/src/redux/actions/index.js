@@ -40,6 +40,7 @@ export const getKhuyenMais = createActions({
     getKhuyenMaisFailure: (err) => err,
 });
 
+<<<<<<< Updated upstream
 export const createKhuyenMai = createActions({
     createKhuyenMaitRequest: (payload) => payload,
     createKhuyenMaitSuccess: (payload) => payload,
@@ -48,3 +49,14 @@ export const createKhuyenMai = createActions({
 
 export const showModal = createAction('SHOW_CREATE_MODAL');
 export const hideModal = createAction('HIDE_CREATE_MODAL');
+=======
+
+export const TaoSanPham = createActions({
+    TaoSanPhamRequest: (payload) => payload,
+    TaoSanPhamSuccess: (payload) => payload,
+    TaoSanPhamFailure: (err) => err,
+});
+
+export const showTaoSanPhamModal = createAction('SHOW_TAOSANPHAM_MODAL');
+export const hideTaoSanPhamModal = createAction('HIDE_TAOSANPHAM_MODAL');
+>>>>>>> Stashed changes

@@ -66,14 +66,14 @@ function* createKhuyenMaiSaga(action) {
 }
 
 
-function* TaoSanPhamSaga(action) {
+function* createSanPhamSaga(action) {
   try {
-    const TaoSP = yield call(api.TaoSanPham, action.payload);
-    console.log('[Sanpham]', TaoSP.data);
-    yield put(actions.TaoSanPham.TaoSanPhamSuccess(TaoSP.data));
+    const SanPham = yield call(api.createSanPham, action.payload);
+    console.log('createSanPhamSaga', SanPham)
+    yield put(actions.createSanPham.createSanPhamSuccess(SanPham.data));
   } catch (err) {
     console.error(err);
-    yield put(actions.TaoSanPham.TaoSanPhamFailure(err));
+    yield put(actions.createSanPham.createSanPhamFailure(err));
   }
 }
 
@@ -83,6 +83,7 @@ function* mySaga() {
   yield takeLatest(actions.getSanPhams.getSanPhamsRequest, fetchSanPhamsSaga);
   yield takeLatest(actions.getTaiKhoans.getTaiKhoansRequest, fetchTaiKhoansSaga);
   yield takeLatest(actions.getKhuyenMais.getKhuyenMaisRequest, fetchKhuyenMaisSaga);
+  yield takeLatest(actions.createSanPham.createSanPhamRequest, createSanPhamSaga);
   yield takeLatest(actions.createKhuyenMai.createKhuyenMaiRequest, createKhuyenMaiSaga);
 }
 

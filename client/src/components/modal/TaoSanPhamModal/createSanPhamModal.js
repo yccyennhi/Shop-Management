@@ -17,7 +17,7 @@ import { SettingOutlined, UploadOutlined } from "@ant-design/icons";
 import { TaoSanPhamModalState$ } from "../../../redux/selectors/index.js";
 import {
   hideTaoSanPhamModal,
-  TaoSanPham,
+  createSanPham,
 } from "../../../redux/actions/index.js";
 const { Option } = Select;
 
@@ -64,24 +64,24 @@ const Uploader = () => {
   );
 };
 
-function TaoSanPhamModal() {
+export default function TaoSanPhamModal() {
   const [data, setData] = React.useState({
     MaSP: "",
     TenSP: "",
+    MauSac: "",
+    LoaiHang: "",
+    Size: 0,
   });
   const dispatch = useDispatch();
 
   const { isShow } = useSelector(TaoSanPhamModalState$);
   const handleCancel = React.useCallback(() => {
-    setData({
-      MaSP: "",
-      TenSP: "",
-    });
     dispatch(hideTaoSanPhamModal());
   }, [dispatch]);
 
   const handleOk = React.useCallback(() => {
-    dispatch(TaoSanPham.TaoSanPhamRequest(data));
+    dispatch(createSanPham.createSanPhamRequest(data));
+    console.log({ data });
     handleCancel();
   }, [data, dispatch, handleCancel]);
 
@@ -109,7 +109,7 @@ function TaoSanPhamModal() {
           >
             <Input
               placeholder="Nhập mã hàng"
-              value={data.MaSP}
+              data={data.MaSP}
               onChange={(e) => setData({ ...data, MaSP: e.target.value })}
             />
           </Form.Item>
@@ -128,7 +128,7 @@ function TaoSanPhamModal() {
           >
             <Input
               placeholder="Nhập tên hàng"
-              value={data.TenSP}
+              data={data.TenSP}
               onChange={(e) => setData({ ...data, TenSP: e.target.value })}
             />
           </Form.Item>
@@ -141,22 +141,31 @@ function TaoSanPhamModal() {
               { required: true, message: "Vui lòng nhập size" },
             ]}
           >
-            <InputNumber style={{ width: 120 }} placeholder="Nhập size" />
+            <InputNumber
+              data={data.Size}
+              onChange={(e) => setData({ ...data, Size: e })}
+              style={{ width: 120 }}
+              placeholder="Nhập size"
+            />
           </Form.Item>
           <Form.Item
-            name="Mau"
-            label="Màu"
+            name="MauSac"
+            label="Màu sắc"
             tooltip="Nhập màu sắc hoặc họa tiết sản phẩm"
             rules={[
               { required: true, message: "Vui lòng nhập màu" },
               {
                 type: "string",
                 min: 2,
-                message: "Loại hàng phải có ít nhất 2 kí tự",
+                message: "Màu sắc phải có ít nhất 2 kí tự",
               },
             ]}
           >
-            <Input placeholder="Nhập màu" />
+            <Input
+              data={data.MauSac}
+              onChange={(e) => setData({ ...data, MauSac: e.target.value })}
+              placeholder="Nhập màu"
+            />
           </Form.Item>
           <Form.Item
             name="LoaiHang"
@@ -171,7 +180,11 @@ function TaoSanPhamModal() {
               },
             ]}
           >
-            <Input placeholder="Nhập loại hàng" />
+            <Input
+              data={data.LoaiHang}
+              onChange={(e) => setData({ ...data, LoaiHang: e.target.value })}
+              placeholder="Nhập loại hàng"
+            />
           </Form.Item>
           <Form.Item
             name="GiaVon"
@@ -260,5 +273,3 @@ function TaoSanPhamModal() {
     </div>
   );
 }
-
-export default TaoSanPhamModal;

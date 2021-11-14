@@ -15,7 +15,7 @@ import HangHoatable from "../../components/table/HangHoatable/HangHoatable.js";
 import Menubar from "../../components/header/Menubar/Menubar";
 import Headerbar from "../../components/header/Headerbar/Headerbar";
 import { showTaoSanPhamModal } from "../../redux/actions";
-import TaoSanPhamModal from "../../components/modal/TaoSanPhamModal/TaoSanPhamModal";
+import TaoSanPhamModal from "../../components/modal/TaoSanPhamModal/createSanPhamModal";
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 

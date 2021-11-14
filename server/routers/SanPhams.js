@@ -1,6 +1,6 @@
 import express from "express";
 import {
-  getSanPham,
+  getSanPhams,
   createSanPham,
   updateSanPham,
 } from "../controllers/SanPham.js";
@@ -8,7 +8,7 @@ import {
 const router = express.Router();
 //http://localhost:5001/SanPhams
 
-router.get("/", getSanPham);
+router.get("/", getSanPhams);
 router.post("/", createSanPham);
 router.post("/update", updateSanPham);
 

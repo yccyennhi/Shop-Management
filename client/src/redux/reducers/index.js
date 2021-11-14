@@ -5,7 +5,6 @@ import SanPhams from "./SanPhams";
 import TaiKhoans from "./TaiKhoans";
 import Modal from './Modal';
 import TaoSanPhamModal from "./TaoSanPhamModal";
-
 import KhuyenMais from "./KhuyenMais";
 
 export default combineReducers({
@@ -16,5 +15,4 @@ export default combineReducers({
   Modal,
   KhuyenMais,
   TaoSanPhamModal,
-  KhuyenMais,
 });

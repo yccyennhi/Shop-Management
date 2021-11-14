@@ -46,15 +46,15 @@ export const createKhuyenMai = createActions({
     createKhuyenMaiFailure: (err) => err,
 });
 
-export const showModal = createAction('SHOW_CREATE_MODAL');
-export const hideModal = createAction('HIDE_CREATE_MODAL');
 
-
-export const TaoSanPham = createActions({
-    TaoSanPhamRequest: (payload) => payload,
-    TaoSanPhamSuccess: (payload) => payload,
-    TaoSanPhamFailure: (err) => err,
+export const createSanPham = createActions({
+    createSanPhamRequest: (payload) => payload,
+    createSanPhamSuccess: (payload) => payload,
+    createSanPhamFailure: (err) => err,
 });
 
 export const showTaoSanPhamModal = createAction('SHOW_TAOSANPHAM_MODAL');
 export const hideTaoSanPhamModal = createAction('HIDE_TAOSANPHAM_MODAL');
+
+export const showModal = createAction('SHOW_CREATE_MODAL');
+export const hideModal = createAction('HIDE_CREATE_MODAL');

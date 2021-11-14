@@ -1,12 +1,41 @@
-
-import HangHoaPage from "./pages/HangHoaPage/HangHoaPage.js";
-import GiaoDichPage from "./pages/GiaoDichPage/GiaoDichPage.js";
-
-
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import "./App.css"; 
+import { Menu, Layout, Breadcrumb, Col, Row, Button } from "antd";
+import Menubar from "./components/header/Menubar/Menubar";
+import Headerbar from "./components/header/Headerbar/Headerbar";
+import HangHoaPage from "./pages/HangHoaPage/HangHoaPage";
+import KhuyenMaiPage from "./pages/KhuyenMaiPage/KhuyenMaiPage";
 
 function App() {
-  //return <HangHoaPage />
-  return <GiaoDichPage/>
+const { Header, Content, Footer } = Layout;
+const { SubMenu } = Menu;
+
+  return (
+    <div className="App">
+      <Router>
+        <Layout>
+          <Header>
+            <Headerbar />
+          </Header>
+        </Layout>
+        <Layout className="layout">
+          <Header>
+            <Menubar />
+          </Header>
+          <Content style={{ padding: "50px 50px" }}>
+            <div className="site-layout-content">
+              <Switch>
+                <Route path ='/HangHoas' exact component={HangHoaPage}/>
+                <Route path='/KhuyenMais' exact component={KhuyenMaiPage}/>
+              </Switch>
+            </div>
+          </Content>
+          <Footer style={{ textAlign: "center" }}>
+          </Footer>
+        </Layout>
+      </Router>
+    </div>
+  );
 }
 
 export default App;

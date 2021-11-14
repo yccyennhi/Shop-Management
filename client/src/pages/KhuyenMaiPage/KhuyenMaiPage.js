@@ -1,8 +1,5 @@
 import React from "react";
 import { Menu, Layout, PageHeader, Col, Row, Button, Space } from "antd";
-import "./styles.css";
-import Logo from "../../assets/Logo.png";
-import { Avatar, Image } from "antd";
 import {
   UserOutlined,
   PlusOutlined,
@@ -10,22 +7,23 @@ import {
   DownloadOutlined,
   RestOutlined,
 } from "@ant-design/icons";
-import HangHoatable from "../../components/table/HangHoatable/HangHoatable.js";
-import Menubar from "../../components/header/Menubar/Menubar";
-import Headerbar from "../../components/header/Headerbar/Headerbar";
-const { Header, Content, Footer, Sider } = Layout;
+import "./styles.css";
+import KhuyenMaitable from "../../components/table/KhuyenMaitable/KhuyenMaitable";
 const { SubMenu } = Menu;
 
-export default function HangHoaPage() {
+export default function KhuyenMaiPage() {
   return (
     <>
       <div>
-        <PageHeader className="site-page-header" title="Danh mục hàng hóa" />
+        <PageHeader className="site-page-header" title="Khuyến mãi" />
         <div>
           <Row justify="end">
             <Space>
               <Button type="primary" icon={<PlusOutlined />}>
-                Thêm hàng hóa
+                Thêm khuyến mãi
+              </Button>
+              <Button type="primary" icon={<RestOutlined />}>
+                Xóa khuyến mãi
               </Button>
               <Button type="primary" icon={<ImportOutlined />}>
                 Import
@@ -35,10 +33,9 @@ export default function HangHoaPage() {
               </Button>
             </Space>
           </Row>
-          <HangHoatable />
+          <KhuyenMaitable />
         </div>
       </div>
-      ,
     </>
   );
 }

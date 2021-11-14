@@ -20,7 +20,7 @@ export default function HangHoaPage() {
   return (
     <>
       <div>
-        <PageHeader className="site-page-header" title="Hàng hóa" />,
+        <PageHeader className="site-page-header" title="Hàng hóa" />
         <div>
           <Row justify="end">
             <Space>

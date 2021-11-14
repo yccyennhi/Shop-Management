@@ -15,8 +15,7 @@ export default function KhuyenMaiPage() {
   return (
     <>
     <div>
-        <PageHeader className="site-page-header" title="Khuyến mãi" />,
-
+        <PageHeader className="site-page-header" title="Khuyến mãi" />
           <div>
             <Row justify="end">
               <Space>

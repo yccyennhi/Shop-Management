@@ -17,6 +17,7 @@ export const INIT_STATE = {
     TaiKhoans: {
         isLoading: false,
         data: [],
+    },
     KhuyenMais:{
         isLoading: false,
         data:[],

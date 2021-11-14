@@ -45,6 +45,8 @@ function* fetchTaiKhoansSaga(action) {
   } catch (err) {
     console.error(err);
     yield put(actions.getTaiKhoans.getTaiKhoansFailure(err));
+  }
+}
 
 function* fetchKhuyenMaisSaga(action) {
   try {
@@ -65,3 +67,4 @@ function* mySaga() {
 }
 
 export default mySaga;
+

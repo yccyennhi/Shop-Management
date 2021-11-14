@@ -262,6 +262,7 @@ function HangHoatable() {
           ),
           rowExpandable: (record) => record.TenSP !== "Not Expandable",
         }}
+        rowKey="_id"
         dataSource={dataSource}
       ></Table>
     </div>

@@ -81,16 +81,16 @@ function Menubar() {
     history.push("/CuoiNgays");
   };
   const handleBCBanHang = () => {
-    history.push("/CuoiNgays");
+    history.push("/BCBanHangs");
   };
   const handleBCDatHang = () => {
-    history.push("/CuoiNgays");
+    history.push("/BCDatHangs");
   };
   const handleBCHangHoa = () => {
-    history.push("/CuoiNgays");
+    history.push("/BCHangHoas");
   };
   const handleBCKhachHang = () => {
-    history.push("/CuoiNgays");
+    history.push("/BCKhachHangs");
   };
   const handleBCNhanVien = () => {
     history.push("/BCNhanViens");
@@ -173,7 +173,7 @@ function Menubar() {
           <Menu.Item key="BCHangHoa" onClick={handleBCHangHoa}>
             Hàng hóa
           </Menu.Item>
-          <Menu.Item key="BCKhachHang" onClick={handleKhachHang}>
+          <Menu.Item key="BCKhachHang" onClick={handleBCKhachHang}>
             Khách hàng
           </Menu.Item>
           <Menu.Item key="BCNhanVien" onClick={handleBCNhanVien}>

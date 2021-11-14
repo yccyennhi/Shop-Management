@@ -7,3 +7,4 @@ export const fetchKhuyenMais = ()=> axios.get(`${URL}/KhuyenMais`);
 export const fetchNhanViens = ()=> axios.get(`${URL}/NhanViens`);
 export const fetchSanPhams = () => axios.get(`${URL}/SanPhams`);
 export const fetchTaiKhoans = ()=> axios.get(`${URL}/TaiKhoans`);
+export const fetchHoaDons = ()=> axios.get(`${URL}/HoaDons`);

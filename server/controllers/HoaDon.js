@@ -1,19 +1,19 @@
 import { HoaDonModel } from "../models/HoaDonModel.js";
 
-export const getHoaDon = async (req, res) => {
+export const getHoaDons = async (req, res) => {
   try {
-    // const hoadon = new HoaDonModel({
-    //   MaHD: "HD0001",
-    //   MaSP: "Sandalred039001",
-    //   MaNV: "NV001",
-    //   MaKM: "",
-    //   MaKH: "",
-    //   DiemTru: 0,
-    //   TongTienHang: 0,
-    //   ThanhTien: 0,
-    //   ThoiGian: new Date(),
-    // });
-    // hoadon.save();
+    const hoadon = new HoaDonModel({
+      MaHD: "HD0001",
+      MaSP: "Ma001",
+      MaNV: "NV001",
+      MaKM: "KM001",
+      MaKH: "TN",
+      DiemTru: 0,
+      TongTienHang: 0,
+      ThanhTien: 0,
+      ThoiGian: new Date(),
+    });
+    hoadon.save();
     const HoaDons = await HoaDonModel.find();
     console.log("HoaDons", HoaDons);
     res.status(200).json(HoaDons);

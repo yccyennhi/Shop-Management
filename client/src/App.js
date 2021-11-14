@@ -5,6 +5,7 @@ import Menubar from "./components/header/Menubar/Menubar";
 import Headerbar from "./components/header/Headerbar/Headerbar";
 import HangHoaPage from "./pages/HangHoaPage/HangHoaPage";
 import KhuyenMaiPage from "./pages/KhuyenMaiPage/KhuyenMaiPage";
+import HoaDonPage from './pages/GiaoDichPage/HoaDonPage'
 
 function App() {
 const { Header, Content, Footer } = Layout;
@@ -26,6 +27,7 @@ const { SubMenu } = Menu;
             <div className="site-layout-content">
               <Switch>
                 <Route path ='/HangHoas' exact component={HangHoaPage}/>
+                <Route path ='/HoaDons' exact component={HoaDonPage}/>
                 <Route path='/KhuyenMais' exact component={KhuyenMaiPage}/>
               </Switch>
             </div>

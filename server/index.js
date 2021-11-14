@@ -9,10 +9,8 @@ import CTHDs from "./routers/CTHDs.js";
 import PhieuDoiTras from "./routers/PhieuDoiTras.js";
 import CTPDTs from "./routers/CTPDTs.js";
 
-import posts from "./routers/posts.js";
 import KhachHangs from "./routers/KhachHangs.js";
 import NhanViens from "./routers/NhanViens.js";
-import SanPhams from "./routers/SanPhams.js";
 import TaiKhoans from "./routers/TaiKhoans.js";
 import KhuyenMais from "./routers/KhuyenMais.js"
 import mongoose from "mongoose";

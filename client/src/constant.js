@@ -21,5 +21,9 @@ export const INIT_STATE = {
     KhuyenMais:{
         isLoading: false,
         data:[],
-    }
+    },
+    HoaDons:{
+        isLoading: false,
+        data:[],
+    },
 };

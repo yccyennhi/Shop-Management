@@ -26,7 +26,7 @@ const { SubMenu } = Menu;
             <div className="site-layout-content">
               <Switch>
                 <Route path ='/' exact component={HangHoaPage}/>
-                <Route path='/KhuyenMai' exact component={KhuyenMaiPage}/>
+                <Route path='/KhuyenMais' exact component={KhuyenMaiPage}/>
               </Switch>
             </div>
           </Content>

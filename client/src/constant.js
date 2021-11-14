@@ -2,6 +2,10 @@ export const INIT_STATE = {
     SanPhams: {
         isLoading: false,
         data: [],
+    },
+    KhuyenMais:{
+        isLoading: false,
+        data:[],
     }
 }
 

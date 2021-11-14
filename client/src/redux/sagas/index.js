@@ -15,8 +15,19 @@ function* fetchSanPhamsSaga(action) {
   yield put(actions.getSanPhams.getSanPhamsSuccess(SanPhams));
 }
 
+function* fetchKhuyenMaisSaga(action) {
+  try {
+    const KhuyenMais = yield call(api.fetchKhuyenMais);
+    yield put(actions.getKhuyenMais.getKhuyenMaisSuccess(KhuyenMais.data));
+  } catch (err) {
+    console.error(err);
+    yield put(actions.getKhuyenMais.getKhuyenMaisFailure(err));
+  }
+}
+
 function* mySaga() {
   yield takeLatest(actions.getSanPhams.getSanPhamsRequest, fetchSanPhamsSaga);
+   yield takeLatest(actions.getKhuyenMais.getKhuyenMaisRequest, fetchKhuyenMaisSaga);
 }
 
 export default mySaga;

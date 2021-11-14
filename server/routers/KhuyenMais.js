@@ -1,4 +1,5 @@
 import express from "express";
+
 import {
   getKhuyenMais,
   createKhuyenMai,
@@ -8,7 +9,7 @@ import {
 const router = express.Router();
 //http://localhost:500-/KhuyenMais
 
-router.get("/",getKhuyenMais);
+router.get("/", getKhuyenMais);
 router.post("/create", createKhuyenMai);
 router.post("/update", updateKhuyenMai);
 

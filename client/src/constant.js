@@ -23,12 +23,10 @@ export const INIT_STATE = {
         isLoading: false,
         data:[],
     },
-<<<<<<< Updated upstream
     Modal:{
         isShow: false,
-=======
+    },
     TaoSanPhamModal: {
         isShow: false
->>>>>>> Stashed changes
     }
 };

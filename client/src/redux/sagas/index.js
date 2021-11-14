@@ -72,7 +72,6 @@ function* mySaga() {
   yield takeLatest(actions.getSanPhams.getSanPhamsRequest, fetchSanPhamsSaga);
   yield takeLatest(actions.getTaiKhoans.getTaiKhoansRequest, fetchTaiKhoansSaga);
   yield takeLatest(actions.getKhuyenMais.getKhuyenMaisRequest, fetchKhuyenMaisSaga);
-  yield takeLatest(actions.TaoSanPham.TaoSanPhamRequest, TaoSanPhamSaga);
 
 }
 

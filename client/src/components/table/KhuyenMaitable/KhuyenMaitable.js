@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Table, Input, Row, PageHeader, Descriptions, Tag } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-
+import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../../redux/actions";
 
@@ -10,13 +10,24 @@ const { Search } = Input;
 
 function KhuyenMaitable() {
   const dispatch = useDispatch();
+
   const KhuyenMais = useSelector(KhuyenMaisState$);
 
   React.useEffect(() => {
     dispatch(actions.getKhuyenMais.getKhuyenMaisRequest());
   }, [dispatch]);
-  
- const dataSource = KhuyenMais;
+
+  const dataSource = KhuyenMais;
+
+  //Format date
+  dataSource.map((el) => {
+    //Ngày bắt đầu
+    let date = moment(new Date(el.NgayBD));
+    el.NgayBD = date.format("DD/MM/YYYY");
+    //Ngày kết thúc
+    date = moment(new Date(el.NgayKT));
+    el.NgayKT = date.format("DD/MM/YYYY");
+  });
 
   const columns = [
     {
@@ -236,7 +247,7 @@ function KhuyenMaitable() {
                   <Descriptions.Item label="Phần trăm giảm">
                     {record.PhanTram}
                   </Descriptions.Item>
-                  
+
                   <Descriptions.Item label="Số lượng">
                     {record.SoLuong}
                   </Descriptions.Item>
@@ -246,7 +257,7 @@ function KhuyenMaitable() {
           },
           rowExpandable: (record) => record.TenKM !== "Not Expandable",
         }}
-         rowKey= "_id"
+        rowKey="_id"
         dataSource={dataSource}
       ></Table>
     </div>

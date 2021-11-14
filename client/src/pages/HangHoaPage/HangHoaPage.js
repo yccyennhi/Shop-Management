@@ -19,38 +19,25 @@ const { SubMenu } = Menu;
 export default function HangHoaPage() {
   return (
     <>
-      <Layout className="layout">
-        <Header>
-          <Headerbar />
-        </Header>
-      </Layout>
-      <Layout className="layout">
-        <Header>
-          <Menubar />
-        </Header>
-      </Layout>
-      <Layout>
-        <Content style={{ padding: "0px 50px 50px 50px" }}>
-          <PageHeader className="site-page-header" title="Hàng hóa" />,
-          <div className="site-layout-content">
-            <Row justify="end">
-              <Space>
-                <Button type="primary" icon={<PlusOutlined />}>
-                  Thêm hàng hóa
-                </Button>
-                <Button type="primary" icon={<ImportOutlined />}>
-                  Import
-                </Button>
-                <Button type="primary" icon={<DownloadOutlined />}>
-                  Xuất file
-                </Button>
-              </Space>
-            </Row>
-            <HangHoatable />
-          </div>
-        </Content>
-        <Footer style={{ textAlign: "center" }}></Footer>
-      </Layout>
+      <div>
+        <PageHeader className="site-page-header" title="Hàng hóa" />,
+        <div>
+          <Row justify="end">
+            <Space>
+              <Button type="primary" icon={<PlusOutlined />}>
+                Thêm hàng hóa
+              </Button>
+              <Button type="primary" icon={<ImportOutlined />}>
+                Import
+              </Button>
+              <Button type="primary" icon={<DownloadOutlined />}>
+                Xuất file
+              </Button>
+            </Space>
+          </Row>
+          <HangHoatable />
+        </div>
+      </div>
       ,
     </>
   );

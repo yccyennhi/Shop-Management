@@ -21,5 +21,8 @@ export const INIT_STATE = {
     KhuyenMais:{
         isLoading: false,
         data:[],
+    },
+    Modal:{
+        isShow: false,
     }
 };

@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+
+import { useSelector, useDispatch } from "react-redux";
+import { modalState$ } from "../../redux/selectors";
+
 import {
   Form,
   Input,
@@ -10,30 +14,26 @@ import {
   InputNumber,
   TreeSelect,
   Switch,
+  Modal,
 } from "antd";
 
-const CreateKhuyenMaiForm = () => {
-  const [componentSize, setComponentSize] = useState("default");
+import { createKhuyenMai, hideModal } from "../../redux/actions";
 
-  const onFormLayoutChange = ({ size }) => {
-    setComponentSize(size);
-  };
+export default function CreateKhuyenMaiModal() {
+  const dispatch = useDispatch();
+  const { isShow } = useSelector(modalState$);
 
-  return (
+
+  const body = (
     <>
       <Form
         labelCol={{
-          span: 2,
+          span: 6,
         }}
         wrapperCol={{
-          span: 14,
+          span: 60,
         }}
         layout="horizontal"
-        initialValues={{
-          size: componentSize,
-        }}
-        onValuesChange={onFormLayoutChange}
-        size={componentSize}
       >
         <Form.Item label="Mã khuyến mãi">
           <Input />
@@ -63,12 +63,18 @@ const CreateKhuyenMaiForm = () => {
         <Form.Item label="Trạng thái" valuePropName="checked">
           <Switch />
         </Form.Item>
-        <Form.Item {...buttonItemLayout}>
+        <Form.Item>
           <Button type="primary">Submit</Button>
         </Form.Item>
       </Form>
     </>
   );
-};
 
-ReactDOM.render(<CreateKhuyenMaiForm />, mountNode);
+  return (
+    <div>
+      <Modal title="Thêm Khuyến mãi" visible={isShow}>
+        {body}
+      </Modal>
+    </div>
+  );
+}

@@ -22,10 +22,11 @@ export default function ExpandedRowRender({ record }) {
         }
         subTitle={record.MaKM}
         extra={[
-            <Button key="2">Sửa</Button>,
             <Button key="1" type="primary">
-              Xóa
-            </Button>,
+            Sửa
+          </Button>,
+            <Button key="2">Xóa</Button>,
+ 
           ]}
       >
         <Descriptions size="small" column={2}>

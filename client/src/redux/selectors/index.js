@@ -1,0 +1,1 @@
+export const KhuyenMaisState$ = (state) => state.KhuyenMais.data;

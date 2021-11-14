@@ -32,4 +32,15 @@ export const getTaiKhoans = createActions({
     getTaiKhoansRequest: undefined,
     getTaiKhoansSuccess: (payload) => payload,
     getTaiKhoansFailure: (err) => err,
+
+export const getHoaDons = createActions({
+    getHoaDonsRequest: undefined,
+    getHoaDonsSuccess: (payload) => payload,
+    getHoaDonsFailure: (err) => err,
+});
+
+export const getKhuyenMais = createActions({
+    getKhuyenMaisRequest: undefined,
+    getKhuyenMaisSuccess: (payload) => payload,
+    getKhuyenMaisFailure: (err) => err,
 });

@@ -1,37 +1,59 @@
 import React from "react";
-import { Menu, Layout, Breadcrumb, Col, Row, Button } from "antd";
+import { Menu, Layout, PageHeader, Col, Row, Button, Space } from "antd";
 import "./styles.css";
 import Logo from "../../assets/Logo.png";
 import { Avatar, Image } from "antd";
-import { UserOutlined } from "@ant-design/icons";
-
+import {
+  UserOutlined,
+  PlusOutlined,
+  ImportOutlined,
+  DownloadOutlined,
+  RestOutlined
+} from "@ant-design/icons";
+import HangHoatable from "../../components/table/HangHoatable/HangHoatable.js";
 import Menubar from "../../components/header/Menubar/Menubar";
 import Headerbar from "../../components/header/Headerbar/Headerbar";
-const { Header, Content, Footer } = Layout;
+const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 export default function HangHoaPage() {
   return (
     <>
-      <Layout>
+      <Layout className="layout">
         <Header>
-         <Headerbar/>
+          <Headerbar />
         </Header>
       </Layout>
       <Layout className="layout">
         <Header>
           <Menubar />
         </Header>
-        <Content style={{ padding: "0 50px" }}>
-          <Breadcrumb style={{ margin: "16px 0" }}>
-            <Breadcrumb.Item>Home</Breadcrumb.Item>
-            <Breadcrumb.Item>List</Breadcrumb.Item>
-            <Breadcrumb.Item>App</Breadcrumb.Item>
-          </Breadcrumb>
-          <div className="site-layout-content">Content</div>
+      </Layout>
+      <Layout>
+        <Content style={{ padding: "0px 50px 50px 50px" }}>
+        <PageHeader className="site-page-header" title="Hàng hóa" />,
+
+          <div className="site-layout-content">
+            <Row justify="end">
+              <Space>
+                <Button type="primary" icon={<PlusOutlined />}>
+                  Thêm hàng hóa
+                </Button>
+                <Button type="primary" icon={<RestOutlined />}>
+                  Xóa hàng hóa
+                </Button>
+                <Button type="primary" icon={<ImportOutlined />}>
+                  Import
+                </Button>
+                <Button type="primary" icon={<DownloadOutlined />}>
+                  Xuất file
+                </Button>
+              </Space>
+            </Row>
+              <HangHoatable />
+          </div>
         </Content>
         <Footer style={{ textAlign: "center" }}>
-          Ant Design ©2018 Created by Ant UED
         </Footer>
       </Layout>
       ,

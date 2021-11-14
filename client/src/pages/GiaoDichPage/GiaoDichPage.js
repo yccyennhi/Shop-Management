@@ -1,13 +1,20 @@
 import React from "react";
-import { Menu, Layout, Breadcrumb, Col, Row, Button } from "antd";
+import { Menu, Layout, Breadcrumb, Col, Row, Button, Space } from "antd";
 import "./styles.css";
 import Logo from "../../assets/Logo.png";
 import { Avatar, Image } from "antd";
-import { UserOutlined } from "@ant-design/icons";
-
+import {
+  UserOutlined,
+  PlusOutlined,
+  ImportOutlined,
+  DownloadOutlined,
+  RestOutlined,
+} from "@ant-design/icons";
 import Menubar from "../../components/header/Menubar/Menubar";
 import Headerbar from "../../components/header/Headerbar/Headerbar";
 import Bodybar from "../../pages/GiaoDichPage/styles";
+import DataTableHoaDon from "../../components/table/HoaDonTable/DataTableHoaDon";
+import FormHoaDon from "./FormHoaDon";
 const { Header, Content, Footer } = Layout;
 const { SubMenu } = Menu;
 
@@ -32,7 +39,7 @@ export default function GiaoDichPage() {
           <Row justify="end">
             <Space>
               <Button type="primary" icon={<PlusOutlined />}>
-                Thêm hàng hóa
+                Thêm hóa đơn
               </Button>
               <Button type="primary" icon={<ImportOutlined />}>
                 Import
@@ -42,7 +49,7 @@ export default function GiaoDichPage() {
               </Button>
             </Space>
           </Row>
-          <Bodybar />
+          <DataTableHoaDon />
         </div>
         <Footer style={{ textAlign: "center" }}>
           Ant Design �2018 Created by Ant UED

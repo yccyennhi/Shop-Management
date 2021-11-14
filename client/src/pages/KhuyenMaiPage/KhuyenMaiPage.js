@@ -22,14 +22,8 @@ export default function KhuyenMaiPage() {
               <Button type="primary" icon={<PlusOutlined />}>
                 Thêm khuyến mãi
               </Button>
-              <Button type="primary" icon={<RestOutlined />}>
+              <Button type="secondary" icon={<RestOutlined />}>
                 Xóa khuyến mãi
-              </Button>
-              <Button type="primary" icon={<ImportOutlined />}>
-                Import
-              </Button>
-              <Button type="primary" icon={<DownloadOutlined />}>
-                Xuất file
               </Button>
             </Space>
           </Row>

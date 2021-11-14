@@ -9,7 +9,7 @@ function* fetchKhachHangsSaga(action) {
     yield put(actions.getKhachHangs.getKhachHangsSuccess(KhachHangs));
   } catch (err) {
     console.error(err);
-    yield put(actions.getPosts.getKhachHangsFailure(err));
+    yield put(actions.getKhachHangs.getKhachHangsFailure(err));
   }
 }
 
@@ -20,7 +20,7 @@ function* fetchNhanViensSaga(action) {
     yield put(actions.getNhanViens.getNhanViensSuccess(NhanViens));
   } catch (err) {
     console.error(err);
-    yield put(actions.getPosts.getNhanViensFailure(err));
+    yield put(actions.getNhanViens.getNhanViensFailure(err));
   }
 }
 
@@ -44,7 +44,7 @@ function* fetchTaiKhoansSaga(action) {
     yield put(actions.getTaiKhoans.getTaiKhoansSuccess(TaiKhoans));
   } catch (err) {
     console.error(err);
-    yield put(actions.getPosts.getTaiKhoansFailure(err));
+    yield put(actions.getTaiKhoans.getTaiKhoansFailure(err));
   }
 }
 

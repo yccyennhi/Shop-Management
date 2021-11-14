@@ -22,10 +22,10 @@ const { SubMenu } = Menu;
           <Header>
             <Menubar />
           </Header>
-          <Content style={{ padding: "0 50px" }}>
+          <Content style={{ padding: "50px 50px" }}>
             <div className="site-layout-content">
               <Switch>
-                <Route path ='/' exact component={HangHoaPage}/>
+                <Route path ='/HangHoas' exact component={HangHoaPage}/>
                 <Route path='/KhuyenMais' exact component={KhuyenMaiPage}/>
               </Switch>
             </div>

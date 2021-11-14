@@ -25,16 +25,13 @@ function* fetchNhanViensSaga(action) {
 }
 
 function* fetchSanPhamsSaga(action) {
-  // try {
-  //   const posts = yield call(api.fetchSanPhamSaga);
-  //   yield put(actions.getPosts.getSanPhamRequest(posts.data));
-  // } catch (err) {
-  //   console.error(err);
-  //   yield put(actions.getPosts.getSanPhamFailure(err));
-  // }
-  const SanPhams = yield call(api.fetchSanPhams);
-  console.log("[SanPhams]", SanPhams);
-  yield put(actions.getSanPhams.getSanPhamsSuccess(SanPhams));
+  try {
+    const SanPhams = yield call(api.fetchSanPhams);
+    yield put(actions.getSanPhams.getSanPhamsSuccess(SanPhams.data));
+  } catch (err) {
+    console.error(err);
+    yield put(actions.getSanPhams.getSanPhamsFailure(err));
+  }
 }
 
 function* fetchTaiKhoansSaga(action) {

@@ -1,61 +1,185 @@
-import React from "react";
+import React, { useEffect, useRef, useMemo, useState } from "react";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { Menu, Dropdown, message, Space } from "antd";
 import {
-  GoldenFilled,
-  EyeFilled,
+  EyeOutlined,
+  DatabaseOutlined,
   SwapOutlined,
   UserOutlined,
+  TagsOutlined,
+  TeamOutlined,
+  DollarOutlined,
+  BarChartOutlined
+
 } from "@ant-design/icons";
 import MenuItem from "antd/lib/menu/MenuItem";
 const { SubMenu } = Menu;
 
 function Menubar() {
+  const history = useHistory();
+  //Tong Quan
+  const handleTongQuan = () => {
+    history.push("/TongQuans");
+  };
+
+  //Hang hoa
+  const handleHangHoa = () => {
+    history.push("/HangHoas");
+  };
+  const handleThietLapGia = () => {
+    history.push("/ThietLapGias");
+  };
+  const handlePhieuBaoHanh = () => {
+    history.push("/PhieuBaoHanhs");
+  };
+  const handleKiemKho = () => {
+    history.push("/KiemKhos");
+  };
+
+  //Giao dich
+  const handleDatHang = () => {
+    history.push("/DatHangs");
+  };
+  const handleHoaDon = () => {
+    history.push("/HoaDons");
+  };
+  const handleTraHang = () => {
+    history.push("/TraHangs");
+  };
+  const handleYeuCauSuaChua = () => {
+    history.push("/YeuCauSuaChuas");
+  };
+  const handleNhapHang = () => {
+    history.push("/NhapHang");
+  };
+  const handleTraHangNhap = () => {
+    history.push("/TraHangNhaps");
+  };
+
+  //Khach Hang
+  const handleKhachHang = () => {
+    history.push("/KhachHangs");
+  };
+
+  //Nhan vien
+  const handleNhanVien = () => {
+    history.push("/NhanViens");
+  };
+
+  //Khuyen Mai
+  const handleKhuyenMai = () => {
+    history.push("/KhuyenMais");
+  };
+
+  //So quy
+  const handleSoQuy = () => {
+    history.push("/SoQuys");
+  };
+
+  //Bao cao
+  const handleBCCuoiNgay = () => {
+    history.push("/CuoiNgays");
+  };
+  const handleBCBanHang = () => {
+    history.push("/CuoiNgays");
+  };
+  const handleBCDatHang = () => {
+    history.push("/CuoiNgays");
+  };
+  const handleBCHangHoa = () => {
+    history.push("/CuoiNgays");
+  };
+  const handleBCKhachHang = () => {
+    history.push("/CuoiNgays");
+  };
+  const handleBCNhanVien = () => {
+    history.push("/BCNhanViens");
+  };
+
   return (
     <div>
       <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["1000"]}>
-        
-          <SubMenu key="sub1" icon={<EyeFilled />} title="Tổng quan">
-            <Menu.Item key="subitem1">option1</Menu.Item>
-            <Menu.Item key="subitem2">option2</Menu.Item>
-            <Menu.Item key="subitem3">option3</Menu.Item>
-            <Menu.Item key="subitem4">option4</Menu.Item>
-          </SubMenu>
-        
-          <SubMenu key="sub2" icon={<GoldenFilled />} title="Hàng hóa">
-            <Menu.Item key="subitem5">Danh mục</Menu.Item>
-            <Menu.Item key="subitem6">Thiết lập giá</Menu.Item>
-            <Menu.Item key="subitem7">Phiếu bảo hành</Menu.Item>
-            <Menu.Item key="subitem8">Kiểm kho</Menu.Item>
-          </SubMenu>
+        <SubMenu
+          key="TongQuan"
+          icon={<EyeOutlined />}
+          title="Tổng quan"
+          onTitleClick={handleTongQuan}
+        ></SubMenu>
 
-          <SubMenu key="sub3" icon={<SwapOutlined />} title="Giao dịch">
-            <Menu.Item key="subitem9">option5</Menu.Item>
-            <Menu.Item key="subitem10">option6</Menu.Item>
-            <Menu.Item key="subitem11">option7</Menu.Item>
-            <Menu.Item key="subitem12">option8</Menu.Item>
-          </SubMenu>
+        <SubMenu key="HangHoa" icon={<DatabaseOutlined />} title="Hàng hóa" onTitleClick={handleHangHoa}>
+          <Menu.Item key="DanhMuc" onClick={handleHangHoa}>
+            Danh mục
+          </Menu.Item>
+          <Menu.Item key="ThietLapGia" onClick={handleThietLapGia}>
+            Thiết lập giá
+          </Menu.Item>
+          <Menu.Item key="PhieuBaoHanh" onClick={handlePhieuBaoHanh}>
+            Phiếu bảo hành
+          </Menu.Item>
+          <Menu.Item key="KiemKho" onClick={handleKiemKho}>
+            Kiểm kho
+          </Menu.Item>
+        </SubMenu>
 
-          <SubMenu key="sub4" icon={<UserOutlined />} title="Khuyến mãi">
-            {/* <Link tp='/KhuyenMais'>
-            </Link> */}
-          </SubMenu>
+        <SubMenu key="GiaoDich" icon={<SwapOutlined />} title="Giao dịch" onTitleClick={handleHoaDon}>
+          <Menu.Item key="HoaDon" onClick={handleHoaDon}>
+            Hóa đơn
+          </Menu.Item>
+          <Menu.Item key="TraHang" onClick={handleTraHang}>
+            Trả hàng
+          </Menu.Item>
+          <Menu.Item key="YeuCauSuaChua" onClick={handleYeuCauSuaChua}>
+            Yêu cầu sửa chữa
+          </Menu.Item>
+          <Menu.Item key="NhapHang" onClick={handleNhapHang}>
+            Nhập hàng
+          </Menu.Item>
+          <Menu.Item key="TraHangNhap" onClick={handleTraHangNhap}>
+            Trả hàng nhập
+          </Menu.Item>
+        </SubMenu>
 
-          <SubMenu key="sub5" icon={<UserOutlined />} title="Nhân viên">
-            <Menu.Item key="subitem17">option5</Menu.Item>
-            <Menu.Item key="subitem18">option6</Menu.Item>
-            <Menu.Item key="subitem19">option7</Menu.Item>
-            <Menu.Item key="subitem20">option8</Menu.Item>
-          </SubMenu>
-
-       
-          <SubMenu key="sub6" icon={<UserOutlined />} title="Sổ quỹ">
-            <Menu.Item key="subitem21">option5</Menu.Item>
-            <Menu.Item key="subitem22">option6</Menu.Item>
-            <Menu.Item key="subitem23">option7</Menu.Item>
-            <Menu.Item key="subitem24">option8</Menu.Item>
-          </SubMenu>
-
-
+        <SubMenu
+          key="KhuyenMai"
+          icon={ <TagsOutlined /> }
+          title="Khuyến mãi"
+          onTitleClick={handleKhuyenMai}
+        ></SubMenu>
+        <SubMenu
+          key="KhachHang"
+          icon={<UserOutlined />}
+          title="Khách hàng"
+          onTitleClick={handleKhachHang}
+        ></SubMenu>
+        <SubMenu
+          key="NhanVien"
+          icon={<TeamOutlined />}
+          title="Nhân viên"
+          onTitleClick={handleNhanVien}
+        ></SubMenu>
+        <SubMenu
+          key="SoQuy"
+          icon={<DollarOutlined />}
+          title="Sổ quỹ"
+          onTitleClick={handleSoQuy}
+        ></SubMenu>
+        <SubMenu key="BaoCao" icon={<BarChartOutlined />} title="Báo cáo" onTitleClick={handleBCCuoiNgay}>
+          <Menu.Item key="BCCuoiNgay" onClick={handleBCCuoiNgay}>
+            Cuối ngày
+          </Menu.Item>
+          <Menu.Item key="BCBanHang" onClick={handleBCBanHang}>
+            Bán hàng
+          </Menu.Item>
+          <Menu.Item key="BCHangHoa" onClick={handleBCHangHoa}>
+            Hàng hóa
+          </Menu.Item>
+          <Menu.Item key="BCKhachHang" onClick={handleKhachHang}>
+            Khách hàng
+          </Menu.Item>
+          <Menu.Item key="BCNhanVien" onClick={handleBCNhanVien}>
+            Nhân viên
+          </Menu.Item>
+        </SubMenu>
       </Menu>
     </div>
   );

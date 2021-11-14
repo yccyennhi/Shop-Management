@@ -17,7 +17,6 @@ export const getKhuyenMais = async (req, res) => {
 export const createKhuyenMai = async (req, res) => {
   try {
     const newKhuyenMai = req.body;
-
     const KhuyenMai = new KhuyenMaiModel(newKhuyenMai);
     await KhuyenMai.save();
 

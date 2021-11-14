@@ -41,9 +41,9 @@ export const getKhuyenMais = createActions({
 });
 
 export const createKhuyenMai = createActions({
-    createKhuyenMaitRequest: (payload) => payload,
-    createKhuyenMaitSuccess: (payload) => payload,
-    createKhuyenMaitFailure: (err) => err,
+    createKhuyenMaiRequest: (payload) => payload,
+    createKhuyenMaiSuccess: (payload) => payload,
+    createKhuyenMaiFailure: (err) => err,
 });
 
 export const showModal = createAction('SHOW_CREATE_MODAL');

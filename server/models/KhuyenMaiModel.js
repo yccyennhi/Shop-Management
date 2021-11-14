@@ -5,16 +5,12 @@ const schema = new mongoose.Schema(
         MaKM: {
             type: String,
             required: true,
+            unique: true,
         },
         TenKM: {
             type: String,
             required: true,
         },
-        MaSp: {
-            type: String,
-            required: true,
-        },
-
         NgayBD: {
             type: Date,
             required: true,
@@ -37,6 +33,11 @@ const schema = new mongoose.Schema(
             type: Boolean,
             default: false,
         },
+
+        SoLuong: {
+            type: Number,
+            required:false,
+        }
     }, { timestamps: true });
 
     export const KhuyenMaiModel = mongoose.model("KhuyenMai", schema);

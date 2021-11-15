@@ -1,5 +1,5 @@
 import { INIT_STATE } from "../../constant";
-import { getSanPhams, getType } from "../actions";
+import { getSanPhams, getType, createSanPham } from "../actions";
 
 export default function SanPhamsReducer(state = INIT_STATE.SanPhams, action) {
   switch (action.type) {
@@ -18,6 +18,12 @@ export default function SanPhamsReducer(state = INIT_STATE.SanPhams, action) {
       return {
         ...state,
         isLoading: false,
+      };
+
+    case getType(createSanPham.createSanPhamSuccess):
+      return {
+        ...state,
+        data: [...state.data, action.payload],
       };
     default:
       return state;

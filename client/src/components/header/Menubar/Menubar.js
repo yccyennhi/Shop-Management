@@ -24,7 +24,7 @@ function Menubar() {
 
   //Hang hoa
   const handleHangHoa = () => {
-    history.push("/HangHoas");
+    history.push("/SanPhams");
   };
   const handleThietLapGia = () => {
     history.push("/ThietLapGias");

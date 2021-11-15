@@ -4,16 +4,18 @@ import NhanViens from "./NhanViens";
 import SanPhams from "./SanPhams";
 import TaiKhoans from "./TaiKhoans";
 import HoaDons from "./HoaDons";
-//import modal from './modal';
 
 import KhuyenMais from './KhuyenMais'
+import Modal from './Modal';
+import TaoSanPhamModal from "./TaoSanPhamModal";
 
 export default combineReducers({
   KhachHangs,
   NhanViens,
   SanPhams,
   TaiKhoans,
-  //  modal,
   KhuyenMais,
   HoaDons,
+  Modal,
+  TaoSanPhamModal,
 });

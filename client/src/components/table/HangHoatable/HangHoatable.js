@@ -12,77 +12,21 @@ import {
   Form,
   Space,
 } from "antd";
+import { useDispatch, useSelector } from "react-redux";
 import { SearchOutlined, DownOutlined } from "@ant-design/icons";
+import { SanPhamsState$ } from "../../../redux/selectors";
+import * as actions from "../../../redux/actions";
+
 const { Search } = Input;
 
 function HangHoatable() {
-  const [dataSource, setDataSource] = useState([
-    {
-      key: 1,
-      MaSP: "MA001",
-      TenSP: "Giày Sandal quai hậu da",
-      Size: 39,
-      Loaihang: "Giày Sandals",
-      Giaban: 320000,
-      Giavon: 250000,
-      Tonkho: 10,
-      Trangthai: 0,
-      Baohanh: 0,
-      Mota: "Giày Sandal đơn giản thoải mái",
-    },
-    {
-      key: 2,
-      MaSP: "MA002",
-      TenSP: "Giày cao gót quai trong",
-      Size: 38,
-      Loaihang: "Giày cao gót",
-      Giaban: 400000,
-      Giavon: 350000,
-      Tonkho: 10,
-      Trangthai: 1,
-      Baohanh: 1,
-      Mota: "Giày cao gót sang trọng",
-    },
-    {
-      key: 3,
-      MaSP: "MA003",
-      TenSP: "Nike Air Force 1",
-      Size: 42,
-      Loaihang: "Giày Sneaker",
-      Giaban: 3000000,
-      Giavon: 2500000,
-      Tonkho: 3,
-      Trangthai: 2,
-      Baohanh: 1,
-      Mota: "Sneaker năng động trẻ trung",
-    },
-    {
-      key: 4,
-      MaSP: "MA003",
-      TenSP: "Nike Air Force 1",
-      Size: 42,
-      Loaihang: "Giày Sneaker",
-      Giaban: 3000000,
-      Giavon: 2500000,
-      Tonkho: 3,
-      Trangthai: 2,
-      Baohanh: 1,
-      Mota: "Sneaker năng động trẻ trung",
-    },
-    {
-      key: 3,
-      MaSP: "MA003",
-      TenSP: "Nike Air Force 1",
-      Size: 42,
-      Loaihang: "Giày Sneaker",
-      Giaban: 3000000,
-      Giavon: 2500000,
-      Tonkho: 3,
-      Trangthai: 2,
-      Baohanh: 1,
-      Mota: "Sneaker năng động trẻ trung",
-    },
-  ]);
+  const dispatch = useDispatch();
+  const SanPhams = useSelector(SanPhamsState$);
+  React.useEffect(() => {
+    dispatch(actions.getSanPhams.getSanPhamsRequest());
+  }, [dispatch]);
+  const dataSource = SanPhams;
+  
   const columns = [
     {
       title: "Mã hàng",
@@ -197,8 +141,8 @@ function HangHoatable() {
     },
     {
       title: "Loại Hàng",
-      dataIndex: "Loaihang",
-      key: "Loaihang",
+      dataIndex: "LoaiHang",
+      key: "LoaiHang",
       filters: [
         {
           text: "Giày cao gót",
@@ -209,50 +153,50 @@ function HangHoatable() {
           value: "Giày Sandals",
         },
       ],
-      onFilter: (value, record) => record.Loaihang.indexOf(value) === 0,
+      onFilter: (value, record) => record.LoaiHang.indexOf(value) === 0,
     },
     {
       title: "Giá bán",
-      dataIndex: "Giaban",
-      key: "Giaban",
-      sorter: (a, b) => a.Giaban - b.Giaban,
+      dataIndex: "GiaBan",
+      key: "GiaBan",
+      sorter: (a, b) => a.GiaBan - b.GiaBan,
     },
     {
       title: "Giá vốn",
-      dataIndex: "Giavon",
-      key: "Giavon",
-      sorter: (a, b) => a.Giavon - b.Giavon,
+      dataIndex: "GiaVon",
+      key: "GiaVon",
+      sorter: (a, b) => a.GiaVon - b.GiaVon,
     },
     {
       title: "Tồn kho",
-      dataIndex: "Tonkho",
-      key: "Tonkho",
-      sorter: (a, b) => a.Tonkho - b.Tonkho,
+      dataIndex: "TonKho",
+      key: "TonKho",
+      sorter: (a, b) => a.TonKho - b.TonKho,
     },
     {
       title: "Trạng thái",
-      dataIndex: "Trangthai",
-      key: "Trangthai",
-      render: (trangthai) => {
+      dataIndex: "TrangThai",
+      key: "TrangThai",
+      render: (TrangThai) => {
         return (
           <p>
-            {trangthai == 0
+            {TrangThai == 0
               ? "Ngừng kinh doanh"
-              : trangthai == 1
+              : TrangThai == 1
               ? "Hết hàng"
               : "Đang kinh doanh"}
           </p>
         );
       },
-      sorter: (a, b) => a.Trangthai - b.Trangthai,
+      sorter: (a, b) => a.TrangThai - b.TrangThai,
     },
     {
       title: "Bảo hành",
-      dataIndex: "Baohanh",
-      render: (baohanh) => {
-        return <p>{baohanh == 0 ? "Không bảo hành" : "Có bảo hành"}</p>;
+      dataIndex: "BaoHanh",
+      render: (BaoHanh) => {
+        return <p>{BaoHanh == 0 ? "Không bảo hành" : "Có bảo hành"}</p>;
       },
-      sorter: (a, b) => a.Baohanh - b.Baohanh,
+      sorter: (a, b) => a.BaoHanh - b.BaoHanh,
     },
   ];
   const [select, setSelect] = useState({
@@ -318,6 +262,7 @@ function HangHoatable() {
           ),
           rowExpandable: (record) => record.TenSP !== "Not Expandable",
         }}
+        rowKey="_id"
         dataSource={dataSource}
       ></Table>
     </div>

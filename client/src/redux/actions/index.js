@@ -1,4 +1,4 @@
-import {createActions} from 'redux-actions';
+import {createActions, createAction} from 'redux-actions';
 
 export const getType = (reduxAction) => {
     return reduxAction().type;
@@ -39,3 +39,22 @@ export const getKhuyenMais = createActions({
     getKhuyenMaisSuccess: (payload) => payload,
     getKhuyenMaisFailure: (err) => err,
 });
+
+export const createKhuyenMai = createActions({
+    createKhuyenMaiRequest: (payload) => payload,
+    createKhuyenMaiSuccess: (payload) => payload,
+    createKhuyenMaiFailure: (err) => err,
+});
+
+
+export const createSanPham = createActions({
+    createSanPhamRequest: (payload) => payload,
+    createSanPhamSuccess: (payload) => payload,
+    createSanPhamFailure: (err) => err,
+});
+
+export const showTaoSanPhamModal = createAction('SHOW_TAOSANPHAM_MODAL');
+export const hideTaoSanPhamModal = createAction('HIDE_TAOSANPHAM_MODAL');
+
+export const showModal = createAction('SHOW_CREATE_MODAL');
+export const hideModal = createAction('HIDE_CREATE_MODAL');

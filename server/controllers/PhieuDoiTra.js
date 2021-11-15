@@ -1,6 +1,6 @@
 import { PhieuDoiTraModel } from "../models/PhieuDoiTraModel.js";
 
-export const getPhieuDoiTra = async (req, res) => {
+export const getPhieuDoiTras = async (req, res) => {
   // const phieudoitra = new PhieuDoiTraModel({
   //   MaPDT: "PDT001",
   //   MaHD: "HD0001",

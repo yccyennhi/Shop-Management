@@ -6,18 +6,18 @@ import {
   ImportOutlined,
   DownloadOutlined,
 } from "@ant-design/icons";
-import HoaDonsTable from "../../components/table/HoaDonsTable/HoaDonTable";
+import DoiTraTable from "../../components/table/HoaDonsTable/DoiTraTable";
 
-export default function HoaDonPage() {
+export default function DoiTraPage() {
   return (
     <>
     <div>
-    <PageHeader className="site-page-header" title="Danh mục hóa đơn" />
+    <PageHeader className="site-page-header" title="Danh mục phiếu đổi trả" />
       <div>
         <Row justify="end">
           <Space>
             <Button type="primary" icon={<PlusOutlined />}>
-              Thêm hóa đơn
+              Thêm phiếu đổi trả
             </Button>
             <Button type="primary" icon={<ImportOutlined />}>
               Import
@@ -27,7 +27,7 @@ export default function HoaDonPage() {
             </Button>
           </Space>
         </Row>
-        <HoaDonsTable />
+        <DoiTraTable/>
       </div>
     </div>      ,
     </>

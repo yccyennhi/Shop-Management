@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 
 const schema = new mongoose.Schema(
   {
+    MaHD: {
+      type: String,
+      required: true,
+    },
     MaSP: {
       type: String,
       required: true,
@@ -15,10 +19,10 @@ const schema = new mongoose.Schema(
       required: true,
     },
     Size: {
-      type: String,
-      required: false,
+      type: Number,
+      required: true,
     },
-    DonGia: {
+    GiaBan: {
       type: Number,
       required: true,
     },

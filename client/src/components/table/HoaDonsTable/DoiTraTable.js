@@ -4,23 +4,60 @@ import { SearchOutlined } from "@ant-design/icons";
 import FormHoaDon from "../../../pages/GiaoDichPage/FormHoaDon";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../../redux/actions";
-import { HoaDonsState$ } from "../../../redux/selectors";
+import { PhieuDoiTrasState$ } from "../../../redux/selectors";
 
 const { Search } = Input;
 
-function HangHoatable() {
+function DoiTraTable() {
   const dispatch = useDispatch();
-  const HoaDons = useSelector(HoaDonsState$);
+  const DoiTras = useSelector(PhieuDoiTrasState$);
 
-  console.log("[HoaDonList - HoaDons]", HoaDons);
   React.useEffect(() => {
-    dispatch(actions.getHoaDons.getHoaDonsRequest());
+    dispatch(actions.getPhieuDoiTras.getPhieuDoiTrasRequest());
   }, [dispatch]);
 
-  const dataSource = HoaDons;
+  const dataSource = DoiTras;
 
   const columns = [
     {
+      title: "Mã phiếu đổi trả",
+      dataIndex: "MaPDT",
+      key: "MaPDT",
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => {
+        return (
+          <Search
+            allowClear
+            autoFocus
+            style={{ width: 200 }}
+            placeholder="Nhập mã phiếu đổi trả cần tìm"
+            value={selectedKeys[0]}
+            onChange={(e) => {
+              setSelectedKeys(e.target.value ? [e.target.value] : []);
+              confirm({ closeDropdown: false });
+            }}
+            onPressEnter={() => {
+              confirm();
+            }}
+            onBlur={() => {
+              confirm();
+            }}
+            onSearch={() => {
+              confirm();
+            }}
+          ></Search>
+        );
+      },
+      filterIcon: () => {
+        return <SearchOutlined />;
+      },
+      onFilter: (value, record) => {
+        return record.MaPDT.toLowerCase().includes(value.toLowerCase());
+      },
       title: "Mã hóa đơn",
       dataIndex: "MaHD",
       key: "MaHD",
@@ -61,12 +98,6 @@ function HangHoatable() {
       },
     },
     {
-      title: "Thời gian",
-      dataIndex: "ThoiGian",
-      key: "ThoiGian",
-      sorter: (a, b) => a.ThoiGian - b.ThoiGian,
-    },
-    {
       title: "Mã nhân viên",
       dataIndex: "MaNV",
       key: "MaNV",
@@ -102,93 +133,11 @@ function HangHoatable() {
       },
     },
     {
-      title: "Khách hàng",
-      dataIndex: "MaKH",
-      key: "MaKH",
-      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
-        return (
-          <Search
-            allowClear
-            autoFocus
-            style={{ width: 200 }}
-            placeholder="Nhập tên khách hàng cần tìm"
-            value={selectedKeys[0]}
-            onChange={(e) => {
-              setSelectedKeys(e.target.value ? [e.target.value] : []);
-              confirm({ closeDropdown: false });
-            }}
-            onPressEnter={() => {
-              confirm();
-            }}
-            onBlur={() => {
-              confirm();
-            }}
-            onSearch={() => {
-              confirm();
-            }}
-          ></Search>
-        );
+        title: "Thời gian",
+        dataIndex: "ThoiGian",
+        key: "ThoiGian",
+        sorter: (a, b) => Date.compare (a.Date, b.Date),
       },
-      filterIcon: () => {
-        return <SearchOutlined />;
-      },
-      onFilter: (value, record) => {
-        return record.MaKH.toLowerCase().includes(value.toLowerCase());
-      },
-    },
-    {
-      title: "Mã khuyến mãi",
-      dataIndex: "MaKM",
-      key: "MaKM",
-      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
-        return (
-          <Search
-            allowClear
-            autoFocus
-            style={{ width: 200 }}
-            placeholder="Nhập mã khuyến mãi cần tìm"
-            value={selectedKeys[0]}
-            onChange={(e) => {
-              setSelectedKeys(e.target.value ? [e.target.value] : []);
-              confirm({ closeDropdown: false });
-            }}
-            onPressEnter={() => {
-              confirm();
-            }}
-            onBlur={() => {
-              confirm();
-            }}
-            onSearch={() => {
-              confirm();
-            }}
-          ></Search>
-        );
-      },
-      filterIcon: () => {
-        return <SearchOutlined />;
-      },
-      onFilter: (value, record) => {
-        return record.MaKM.toLowerCase().includes(value.toLowerCase());
-      },
-    },
-    {
-      title: "Tổng tiền hàng",
-      dataIndex: "TongTienHang",
-      key: "TongTienHang",
-      sorter: (a, b) => a.TongTienHang - b.TongTienHang,
-    },
-    {
-      title: "Giảm giá",
-      dataIndex: "GiamGia",
-      key: "GiamGia",
-      sorter: (a, b) => a.GiamGia - b.GiamGia,
-    },
-    {
-      title: "ThanhTien ",
-      dataIndex: "ThanhTien",
-      key: "ThanhTien",
-      sorter: (a, b) => a.ThanhTien - b.ThanhTien,
-    },
   ];
   const [select, setSelect] = useState({
     selectedRowKeys: [],
@@ -229,7 +178,7 @@ function HangHoatable() {
         rowSelection={rowSelection}
         expandable={{
           expandedRowRender: (record) => <FormHoaDon />,
-          rowExpandable: (record) => record.MaHD !== "Not Expandable",
+          rowExpandable: (record) => record.MaPDT !== "Not Expandable",
         }}
         rowKey="_id"
         dataSource={dataSource}
@@ -238,4 +187,4 @@ function HangHoatable() {
   );
 }
 
-export default HangHoatable;
+export default DoiTraTable;

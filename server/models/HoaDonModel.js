@@ -38,7 +38,8 @@ const schema = new mongoose.Schema(
         ThoiGian: {
             type: Date,
             required: true,
-        }
+        },
+        attachment: String,
     },
     { timestamps: true }
 );

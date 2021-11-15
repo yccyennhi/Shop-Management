@@ -39,3 +39,15 @@ export const getKhuyenMais = createActions({
     getKhuyenMaisSuccess: (payload) => payload,
     getKhuyenMaisFailure: (err) => err,
 });
+
+export const getCTHDs = createActions({
+    getCTHDsRequest: undefined,
+    getCTHDsSuccess: (payload) => payload,
+    getCTHDsFailure: (err) => err,
+});
+
+export const getPhieuDoiTras = createActions({
+    getPhieuDoiTrasRequest: undefined,
+    getPhieuDoiTrasSuccess: (payload) => payload,
+    getPhieuDoiTrasFailure: (err) => err,
+});

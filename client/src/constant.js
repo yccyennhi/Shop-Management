@@ -26,4 +26,12 @@ export const INIT_STATE = {
         isLoading: false,
         data:[],
     },
+    CTHDs:{
+        isLoading: false,
+        data:[],
+    },
+    PhieuDoiTras:{
+        isLoading:false,
+        data: [],
+    }
 };

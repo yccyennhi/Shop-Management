@@ -103,7 +103,6 @@ function* mySaga() {
   yield takeLatest(actions.getNhanViens.getNhanViensRequest, fetchNhanViensSaga);
   yield takeLatest(actions.getSanPhams.getSanPhamsRequest, fetchSanPhamsSaga);
   yield takeLatest(actions.getTaiKhoans.getTaiKhoansRequest, fetchTaiKhoansSaga);
-  //KhuyenMai
   yield takeLatest(actions.getKhuyenMais.getKhuyenMaisRequest, fetchKhuyenMaisSaga);
   yield takeLatest(actions.getHoaDons.getHoaDonsRequest, fetchHoaDonsSaga);
   yield takeLatest(actions.getCTHDs.getCTHDsRequest, fetchCTHDsSaga);

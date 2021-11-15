@@ -2,15 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\client",
-    "\\client\\public",
     "\\client\\src",
-    "\\client\\src\\pages",
-    "\\client\\src\\pages\\GiaoDichPage",
-    "\\client\\src\\pages\\HangHoaPage",
     "\\server",
-    "\\server\\models",
+    "\\server\\controllers",
     "\\server\\routers"
   ],
-  "SelectedNode": "\\server\\models\\CTHDModel.js",
+  "SelectedNode": "\\server\\index.js",
   "PreviewInSolutionExplorer": false
 }

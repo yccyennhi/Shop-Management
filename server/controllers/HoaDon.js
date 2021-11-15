@@ -1,6 +1,6 @@
 import { HoaDonModel } from "../models/HoaDonModel.js";
 
-export const getHoaDon = async (req, res) => {
+export const getHoaDons = async (req, res) => {
   try {
     // const hoadon = new HoaDonModel({
     //   MaHD: "HD0001",

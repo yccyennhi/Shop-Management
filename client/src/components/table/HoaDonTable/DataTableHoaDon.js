@@ -14,23 +14,35 @@ import {
 } from "antd";
 import { SearchOutlined, DownOutlined } from "@ant-design/icons";
 import FormHoaDon from "../../../pages/GiaoDichPage/FormHoaDon";
-import HangHoaBanTable from "./HangHoaBanTable";
+
+import { useDispatch, useSelector } from "react-redux";
+import * as actions from "../../../redux/actions";
+import { HoaDonsState$ } from "../../../redux/selectors";
 const { Search } = Input;
 
-function HangHoatable() {
-  const [dataSource, setDataSource] = useState([
-    {
-      key: 1,
-      MaHD: "HD0001",
-      ThoiGian: "10/11/2021 11:00",
-      MaNV: "NV001",
-      MaKM: "KM001",
-      MaKH: "YN",
-      TongTienHang: 0,
-      GiamGia: 0,
-      ThanhTien: 0,
-    },
-  ]);
+export default function HangHoatable() {
+  const dispatch = useDispatch();
+  const HoaDons = useSelector(HoaDonsState$);
+
+  React.useEffect(() => {
+    dispatch(actions.getHoaDons.getHoaDonsRequest());
+  }, [dispatch]);
+
+  const dataSource = HoaDons;
+
+  // const [dataSource, setDataSource] = useState([
+  //   {
+  //     key: 1,
+  //     MaHD: "HD0001",
+  //     ThoiGian: "10/11/2021 11:00",
+  //     MaNV: "NV001",
+  //     MaKM: "KM001",
+  //     MaKH: "YN",
+  //     TongTienHang: 0,
+  //     GiamGia: 0,
+  //     ThanhTien: 0,
+  //   },
+  // ]);
   const columns = [
     {
       title: "Mã hóa đơn",
@@ -240,15 +252,12 @@ function HangHoatable() {
         columns={columns}
         rowSelection={rowSelection}
         expandable={{
-          expandedRowRender: (record) => (
-            <FormHoaDon />
-          ),
+          expandedRowRender: (record) => <FormHoaDon />,
           rowExpandable: (record) => record.MaHD !== "Not Expandable",
         }}
         dataSource={dataSource}
+        rowKey="_id"
       ></Table>
     </div>
   );
 }
-
-export default HangHoatable;

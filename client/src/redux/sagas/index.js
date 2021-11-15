@@ -65,12 +65,48 @@ function* createKhuyenMaiSaga(action) {
   }
 }
 
+function* fetchHoaDonsSaga(action) {
+  try {
+    const HoaDons = yield call(api.fetchHoaDons);
+    console.log('[HoaDons]', HoaDons);
+    yield put(actions.getHoaDons.getHoaDonsSuccess(HoaDons.data));
+  } catch (err) {
+    console.error(err);
+    yield put(actions.getHoaDons.getHoaDonsFailure(err));
+  }
+}
+
+function* fetchCTHDsSaga(action) {
+  try {
+    const CTHDs = yield call(api.fetchCTHDs);
+    yield put(actions.getCTHDs.getCTHDsSuccess(CTHDs.data));
+  } catch (err) {
+    console.error(err);
+    yield put(actions.getCTHDs.getCTHDsFailure(err));
+  }
+}
+
+function* fetchPhieuDoiTrasSaga(action) {
+  try {
+    const PhieuDoiTras = yield call(api.fetchPhieuDoiTras);
+    yield put(actions.getPhieuDoiTras.getPhieuDoiTrasSuccess(PhieuDoiTras.data));
+  } catch (err) {
+    console.error(err);
+    yield put(actions.getPhieuDoiTras.getPhieuDoiTrasFailure(err));
+  }
+}
+
 
 function* mySaga() {
   yield takeLatest(actions.getKhachHangs.getKhachHangsRequest, fetchKhachHangsSaga);
   yield takeLatest(actions.getNhanViens.getNhanViensRequest, fetchNhanViensSaga);
   yield takeLatest(actions.getSanPhams.getSanPhamsRequest, fetchSanPhamsSaga);
   yield takeLatest(actions.getTaiKhoans.getTaiKhoansRequest, fetchTaiKhoansSaga);
+
+  
+  yield takeLatest(actions.getHoaDons.getHoaDonsRequest, fetchHoaDonsSaga);
+  yield takeLatest(actions.getCTHDs.getCTHDsRequest, fetchCTHDsSaga);
+  yield takeLatest(actions.getPhieuDoiTras.getPhieuDoiTrasDsRequest, fetchPhieuDoiTrasSaga);
   //KhuyenMai
   yield takeLatest(actions.getKhuyenMais.getKhuyenMaisRequest, fetchKhuyenMaisSaga);
   yield takeLatest(actions.createKhuyenMai.createKhuyenMaiRequest, createKhuyenMaiSaga);

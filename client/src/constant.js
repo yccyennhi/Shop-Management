@@ -24,5 +24,17 @@ export const INIT_STATE = {
     },
     Modal:{
         isShow: false,
+    },
+    HoaDons:{
+        isLoading: false,
+        data: [],
+    },
+    CTHDs:{
+        isLoading: false,
+        data: [],
+    },
+    PhieuDoiTras:{
+        isLoading: false,
+        data: [],
     }
 };

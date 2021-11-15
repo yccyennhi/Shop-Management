@@ -1,4 +1,4 @@
-import { CTPDTModel } from "../models/CTPDTModel";
+import { CTPDTModel } from "../models/CTPDTModel.js";
 
 export const getCTPDT = async (req, res) => {
   try {

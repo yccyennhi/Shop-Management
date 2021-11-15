@@ -1,5 +1,5 @@
 import express from "express";
-import { getCTHD, createCTHD, updateCTHD } from "../controllers/CTHD";
+import { getCTHD, createCTHD, updateCTHD } from "../controllers/CTHD.js";
 
 const router = express.Router();
 //http://localhost:5000/CTHDs

@@ -46,5 +46,17 @@ export const createKhuyenMai = createActions({
     createKhuyenMaiFailure: (err) => err,
 });
 
+export const getCTHDs = createActions({
+    getCTHDsRequest: undefined,
+    getCTHDsSuccess: (payload) => payload,
+    getCTHDsFailure: (err) => err,
+});
+
+export const getPhieuDoiTras = createActions({
+    getPhieuDoiTrasRequest: undefined,
+    getPhieuDoiTrasSuccess: (payload) => payload,
+    getPhieuDoiTrasFailure: (err) => err,
+});
+
 export const showModal = createAction('SHOW_CREATE_MODAL');
 export const hideModal = createAction('HIDE_CREATE_MODAL');

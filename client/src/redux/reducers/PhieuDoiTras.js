@@ -1,14 +1,14 @@
 import { INIT_STATE } from "../../constant";
 import { getPhieuDoiTras, getType } from "../actions";
 
-export default function CTHDsReducer(state = INIT_STATE.PhieuDoiTras, action) {
+export default function PhieuDoiTrasReducer(state = INIT_STATE.PhieuDoiTras, action) {
     switch (action.type) {
         case getType(getPhieuDoiTras.getPhieuDoiTrasRequest):
             return {
                 ...state,
                 isLoading: true,
             };
-        case getType(getPhieuDoiTras.getPhieuDoiTraSuccess):
+        case getType(getPhieuDoiTras.getPhieuDoiTrasSuccess):
             return {
                 ...state,
                 isLoading: false,

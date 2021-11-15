@@ -1,8 +1,8 @@
-import React from 'react';
-import { Column } from '@ant-design/charts';
+import React, { useState, useEffect } from 'react';
+import { Bar } from '@ant-design/charts';
 import { Card} from "antd";
 
-const DemoColumn = () => {
+const DemoBar = () => {
   var data = [
     {
       type: '家具家电',
@@ -39,31 +39,20 @@ const DemoColumn = () => {
   ];
   var config = {
     data: data,
-    xField: 'type',
-    yField: 'sales',
-    label: {
-      position: 'middle',
-      style: {
-        fill: '#FFFFFF',
-        opacity: 0.6,
-      },
-    },
-    xAxis: {
-      label: {
-        autoHide: true,
-        autoRotate: false,
-      },
-    },
+    xField: 'sales',
+    yField: 'type',
     meta: {
       type: { alias: '类别' },
       sales: { alias: '销售额' },
     },
+    minBarWidth: 20,
+    maxBarWidth: 20,
   };
   return (
-    <Card title="Doanh thu thuần tháng này">
-      <Column {...config} />
+    <Card title="Top hàng hóa bán chạy">
+      <Bar {...config} />
       </Card>
-  )
+  ) ;
 };
 
-export default DemoColumn;
+export default DemoBar;

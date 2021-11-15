@@ -1,14 +1,14 @@
-import { Card, Divider, Space, Typography } from "antd";
+import {Space } from "antd";
 import TodayReportOverall from "../../components/Dashboard/TodayReportOverall"
 import DemoColumn from "../../components/Dashboard/ColumnReport";
-
-const { Title, Text } = Typography;
+import DemoBar from "../../components/Dashboard/BarReport";
 
 export default function KhuyenMaiPage() {
   return (
-    <div>
+    <Space direction='vertical' size='large'  style={{width: '100%'}}>
      <TodayReportOverall/>
-      {DemoColumn}
-    </div>
+    < DemoColumn/>
+    <DemoBar/>
+    </Space>
   );
 }

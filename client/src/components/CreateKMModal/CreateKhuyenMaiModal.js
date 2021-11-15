@@ -23,11 +23,14 @@ import { createKhuyenMai, hideModal } from "../../redux/actions";
 import moment from "moment";
 
 export default function CreateKhuyenMaiModal() {
+
+  const dateNow = moment().toDate();
+
   const [data, setData] = React.useState({
     MaKM: "",
     TenKM: "",
-    NgayBD: new Date(2021, 11, 14),
-    NgayKT: new Date(2021, 11, 14),
+    NgayBD: dateNow,
+    NgayKT: dateNow,
     GiaTri: 0,
     PhanTram: 0,
     SoLuong: 0,
@@ -40,16 +43,22 @@ export default function CreateKhuyenMaiModal() {
 
   const onClose = React.useCallback(() => {
     dispatch(hideModal());
+    setData ({
+      MaKM: "",
+      TenKM: "",
+      NgayBD: dateNow,
+      NgayKT: dateNow,
+      GiaTri: 0,
+      PhanTram: 0,
+      SoLuong: 0,
+      TrangThai: false,
+    });
   }, [dispatch]);
 
   const onSubmit = React.useCallback(() => {
     dispatch(createKhuyenMai.createKhuyenMaiRequest(data));
     onClose();
   }, [data, dispatch, onClose]);
-
-  //   const onSubmit = React.useCallback(() => {
-  //  console.log('data',data)
-  //   }, [data]);
 
   const body = (
     <>
@@ -64,13 +73,13 @@ export default function CreateKhuyenMaiModal() {
       >
         <Form.Item label="Mã khuyến mãi">
           <Input
-            data={data.MaKM}
+            value={data.MaKM}
             onChange={(e) => setData({ ...data, MaKM: e.target.value })}
           />
         </Form.Item>
         <Form.Item label="Tên chương trình">
           <Input
-            data={data.TenKM}
+            value={data.TenKM}
             onChange={(e) => setData({ ...data, TenKM: e.target.value })}
           />
         </Form.Item>
@@ -79,7 +88,7 @@ export default function CreateKhuyenMaiModal() {
             style={{ display: "inline-block", width: "calc(30% - 12px)" }}
           >
             <DatePicker
-              data={data.NgayBD}
+              defaultValue={moment(data.NgayBD)}
               onChange={(e) => {
                 if (!e) setData({ ...data, NgayBD: e.toDate() });
               }}
@@ -99,7 +108,7 @@ export default function CreateKhuyenMaiModal() {
             style={{ display: "inline-block", width: "calc(30% - 12px)" }}
           >
             <DatePicker
-              data={data.NgayKT}
+              defaultValue={moment(data.NgayKT)}
               onChange={(e) => {
                 if (!e) setData({ ...data, NgayKT: e.toDate() });
               }}
@@ -108,7 +117,8 @@ export default function CreateKhuyenMaiModal() {
         </Form.Item>
         <Form.Item label="Trị giá hóa đơn">
           <InputNumber
-            data={data.GiaTri}
+            min={0}
+            value={data.GiaTri}
             onChange={(e) => setData({ ...data, GiaTri: e })}
           />
           <span className="ant-form-text"> VNĐ </span>
@@ -118,7 +128,7 @@ export default function CreateKhuyenMaiModal() {
             <InputNumber
               min={1}
               max={100}
-              data={data.PhanTram}
+              value={data.PhanTram}
               onChange={(e) => setData({ ...data, PhanTram: e })}
             />
           </Form.Item>
@@ -127,7 +137,7 @@ export default function CreateKhuyenMaiModal() {
 
         <Form.Item label="Số lượng">
           <InputNumber
-            data={data.SoLuong}
+            value={data.SoLuong}
             onChange={(e) => setData({ ...data, SoLuong: e })}
           />
         </Form.Item>

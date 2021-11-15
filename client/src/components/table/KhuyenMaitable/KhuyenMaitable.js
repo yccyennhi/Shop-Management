@@ -21,13 +21,15 @@ function KhuyenMaitable() {
 
   const dataSource = KhuyenMais;
 
-  //Format date
+  //Format Date to Moment(dd/mm/yy)
   dataSource.map((el) => {
+    
     //Ngày bắt đầu
-    let sDate = moment(new Date(el.NgayBD));
+    let sDate = moment(el.NgayBD);
     el.NgayBD = sDate.format("DD/MM/YYYY");
+
     //Ngày kết thúc
-    let eDate = moment(new Date(el.NgayKT));
+    let eDate = moment(el.NgayKT);
     el.NgayKT = eDate.format("DD/MM/YYYY");
   });
 

@@ -29,7 +29,7 @@ export const createKhuyenMai = async (req, res) => {
 export const updateKhuyenMai = async (req, res) => {
   try {
     const updateKhuyenMai = req.body;
-
+    console.log('updateKM in server', updateKhuyenMai);
     const KhuyenMai = await KhuyenMaiModel.findOneAndUpdate(
       { _id: updateKhuyenMai._id },
       updateKhuyenMai,

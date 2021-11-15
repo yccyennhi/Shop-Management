@@ -24,5 +24,6 @@ export const INIT_STATE = {
     },
     Modal:{
         isShow: false,
+        data: null,
     }
 };

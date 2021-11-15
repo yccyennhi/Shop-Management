@@ -108,7 +108,7 @@ export default function CreateKhuyenMaiModal({currentId, setCurrentId}) {
             <DatePicker
               defaultValue={moment(data.NgayBD)}
               onChange={(e) => {
-                if (!e) setData({ ...data, NgayBD: e.toDate() });
+                if (e) setData({ ...data, NgayBD: e.toDate() });
               }}
             />
           </Form.Item>
@@ -128,7 +128,7 @@ export default function CreateKhuyenMaiModal({currentId, setCurrentId}) {
             <DatePicker
               defaultValue={moment(data.NgayKT)}
               onChange={(e) => {
-                if (!e) setData({ ...data, NgayKT: e.toDate() });
+                if (e) setData({ ...data, NgayKT: e.toDate() });
               }}
             />
           </Form.Item>
@@ -142,15 +142,15 @@ export default function CreateKhuyenMaiModal({currentId, setCurrentId}) {
           <span className="ant-form-text"> VNĐ </span>
         </Form.Item>
         <Form.Item label="Phần trăm giảm">
-          <Form.Item name="input-number" noStyle>
-            <InputNumber
+          <Form.Item noStyle>
+            <InputNumber 
               min={1}
               max={100}
               value={data.PhanTram}
               onChange={(e) => setData({ ...data, PhanTram: e })}
             />
           </Form.Item>
-          <span className="ant-form-text"> %</span>
+          <span className="ant-form-text"> % </span>
         </Form.Item>
 
         <Form.Item label="Số lượng">

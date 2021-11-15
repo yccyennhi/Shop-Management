@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import {
   Menu,
   Layout,
@@ -19,22 +19,23 @@ import {
   DownloadOutlined,
   RestOutlined,
 } from "@ant-design/icons";
-import Menubar from "../../components/header/Menubar/Menubar";
-import Headerbar from "../../components/header/Headerbar/Headerbar";
-import Bodybar from "../../pages/GiaoDichPage/styles";
 import DataTableHoaDon from "../../components/table/HoaDonTable/HoaDonTable.js";
-import FormHoaDon from "./FormHoaDon";
-const { Header, Content, Footer } = Layout;
-const { SubMenu } = Menu;
+import { useDispatch } from "react-redux";
+import TaoHoaDonModal from "../../components/modal/TaoGiaoDichModal/TaoHoaDonModal";
+import { showModal } from "../../redux/actions";
 
 export default function HoaDonPage() {
+  const dispatch = useDispatch();
+  const openTaoSanPhamModal = React.useCallback(()=>{
+    dispatch(showModal());
+  }, [dispatch]);
   return (
     <>
       <PageHeader className="site-page-header" title="Hóa Đơn" />
       <div>
         <Row justify="end">
           <Space>
-            <Button type="primary" icon={<PlusOutlined />}>
+            <Button type="primary" icon={<PlusOutlined />} onClick={openTaoSanPhamModal}>
               Thêm hóa đơn
             </Button>
             <Button type="primary" icon={<ImportOutlined />}>
@@ -45,6 +46,7 @@ export default function HoaDonPage() {
             </Button>
           </Space>
         </Row>
+        <TaoHoaDonModal/>
         <DataTableHoaDon />
       </div>
       ,

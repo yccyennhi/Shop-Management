@@ -9,6 +9,7 @@ import KhuyenMais from './KhuyenMais'
 import Modal from './Modal';
 import TaoSanPhamModal from "./TaoSanPhamModal";
 import PhieuDoiTras  from "./PhieuDoiTras";
+import TaoHoaDonModal from "./TaoHoaDonModal";
 
 export default combineReducers({
   KhachHangs,
@@ -20,4 +21,5 @@ export default combineReducers({
   Modal,
   TaoSanPhamModal,
   PhieuDoiTras,
+  TaoHoaDonModal,
 });

@@ -7,6 +7,8 @@ import HoaDons from "./HoaDons";
 import KhuyenMais from "./KhuyenMais";
 import CTHDs from "./CTHDs";
 import PhieuDoiTras from "./PhieuDoiTras";
+import Modal from './Modal';
+
 
 export default combineReducers({
   KhachHangs,
@@ -14,7 +16,8 @@ export default combineReducers({
   SanPhams,
   TaiKhoans,
   HoaDons,
-  KhuyenMais,
   CTHDs,
   PhieuDoiTras,
+  Modal,
+  KhuyenMais
 });

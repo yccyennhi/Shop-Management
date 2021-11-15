@@ -33,5 +33,8 @@ export const INIT_STATE = {
     PhieuDoiTras:{
         isLoading:false,
         data: [],
+    },
+    Modal:{
+        isShow: false,
     }
 };

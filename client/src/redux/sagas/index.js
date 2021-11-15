@@ -55,6 +55,17 @@ function* fetchKhuyenMaisSaga(action) {
     yield put(actions.getKhuyenMais.getKhuyenMaisFailure(err));
   }
 }
+function* createKhuyenMaiSaga(action) {
+  try {
+    const KhuyenMai = yield call(api.createKhuyenMai, action.payload);
+    console.log('createKhuyenMaiSaga', KhuyenMai)
+    yield put(actions.createKhuyenMai.createKhuyenMaiSuccess(KhuyenMai.data));
+  } catch (err) {
+    console.error(err);
+    yield put(actions.createKhuyenMai.createKhuyenMaiFailure(err));
+  }
+}
+
 
 function* fetchHoaDonsSaga(action) {
   try {
@@ -92,11 +103,13 @@ function* mySaga() {
   yield takeLatest(actions.getNhanViens.getNhanViensRequest, fetchNhanViensSaga);
   yield takeLatest(actions.getSanPhams.getSanPhamsRequest, fetchSanPhamsSaga);
   yield takeLatest(actions.getTaiKhoans.getTaiKhoansRequest, fetchTaiKhoansSaga);
+  //KhuyenMai
   yield takeLatest(actions.getKhuyenMais.getKhuyenMaisRequest, fetchKhuyenMaisSaga);
   yield takeLatest(actions.getHoaDons.getHoaDonsRequest, fetchHoaDonsSaga);
   yield takeLatest(actions.getCTHDs.getCTHDsRequest, fetchCTHDsSaga);
   yield takeLatest(actions.getPhieuDoiTras.getPhieuDoiTrasDsRequest, fetchPhieuDoiTrasSaga);
 
+  yield takeLatest(actions.createKhuyenMai.createKhuyenMaiRequest, createKhuyenMaiSaga);
 }
 
 export default mySaga;

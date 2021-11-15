@@ -5,6 +5,7 @@ import Menubar from "./components/header/Menubar/Menubar";
 import Headerbar from "./components/header/Headerbar/Headerbar";
 import HangHoaPage from "./pages/HangHoaPage/HangHoaPage";
 import KhuyenMaiPage from "./pages/KhuyenMaiPage/KhuyenMaiPage";
+import DashboardPage from "./pages/DashboardPage/DashboardPage";
 
 function App() {
 const { Header, Content, Footer } = Layout;
@@ -27,6 +28,7 @@ const { SubMenu } = Menu;
               <Switch>
                 <Route path ='/HangHoas' exact component={HangHoaPage}/>
                 <Route path='/KhuyenMais' exact component={KhuyenMaiPage}/>
+                <Route path='/TongQuans' exact component={DashboardPage}/>
               </Switch>
             </div>
           </Content>

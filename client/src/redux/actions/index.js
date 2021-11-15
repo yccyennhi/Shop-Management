@@ -52,8 +52,8 @@ export const updateKhuyenMai = createActions({
   updateKhuyenMaiSuccess: (payload) => payload,
   updateKhuyenMaiFailure: (err) => err,
 });
+
 /* #endregion */
 
 export const showModal = createAction("SHOW_CREATE_MODAL");
 export const hideModal = createAction("HIDE_CREATE_MODAL");
-export const showUpdateModal = createAction("SHOW_UPDATE_MODAL")

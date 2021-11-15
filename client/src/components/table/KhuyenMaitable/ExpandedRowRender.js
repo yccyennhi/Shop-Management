@@ -3,27 +3,15 @@ import { Table, Input, Row, PageHeader, Descriptions, Tag, Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { updateKhuyenMai, showModal } from "../../../redux/actions";
 
-function converDate({moment}){
-  moment = moment && moment.toDate();
-}
+export default function ExpandedRowRender({ record, setCurrentId }) {
 
-
-export default function ExpandedRowRender({ record }) {
   const dispatch = useDispatch();
-  console.log("record in client", record);
 
   const openCreateKMModal = React.useCallback(() => {
-    // dispatch(showModal());
-    dispatch(
-      updateKhuyenMai.updateKhuyenMaiRequest({
-        ...record,
-        GiaTri: record.GiaTri + 10000,
-        NgayBD: record.NgayBD.toDate(),
-        NgayKT: converDate(record.NgayKT),
-      })
-    );
-  console.log("record after", record);
-  }, [dispatch, record]);
+    setCurrentId(record._id);
+    dispatch(showModal());
+  }, [dispatch]);
+
 
   return (
     <>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
 import { modalState$ } from "../../redux/selectors";
@@ -19,30 +19,37 @@ import {
   Row,
 } from "antd";
 
-import { createKhuyenMai, hideModal } from "../../redux/actions";
+import { createKhuyenMai, updateKhuyenMai, hideModal } from "../../redux/actions";
 import moment from "moment";
 
-export default function CreateKhuyenMaiModal() {
-
+export default function CreateKhuyenMaiModal({currentId, setCurrentId}) {
   const dateNow = moment().toDate();
 
-  const [data, setData] = React.useState({
+  const [data, setData] = useState({
     MaKM: "",
     TenKM: "",
-    NgayBD: dateNow,
-    NgayKT: dateNow,
+    NgayBD: new Date(Date.now()),
+    NgayKT: new Date(Date.now()),
     GiaTri: 0,
     PhanTram: 0,
     SoLuong: 0,
     TrangThai: false,
   });
-
+   const KhuyenMaiValue = useSelector((state) => state.KhuyenMais.data.find((KhuyenMai) =>
+   KhuyenMai._id === currentId? KhuyenMai : null
+   ));
+  
   const dispatch = useDispatch();
 
   const { isShow } = useSelector(modalState$);
 
+  useEffect(() => {
+    if (KhuyenMaiValue) setData(KhuyenMaiValue);
+  }, [KhuyenMaiValue]);
+
   const onClose = React.useCallback(() => {
     dispatch(hideModal());
+    setCurrentId(null);
     setData ({
       MaKM: "",
       TenKM: "",
@@ -55,9 +62,20 @@ export default function CreateKhuyenMaiModal() {
     });
   }, [dispatch]);
 
+  console.log('data before update', data);
   const onSubmit = React.useCallback(() => {
-    dispatch(createKhuyenMai.createKhuyenMaiRequest(data));
+    if(currentId)
+    {
+      dispatch(updateKhuyenMai.updateKhuyenMaiRequest(data));
+      console.log('data update', data);
+    }
+    else{
+      dispatch(createKhuyenMai.createKhuyenMaiRequest(data));
+    }
+
     onClose();
+
+
   }, [data, dispatch, onClose]);
 
   const body = (

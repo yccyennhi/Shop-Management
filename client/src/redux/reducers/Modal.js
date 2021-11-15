@@ -11,10 +11,6 @@ export default function modalReducers(state = INIT_STATE.Modal, action) {
       return {
         isShow: false,
       };
-    case getType(showUpdateModal):
-        return {
-          isShow: false,
-        };
     default:
       return state;
   }

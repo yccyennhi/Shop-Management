@@ -11,6 +11,6 @@ const router = express.Router();
 
 router.get("/", getKhuyenMais);
 router.post("/", createKhuyenMai);
-router.post("/update", updateKhuyenMai);
+router.patch("/:id", updateKhuyenMai);
 
 export default router;

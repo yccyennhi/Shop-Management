@@ -10,7 +10,7 @@ import ExpandedRowRender from "./ExpandedRowRender";
 
 const { Search } = Input;
 
-function KhuyenMaitable() {
+function KhuyenMaitable({setCurrentId}) {
   const dispatch = useDispatch();
 
   const KhuyenMais = useSelector(KhuyenMaisState$);
@@ -21,17 +21,17 @@ function KhuyenMaitable() {
 
   const dataSource = KhuyenMais;
 
-  //Format Date to Moment(dd/mm/yy)
-  dataSource.map((el) => {
+  // //Format Date to Moment(dd/mm/yy)
+  // dataSource.map((el) => {
     
-    //Ngày bắt đầu
-    let sDate = moment(el.NgayBD);
-    el.NgayBD = sDate.format("DD/MM/YYYY");
+  //   //Ngày bắt đầu
+  //   let sDate = moment(el.NgayBD);
+  //   el.NgayBD = sDate.format("DD/MM/YYYY");
 
-    //Ngày kết thúc
-    let eDate = moment(el.NgayKT);
-    el.NgayKT = eDate.format("DD/MM/YYYY");
-  });
+  //   //Ngày kết thúc
+  //   let eDate = moment(el.NgayKT);
+  //   el.NgayKT = eDate.format("DD/MM/YYYY");
+  // });
 
   const columns = [
     {
@@ -223,7 +223,7 @@ function KhuyenMaitable() {
         columns={columns}
         rowSelection={rowSelection}
         expandable={{
-          expandedRowRender: (record) => <ExpandedRowRender record={record} />,
+          expandedRowRender: (record) => <ExpandedRowRender record={record} setCurrentId={setCurrentId} />,
 
           rowExpandable: (record) => record.TenKM !== "Not Expandable",
         }}

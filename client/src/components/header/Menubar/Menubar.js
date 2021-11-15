@@ -9,8 +9,7 @@ import {
   TagsOutlined,
   TeamOutlined,
   DollarOutlined,
-  BarChartOutlined
-
+  BarChartOutlined,
 } from "@ant-design/icons";
 import MenuItem from "antd/lib/menu/MenuItem";
 const { SubMenu } = Menu;
@@ -105,7 +104,12 @@ function Menubar() {
           onTitleClick={handleTongQuan}
         ></SubMenu>
 
-        <SubMenu key="HangHoa" icon={<DatabaseOutlined />} title="Hàng hóa" onTitleClick={handleHangHoa}>
+        <SubMenu
+          key="HangHoa"
+          icon={<DatabaseOutlined />}
+          title="Hàng hóa"
+          onTitleClick={handleHangHoa}
+        >
           <Menu.Item key="DanhMuc" onClick={handleHangHoa}>
             Danh mục
           </Menu.Item>
@@ -120,7 +124,12 @@ function Menubar() {
           </Menu.Item>
         </SubMenu>
 
-        <SubMenu key="GiaoDich" icon={<SwapOutlined />} title="Giao dịch" onTitleClick={handleHoaDon}>
+        <SubMenu
+          key="GiaoDich"
+          icon={<SwapOutlined />}
+          title="Giao dịch"
+          onTitleClick={handleHoaDon}
+        >
           <Menu.Item key="HoaDon" onClick={handleHoaDon}>
             Hóa đơn
           </Menu.Item>
@@ -140,7 +149,7 @@ function Menubar() {
 
         <SubMenu
           key="KhuyenMai"
-          icon={ <TagsOutlined /> }
+          icon={<TagsOutlined />}
           title="Khuyến mãi"
           onTitleClick={handleKhuyenMai}
         ></SubMenu>
@@ -162,7 +171,12 @@ function Menubar() {
           title="Sổ quỹ"
           onTitleClick={handleSoQuy}
         ></SubMenu>
-        <SubMenu key="BaoCao" icon={<BarChartOutlined />} title="Báo cáo" onTitleClick={handleBCCuoiNgay}>
+        <SubMenu
+          key="BaoCao"
+          icon={<BarChartOutlined />}
+          title="Báo cáo"
+          onTitleClick={handleBCCuoiNgay}
+        >
           <Menu.Item key="BCCuoiNgay" onClick={handleBCCuoiNgay}>
             Cuối ngày
           </Menu.Item>

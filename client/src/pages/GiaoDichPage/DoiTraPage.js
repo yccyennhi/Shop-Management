@@ -10,8 +10,6 @@ import {
   Space,
 } from "antd";
 import "./styles.css";
-import Logo from "../../assets/Logo.png";
-import { Avatar, Image } from "antd";
 import {
   UserOutlined,
   PlusOutlined,
@@ -19,23 +17,19 @@ import {
   DownloadOutlined,
   RestOutlined,
 } from "@ant-design/icons";
-import Menubar from "../../components/header/Menubar/Menubar";
-import Headerbar from "../../components/header/Headerbar/Headerbar";
-import Bodybar from "../../pages/GiaoDichPage/styles";
-import DataTableHoaDon from "../../components/table/HoaDonTable/HoaDonTable.js";
-import FormHoaDon from "./FormHoaDon";
+import TraHangTable from "../../components/table/HoaDonTable/TraHangTable";
 const { Header, Content, Footer } = Layout;
 const { SubMenu } = Menu;
 
-export default function HoaDonPage() {
+export default function DoiTraPage() {
   return (
     <>
-      <PageHeader className="site-page-header" title="Hóa Đơn" />
+      <PageHeader className="site-page-header" title="Trả hàng" />
       <div>
         <Row justify="end">
           <Space>
             <Button type="primary" icon={<PlusOutlined />}>
-              Thêm hóa đơn
+              Thêm phiếu trả hàng
             </Button>
             <Button type="primary" icon={<ImportOutlined />}>
               Import
@@ -45,7 +39,7 @@ export default function HoaDonPage() {
             </Button>
           </Space>
         </Row>
-        <DataTableHoaDon />
+        <TraHangTable />
       </div>
       ,
     </>

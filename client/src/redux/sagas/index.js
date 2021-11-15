@@ -87,6 +87,16 @@ function* fetchHoaDonsSaga(action) {
   }
 }
 
+function* fetchPhieuDoiTrasSaga(action) {
+  try {
+    const PhieuDoiTras = yield call(api.fetchTraHangs);
+    yield put(actions.getPhieuDoiTras.getPhieuDoiTrasSuccess(PhieuDoiTras.data));
+  } catch (err) {
+    console.error(err);
+    yield put(actions.getPhieuDoiTras.getPhieuDoiTrasFailure(err));
+  }
+}
+
 function* mySaga() {
   yield takeLatest(actions.getKhachHangs.getKhachHangsRequest, fetchKhachHangsSaga);
   yield takeLatest(actions.getNhanViens.getNhanViensRequest, fetchNhanViensSaga);
@@ -96,6 +106,7 @@ function* mySaga() {
   yield takeLatest(actions.getHoaDons.getHoaDonsRequest,fetchHoaDonsSaga);
   yield takeLatest(actions.createSanPham.createSanPhamRequest, createSanPhamSaga);
   yield takeLatest(actions.createKhuyenMai.createKhuyenMaiRequest, createKhuyenMaiSaga);
+  yield takeLatest(actions.getPhieuDoiTras.getPhieuDoiTrasRequest,fetchPhieuDoiTrasSaga);
 }
 
 export default mySaga;

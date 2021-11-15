@@ -32,5 +32,9 @@ export const INIT_STATE = {
     },
     TaoSanPhamModal: {
         isShow: false
+    },
+    PhieuDoiTras:{
+        isLoading: false,
+        data:[],
     }
 };

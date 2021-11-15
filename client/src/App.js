@@ -6,6 +6,7 @@ import Headerbar from "./components/header/Headerbar/Headerbar";
 import HangHoaPage from "./pages/HangHoaPage/HangHoaPage";
 import KhuyenMaiPage from "./pages/KhuyenMaiPage/KhuyenMaiPage";
 import HoaDonPage from "./pages/GiaoDichPage/HoaDonPage";
+import DoiTraPage from "./pages/GiaoDichPage/DoiTraPage";
 
 function App() {
 const { Header, Content, Footer } = Layout;
@@ -29,6 +30,7 @@ const { SubMenu } = Menu;
                 <Route path ='/SanPhams' exact component={HangHoaPage}/>
                 <Route path='/KhuyenMais' exact component={KhuyenMaiPage}/>
                 <Route path ='/HoaDons' exact component ={HoaDonPage}/>
+                <Route path = '/TraHangs' exact component ={DoiTraPage}/>
               </Switch>
             </div>
           </Content>

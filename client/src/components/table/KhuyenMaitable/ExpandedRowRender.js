@@ -1,12 +1,21 @@
 import React, { useState } from "react";
 import { Table, Input, Row, PageHeader, Descriptions, Tag, Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import * as actions from "../../../redux/actions";
+import { deleteKhuyenMai, showModal } from "../../../redux/actions";
 
-
-
-export default function ExpandedRowRender({ record }) {
+export default function ExpandedRowRender({ record, setCurrentId }) {
   const dispatch = useDispatch();
+
+  const openCreateKMModal = React.useCallback(() => {
+    setCurrentId(record._id);
+    dispatch(showModal());
+  }, [dispatch]);
+
+  const onDelete = React.useCallback(() => {
+    console.log('record data', record);
+    dispatch(deleteKhuyenMai.deleteKhuyenMaiRequest(record._id));
+  }, [record, dispatch]);
+
   return (
     <>
       <PageHeader
@@ -14,20 +23,19 @@ export default function ExpandedRowRender({ record }) {
         title={record.TenKM}
         tags={
           <Tag color="blue">
-            {" "}
+          
             {record.TrangThai == false
               ? "Ch­ưa kích hoạt"
-              : "Đã kích hoạt"}{" "}
+              : "Đã kích hoạt"}
           </Tag>
         }
         subTitle={record.MaKM}
         extra={[
-            <Button key="1" type="primary">
+          <Button key="1" type="primary" onClick={openCreateKMModal}>
             Sửa
           </Button>,
-            <Button key="2">Xóa</Button>,
- 
-          ]}
+          <Button key="2"  onClick={onDelete}  >Xóa</Button>,
+        ]}
       >
         <Descriptions size="small" column={2}>
           <Descriptions.Item label="Ngày bắt đầu">
@@ -46,7 +54,6 @@ export default function ExpandedRowRender({ record }) {
             {record.SoLuong}
           </Descriptions.Item>
         </Descriptions>
-
       </PageHeader>
     </>
   );

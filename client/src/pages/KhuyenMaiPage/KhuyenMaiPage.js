@@ -16,7 +16,11 @@ import { showModal } from "../../redux/actions";
 import CreateKhuyenMaiModal from "../../components/CreateKMModal/CreateKhuyenMaiModal";
 
 export default function KhuyenMaiPage() {
+
+  const [currentId, setCurrentId] = useState(null);
+
   const dispatch = useDispatch();
+
   const openCreateKMModal = React.useCallback(() => {
     dispatch(showModal());
   }, [dispatch]);
@@ -40,8 +44,8 @@ export default function KhuyenMaiPage() {
               </Button>
             </Space>
           </Row>
-          <CreateKhuyenMaiModal />
-          <KhuyenMaitable />
+          <CreateKhuyenMaiModal currentId={currentId} setCurrentId={setCurrentId}/>
+          <KhuyenMaitable setCurrentId={setCurrentId} />
         </div>
       </div>
     </>

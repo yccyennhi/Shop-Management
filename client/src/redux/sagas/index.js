@@ -44,6 +44,7 @@ function* fetchTaiKhoansSaga(action) {
     yield put(actions.getTaiKhoans.getTaiKhoansFailure(err));
   }
 }
+/* #region  KhuyenMaiSaga */
 
 function* fetchKhuyenMaisSaga(action) {
   try {
@@ -54,10 +55,10 @@ function* fetchKhuyenMaisSaga(action) {
     yield put(actions.getKhuyenMais.getKhuyenMaisFailure(err));
   }
 }
+
 function* createKhuyenMaiSaga(action) {
   try {
     const KhuyenMai = yield call(api.createKhuyenMai, action.payload);
-    console.log('createKhuyenMaiSaga', KhuyenMai)
     yield put(actions.createKhuyenMai.createKhuyenMaiSuccess(KhuyenMai.data));
   } catch (err) {
     console.error(err);
@@ -65,6 +66,27 @@ function* createKhuyenMaiSaga(action) {
   }
 }
 
+function* updateKhuyenMaiSaga(action) {
+  try {
+    const KhuyenMai = yield call(api.updateKhuyenMai, action.payload);
+    console.log('updateKhuyenMaiSaga', KhuyenMai.data);
+    yield put(actions.updateKhuyenMai.updateKhuyenMaiSuccess(KhuyenMai.data));
+  } catch (err) {
+    console.error(err);
+    yield put(actions.updateKhuyenMai.updateKhuyenMaiFailure(err));
+  }
+}
+
+function* deleteKhuyenMaiSaga(action) {
+  try {
+    const KhuyenMai = yield call(api.deleteKhuyenMai, action.payload);
+    yield put(actions.deleteKhuyenMai.deleteKhuyenMaiSuccess(KhuyenMai.data._id));
+  } catch (err) {
+    console.error(err);
+    yield put(actions.deleteKhuyenMai.deleteKhuyenMaiFailure(err));
+  }
+}
+/* #endregion */
 
 function* createSanPhamSaga(action) {
   try {
@@ -98,16 +120,41 @@ function* fetchPhieuDoiTrasSaga(action) {
 }
 
 function* mySaga() {
-  yield takeLatest(actions.getKhachHangs.getKhachHangsRequest, fetchKhachHangsSaga);
-  yield takeLatest(actions.getNhanViens.getNhanViensRequest, fetchNhanViensSaga);
+  yield takeLatest(
+    actions.getKhachHangs.getKhachHangsRequest,
+    fetchKhachHangsSaga
+  );
+  yield takeLatest(
+    actions.getNhanViens.getNhanViensRequest,
+    fetchNhanViensSaga
+  );
   yield takeLatest(actions.getSanPhams.getSanPhamsRequest, fetchSanPhamsSaga);
   yield takeLatest(actions.getTaiKhoans.getTaiKhoansRequest, fetchTaiKhoansSaga);
-  yield takeLatest(actions.getKhuyenMais.getKhuyenMaisRequest, fetchKhuyenMaisSaga);
   yield takeLatest(actions.getHoaDons.getHoaDonsRequest,fetchHoaDonsSaga);
   yield takeLatest(actions.createSanPham.createSanPhamRequest, createSanPhamSaga);
-  yield takeLatest(actions.createKhuyenMai.createKhuyenMaiRequest, createKhuyenMaiSaga);
   yield takeLatest(actions.getPhieuDoiTras.getPhieuDoiTrasRequest,fetchPhieuDoiTrasSaga);
-}
+
+
+
+  /* #region  KhuyenMai */
+  yield takeLatest(
+    actions.getKhuyenMais.getKhuyenMaisRequest,
+    fetchKhuyenMaisSaga
+  );
+  yield takeLatest(
+    actions.createKhuyenMai.createKhuyenMaiRequest,
+    createKhuyenMaiSaga
+  );
+
+  yield takeLatest(
+    actions.updateKhuyenMai.updateKhuyenMaiRequest,
+    updateKhuyenMaiSaga
+  );
+  yield takeLatest(
+    actions.deleteKhuyenMai.deleteKhuyenMaiRequest,
+    deleteKhuyenMaiSaga
+  );
+  /* #endregion */
+  }
 
 export default mySaga;
-

@@ -28,6 +28,24 @@ export const getSanPhams = createActions({
   getSanPhamsFailure: (err) => err,
 });
 
+export const createSanPham = createActions({
+  createSanPhamRequest: (payload) => payload,
+  createSanPhamSuccess: (payload) => payload,
+  createSanPhamFailure: (err) => err,
+});
+
+export const updateSanPham = createActions({
+  updateSanPhamRequest: (payload) => payload,
+  updateSanPhamSuccess: (payload) => payload,
+  updateSanPhamFailure: (err) => err,
+});
+
+export const deleteSanPham = createActions({
+  deleteSanPhamRequest: (payload) => payload,
+  deleteSanPhamSuccess: (payload) => payload,
+  deleteSanPhamFailure: (err) => err,
+});
+
 export const getTaiKhoans = createActions({
   getTaiKhoansRequest: undefined,
   getTaiKhoansSuccess: (payload) => payload,
@@ -59,17 +77,10 @@ export const deleteKhuyenMai = createActions({
   deleteKhuyenMaiFailure: (err) => err,
 });
 
-export const createSanPham = createActions({
-    createSanPhamRequest: (payload) => payload,
-    createSanPhamSuccess: (payload) => payload,
-    createSanPhamFailure: (err) => err,
-});
-
-
 /* #endregion */
 
-export const showTaoSanPhamModal = createAction('SHOW_TAOSANPHAM_MODAL');
-export const hideTaoSanPhamModal = createAction('HIDE_TAOSANPHAM_MODAL');
+export const showTaoSanPhamModal = createAction("SHOW_TAOSANPHAM_MODAL");
+export const hideTaoSanPhamModal = createAction("HIDE_TAOSANPHAM_MODAL");
 
 export const showModal = createAction("SHOW_CREATE_MODAL");
 export const hideModal = createAction("HIDE_CREATE_MODAL");

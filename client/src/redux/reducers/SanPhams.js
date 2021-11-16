@@ -1,5 +1,11 @@
 import { INIT_STATE } from "../../constant";
-import { getSanPhams, getType, createSanPham } from "../actions";
+import {
+  getSanPhams,
+  getType,
+  createSanPham,
+  updateSanPham,
+  deleteSanPham,
+} from "../actions";
 
 export default function SanPhamsReducer(state = INIT_STATE.SanPhams, action) {
   switch (action.type) {
@@ -24,6 +30,20 @@ export default function SanPhamsReducer(state = INIT_STATE.SanPhams, action) {
       return {
         ...state,
         data: [...state.data, action.payload],
+      };
+    case getType(updateSanPham.updateSanPhamSuccess):
+      return {
+        ...state,
+        data: state.data.map((SanPham) =>
+          SanPham._id === action.payload._id ? action.payload : SanPham
+        ),
+      };
+    case getType(deleteSanPham.deleteSanPhamSuccess):
+      return {
+        ...state,
+        data: state.data.filter(
+          (SanPham) => SanPham._id !== action.payload
+        ),
       };
     default:
       return state;

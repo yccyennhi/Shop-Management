@@ -13,20 +13,25 @@ import {
   Space,
 } from "antd";
 import { useDispatch, useSelector } from "react-redux";
+import ExpandedRowRender from "./ExpandedRowRender";
 import { SearchOutlined, DownOutlined } from "@ant-design/icons";
 import { SanPhamsState$ } from "../../../redux/selectors";
 import * as actions from "../../../redux/actions";
-
+import { deleteSanPham } from "../../../redux/actions/index.js";
 const { Search } = Input;
 
-function HangHoatable() {
+function HangHoatable({setCurrentId}) {
   const dispatch = useDispatch();
   const SanPhams = useSelector(SanPhamsState$);
   React.useEffect(() => {
     dispatch(actions.getSanPhams.getSanPhamsRequest());
   }, [dispatch]);
   const dataSource = SanPhams;
-  
+
+  const refreshPage = () => {
+    window.location.reload();
+  };
+
   const columns = [
     {
       title: "Mã hàng",
@@ -208,6 +213,15 @@ function HangHoatable() {
 
   const { selectedRowKeys, loading } = select;
 
+  // function resolveAfter1Second() {
+  //   console.log("starting fast promise")
+  //   return new Promise(resolve => {
+  //     setTimeout(function() {
+  //       resolve("fast")
+  //       console.log("fast promise is done")
+  //     }, 1000)
+  //   })
+  // }
   const rowSelection = {
     selectedRowKeys,
     onChange: (selectedRowKeys) => {
@@ -230,7 +244,21 @@ function HangHoatable() {
 
   const menu = (
     <Menu onClick={handleMenuClick}>
-      <Menu.Item key="1">1st menu item</Menu.Item>
+      <Menu.Item
+        key="1"
+        onClick={async () => {
+          // const fast = resolveAfter1Second()
+          // console.log(selectedRowKeys.length+' o day');
+          // for (let i = 0; i < selectedRowKeys.length; i++) {
+          //   console.log("delete la " + i);
+          //   console.log(selectedRowKeys[i]);
+          //   dispatch(deleteSanPham.deleteSanPhamRequest(selectedRowKeys[i]));
+          //   const fast = resolveAfter1Second()
+          // };
+        }}
+      >
+        Xóa hàng hóa
+      </Menu.Item>
       <Menu.Item key="2">2nd menu item</Menu.Item>
       <Menu.Item key="3">3rd menu item</Menu.Item>
     </Menu>
@@ -244,7 +272,6 @@ function HangHoatable() {
             Thao tác <DownOutlined />
           </Button>
         </Dropdown>
-
         <span style={{ marginLeft: 8 }}>
           {hasSelected ? `Có ${selectedRowKeys.length} hàng hóa được chọn` : ""}
         </span>
@@ -258,8 +285,9 @@ function HangHoatable() {
         rowSelection={rowSelection}
         expandable={{
           expandedRowRender: (record) => (
-            <p style={{ margin: 0 }}>{record.Mota}</p>
+            <ExpandedRowRender record={record} setCurrentId={setCurrentId} />
           ),
+
           rowExpandable: (record) => record.TenSP !== "Not Expandable",
         }}
         rowKey="_id"

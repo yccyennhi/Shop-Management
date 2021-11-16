@@ -69,7 +69,7 @@ function* createKhuyenMaiSaga(action) {
 function* updateKhuyenMaiSaga(action) {
   try {
     const KhuyenMai = yield call(api.updateKhuyenMai, action.payload);
-    console.log('updateKhuyenMaiSaga', KhuyenMai.data);
+    console.log("updateKhuyenMaiSaga", KhuyenMai.data);
     yield put(actions.updateKhuyenMai.updateKhuyenMaiSuccess(KhuyenMai.data));
   } catch (err) {
     console.error(err);
@@ -80,7 +80,9 @@ function* updateKhuyenMaiSaga(action) {
 function* deleteKhuyenMaiSaga(action) {
   try {
     const KhuyenMai = yield call(api.deleteKhuyenMai, action.payload);
-    yield put(actions.deleteKhuyenMai.deleteKhuyenMaiSuccess(KhuyenMai.data._id));
+    yield put(
+      actions.deleteKhuyenMai.deleteKhuyenMaiSuccess(KhuyenMai.data._id)
+    );
   } catch (err) {
     console.error(err);
     yield put(actions.deleteKhuyenMai.deleteKhuyenMaiFailure(err));
@@ -88,16 +90,42 @@ function* deleteKhuyenMaiSaga(action) {
 }
 /* #endregion */
 
+/* #region  SanPham */
+
 function* createSanPhamSaga(action) {
   try {
     const SanPham = yield call(api.createSanPham, action.payload);
-    console.log('createSanPhamSaga', SanPham)
+    console.log("createSanPhamSaga", SanPham);
     yield put(actions.createSanPham.createSanPhamSuccess(SanPham.data));
   } catch (err) {
     console.error(err);
     yield put(actions.createSanPham.createSanPhamFailure(err));
   }
 }
+function* updateSanPhamSaga(action) {
+  try {
+    const SanPham = yield call(api.updateSanPham, action.payload);
+    console.log("updateSanPhamSaga", SanPham.data);
+    yield put(actions.updateSanPham.updateSanPhamSuccess(SanPham.data));
+  } catch (err) {
+    console.error(err);
+    yield put(actions.updateSanPham.updateSanPhamFailure(err));
+  }
+}
+
+function* deleteSanPhamSaga(action) {
+  try {
+    const SanPham = yield call(api.deleteSanPham, action.payload);
+    yield put(
+      actions.deleteSanPham.deleteSanPhamSuccess(SanPham.data._id)
+    );
+  } catch (err) {
+    console.error(err);
+    yield put(actions.deleteSanPham.deleteSanPhamFailure(err));
+  }
+}
+/* #endregion */
+
 
 function* mySaga() {
   yield takeLatest(
@@ -108,15 +136,28 @@ function* mySaga() {
     actions.getNhanViens.getNhanViensRequest,
     fetchNhanViensSaga
   );
-  yield takeLatest(actions.getSanPhams.getSanPhamsRequest, fetchSanPhamsSaga);
-
-  yield takeLatest(actions.createSanPham.createSanPhamRequest, createSanPhamSaga);
-  
   yield takeLatest(
     actions.getTaiKhoans.getTaiKhoansRequest,
     fetchTaiKhoansSaga
   );
+  /* #region  SanPham */
 
+  yield takeLatest(actions.getSanPhams.getSanPhamsRequest, fetchSanPhamsSaga);
+
+  yield takeLatest(
+    actions.createSanPham.createSanPhamRequest,
+    createSanPhamSaga
+  );
+
+  yield takeLatest(
+    actions.updateSanPham.updateSanPhamRequest,
+    updateSanPhamSaga
+  );
+  yield takeLatest(
+    actions.deleteSanPham.deleteSanPhamRequest,
+    deleteSanPhamSaga
+  );
+  /* #endregion */
 
   /* #region  KhuyenMai */
   yield takeLatest(
@@ -137,7 +178,6 @@ function* mySaga() {
     deleteKhuyenMaiSaga
   );
   /* #endregion */
-
 }
 
 export default mySaga;

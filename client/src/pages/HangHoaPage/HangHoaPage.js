@@ -21,6 +21,7 @@ const { SubMenu } = Menu;
 
 export default function HangHoaPage() {
   const dispatch = useDispatch();
+  const [currentId, setCurrentId] = useState(null);
   const openTaoSanPhamModal = React.useCallback(() => {
     dispatch(showTaoSanPhamModal());
   }, [dispatch]);
@@ -47,7 +48,8 @@ export default function HangHoaPage() {
               </Button>
             </Space>
           </Row>
-          <HangHoatable />
+          <TaoSanPhamModal currentId={currentId} setCurrentId={setCurrentId}/>
+          <HangHoatable setCurrentId={setCurrentId}/>
         </div>
       </div>
       ,

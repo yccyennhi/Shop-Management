@@ -19,10 +19,14 @@ import {
   Row,
 } from "antd";
 
-import { createKhuyenMai, updateKhuyenMai, hideModal } from "../../redux/actions";
+import {
+  createKhuyenMai,
+  updateKhuyenMai,
+  hideModal,
+} from "../../redux/actions";
 import moment from "moment";
 
-export default function CreateKhuyenMaiModal({currentId, setCurrentId}) {
+export default function CreateKhuyenMaiModal({ currentId, setCurrentId }) {
   const { isShow } = useSelector(modalState$);
 
   const dateNow = moment().toDate();
@@ -37,10 +41,12 @@ export default function CreateKhuyenMaiModal({currentId, setCurrentId}) {
     TrangThai: false,
   });
 
-   const KhuyenMaiValue = useSelector((state) => state.KhuyenMais.data.find((KhuyenMai) =>
-   KhuyenMai._id === currentId? KhuyenMai : null
-   ));
-    useEffect(() => {
+  const KhuyenMaiValue = useSelector((state) =>
+    state.KhuyenMais.data.find((KhuyenMai) =>
+      KhuyenMai._id === currentId ? KhuyenMai : null
+    )
+  );
+  useEffect(() => {
     if (KhuyenMaiValue) setData(KhuyenMaiValue);
   }, [KhuyenMaiValue]);
 
@@ -49,7 +55,7 @@ export default function CreateKhuyenMaiModal({currentId, setCurrentId}) {
   const onClose = React.useCallback(() => {
     dispatch(hideModal());
     setCurrentId(null);
-    setData ({
+    setData({
       MaKM: "",
       TenKM: "",
       NgayBD: dateNow,
@@ -62,16 +68,13 @@ export default function CreateKhuyenMaiModal({currentId, setCurrentId}) {
   }, [dispatch]);
 
   const onSubmit = React.useCallback(() => {
-    if(currentId)
-    {
+    if (currentId) {
       dispatch(updateKhuyenMai.updateKhuyenMaiRequest(data));
-    }
-    else{
+    } else {
       dispatch(createKhuyenMai.createKhuyenMaiRequest(data));
     }
 
     onClose();
-
   }, [data, dispatch, onClose]);
 
   const body = (
@@ -85,7 +88,9 @@ export default function CreateKhuyenMaiModal({currentId, setCurrentId}) {
         }}
         layout="horizontal"
       >
-        <Form.Item label="Mã khuyến mãi">
+        <Form.Item 
+          label="Mã khuyến mãi"
+        >
           <Input
             value={data.MaKM}
             onChange={(e) => setData({ ...data, MaKM: e.target.value })}
@@ -139,7 +144,7 @@ export default function CreateKhuyenMaiModal({currentId, setCurrentId}) {
         </Form.Item>
         <Form.Item label="Phần trăm giảm">
           <Form.Item noStyle>
-            <InputNumber 
+            <InputNumber
               min={1}
               max={100}
               value={data.PhanTram}
@@ -168,7 +173,7 @@ export default function CreateKhuyenMaiModal({currentId, setCurrentId}) {
   return (
     <div>
       <Modal
-        title="Thêm Khuyến mãi"
+        title={(currentId?"Câp nhật khuyến mãi":"Thêm khuyến mãi")}
         visible={isShow}
         onCancel={onClose}
         onOk={onSubmit}

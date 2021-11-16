@@ -9,7 +9,7 @@ export default function BCHangHoaPage() {
   return (
     <>
       <div>
-        <PageHeader className="site-page-header" title="Báo cáo cuối ngày" /> 
+        <PageHeader className="site-page-header" title="Báo cáo hàng hóa" /> 
         <div>    
         <HangHoatable/>
         </div>

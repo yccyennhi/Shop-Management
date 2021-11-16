@@ -236,16 +236,34 @@ export default function HoaDontable() {
       });
     },
   };
+  const hasSelected = selectedRowKeys.length > 0;
 
+  function handleMenuClick(e) {
+    message.info("Click on menu item.");
+    console.log("click", e);
+  }
+  const menu = (
+    <Menu onClick={handleMenuClick}>
+      <Menu.Item key="1">1st menu item</Menu.Item>
+      <Menu.Item key="2">2nd menu item</Menu.Item>
+      <Menu.Item key="3">3rd menu item</Menu.Item>
+    </Menu>
+  );
   return (
     <div>
       <Row></Row>
-
-      <span style={{ marginLeft: 8 }}>
-        {selectedRowKeys.length > 0
-          ? `Có ${selectedRowKeys.length} hóa đơn được chọn`
-          : ""}
-      </span>
+      <div style={{ marginBottom: 16 }}>
+        <Dropdown overlay={menu} disabled={!hasSelected}>
+          <Button>
+            Thao tác <DownOutlined />
+          </Button>
+        </Dropdown>
+        <span style={{ marginLeft: 8 }}>
+          {selectedRowKeys.length > 0
+            ? `Có ${selectedRowKeys.length} hóa đơn được chọn`
+            : ""}
+        </span>
+      </div>
       <Table
         loading={false}
         pagination={true}

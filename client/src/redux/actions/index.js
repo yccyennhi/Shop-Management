@@ -21,7 +21,7 @@ export const getNhanViens = createActions({
   getNhanViensSuccess: (payload) => payload,
   getNhanViensFailure: (err) => err,
 });
-
+//San Pham
 export const getSanPhams = createActions({
   getSanPhamsRequest: undefined,
   getSanPhamsSuccess: (payload) => payload,
@@ -45,6 +45,63 @@ export const deleteSanPham = createActions({
   deleteSanPhamSuccess: (payload) => payload,
   deleteSanPhamFailure: (err) => err,
 });
+
+
+//Phieu Hen
+
+
+export const getPhieuHens = createActions({
+  getPhieuHensRequest: undefined,
+  getPhieuHensSuccess: (payload) => payload,
+  getPhieuHensFailure: (err) => err,
+});
+
+export const createPhieuHen = createActions({
+  createPhieuHenRequest: (payload) => payload,
+  createPhieuHenSuccess: (payload) => payload,
+  createPhieuHenFailure: (err) => err,
+});
+
+export const updatePhieuHen = createActions({
+  updatePhieuHenRequest: (payload) => payload,
+  updatePhieuHenSuccess: (payload) => payload,
+  updatePhieuHenFailure: (err) => err,
+});
+
+export const deletePhieuHen = createActions({
+  deletePhieuHenRequest: (payload) => payload,
+  deletePhieuHenSuccess: (payload) => payload,
+  deletePhieuHenFailure: (err) => err,
+});
+
+
+//Phieu bao hanh
+
+
+export const getPhieuBaoHanhs = createActions({
+  getPhieuBaoHanhsRequest: undefined,
+  getPhieuBaoHanhsSuccess: (payload) => payload,
+  getPhieuBaoHanhsFailure: (err) => err,
+});
+
+export const createPhieuBaoHanh = createActions({
+  createPhieuBaoHanhRequest: (payload) => payload,
+  createPhieuBaoHanhSuccess: (payload) => payload,
+  createPhieuBaoHanhFailure: (err) => err,
+});
+
+export const updatePhieuBaoHanh = createActions({
+  updatePhieuBaoHanhRequest: (payload) => payload,
+  updatePhieuBaoHanhSuccess: (payload) => payload,
+  updatePhieuBaoHanhFailure: (err) => err,
+});
+
+export const deletePhieuBaoHanh = createActions({
+  deletePhieuBaoHanhRequest: (payload) => payload,
+  deletePhieuBaoHanhSuccess: (payload) => payload,
+  deletePhieuBaoHanhFailure: (err) => err,
+});
+
 
 export const getTaiKhoans = createActions({
   getTaiKhoansRequest: undefined,

@@ -5,6 +5,8 @@ import posts from "./routers/posts.js";
 import KhachHangs from "./routers/KhachHangs.js";
 import NhanViens from "./routers/NhanViens.js";
 import SanPhams from "./routers/SanPhams.js";
+import PhieuBaoHanhs from "./routers/PhieuBaoHanhs.js";
+import PhieuHens from "./routers/PhieuHens.js";
 import TaiKhoans from "./routers/TaiKhoans.js";
 import KhuyenMais from "./routers/KhuyenMais.js"
 import mongoose from "mongoose";
@@ -24,6 +26,8 @@ app.use("/NhanViens", NhanViens),
 app.use("/SanPhams", SanPhams);
 app.use("/TaiKhoans", TaiKhoans);
 app.use("/KhuyenMais",KhuyenMais);
+app.use("/PhieuHens", PhieuHens);
+app.use("/PhieuBaoHanhs", PhieuBaoHanhs);
 
 mongoose
   .connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })

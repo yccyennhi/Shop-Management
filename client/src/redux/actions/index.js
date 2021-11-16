@@ -53,6 +53,12 @@ export const updateKhuyenMai = createActions({
   updateKhuyenMaiFailure: (err) => err,
 });
 
+export const deleteKhuyenMai = createActions({
+  deleteKhuyenMaiRequest: (payload) => payload,
+  deleteKhuyenMaiSuccess: (payload) => payload,
+  deleteKhuyenMaiFailure: (err) => err,
+});
+
 /* #endregion */
 
 export const showModal = createAction("SHOW_CREATE_MODAL");

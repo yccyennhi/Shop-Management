@@ -4,6 +4,7 @@ import {
   getKhuyenMais,
   createKhuyenMai,
   updateKhuyenMai,
+  deleteKhuyenMai
 } from "../controllers/KhuyenMai.js";
 
 const router = express.Router();
@@ -12,5 +13,6 @@ const router = express.Router();
 router.get("/", getKhuyenMais);
 router.post("/", createKhuyenMai);
 router.patch("/:id", updateKhuyenMai);
+router.delete("/:id", deleteKhuyenMai);
 
 export default router;

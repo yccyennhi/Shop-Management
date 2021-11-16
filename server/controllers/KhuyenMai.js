@@ -29,13 +29,23 @@ export const updateKhuyenMai = async (req, res) => {
   try {
     const updateKhuyenMai = req.body;
 
-    console.log('updateKM in server', updateKhuyenMai);
-
     const KhuyenMai = await KhuyenMaiModel.findOneAndUpdate(
       { _id: updateKhuyenMai._id },
       updateKhuyenMai,
       { new: true }
     );
+    res.status(200).json(KhuyenMai);
+  } catch (err) {
+    res.status(404).json({ error: err });
+  }
+};
+
+
+export const deleteKhuyenMai = async (req, res) => {
+  try {
+    const {id} = req.params;
+
+    const KhuyenMai = await KhuyenMaiModel.findByIdAndRemove(id);
     res.status(200).json(KhuyenMai);
   } catch (err) {
     res.status(404).json({ error: err });

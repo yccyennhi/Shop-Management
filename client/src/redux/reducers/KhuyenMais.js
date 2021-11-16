@@ -1,5 +1,5 @@
 import { INIT_STATE } from "../../constant";
-import { getKhuyenMais, createKhuyenMai, updateKhuyenMai, getType } from "../actions";
+import { getKhuyenMais, createKhuyenMai, updateKhuyenMai, getType, deleteKhuyenMai } from "../actions";
 
 export default function KhuyenMaisReducer(state = INIT_STATE.KhuyenMais, action) {
   switch (action.type) {
@@ -31,6 +31,11 @@ export default function KhuyenMaisReducer(state = INIT_STATE.KhuyenMais, action)
               KhuyenMai._id === action.payload._id ? action.payload : KhuyenMai
             ),
           };
+      case getType(deleteKhuyenMai.deleteKhuyenMaiSuccess):
+      return{
+        ...state,
+        data:  state.data.filter((KhuyenMai) => KhuyenMai._id !== action.payload),
+      };
     default:
       return state;
   }

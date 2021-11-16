@@ -5,8 +5,6 @@ export const getKhuyenMais = async (req, res) => {
   try {
 
     const KhuyenMais = await KhuyenMaiModel.find();
-    
-    console.log("KhuyenMais", KhuyenMais);
 
     res.status(200).json(KhuyenMais);
   } catch (err) {
@@ -17,6 +15,7 @@ export const getKhuyenMais = async (req, res) => {
 export const createKhuyenMai = async (req, res) => {
   try {
     const newKhuyenMai = req.body;
+    console.log(newKhuyenMai);
     const KhuyenMai = new KhuyenMaiModel(newKhuyenMai);
     await KhuyenMai.save();
 
@@ -30,6 +29,8 @@ export const updateKhuyenMai = async (req, res) => {
   try {
     const updateKhuyenMai = req.body;
 
+    console.log('updateKM in server', updateKhuyenMai);
+
     const KhuyenMai = await KhuyenMaiModel.findOneAndUpdate(
       { _id: updateKhuyenMai._id },
       updateKhuyenMai,
@@ -37,6 +38,6 @@ export const updateKhuyenMai = async (req, res) => {
     );
     res.status(200).json(KhuyenMai);
   } catch (err) {
-    res.status(500).json({ error: err });
+    res.status(404).json({ error: err });
   }
 };

@@ -1,12 +1,18 @@
 import React, { useState } from "react";
 import { Table, Input, Row, PageHeader, Descriptions, Tag, Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import * as actions from "../../../redux/actions";
+import { updateKhuyenMai, showModal } from "../../../redux/actions";
 
+export default function ExpandedRowRender({ record, setCurrentId }) {
 
-
-export default function ExpandedRowRender({ record }) {
   const dispatch = useDispatch();
+
+  const openCreateKMModal = React.useCallback(() => {
+    setCurrentId(record._id);
+    dispatch(showModal());
+  }, [dispatch]);
+
+
   return (
     <>
       <PageHeader
@@ -22,12 +28,11 @@ export default function ExpandedRowRender({ record }) {
         }
         subTitle={record.MaKM}
         extra={[
-            <Button key="1" type="primary">
+          <Button key="1" type="primary" onClick={openCreateKMModal}>
             Sửa
           </Button>,
-            <Button key="2">Xóa</Button>,
- 
-          ]}
+          <Button key="2">Xóa</Button>,
+        ]}
       >
         <Descriptions size="small" column={2}>
           <Descriptions.Item label="Ngày bắt đầu">
@@ -46,7 +51,6 @@ export default function ExpandedRowRender({ record }) {
             {record.SoLuong}
           </Descriptions.Item>
         </Descriptions>
-
       </PageHeader>
     </>
   );

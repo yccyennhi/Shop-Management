@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
 import { modalState$ } from "../../redux/selectors";
@@ -19,37 +19,64 @@ import {
   Row,
 } from "antd";
 
-import { createKhuyenMai, hideModal } from "../../redux/actions";
+import { createKhuyenMai, updateKhuyenMai, hideModal } from "../../redux/actions";
 import moment from "moment";
 
-export default function CreateKhuyenMaiModal() {
-  const [data, setData] = React.useState({
+export default function CreateKhuyenMaiModal({currentId, setCurrentId}) {
+  const dateNow = moment().toDate();
+
+  const [data, setData] = useState({
     MaKM: "",
     TenKM: "",
-    NgayBD: new Date(2021, 11, 14),
-    NgayKT: new Date(2021, 11, 14),
+    NgayBD: new Date(Date.now()),
+    NgayKT: new Date(Date.now()),
     GiaTri: 0,
     PhanTram: 0,
     SoLuong: 0,
     TrangThai: false,
   });
-
+   const KhuyenMaiValue = useSelector((state) => state.KhuyenMais.data.find((KhuyenMai) =>
+   KhuyenMai._id === currentId? KhuyenMai : null
+   ));
+  
   const dispatch = useDispatch();
 
   const { isShow } = useSelector(modalState$);
 
+  useEffect(() => {
+    if (KhuyenMaiValue) setData(KhuyenMaiValue);
+  }, [KhuyenMaiValue]);
+
   const onClose = React.useCallback(() => {
     dispatch(hideModal());
+    setCurrentId(null);
+    setData ({
+      MaKM: "",
+      TenKM: "",
+      NgayBD: dateNow,
+      NgayKT: dateNow,
+      GiaTri: 0,
+      PhanTram: 0,
+      SoLuong: 0,
+      TrangThai: false,
+    });
   }, [dispatch]);
 
+  console.log('data before update', data);
   const onSubmit = React.useCallback(() => {
-    dispatch(createKhuyenMai.createKhuyenMaiRequest(data));
-    onClose();
-  }, [data, dispatch, onClose]);
+    if(currentId)
+    {
+      dispatch(updateKhuyenMai.updateKhuyenMaiRequest(data));
+      console.log('data update', data);
+    }
+    else{
+      dispatch(createKhuyenMai.createKhuyenMaiRequest(data));
+    }
 
-  //   const onSubmit = React.useCallback(() => {
-  //  console.log('data',data)
-  //   }, [data]);
+    onClose();
+
+
+  }, [data, dispatch, onClose]);
 
   const body = (
     <>
@@ -64,13 +91,13 @@ export default function CreateKhuyenMaiModal() {
       >
         <Form.Item label="Mã khuyến mãi">
           <Input
-            data={data.MaKM}
+            value={data.MaKM}
             onChange={(e) => setData({ ...data, MaKM: e.target.value })}
           />
         </Form.Item>
         <Form.Item label="Tên chương trình">
           <Input
-            data={data.TenKM}
+            value={data.TenKM}
             onChange={(e) => setData({ ...data, TenKM: e.target.value })}
           />
         </Form.Item>
@@ -79,9 +106,9 @@ export default function CreateKhuyenMaiModal() {
             style={{ display: "inline-block", width: "calc(30% - 12px)" }}
           >
             <DatePicker
-              data={data.NgayBD}
+              defaultValue={moment(data.NgayBD)}
               onChange={(e) => {
-                if (!e) setData({ ...data, NgayBD: e.toDate() });
+                if (e) setData({ ...data, NgayBD: e.toDate() });
               }}
             />
           </Form.Item>
@@ -99,35 +126,36 @@ export default function CreateKhuyenMaiModal() {
             style={{ display: "inline-block", width: "calc(30% - 12px)" }}
           >
             <DatePicker
-              data={data.NgayKT}
+              defaultValue={moment(data.NgayKT)}
               onChange={(e) => {
-                if (!e) setData({ ...data, NgayKT: e.toDate() });
+                if (e) setData({ ...data, NgayKT: e.toDate() });
               }}
             />
           </Form.Item>
         </Form.Item>
         <Form.Item label="Trị giá hóa đơn">
           <InputNumber
-            data={data.GiaTri}
+            min={0}
+            value={data.GiaTri}
             onChange={(e) => setData({ ...data, GiaTri: e })}
           />
           <span className="ant-form-text"> VNĐ </span>
         </Form.Item>
         <Form.Item label="Phần trăm giảm">
-          <Form.Item name="input-number" noStyle>
-            <InputNumber
+          <Form.Item noStyle>
+            <InputNumber 
               min={1}
               max={100}
-              data={data.PhanTram}
+              value={data.PhanTram}
               onChange={(e) => setData({ ...data, PhanTram: e })}
             />
           </Form.Item>
-          <span className="ant-form-text"> %</span>
+          <span className="ant-form-text"> % </span>
         </Form.Item>
 
         <Form.Item label="Số lượng">
           <InputNumber
-            data={data.SoLuong}
+            value={data.SoLuong}
             onChange={(e) => setData({ ...data, SoLuong: e })}
           />
         </Form.Item>

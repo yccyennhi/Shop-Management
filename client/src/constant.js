@@ -28,5 +28,6 @@ export const INIT_STATE = {
     },
     TaoSanPhamModal: {
         isShow: false
-    }
+    },
+    data: null,
 };

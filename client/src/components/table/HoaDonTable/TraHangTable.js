@@ -13,7 +13,7 @@ import {
   Space,
 } from "antd";
 import { SearchOutlined, DownOutlined } from "@ant-design/icons";
-import FormHoaDon from "../../../pages/GiaoDichPage/FormHoaDon";
+import FormTraHang from "../../../pages/GiaoDichPage/FormTraHang";
 
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../../redux/actions";
@@ -202,9 +202,10 @@ export default function TraHangTable() {
         loading={false}
         pagination={true}
         columns={columns}
+        scroll={{ y: 600 }}
         rowSelection={rowSelection}
         expandable={{
-          expandedRowRender: (record) => <FormHoaDon />,
+          expandedRowRender: (record) => <FormTraHang />,
           rowExpandable: (record) => record.MaPDT !== "Not Expandable",
         }}
         dataSource={dataSource}

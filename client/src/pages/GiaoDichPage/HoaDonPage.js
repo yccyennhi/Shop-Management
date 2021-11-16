@@ -22,12 +22,12 @@ import {
 import DataTableHoaDon from "../../components/table/HoaDonTable/HoaDonTable.js";
 import { useDispatch } from "react-redux";
 import TaoHoaDonModal from "../../components/modal/TaoGiaoDichModal/TaoHoaDonModal";
-import { showModal } from "../../redux/actions";
+import { showTaoHoaDonModal } from "../../redux/actions";
 
 export default function HoaDonPage() {
   const dispatch = useDispatch();
   const openTaoSanPhamModal = React.useCallback(()=>{
-    dispatch(showModal());
+    dispatch(showTaoHoaDonModal());
   }, [dispatch]);
   return (
     <>
@@ -35,7 +35,7 @@ export default function HoaDonPage() {
       <div>
         <Row justify="end">
           <Space>
-            <Button type="primary" icon={<PlusOutlined />} onClick={openTaoSanPhamModal}>
+            <Button type="primary" icon={<PlusOutlined />} >
               Thêm hóa đơn
             </Button>
             <Button type="primary" icon={<ImportOutlined />}>

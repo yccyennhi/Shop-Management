@@ -18,17 +18,22 @@ import {
   RestOutlined,
 } from "@ant-design/icons";
 import TraHangTable from "../../components/table/HoaDonTable/TraHangTable";
-const { Header, Content, Footer } = Layout;
-const { SubMenu } = Menu;
+import TaoPhieuTraHangModal from "../../components/modal/TaoGiaoDichModal/TaoPhieuDoiTraModal";
+import { showTaoPhieuTraHangModal } from "../../redux/actions";
+import { useDispatch } from "react-redux";
 
 export default function DoiTraPage() {
+  const dispatch = useDispatch();
+  const openTaoPhieuTraHangModal = React.useCallback(()=>{
+    dispatch(showTaoPhieuTraHangModal());
+  }, [dispatch]);
   return (
     <>
       <PageHeader className="site-page-header" title="Trả hàng" />
       <div>
         <Row justify="end">
           <Space>
-            <Button type="primary" icon={<PlusOutlined />}>
+            <Button type="primary" icon={<PlusOutlined />} onClick={openTaoPhieuTraHangModal}>
               Thêm phiếu trả hàng
             </Button>
             <Button type="primary" icon={<ImportOutlined />}>
@@ -39,6 +44,7 @@ export default function DoiTraPage() {
             </Button>
           </Space>
         </Row>
+        <TaoPhieuTraHangModal/>
         <TraHangTable />
       </div>
       ,

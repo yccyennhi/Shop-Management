@@ -10,6 +10,7 @@ import Modal from './Modal';
 import TaoSanPhamModal from "./TaoSanPhamModal";
 import PhieuDoiTras  from "./PhieuDoiTras";
 import TaoHoaDonModal from "./TaoHoaDonModal";
+import TaoPhieuTraHangModal  from "./TaoPhieuTraHangModal";
 
 export default combineReducers({
   KhachHangs,
@@ -22,4 +23,5 @@ export default combineReducers({
   TaoSanPhamModal,
   PhieuDoiTras,
   TaoHoaDonModal,
+  TaoPhieuTraHangModal,
 });

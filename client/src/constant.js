@@ -39,4 +39,7 @@ export const INIT_STATE = {
   TaoHoaDonModal: {
     isShow: false,
   },
+  TaoPhieuTraHangModal: {
+    isShow: false,
+  },
 };

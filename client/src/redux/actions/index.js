@@ -69,6 +69,8 @@ export const hideTaoSanPhamModal = createAction('HIDE_TAOSANPHAM_MODAL');
 export const showTaoHoaDonModal = createAction('SHOW_TAOHOADON_MODAL');
 export const hideTaoHoaDonModal = createAction('HIDE_TAOHOADON_MODAL');
 
+export const showTaoPhieuTraHangModal = createAction('SHOW_TAOPHIEUTRAHANG_MODAL');
+export const hideTaoPhieuTraHangModal = createAction('HIDE_TAOPHIEUTRAHANG_MODAL');
 
 export const showModal = createAction('SHOW_CREATE_MODAL');
 export const hideModal = createAction('HIDE_CREATE_MODAL');

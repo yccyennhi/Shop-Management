@@ -1,7 +1,7 @@
 import {Space } from "antd";
 import TodayReportOverall from "../../components/Dashboard/TodayReportOverall"
-import DemoColumn from "../../components/Dashboard/ColumnReport";
-import DemoBar from "../../components/Dashboard/BarReport";
+import DemoColumn from "../../components/chart/DashboardColumnReport";
+import DemoBar from "../../components/chart/DashboardBarReport";
 
 export default function KhuyenMaiPage() {
   return (

@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 
 import { useDispatch } from "react-redux";
-import { Menu, Layout, PageHeader, Col, Row, Button, Space, Modal } from "antd";
+import {  PageHeader, Row, Button, Space} from "antd";
 import {
-  UserOutlined,
   PlusOutlined,
-  ImportOutlined,
-  DownloadOutlined,
   RestOutlined,
 } from "@ant-design/icons";
 import "./styles.css";

@@ -8,8 +8,10 @@ import SanPhams from "./routers/SanPhams.js";
 import PhieuBaoHanhs from "./routers/PhieuBaoHanhs.js";
 import PhieuHens from "./routers/PhieuHens.js";
 import TaiKhoans from "./routers/TaiKhoans.js";
-import KhuyenMais from "./routers/KhuyenMais.js"
+import KhuyenMais from "./routers/KhuyenMais.js";
 import mongoose from "mongoose";
+import HoaDons from "./routers/HoaDons.js";
+import PhieuDoiTras from "./routers/PhieuDoiTras.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -22,12 +24,13 @@ app.use(bodyParser.urlencoded({ extended: true, limit: "30mb" }));
 
 app.use("/posts", posts);
 app.use("/KhachHangs", KhachHangs);
-app.use("/NhanViens", NhanViens),
-app.use("/SanPhams", SanPhams);
+app.use("/NhanViens", NhanViens), app.use("/SanPhams", SanPhams);
 app.use("/TaiKhoans", TaiKhoans);
-app.use("/KhuyenMais",KhuyenMais);
+app.use("/KhuyenMais", KhuyenMais);
 app.use("/PhieuHens", PhieuHens);
 app.use("/PhieuBaoHanhs", PhieuBaoHanhs);
+app.use("/HoaDons", HoaDons);
+app.use("/PhieuDoiTras", PhieuDoiTras);
 
 mongoose
   .connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })

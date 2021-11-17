@@ -1,6 +1,6 @@
-import { PhieuDoiTraModel } from "../models/PhieuDoiTraModel";
+import { PhieuDoiTraModel } from "../models/PhieuDoiTraModel.js";
 
-export const getPhieuDoiTra = async (req, res) => {
+export const getPhieuDoiTras = async (req, res) => {
   try {
     const PhieuDoiTras = await PhieuDoiTraModel.find();
     console.log("PhieuDoiTras", PhieuDoiTras);

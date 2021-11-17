@@ -1,4 +1,4 @@
-import { CTHDModel } from "../models/CTHDModel";
+import { CTHDModel } from "../models/CTHDModel.js";
 
 export const getCTHD = async (req, res) => {
   try {

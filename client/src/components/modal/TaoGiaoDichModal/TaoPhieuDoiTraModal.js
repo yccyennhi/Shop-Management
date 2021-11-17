@@ -5,9 +5,9 @@ import { useSelector } from "react-redux";
 import { hideTaoPhieuTraHangModal } from "../../../redux/actions";
 import { TaoPhieuTraHangState$ } from "../../../redux/selectors";
 import { useDispatch } from "react-redux";
-import TraHangTable from "../../table/HoaDonTable/TraHangTable";
 import { v4 } from "uuid";
 import TraHangList from "../../FormList/TraHangList";
+import HoaDontable from "../../table/HoaDonTable/HoaDonTable";
 export default function TaoPhieuTraHang() {
   const dispatch = useDispatch();
   const { isShow } = useSelector(TaoPhieuTraHangState$);
@@ -19,15 +19,15 @@ export default function TaoPhieuTraHang() {
     MaKM: "",
     TenKM: "",
   });
-  const [ListInputSP, setListInputSP] = useState([]);
+  const [trahangList, settrahangList] = useState([]);
   const [textInputSP, setTextSP] = useState("");
   const onAddSP = useCallback ( (e) => {
-    setListInputSP([
-      ...ListInputSP,
+    settrahangList([
+      ...trahangList,
       { id: v4(), name: textInputSP, isCompleted: false },
     ]);
-    setListInputSP("");
-  },    [textInputSP,ListInputSP]
+    settrahangList("");
+  },    [textInputSP,trahangList]
   );
   const onTextInputChange = (event) => {
     setTextSP(event.target.value);
@@ -85,7 +85,7 @@ export default function TaoPhieuTraHang() {
               />
             </Form.Item>
           </Form>
-          <TraHangList TraHangList={ListInputSP} />
+          <TraHangList trahangList={trahangList} />
           <section style={{ float: "right", width: "200px" }}>
             <label style={{ float: "left", marginRight: "10px" }}>
               Tổng số lượng: <br />
@@ -102,7 +102,7 @@ export default function TaoPhieuTraHang() {
           </section>
       </Col>
       <Col span={15} pull={5}>
-        <TraHangTable />
+        <HoaDontable />
       </Col>
     </Row>
   );
@@ -111,7 +111,7 @@ export default function TaoPhieuTraHang() {
       <Modal
         title="Thêm phiếu trả hàng"
         visible={isShow}
-        width={1200}
+        width={1300}
         onCancel={onClosePhieuTraHang}
       >
         {body}

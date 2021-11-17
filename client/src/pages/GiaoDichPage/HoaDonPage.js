@@ -32,7 +32,7 @@ export default function HoaDonPage() {
   return (
     <>
       <PageHeader className="site-page-header" title="Hóa Đơn" />
-      <div>
+      <div style = {{marginBottom : '20px'}}>
         <Row justify="end">
           <Space>
             <Button type="primary" icon={<PlusOutlined />} >
@@ -47,8 +47,8 @@ export default function HoaDonPage() {
           </Space>
         </Row>
         <TaoHoaDonModal/>
-        <DataTableHoaDon />
       </div>
+      <DataTableHoaDon />
       ,
     </>
   );

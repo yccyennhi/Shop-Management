@@ -1,15 +1,11 @@
 import React from "react";
 import TraHang from "./TraHang";
-export default function TraHangList({ ListInputSP }) {
+export default function TraHangList({ trahangList }) {
   return (
-    // <>
-    //   {ListInputSP.map((SP) => (
-    //     <TraHang key = {SP.id} sp={SP} />
-    //   ))}
-    //</>
-   <>
-    <TraHang/>
-    <TraHang/>
+    <>
+      {trahangList.map((trahang) => (
+        <TraHang key = {trahang.id} trahang={trahang} />
+      ))}
     </>
   );
 }

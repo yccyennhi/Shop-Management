@@ -227,17 +227,6 @@ export default function HoaDontable() {
 
   const { selectedRowKeys, loading } = select;
 
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: (selectedRowKeys) => {
-      setSelect({
-        ...select,
-        selectedRowKeys: selectedRowKeys,
-      });
-    },
-  };
-  const hasSelected = selectedRowKeys.length > 0;
-
   function handleMenuClick(e) {
     message.info("Click on menu item.");
     console.log("click", e);
@@ -252,23 +241,10 @@ export default function HoaDontable() {
   return (
     <div>
       <Row></Row>
-      <div style={{ marginBottom: 16 }}>
-        <Dropdown overlay={menu} disabled={!hasSelected}>
-          <Button>
-            Thao tác <DownOutlined />
-          </Button>
-        </Dropdown>
-        <span style={{ marginLeft: 8 }}>
-          {selectedRowKeys.length > 0
-            ? `Có ${selectedRowKeys.length} hóa đơn được chọn`
-            : ""}
-        </span>
-      </div>
       <Table
         loading={false}
         pagination={true}
         columns={columns}
-        rowSelection={rowSelection}
         expandable={{
           expandedRowRender: (record) => <FormHoaDon />,
           rowExpandable: (record) => record.MaHD !== "Not Expandable",

@@ -1,4 +1,3 @@
-
 export const BACKEND_URL = "http://localhost:5000";
 export const FRONTEND_URL = "http://localhost:3000";
 
@@ -40,5 +39,16 @@ export const INIT_STATE = {
         TaoSanPhamModal: {
         isShow: false
     },
+
     data: null,
+  PhieuDoiTras: {
+    isLoading: false,
+    data: [],
+  },
+  TaoHoaDonModal: {
+    isShow: false,
+  },
+  TaoPhieuTraHangModal: {
+    isShow: false,
+  },
 };

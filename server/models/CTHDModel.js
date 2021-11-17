@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 
 const schema = new mongoose.Schema(
   {
+    MaHD:{
+      type: String,
+      required: true,
+    },
     MaSP: {
       type: String,
       required: true,

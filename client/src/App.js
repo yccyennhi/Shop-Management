@@ -5,6 +5,8 @@ import Menubar from "./components/header/Menubar/Menubar";
 import Headerbar from "./components/header/Headerbar/Headerbar";
 import HangHoaPage from "./pages/HangHoaPage/HangHoaPage";
 import KhuyenMaiPage from "./pages/KhuyenMaiPage/KhuyenMaiPage";
+import HoaDonPage from "./pages/GiaoDichPage/HoaDonPage";
+import DoiTraPage from "./pages/GiaoDichPage/DoiTraPage";
 import DashboardPage from "./pages/DashboardPage/DashboardPage";
 import BCCuoiNgayPage from "./pages/BaoCaoPage/BCCuoiNgayPage";
 import BCBanHangPage from "./pages/BaoCaoPage/BCBanHangPage";
@@ -33,6 +35,8 @@ const { Header, Content, Footer } = Layout;
                 <Route path ='/PhieuBaoHanhs' exact component={PhieuBaoHanhPage}/>
 
                 <Route path='/KhuyenMais' exact component={KhuyenMaiPage}/>
+                <Route path ='/HoaDons' exact component ={HoaDonPage}/>
+                <Route path = '/TraHangs' exact component ={DoiTraPage}/>
                 <Route path='/TongQuans' exact component={DashboardPage}/>
                 <Route path='/CuoiNgays' exact component={BCCuoiNgayPage}/>
                 <Route path='/BCBanHangs' exact component={BCBanHangPage}/>    

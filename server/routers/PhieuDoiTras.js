@@ -1,6 +1,6 @@
 import express from "express";
 import {
-  getPhieuDoiTra,
+  getPhieuDoiTras,
   createPhieuDoiTra,
   updatePhieuDoiTra,
 } from "../controllers/PhieuDoiTra.js";
@@ -8,7 +8,7 @@ import {
 const router = express.Router();
 //http://localhost:5001/PhieuDoiTras
 
-router.get("/", getPhieuDoiTra);
+router.get("/", getPhieuDoiTras);
 router.post("/", createPhieuDoiTra);
 router.post("/update", updatePhieuDoiTra);
 

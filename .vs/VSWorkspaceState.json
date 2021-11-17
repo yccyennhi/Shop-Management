@@ -1,8 +1,12 @@
 {
   "ExpandedNodes": [
     "",
-    "\\server"
+    "\\client",
+    "\\client\\src",
+    "\\server",
+    "\\server\\controllers",
+    "\\server\\routers"
   ],
-  "SelectedNode": "\\server\\package.json",
+  "SelectedNode": "\\server\\index.js",
   "PreviewInSolutionExplorer": false
 }

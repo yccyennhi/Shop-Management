@@ -1,0 +1,39 @@
+.main_body{
+  margin-top: 10px;
+  margin-left: 6%;
+  margin-right: 6%;
+}
+
+.main_body_section{
+  background: #fff;
+}
+
+.sidebar_left {
+  float:  left;
+  width: 20%;
+  margin-right: 3%;
+}
+
+.sidebar_mid {
+  float:  left;
+  width: 75%;
+}
+
+.section_style{
+  padding: 15px;
+  background: #fff;
+  margin-bottom: 15px;
+}
+
+#components-layout-demo-top .logo {
+  float: left;
+  width: 100%;
+  max-width: 169px;
+  height: 31px;
+  margin: 16px 24px 16px 0;
+}
+
+.ant-row-rtl #components-layout-demo-top .logo {
+  float: right;
+  margin: 16px 0 16px 24px;
+}

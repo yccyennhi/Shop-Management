@@ -1,7 +1,13 @@
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
+
 import posts from "./routers/posts.js";
+import HoaDons from "./routers/HoaDons.js";
+import CTHDs from "./routers/CTHDs.js";
+import PhieuDoiTras from "./routers/PhieuDoiTras.js";
+import CTPDTs from "./routers/CTPDTs.js";
+
 import KhachHangs from "./routers/KhachHangs.js";
 import NhanViens from "./routers/NhanViens.js";
 import SanPhams from "./routers/SanPhams.js";
@@ -24,6 +30,10 @@ app.use("/posts", posts);
 app.use("/KhachHangs", KhachHangs);
 app.use("/NhanViens", NhanViens),
 app.use("/SanPhams", SanPhams);
+app.use("/HoaDons", HoaDons);
+app.use("/CTHDs",CTHDs);
+app.use("/PhieuDoiTras",PhieuDoiTras);
+app.use("/CTPDTs",CTPDTs);
 app.use("/TaiKhoans", TaiKhoans);
 app.use("/KhuyenMais",KhuyenMais);
 app.use("/PhieuHens", PhieuHens);

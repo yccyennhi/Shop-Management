@@ -3,9 +3,11 @@ import "./App.css";
 import { Menu, Layout, Breadcrumb, Col, Row, Button } from "antd";
 import Menubar from "./components/header/Menubar/Menubar";
 import Headerbar from "./components/header/Headerbar/Headerbar";
-import HangHoaPage from "./pages/HangHoaPage/HangHoaPage";
-import KhuyenMaiPage from "./pages/KhuyenMaiPage/KhuyenMaiPage";
 import DashboardPage from "./pages/DashboardPage/DashboardPage";
+import HangHoaPage from "./pages/HangHoaPage/HangHoaPage";
+import KhachHangPage from "./pages/KhachHangPage/KhachHangPage";
+import KhuyenMaiPage from "./pages/KhuyenMaiPage/KhuyenMaiPage";
+import NhanVienPage from "./pages/NhanVienPage/NhanVienPage";
 
 function App() {
 const { Header, Content, Footer } = Layout;
@@ -26,8 +28,10 @@ const { SubMenu } = Menu;
           <Content style={{ padding: "0 50px" }}>
             <div className="site-layout-content">
               <Switch>
-                <Route path ='/SanPhams' exact component={HangHoaPage}/>
+                <Route path='/SanPhams' exact component={HangHoaPage}/>
+                <Route path='/KhachHangs' exact component={KhachHangPage}/>
                 <Route path='/KhuyenMais' exact component={KhuyenMaiPage}/>
+                <Route path='/NhanViens' exact component={NhanVienPage}/>
                 <Route path='/TongQuans' exact component={DashboardPage}/>
               </Switch>
             </div>

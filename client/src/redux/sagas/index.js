@@ -221,7 +221,7 @@ function* deletePhieuBaoHanhSaga(action) {
   }
 }
 /* #endregion */
-* fetchHoaDonsSaga(action) {
+function* fetchHoaDonsSaga(action) {
   try {
     const HoaDons = yield call(api.fetchHoaDons);
     yield put(actions.getHoaDons.getHoaDonsSuccess(HoaDons.data));

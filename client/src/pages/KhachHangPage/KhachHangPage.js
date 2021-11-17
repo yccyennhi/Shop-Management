@@ -6,13 +6,12 @@ import {
   PlusOutlined,
 } from "@ant-design/icons";
 import KhachHangTable from "../../components/table/KhachHangTable/KhachHangTable";
-import DangNhapForm from "../../components/form/DangNhapForm/DangNhapForm";
 
 export default function KhachHangPage() {
   return (
     <>
       <div>
-        {/* <PageHeader
+        <PageHeader
           className="site-page-header"
           title="Khách hàng"
           extra={[
@@ -27,8 +26,7 @@ export default function KhachHangPage() {
             </Button>,
           ]}
         />
-        <KhachHangTable /> */}
-        <DangNhapForm/>
+        <KhachHangTable />
       </div>
     </>
   );

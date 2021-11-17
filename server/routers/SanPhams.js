@@ -3,6 +3,7 @@ import {
   getSanPhams,
   createSanPham,
   updateSanPham,
+  deleteSanPham
 } from "../controllers/SanPham.js";
 
 const router = express.Router();
@@ -10,6 +11,7 @@ const router = express.Router();
 
 router.get("/", getSanPhams);
 router.post("/", createSanPham);
-router.post("/update", updateSanPham);
+router.patch("/:id", updateSanPham);
+router.delete("/:id", deleteSanPham);
 
 export default router;

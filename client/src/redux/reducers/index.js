@@ -8,6 +8,8 @@ import HoaDons from "./HoaDons";
 import KhuyenMais from './KhuyenMais'
 import Modal from './Modal';
 import TaoSanPhamModal from "./TaoSanPhamModal";
+import PhieuBaoHanhs from "./PhieuBaoHanhs.js";
+import PhieuHens from "./PhieuHens";
 import PhieuDoiTras  from "./PhieuDoiTras";
 import TaoHoaDonModal from "./TaoHoaDonModal";
 import TaoPhieuTraHangModal  from "./TaoPhieuTraHangModal";
@@ -21,6 +23,8 @@ export default combineReducers({
   HoaDons,
   Modal,
   TaoSanPhamModal,
+  PhieuBaoHanhs,
+  PhieuHens,
   PhieuDoiTras,
   TaoHoaDonModal,
   TaoPhieuTraHangModal,

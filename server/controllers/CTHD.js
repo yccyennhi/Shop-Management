@@ -1,15 +1,6 @@
-import { CTHDModel } from "../models/CTHDModel.js";
+import { CTHDModel } from "../models/CTHDModel";
 
 export const getCTHD = async (req, res) => {
-  // const cthd = new CTHDModel({
-  //   MaSP: 'MA001',
-  //   SoLuong: 0,
-  //   MauSac: 'do',
-  //   Syze: '39',
-  //   DonGia: 0,
-  //   ThanhTien: 0,
-  // });
-  // cthd.save();
   try {
     const CTHDs = await CTHDModel.find();
     console.log("CTHDs", CTHDs);

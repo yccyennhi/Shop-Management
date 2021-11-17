@@ -6,5 +6,6 @@ export const TaoPhieuTraHangState$ = (state) => state.TaoPhieuTraHangModal;
 export const modalState$ = (state) => state.Modal;
 export const SanPhamsState$ = (state) => state.SanPhams.data;
 export const TaoSanPhamModalState$ = (state) => state.TaoSanPhamModal;
+export const PhieuBaoHanhsState$ = (state) => state.PhieuBaoHanhs.data;
 
 export const PhieuDoiTrasState$ = (state)=>state.PhieuDoiTras.data;

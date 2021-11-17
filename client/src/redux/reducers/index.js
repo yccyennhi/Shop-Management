@@ -6,6 +6,8 @@ import TaiKhoans from "./TaiKhoans";
 import Modal from './Modal';
 import TaoSanPhamModal from "./TaoSanPhamModal";
 import KhuyenMais from "./KhuyenMais";
+import PhieuBaoHanhs from "./PhieuBaoHanhs.js";
+import PhieuHens from "./PhieuHens";
 
 export default combineReducers({
   KhachHangs,
@@ -15,4 +17,6 @@ export default combineReducers({
   Modal,
   KhuyenMais,
   TaoSanPhamModal,
+  PhieuBaoHanhs,
+  PhieuHens,
 });

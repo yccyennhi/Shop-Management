@@ -28,6 +28,8 @@ function* fetchNhanViensSaga(action) {
 function* fetchSanPhamsSaga(action) {
   try {
     const SanPhams = yield call(api.fetchSanPhams);
+    console.log("[NhanViens]", SanPhams);
+
     yield put(actions.getSanPhams.getSanPhamsSuccess(SanPhams.data));
   } catch (err) {
     console.error(err);

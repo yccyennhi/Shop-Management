@@ -13,7 +13,7 @@ export const updateKhuyenMai = (payload) =>
   
 export const deleteKhuyenMai = (id) => axios.delete(`${URL}/KhuyenMais/${id}`);
 //
-//Phieu Bao Hanh
+//Phieu Hen
 export const fetchPhieuHens = () => axios.get(`${URL}/PhieuBaoHanhs`);
 
 export const createPhieuHen = (payload) =>

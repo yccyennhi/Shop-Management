@@ -12,22 +12,21 @@ import {
   Form,
   Space,
 } from "antd";
+import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import { useDispatch, useSelector } from "react-redux";
 import ExpandedRowRender from "./ExpandedRowRender";
 import { SearchOutlined, DownOutlined } from "@ant-design/icons";
 import { SanPhamsState$ } from "../../../redux/selectors";
 import * as actions from "../../../redux/actions";
-import { deleteSanPham } from "../../../redux/actions/index.js";
 const { Search } = Input;
 
-function HangHoatable({setCurrentId}) {
+function HangHoatable({ setCurrentId }) {
   const dispatch = useDispatch();
   const SanPhams = useSelector(SanPhamsState$);
   React.useEffect(() => {
     dispatch(actions.getSanPhams.getSanPhamsRequest());
   }, [dispatch]);
   const dataSource = SanPhams;
-
   const refreshPage = () => {
     window.location.reload();
   };
@@ -213,15 +212,15 @@ function HangHoatable({setCurrentId}) {
 
   const { selectedRowKeys, loading } = select;
 
-  // function resolveAfter1Second() {
-  //   console.log("starting fast promise")
-  //   return new Promise(resolve => {
-  //     setTimeout(function() {
-  //       resolve("fast")
-  //       console.log("fast promise is done")
-  //     }, 1000)
-  //   })
-  // }
+  function resolveAfter1Second() {
+    console.log("starting fast promise")
+    return new Promise(resolve => {
+      setTimeout(function() {
+        resolve("fast")
+        console.log("fast promise is done")
+      }, 1000)
+    })
+  }
   const rowSelection = {
     selectedRowKeys,
     onChange: (selectedRowKeys) => {
@@ -257,10 +256,23 @@ function HangHoatable({setCurrentId}) {
           // };
         }}
       >
-        Xóa hàng hóa
+        Nhập hàng
       </Menu.Item>
-      <Menu.Item key="2">2nd menu item</Menu.Item>
-      <Menu.Item key="3">3rd menu item</Menu.Item>
+      <Menu.Item key="2">Xóa hàng hóa</Menu.Item>
+      <Menu.Item key="3">Ngừng kinh doanh</Menu.Item>
+      <Menu.Item key="4">Cập nhật bảo hành</Menu.Item>
+      <Menu.Item
+        key="5"
+        onClick={() => {
+          <ReactHTMLTableToExcel
+            table="table1"
+            filename="Emp file"
+            sheet="Sheet 1"
+          ></ReactHTMLTableToExcel>;
+        }}
+      >
+        Xuất file
+      </Menu.Item>
     </Menu>
   );
   return (
@@ -276,8 +288,8 @@ function HangHoatable({setCurrentId}) {
           {hasSelected ? `Có ${selectedRowKeys.length} hàng hóa được chọn` : ""}
         </span>
       </div>
-
       <Table
+        //key="table1"
         loading={false}
         pagination={true}
         scroll={{ x: 1500, y: 500 }}
@@ -293,6 +305,18 @@ function HangHoatable({setCurrentId}) {
         rowKey="_id"
         dataSource={dataSource}
       ></Table>
+      
+      {/* <Button
+        onClick={() => {
+          <ReactHTMLTableToExcel
+            table="table1"
+            filename="Emp file"
+            sheet="Sheet 1"
+          ></ReactHTMLTableToExcel>;
+        }}
+      >
+        xuat <DownOutlined />
+      </Button> */}
     </div>
   );
 }

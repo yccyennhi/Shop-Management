@@ -23,10 +23,21 @@ export const INIT_STATE = {
         isLoading: false,
         data:[],
     },
+    PhieuBaoHanhs:{
+        isLoading: false,
+        data:[],
+    },
+    PhieuHens:{
+        isLoading: false,
+        data:[],
+    },
     Modal:{
         isShow: false,
     },
     TaoSanPhamModal: {
+        isShow: false
+    },
+        TaoSanPhamModal: {
         isShow: false
     },
     data: null,

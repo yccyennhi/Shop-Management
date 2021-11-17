@@ -9,6 +9,7 @@ import DashboardPage from "./pages/DashboardPage/DashboardPage";
 import BCCuoiNgayPage from "./pages/BaoCaoPage/BCCuoiNgayPage";
 import BCBanHangPage from "./pages/BaoCaoPage/BCBanHangPage";
 import BCHangHoaPage from "./pages/BaoCaoPage/BCHangHoaPage";
+import PhieuBaoHanhPage from "./pages/PhieuBaoHanhPage/PhieuBaoHanhPage";
 
 function App() {
 const { Header, Content, Footer } = Layout;
@@ -29,6 +30,8 @@ const { Header, Content, Footer } = Layout;
             <div className="site-layout-content">
               <Switch>
                 <Route path ='/SanPhams' exact component={HangHoaPage}/>
+                <Route path ='/PhieuBaoHanhs' exact component={PhieuBaoHanhPage}/>
+
                 <Route path='/KhuyenMais' exact component={KhuyenMaiPage}/>
                 <Route path='/TongQuans' exact component={DashboardPage}/>
                 <Route path='/CuoiNgays' exact component={BCCuoiNgayPage}/>

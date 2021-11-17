@@ -12,6 +12,9 @@ import BCBanHangPage from "./pages/BaoCaoPage/BCBanHangPage";
 import BCHangHoaPage from "./pages/BaoCaoPage/BCHangHoaPage";
 import PhieuBaoHanhPage from "./pages/PhieuBaoHanhPage/PhieuBaoHanhPage";
 import NhanVienPage from "./pages/NhanVienPage/NhanVienPage";
+import HoaDonPage from "./pages/GiaoDichPage/HoaDonPage";
+import DoiTraPage from "./pages/GiaoDichPage/DoiTraPage";
+import DashboardPage from "./pages/DashboardPage/DashboardPage";
 
 function App() {
 const { Header, Content, Footer } = Layout;
@@ -36,6 +39,8 @@ const { Header, Content, Footer } = Layout;
                 <Route path='/KhachHangs' exact component={KhachHangPage}/>
                 <Route path='/KhuyenMais' exact component={KhuyenMaiPage}/>
                 <Route path='/NhanViens' exact component={NhanVienPage}/>
+                <Route path ='/HoaDons' exact component ={HoaDonPage}/>
+                <Route path = '/TraHangs' exact component ={DoiTraPage}/>
                 <Route path='/TongQuans' exact component={DashboardPage}/>
                 <Route path='/CuoiNgays' exact component={BCCuoiNgayPage}/>
                 <Route path='/BCBanHangs' exact component={BCBanHangPage}/>    

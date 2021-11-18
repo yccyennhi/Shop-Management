@@ -11,18 +11,24 @@ export default function KhuyenMaisReducer(state = INIT_STATE.KhuyenMais, action)
     case getType(getKhuyenMais.getKhuyenMaisSuccess):
       return {
         ...state,
-        isLoading: false,
+        isLoading: true,
         data: action.payload,
       };
     case getType(getKhuyenMais.getKhuyenMaisFailure):
       return {
         ...state,
         isLoading: false,
+        data: action.error,
       };
       case getType(createKhuyenMai.createKhuyenMaiSuccess):
         return {
           ...state,
           data: [...state.data, action.payload],
+        };
+       case getType(createKhuyenMai.createKhuyenMaiFailure):
+          return {
+            ...state,
+            isLoading: false,
         };
       case getType(updateKhuyenMai.updateKhuyenMaiSuccess):
           return {

@@ -36,9 +36,6 @@ export default function KhuyenMaiPage() {
               >
                 Thêm khuyến mãi
               </Button>
-              <Button type="secondary" icon={<RestOutlined />}>
-                Xóa khuyến mãi
-              </Button>
             </Space>
           </Row>
           <CreateKhuyenMaiModal currentId={currentId} setCurrentId={setCurrentId}/>

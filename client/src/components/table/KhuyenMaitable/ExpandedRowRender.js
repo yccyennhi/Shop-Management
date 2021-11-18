@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Table, Input, Row, PageHeader, Descriptions, Tag, Button } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { PageHeader, Descriptions, Tag, Button } from "antd";
+import { useDispatch } from "react-redux";
 import { deleteKhuyenMai, showModal } from "../../../redux/actions";
 
 export default function ExpandedRowRender({ record, setCurrentId }) {
+  
   const dispatch = useDispatch();
 
   const openCreateKMModal = React.useCallback(() => {
@@ -12,7 +13,7 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
   }, [dispatch]);
 
   const onDelete = React.useCallback(() => {
-    console.log('record data', record);
+
     dispatch(deleteKhuyenMai.deleteKhuyenMaiRequest(record._id));
   }, [record, dispatch]);
 

@@ -275,9 +275,9 @@ export default function TaoSanPhamModal({ currentId, setCurrentId }) {
             value={data.TrangThai}
             onChange={(e) => setData({ ...data, TrangThai: e })}
           >
-            <Option value="0">Ngừng kinh doanh</Option>
-            <Option value="1">Hết hàng</Option>
-            <Option value="2">Đang kinh doanh</Option>
+            <Option value="Ngừng kinh doanh">Ngừng kinh doanh</Option>
+            <Option value="Hết hàng">Hết hàng</Option>
+            <Option value="Đang kinh doanh">Đang kinh doanh</Option>
           </Select>
         </Form.Item>
         <Form.Item
@@ -291,8 +291,8 @@ export default function TaoSanPhamModal({ currentId, setCurrentId }) {
             value={data.BaoHanh}
             onChange={(e) => setData({ ...data, BaoHanh: e })}
           >
-            <Option value="0">Không bảo hành</Option>
-            <Option value="1">Có bảo hành</Option>
+            <Option value="Không bảo hành">Không bảo hành</Option>
+            <Option value="Có bảo hành">Có bảo hành</Option>
           </Select>
         </Form.Item>
         <Form.Item name="MoTa" label="Mô tả">

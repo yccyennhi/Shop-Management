@@ -29,11 +29,13 @@ export default function SanPhamsReducer(state = INIT_STATE.SanPhams, action) {
     case getType(createSanPham.createSanPhamSuccess):
       return {
         ...state,
+        isLoading: true,
         data: [...state.data, action.payload],
       };
     case getType(updateSanPham.updateSanPhamSuccess):
       return {
         ...state,
+        isLoading: true,
         data: state.data.map((SanPham) =>
           SanPham._id === action.payload._id ? action.payload : SanPham
         ),
@@ -41,6 +43,7 @@ export default function SanPhamsReducer(state = INIT_STATE.SanPhams, action) {
     case getType(deleteSanPham.deleteSanPhamSuccess):
       return {
         ...state,
+        isLoading: true,
         data: state.data.filter(
           (SanPham) => SanPham._id !== action.payload
         ),

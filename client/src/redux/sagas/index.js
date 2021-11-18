@@ -24,7 +24,6 @@ function* fetchNhanViensSaga(action) {
   }
 }
 
-
 function* fetchSanPhamsSaga(action) {
   try {
     const SanPhams = yield call(api.fetchSanPhams);
@@ -40,7 +39,9 @@ function* fetchSanPhamsSaga(action) {
 function* fetchPhieuBaoHanhsSaga(action) {
   try {
     const PhieuBaoHanhs = yield call(api.fetchPhieuBaoHanhs);
-    yield put(actions.getPhieuBaoHanhs.getPhieuBaoHanhsSuccess(PhieuBaoHanhs.data));
+    yield put(
+      actions.getPhieuBaoHanhs.getPhieuBaoHanhsSuccess(PhieuBaoHanhs.data)
+    );
   } catch (err) {
     console.error(err);
     yield put(actions.getPhieuBaoHanhs.getPhieuBaoHanhsFailure(err));
@@ -129,7 +130,7 @@ function* updateSanPhamSaga(action) {
   try {
     const SanPham = yield call(api.updateSanPham, action.payload);
     console.log("updateSanPhamSaga", SanPham.data);
-    yield put(actions.updateSanPham.deleteSanPhamSuccess(SanPham.data));
+    yield put(actions.updateSanPham.updateSanPhamSuccess(SanPham.data));
   } catch (err) {
     console.error(err);
     yield put(actions.updateSanPham.updateSanPhamFailure(err));
@@ -139,9 +140,7 @@ function* updateSanPhamSaga(action) {
 function* deleteSanPhamSaga(action) {
   try {
     const SanPham = yield call(api.deleteSanPham, action.payload);
-    yield put(
-      actions.deleteSanPham.deleteSanPhamSuccess(SanPham.data._id)
-    );
+    yield put(actions.deleteSanPham.deleteSanPhamSuccess(SanPham.data._id));
   } catch (err) {
     console.error(err);
     yield put(actions.deleteSanPham.deleteSanPhamFailure(err));
@@ -165,7 +164,7 @@ function* updatePhieuHenSaga(action) {
   try {
     const PhieuHen = yield call(api.updatePhieuHen, action.payload);
     console.log("updatePhieuHenSaga", PhieuHen.data);
-    yield put(actions.updatePhieuHen.deletePhieuHenSuccess(PhieuHen.data));
+    yield put(actions.updatePhieuHen.updatehieuHenSuccess(PhieuHen.data));
   } catch (err) {
     console.error(err);
     yield put(actions.updatePhieuHen.updatePhieuHenFailure(err));
@@ -175,9 +174,7 @@ function* updatePhieuHenSaga(action) {
 function* deletePhieuHenSaga(action) {
   try {
     const PhieuHen = yield call(api.deletePhieuHen, action.payload);
-    yield put(
-      actions.deletePhieuHen.deletePhieuHenSuccess(PhieuHen.data._id)
-    );
+    yield put(actions.deletePhieuHen.deletePhieuHenSuccess(PhieuHen.data._id));
   } catch (err) {
     console.error(err);
     yield put(actions.deletePhieuHen.deletePhieuHenFailure(err));
@@ -185,14 +182,15 @@ function* deletePhieuHenSaga(action) {
 }
 /* #endregion */
 
-
 /* #region  PhieuBaoHanh */
 
 function* createPhieuBaoHanhSaga(action) {
   try {
     const PhieuBaoHanh = yield call(api.createPhieuBaoHanh, action.payload);
     console.log("createPhieuBaoHanhSaga", PhieuBaoHanh);
-    yield put(actions.createPhieuBaoHanh.createPhieuBaoHanhSuccess(PhieuBaoHanh.data));
+    yield put(
+      actions.createPhieuBaoHanh.createPhieuBaoHanhSuccess(PhieuBaoHanh.data)
+    );
   } catch (err) {
     console.error(err);
     yield put(actions.createPhieuBaoHanh.createPhieuBaoHanhFailure(err));
@@ -202,7 +200,9 @@ function* updatePhieuBaoHanhSaga(action) {
   try {
     const PhieuBaoHanh = yield call(api.updatePhieuBaoHanh, action.payload);
     console.log("updatePhieuBaoHanhSaga", PhieuBaoHanh.data);
-    yield put(actions.updatePhieuBaoHanh.deletePhieuBaoHanhSuccess(PhieuBaoHanh.data));
+    yield put(
+      actions.updatePhieuBaoHanh.updatePhieuBaoHanhSuccess(PhieuBaoHanh.data)
+    );
   } catch (err) {
     console.error(err);
     yield put(actions.updatePhieuBaoHanh.updatePhieuBaoHanhFailure(err));
@@ -213,7 +213,9 @@ function* deletePhieuBaoHanhSaga(action) {
   try {
     const PhieuBaoHanh = yield call(api.deletePhieuBaoHanh, action.payload);
     yield put(
-      actions.deletePhieuBaoHanh.deletePhieuBaoHanhSuccess(PhieuBaoHanh.data._id)
+      actions.deletePhieuBaoHanh.deletePhieuBaoHanhSuccess(
+        PhieuBaoHanh.data._id
+      )
     );
   } catch (err) {
     console.error(err);
@@ -234,7 +236,9 @@ function* fetchHoaDonsSaga(action) {
 function* fetchPhieuDoiTrasSaga(action) {
   try {
     const PhieuDoiTras = yield call(api.fetchTraHangs);
-    yield put(actions.getPhieuDoiTras.getPhieuDoiTrasSuccess(PhieuDoiTras.data));
+    yield put(
+      actions.getPhieuDoiTras.getPhieuDoiTrasSuccess(PhieuDoiTras.data)
+    );
   } catch (err) {
     console.error(err);
     yield put(actions.getPhieuDoiTras.getPhieuDoiTrasFailure(err));
@@ -255,12 +259,10 @@ function* mySaga() {
     fetchTaiKhoansSaga
   );
 
-  
   /* #region  SanPham */
 
-
   yield takeLatest(actions.getSanPhams.getSanPhamsRequest, fetchSanPhamsSaga);
-  
+
   yield takeLatest(
     actions.createSanPham.createSanPhamRequest,
     createSanPhamSaga
@@ -278,8 +280,10 @@ function* mySaga() {
 
   /* #region  PhieuBaoHanh */
 
-
-  yield takeLatest(actions.getPhieuBaoHanhs.getPhieuBaoHanhsRequest, fetchPhieuBaoHanhsSaga);
+  yield takeLatest(
+    actions.getPhieuBaoHanhs.getPhieuBaoHanhsRequest,
+    fetchPhieuBaoHanhsSaga
+  );
 
   yield takeLatest(
     actions.createPhieuBaoHanh.createPhieuBaoHanhRequest,
@@ -295,20 +299,28 @@ function* mySaga() {
     deletePhieuBaoHanhSaga
   );
   /* #endregion */
-  
+
   /* #region  PhieuHen */
 
-
-  yield takeLatest(actions.getPhieuHens.getPhieuHensRequest, fetchPhieuHensSaga);
+  yield takeLatest(
+    actions.getPhieuHens.getPhieuHensRequest,
+    fetchPhieuHensSaga
+  );
 
   yield takeLatest(
     actions.createPhieuHen.createPhieuHenRequest,
     createPhieuHenSaga
   );
 
-  yield takeLatest(actions.getTaiKhoans.getTaiKhoansRequest, fetchTaiKhoansSaga);
-  yield takeLatest(actions.getHoaDons.getHoaDonsRequest,fetchHoaDonsSaga);
-  yield takeLatest(actions.getPhieuDoiTras.getPhieuDoiTrasRequest,fetchPhieuDoiTrasSaga);
+  yield takeLatest(
+    actions.getTaiKhoans.getTaiKhoansRequest,
+    fetchTaiKhoansSaga
+  );
+  yield takeLatest(actions.getHoaDons.getHoaDonsRequest, fetchHoaDonsSaga);
+  yield takeLatest(
+    actions.getPhieuDoiTras.getPhieuDoiTrasRequest,
+    fetchPhieuDoiTrasSaga
+  );
   yield takeLatest(
     actions.updatePhieuHen.updatePhieuHenRequest,
     updatePhieuHenSaga
@@ -318,7 +330,6 @@ function* mySaga() {
     deletePhieuHenSaga
   );
   /* #endregion */
-
 
   /* #region  KhuyenMai */
   yield takeLatest(

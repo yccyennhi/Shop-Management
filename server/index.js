@@ -1,13 +1,7 @@
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-
 import posts from "./routers/posts.js";
-import HoaDons from "./routers/HoaDons.js";
-import CTHDs from "./routers/CTHDs.js";
-import PhieuDoiTras from "./routers/PhieuDoiTras.js";
-import CTPDTs from "./routers/CTPDTs.js";
-
 import KhachHangs from "./routers/KhachHangs.js";
 import NhanViens from "./routers/NhanViens.js";
 import SanPhams from "./routers/SanPhams.js";
@@ -15,6 +9,12 @@ import PhieuBaoHanhs from "./routers/PhieuBaoHanhs.js";
 import PhieuHens from "./routers/PhieuHens.js";
 import TaiKhoans from "./routers/TaiKhoans.js";
 import KhuyenMais from "./routers/KhuyenMais.js"
+import HoaDons from "./routers/HoaDons.js"
+import CTHDs from "./routers/CTHDs.js"
+
+import PhieuDoiTras from "./routers/PhieuDoiTras.js";
+import CTPDTs from "./routers/CTPDTs.js";
+
 import mongoose from "mongoose";
 
 const app = express();
@@ -38,6 +38,9 @@ app.use("/TaiKhoans", TaiKhoans);
 app.use("/KhuyenMais",KhuyenMais);
 app.use("/PhieuHens", PhieuHens);
 app.use("/PhieuBaoHanhs", PhieuBaoHanhs);
+// app.use("/HoaDons", CTPDT);
+
+
 
 mongoose
   .connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })

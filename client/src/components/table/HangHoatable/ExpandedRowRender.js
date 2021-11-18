@@ -13,16 +13,16 @@ import {
   Space,
 } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteSanPham, showTaoSanPhamModal } from "../../../redux/actions";
+import { deleteSanPham, showUpdateSanPhamModal } from "../../../redux/actions";
 
 export default function ExpandedRowRender({ record, setCurrentId }) {
   const dispatch = useDispatch();
   const [status, setStatus] = useState("blue");
   const [statuss, setStatuss] = useState("Đang kinh doanh");
 
-  const openCreateSanPhamModal = React.useCallback(() => {
+  const openUpdateSanPhamModal = React.useCallback(() => {
     setCurrentId(record._id);
-    dispatch(showTaoSanPhamModal());
+    dispatch(showUpdateSanPhamModal());
   }, [dispatch]);
 
   const onDelete = React.useCallback(() => {
@@ -36,7 +36,7 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
         title={record.TenSP}
         subTitle={record.MaSP}
         extra={[
-          <Button key="1" type="primary" onClick={openCreateSanPhamModal}>
+          <Button key="1" type="primary" onClick={openUpdateSanPhamModal}>
             Sửa
           </Button>,
           <Button key="2" onClick={onDelete}>
@@ -44,33 +44,24 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
           </Button>,
         ]}
       >
-        {/* <Tag color="red" visible={record.TrangThai == 0}>
-          {record.TrangThai == 0 ? "Ngừng kinh doanh" : ""}
-        </Tag>
-        <Tag color="yellow" visible={record.TrangThai == 1}>
-          {record.TrangThai == 1 ? "Hết hàng" : ""}
-        </Tag>
-        <Tag color="blue" visible={record.TrangThai == 2}>
-          {record.TrangThai == 2 ? "Đang kinh doanh" : ""}
-        </Tag> */}
         <Row justify="start">
           <Col flex={1}>
             <Space direction="vertical">
               <Row>
                 <Space direction="horizontal">
-                  <Tag color="red" visible={record.TrangThai == 0}>
-                    {record.TrangThai == 0 ? "Ngừng kinh doanh" : ""}
+                  <Tag color="red" visible={record.TrangThai == "Ngừng kinh doanh"}>
+                    {record.TrangThai}
                   </Tag>
-                  <Tag color="yellow" visible={record.TrangThai == 1}>
-                    {record.TrangThai == 1 ? "Hết hàng" : ""}
+                  <Tag color="yellow" visible={record.TrangThai == "Hết hàng"}>
+                    {record.TrangThai}
                   </Tag>
-                  <Tag color="blue" visible={record.TrangThai == 2}>
-                    {record.TrangThai == 2 ? "Đang kinh doanh" : ""}
+                  <Tag color="blue" visible={record.TrangThai == "Đang kinh doanh"}>
+                    {record.TrangThai}
                   </Tag>
-                  <Tag color="grey" visible={record.BaoHanh == 0}>
+                  <Tag color="grey" visible={record.BaoHanh == "Không bảo hành"}>
                     Không bảo hành
                   </Tag>
-                  <Tag color="green" visible={record.BaoHanh == 1}>
+                  <Tag color="green" visible={record.BaoHanh == "Có bảo hành"}>
                     Có bảo hành
                   </Tag>
                 </Space>
@@ -101,18 +92,6 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
             ,
           </Col>
         </Row>
-
-        <>
-          {/* <Descriptions size="medium" column={3} row={5}>
-            <Descriptions.Item></Descriptions.Item>
-            <Descriptions.Item label="Phần trăm giảm">
-              {record.PhanTram}
-            </Descriptions.Item>
-            <Descriptions.Item label="Số lượng">
-              {record.SoLuong}
-            </Descriptions.Item>
-          </Descriptions> */}
-        </>
       </PageHeader>
     </>
   );

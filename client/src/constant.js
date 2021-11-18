@@ -36,10 +36,10 @@ export const INIT_STATE = {
   TaoSanPhamModal: {
     isShow: false,
   },
-  TaoSanPhamModal: {
+
+  UpdateSanPhamModal: {
     isShow: false,
   },
-
   HoaDons: {
     isLoading: false,
     data: [],

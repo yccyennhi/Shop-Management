@@ -74,7 +74,6 @@ function* fetchKhuyenMaisSaga(action) {
     const KhuyenMais = yield call(api.fetchKhuyenMais);
     yield put(actions.getKhuyenMais.getKhuyenMaisSuccess(KhuyenMais.data));
   } catch (err) {
-    console.error(err);
     yield put(actions.getKhuyenMais.getKhuyenMaisFailure(err));
   }
 }
@@ -82,9 +81,9 @@ function* fetchKhuyenMaisSaga(action) {
 function* createKhuyenMaiSaga(action) {
   try {
     const KhuyenMai = yield call(api.createKhuyenMai, action.payload);
+    console.log('Tạo mới');
     yield put(actions.createKhuyenMai.createKhuyenMaiSuccess(KhuyenMai.data));
   } catch (err) {
-    console.error(err);
     yield put(actions.createKhuyenMai.createKhuyenMaiFailure(err));
   }
 }

@@ -6,6 +6,10 @@ const schema = new Schema(
       type: String,
       required: true,
     },
+    ThoiGian: {
+      type: Date,
+      required: true,
+    },
     MaNV: {
       type: Schema.Types.ObjectId,
       ref: 'NhanViens',

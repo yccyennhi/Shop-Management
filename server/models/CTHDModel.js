@@ -35,4 +35,4 @@ const schema = new Schema(
   },
   { timestamps: true }
 );
-export const CTHDModel = mongoose.model("CTHD", schema);
+export const CTHDModel = mongoose.model("CTHDs", schema);

@@ -28,4 +28,4 @@ const schema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-export const CTPDTModel = mongoose.model("CTPDT", schema);
+export const CTPDTModel = mongoose.model("CTPDTs", schema);

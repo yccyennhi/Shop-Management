@@ -23,4 +23,4 @@ const schema = new Schema(
   },
   { timestamps: true }
 );
-export const PhieuDoiTraModel = mongoose.model("PhieuDoiTra", schema);
+export const PhieuDoiTraModel = mongoose.model("PhieuDoiTras", schema);

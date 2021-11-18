@@ -4,7 +4,6 @@ import NhanViens from "./NhanViens";
 import SanPhams from "./SanPhams";
 import TaiKhoans from "./TaiKhoans";
 import HoaDons from "./HoaDons";
-
 import KhuyenMais from './KhuyenMais'
 import Modal from './Modal';
 import TaoSanPhamModal from "./TaoSanPhamModal";

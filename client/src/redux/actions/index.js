@@ -134,7 +134,6 @@ export const deleteKhuyenMai = createActions({
   deleteKhuyenMaiFailure: (err) => err,
 });
 
-
 export const getPhieuDoiTras = createActions({
     getPhieuDoiTrasRequest: undefined,
     getPhieuDoiTrasSuccess: (payload) => payload,

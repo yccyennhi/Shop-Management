@@ -221,7 +221,6 @@ function* deletePhieuBaoHanhSaga(action) {
   }
 }
 /* #endregion */
-
 function* fetchHoaDonsSaga(action) {
   try {
     const HoaDons = yield call(api.fetchHoaDons);
@@ -306,10 +305,10 @@ function* mySaga() {
     actions.createPhieuHen.createPhieuHenRequest,
     createPhieuHenSaga
   );
+
+  yield takeLatest(actions.getTaiKhoans.getTaiKhoansRequest, fetchTaiKhoansSaga);
   yield takeLatest(actions.getHoaDons.getHoaDonsRequest,fetchHoaDonsSaga);
   yield takeLatest(actions.getPhieuDoiTras.getPhieuDoiTrasRequest,fetchPhieuDoiTrasSaga);
-
-
   yield takeLatest(
     actions.updatePhieuHen.updatePhieuHenRequest,
     updatePhieuHenSaga

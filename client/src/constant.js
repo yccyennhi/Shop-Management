@@ -26,7 +26,7 @@ export const INIT_STATE = {
     isLoading: false,
     data: [],
   },
-  HoaDons: {
+  PhieuHens: {
     isLoading: false,
     data: [],
   },
@@ -42,6 +42,11 @@ export const INIT_STATE = {
   },
   TaoSanPhamModal: {
     isShow: false,
+  },
+
+  HoaDons: {
+    isLoading: false,
+    data: [],
   },
   data: null,
   PhieuDoiTras: {

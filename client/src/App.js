@@ -15,6 +15,7 @@ import NhanVienPage from "./pages/NhanVienPage/NhanVienPage";
 import HoaDonPage from "./pages/GiaoDichPage/HoaDonPage";
 import DoiTraPage from "./pages/GiaoDichPage/DoiTraPage";
 
+
 function App() {
   const { Header, Content, Footer } = Layout;
 
@@ -33,21 +34,17 @@ function App() {
           <Content style={{ padding: "0 50px" }}>
             <div className="site-layout-content">
               <Switch>
-                <Route path="/SanPhams" exact component={HangHoaPage} />
-                <Route
-                  path="/PhieuBaoHanhs"
-                  exact
-                  component={PhieuBaoHanhPage}
-                />
-                <Route path="/KhachHangs" exact component={KhachHangPage} />
-                <Route path="/KhuyenMais" exact component={KhuyenMaiPage} />
-                <Route path="/NhanViens" exact component={NhanVienPage} />
-                <Route path="/HoaDons" exact component={HoaDonPage} />
-                <Route path="/TraHangs" exact component={DoiTraPage} />
-                <Route path="/TongQuans" exact component={DashboardPage} />
-                <Route path="/CuoiNgays" exact component={BCCuoiNgayPage} />
-                <Route path="/BCBanHangs" exact component={BCBanHangPage} />
-                <Route path="/BCHangHoas" exact component={BCHangHoaPage} />
+                <Route path ='/SanPhams' exact component={HangHoaPage}/>
+                <Route path ='/PhieuBaoHanhs' exact component={PhieuBaoHanhPage}/>
+                <Route path='/KhuyenMais' exact component={KhuyenMaiPage}/>
+                <Route path ='/HoaDons' exact component ={HoaDonPage}/>
+                <Route path = '/TraHangs' exact component ={DoiTraPage}/>
+                <Route path='/KhachHangs' exact component={KhachHangPage}/>
+                <Route path='/NhanViens' exact component={NhanVienPage}/>
+                <Route path='/TongQuans' exact component={DashboardPage}/>
+                <Route path='/CuoiNgays' exact component={BCCuoiNgayPage}/>
+                <Route path='/BCBanHangs' exact component={BCBanHangPage}/>    
+                <Route path='/BCHangHoas' exact component={BCHangHoaPage}/>
               </Switch>
             </div>
           </Content>

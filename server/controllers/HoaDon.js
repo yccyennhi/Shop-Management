@@ -2,17 +2,7 @@ import { HoaDonModel } from "../models/HoaDonModel.js";
 
 export const getHoaDons = async (req, res) => {
   try {
-    const hoadon = new HoaDonModel({
-      MaHD:'HD00001',
-      MaNV: 'NV001',
-      MaKM: 'KM001',
-      MaKH: 'KH001',
-      DiemTru: 0,
-      TongTienHang: 144000,
-      ThanhTien: 122400,
-    })
-
-    hoadon.save();
+  
     const HoaDons = await HoaDonModel.find();
     console.log("HoaDons", HoaDons);
     res.status(200).json(HoaDons);

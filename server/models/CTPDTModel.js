@@ -1,17 +1,20 @@
 import mongoose from "mongoose";
-
+const Schema= mongoose.Schema
 const schema = new mongoose.Schema(
   {
     MaPDT: {
-      type: String,
+      type:  Schema.Types.ObjectId,
+      ref: 'PhieuDoiTras',
       required: true,
     },
     MaSP: {
-      type: String,
+      type:  Schema.Types.ObjectId,
+      ref: 'SanPhams',
       required: true,
     },
     MaHD: {
-      type: String,
+      type:  Schema.Types.ObjectId,
+      ref: 'HoaDons',
       required: true,
     },
     SoLuong: {

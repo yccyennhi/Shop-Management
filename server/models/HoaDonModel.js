@@ -1,25 +1,24 @@
 import mongoose from "mongoose";
-
-const schema = new mongoose.Schema(
+const Schema = mongoose.Schema
+const schema = new Schema(
   {
     MaHD: {
       type: String,
       required: true,
     },
-    MaSP: {
-      type: Array,
-      required: true,
-    },
     MaNV: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'NhanViens',
       required: true,
     },
     MaKM: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'KhuyenMais',
       required: false,
     },
     MaKH: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'KhachHangs',
       required: false,
     },
     DiemTru: {

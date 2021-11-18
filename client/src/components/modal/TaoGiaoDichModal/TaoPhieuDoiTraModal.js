@@ -16,90 +16,96 @@ export default function TaoPhieuTraHang() {
   }, [dispatch]);
 
   const [data, setData] = React.useState({
-    MaKM: "",
-    TenKM: "",
+    MaHD: "",
   });
   const [trahangList, settrahangList] = useState([]);
   const [textInputSP, setTextSP] = useState("");
-  const onAddSP = useCallback ( (e) => {
-    settrahangList([
-      ...trahangList,
-      { id: v4(), name: textInputSP, isCompleted: false },
-    ]);
-    settrahangList("");
-  },    [textInputSP,trahangList]
+  const [textInputSL, setTextSL] = useState();
+  const onAddSPclick = useCallback(
+    (e) => {
+      settrahangList([
+        ...trahangList,
+        { id: v4(), name: textInputSP, number: textInputSL, isCompleted: false },
+      ]);
+      setTextSP("");
+      //setTextSL(1);
+    },
+    [textInputSP, trahangList]
   );
-  const onTextInputChange = (event) => {
-    setTextSP(event.target.value);
-  };
+  const onTextInputChange = useCallback((e) => {
+    setTextSP(e.target.value);
+  }, []);
+  const onInputSLChange = useCallback((e) => {
+    setTextSL(e.target.value);
+  });
   const body = (
     <Row>
       <Col span={6} push={17}>
-          <Form
-            labelCol={{
-              span: 25,
-            }}
-            wrapperCol={{
-              span: 25,
-            }}
-            layout="vertical"
-          >
-            <Form.Item label="Mã hóa đơn:">
-              <Input data={data.MaKM} placeholder="Nhập mã hóa đơn" />
-            </Form.Item>
-            <Form.Item label="Mã sản phẩm:">
-              <Form.Item
-                name="MaSP"
-                rules={[{ required: true }]}
-                style={{ display: "inline-block", width: "calc(55% )" }}
-              >
-                <Input
-                  value={textInputSP}
-                  placeholder="Mã sản phẩm"
-                  onChange={onTextInputChange}
-                />
-              </Form.Item>
-              <Form.Item
-                name="SoLuong"
-                rules={[{ required: true }]}
-                style={{
-                  display: "inline-block",
-                  width: "calc(30%)",
-                  marginLeft: "10px",
-                }}
-              >
-                <InputNumber
-                  min={1}
-                  defaultValue={1}
-                  disabled={!textInputSP}
-                  style={{ width: "70px" }}
-                />
-              </Form.Item>
-              <Button
-                type="primary"
-                icon={<PlusOutlined />}
-                size={20}
-                onClick={onAddSP}
-                disabled={!textInputSP}
-                style={{ float: "right" }}
+        <Form
+          labelCol={{
+            span: 25,
+          }}
+          wrapperCol={{
+            span: 25,
+          }}
+          layout="vertical"
+        >
+          <Form.Item label="Mã hóa đơn:">
+            <Input data={data.MaHD} placeholder="Nhập mã hóa đơn" />
+          </Form.Item>
+          <Form.Item label="Mã sản phẩm:">
+            <Form.Item
+              style={{ display: "inline-block", width: "calc(55% )" }}
+            >
+              <Input
+                value={textInputSP}
+                placeholder="Mã sản phẩm"
+                allowClear="true"
+                onPressEnter={onAddSPclick}
+                onChange={onTextInputChange}
               />
             </Form.Item>
-          </Form>
-          <TraHangList trahangList={trahangList} />
-          <section style={{ float: "right", width: "200px" }}>
-            <label style={{ float: "left", marginRight: "10px" }}>
-              Tổng số lượng: <br />
-              Tổng tiền hàng trả: <br />
-              Giảm giá phiếu trả: <br />
-              Phí trả hàng: <br />
-              Tiền khách cần trả: <br />
-              Tiền khách nợ:
-            </label>
-            <label>
-              3 <br /> 1440000 <br /> 0 <br /> 60000 <br /> 1500000 <br /> 0{" "}
-              <br />
-            </label>
-          </section>
+            <Form.Item
+              style={{
+                display: "inline-block",
+                width: "calc(30%)",
+                marginLeft: "10px",
+              }}
+            >
+              <InputNumber
+                min={1}
+                value = {textInputSL}
+                defaultValue={1}
+                disabled={!textInputSP}
+                style={{ width: "70px" }}
+                onChange = { onInputSLChange}
+              />
+            </Form.Item>
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              size={20}
+              onClick={onAddSPclick}
+              disabled={!textInputSP}
+              style={{ float: "right" }}
+            />
+          </Form.Item>
+        </Form>
+        <TraHangList trahangList={trahangList} />
+        <section style={{ float: "right", width: "200px", marginTop: '20px' }}>
+          <label style={{ float: "left", marginRight: "10px" }}>
+            Tổng số lượng: <br />
+            Tổng tiền hàng trả: <br />
+            Giảm giá phiếu trả: <br />
+            Phí trả hàng: <br />
+            Tiền trả khách: <br />
+            Tiền đã trả:
+          </label>
+          <label>
+            3 <br /> 1440000 <br /> 0 <br /> 60000 <br /> 1500000 <br /> 0{" "}
+            <br />
+          </label>
+        </section>
       </Col>
       <Col span={15} pull={5}>
         <HoaDontable />

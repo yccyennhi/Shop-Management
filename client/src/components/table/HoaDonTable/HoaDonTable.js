@@ -244,6 +244,7 @@ export default function HoaDontable() {
       <Table
         loading={false}
         pagination={true}
+        scroll = {{x: 600,y : 500}}
         columns={columns}
         expandable={{
           expandedRowRender: (record) => <FormHoaDon />,

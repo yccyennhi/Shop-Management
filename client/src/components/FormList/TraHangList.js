@@ -4,7 +4,7 @@ export default function TraHangList({ trahangList }) {
   return (
     <>
       {trahangList.map((trahang) => (
-        <TraHang key = {trahang.id} trahang={trahang} />
+        <TraHang key = {trahang.id} trahang={trahang}  />
       ))}
     </>
   );

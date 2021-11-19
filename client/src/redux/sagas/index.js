@@ -90,10 +90,9 @@ function* createKhuyenMaiSaga(action) {
 function* updateKhuyenMaiSaga(action) {
   try {
     const KhuyenMai = yield call(api.updateKhuyenMai, action.payload);
-    console.log("updateKhuyenMaiSaga", KhuyenMai.data);
     yield put(actions.updateKhuyenMai.updateKhuyenMaiSuccess(KhuyenMai.data));
   } catch (err) {
-    yield put(actions.updateKhuyenMai.updateKhuyenMaiFailure(err));
+    yield put(actions.updateKhuyenMai.updateKhuyenMaiFailure(err.response.data));
   }
 }
 
@@ -104,7 +103,7 @@ function* deleteKhuyenMaiSaga(action) {
       actions.deleteKhuyenMai.deleteKhuyenMaiSuccess(KhuyenMai.data._id)
     );
   } catch (err) {
-    yield put(actions.deleteKhuyenMai.deleteKhuyenMaiFailure(err));
+    yield put(actions.deleteKhuyenMai.deleteKhuyenMaiFailure(err.response.data));
   }
 }
 /* #endregion */

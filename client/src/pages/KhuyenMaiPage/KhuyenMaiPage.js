@@ -8,7 +8,7 @@ import {
 
 import KhuyenMaitable from "../../components/table/KhuyenMaitable/KhuyenMaitable";
 import { showModal } from "../../redux/actions";
-import CreateKhuyenMaiModal from "../../components/modal/CreateKMModal/CreateKhuyenMaiModal";
+import KhuyenMaiModal from "../../components/modal/KhuyenMaiModal/KhuyenMaiModal";
 
 export default function KhuyenMaiPage() {
 
@@ -36,7 +36,7 @@ export default function KhuyenMaiPage() {
               </Button>
             </Space>
           </Row>
-          <CreateKhuyenMaiModal currentId={currentId} setCurrentId={setCurrentId}/>
+          <KhuyenMaiModal currentId={currentId} setCurrentId={setCurrentId}/>
           <KhuyenMaitable setCurrentId={setCurrentId} />
         </div>
       </div>

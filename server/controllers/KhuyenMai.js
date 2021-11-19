@@ -24,14 +24,12 @@ export const getKhuyenMais = async (req, res) => {
 export const createKhuyenMai = async (req, res, next) => {
   try {
     const newKhuyenMai = req.body;
-
     const { MaKM } = req.body;
     const getKhuyenMais = await KhuyenMaiModel.findOne({ MaKM });
     if (getKhuyenMais) {
-        res.status(400).send({message:'Đã tồn tại mã'});
-        next();
+      res.status(400).send( "Đã tồn tại mã trong hệ thống");
+      next();
     } else {
-      console.log('KM', newKhuyenMai);
       const KhuyenMai = new KhuyenMaiModel(newKhuyenMai);
       await KhuyenMai.save();
       res.status(200).json(KhuyenMai);
@@ -43,7 +41,7 @@ export const createKhuyenMai = async (req, res, next) => {
   }
 };
 
-export const updateKhuyenMai = async (req, res) => {
+export const updateKhuyenMai = async (req, res, next) => {
   try {
     const updateKhuyenMai = req.body;
 
@@ -57,16 +55,16 @@ export const updateKhuyenMai = async (req, res) => {
       );
       res.status(200).json(KhuyenMai);
     } else {
-      return res
-        .status(404)
-        .json({ success: false, message: "Đã tồn tại giao dịch" });
+      res.status(400).send("Đã tồn tại giao dịch");
+      next();
     }
   } catch (err) {
     res.status(400).json({ error: err });
+    next();
   }
 };
 
-export const deleteKhuyenMai = async (req, res) => {
+export const deleteKhuyenMai = async (req, res, next) => {
   try {
     const { id } = req.params;
 
@@ -76,11 +74,11 @@ export const deleteKhuyenMai = async (req, res) => {
       const KhuyenMai = await KhuyenMaiModel.findByIdAndRemove(id);
       res.status(200).json(KhuyenMai);
     } else {
-      return res
-        .status()
-        .json({ success: false, message: "Đã tồn tại giao dịch" });
+      res.status(400).send("Đã tồn tại giao dịch");
+      next();
     }
   } catch (err) {
-    return res.status(400).json({ error: err });
+    res.status(400).json({ error: err });
+    next();
   }
 };

@@ -30,7 +30,7 @@ export default function KhuyenMaisReducer(
         isLoading: false,
       };
     case getType(createKhuyenMai.createKhuyenMaiSuccess):
-      messageSuccess('Thêm mới thành công');
+      messageSuccess("Thêm mới thành công");
       return {
         ...state,
         data: [...state.data, action.payload],
@@ -42,19 +42,36 @@ export default function KhuyenMaisReducer(
         isLoading: true,
         data: [...state.data],
       };
-    case getType(updateKhuyenMai.updateKhuyenMaiSuccess):
+    case getType(updateKhuyenMai.updateKhuyenMaiSuccess):    
+      messageSuccess("Chỉnh sửa thành công");
       return {
         ...state,
         data: state.data.map((KhuyenMai) =>
           KhuyenMai._id === action.payload._id ? action.payload : KhuyenMai
         ),
       };
+    case getType(updateKhuyenMai.updateKhuyenMaiFailure):
+      messageError(action.payload);
+      return {
+        ...state,
+        isLoading: true,
+        data: [...state.data],
+      };
     case getType(deleteKhuyenMai.deleteKhuyenMaiSuccess):
+      messageSuccess("Xóa thành công");
       return {
         ...state,
         data: state.data.filter(
           (KhuyenMai) => KhuyenMai._id !== action.payload
         ),
+      };
+    case getType(deleteKhuyenMai.deleteKhuyenMaiFailure):
+      console.log('saga', action.payload);
+      messageError(action.payload);
+      return {
+        ...state,
+        isLoading: true,
+        data: [...state.data],
       };
     default:
       return state;

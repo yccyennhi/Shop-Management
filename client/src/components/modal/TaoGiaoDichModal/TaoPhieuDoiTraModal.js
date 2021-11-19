@@ -19,25 +19,28 @@ export default function TaoPhieuTraHang() {
     MaHD: "",
   });
   const [trahangList, settrahangList] = useState([]);
-  const [textInputSP, setTextSP] = useState("");
-  const [textInputSL, setTextSL] = useState();
+  const [textInputSP, setTextInput] = useState({
+    MaSP: "",
+    SL: 0,
+  });
   const onAddSPclick = useCallback(
     (e) => {
       settrahangList([
+        {
+          id: v4(),
+          name: textInputSP.MaSP,
+          number: textInputSP.SL,
+          isCompleted: false,
+        },
         ...trahangList,
-        { id: v4(), name: textInputSP, number: textInputSL, isCompleted: false },
       ]);
-      setTextSP("");
-      //setTextSL(1);
+      setTextInput({ MaSP: "", SL: 0 });
     },
     [textInputSP, trahangList]
   );
-  const onTextInputChange = useCallback((e) => {
-    setTextSP(e.target.value);
-  }, []);
-  const onInputSLChange = useCallback((e) => {
-    setTextSL(e.target.value);
-  });
+  const OnButtonTraHangClick = useCallback((id)=> {
+    settrahangList(prevState => prevState.map((trahang) => trahang.id === id? {...trahangList, trahang: null} : trahang));
+  },[]);
   const body = (
     <Row>
       <Col span={6} push={17}>
@@ -54,15 +57,13 @@ export default function TaoPhieuTraHang() {
             <Input data={data.MaHD} placeholder="Nhập mã hóa đơn" />
           </Form.Item>
           <Form.Item label="Mã sản phẩm:">
-            <Form.Item
-              style={{ display: "inline-block", width: "calc(55% )" }}
-            >
+            <Form.Item style={{ display: "inline-block", width: "calc(55% )" }}>
               <Input
-                value={textInputSP}
+                value={textInputSP.MaSP}
                 placeholder="Mã sản phẩm"
                 allowClear="true"
                 onPressEnter={onAddSPclick}
-                onChange={onTextInputChange}
+                onChange={(e) => setTextInput({ MaSP: e.target.value, SL: 1 })}
               />
             </Form.Item>
             <Form.Item
@@ -74,11 +75,12 @@ export default function TaoPhieuTraHang() {
             >
               <InputNumber
                 min={1}
-                value = {textInputSL}
-                defaultValue={1}
+                value={textInputSP.SL}
                 disabled={!textInputSP}
                 style={{ width: "70px" }}
-                onChange = { onInputSLChange}
+                onChange={(e) => {
+                  setTextInput({ ...textInputSP, SL: e });
+                }}
               />
             </Form.Item>
             <Button
@@ -91,16 +93,16 @@ export default function TaoPhieuTraHang() {
             />
           </Form.Item>
         </Form>
-        <TraHangList trahangList={trahangList} />
-        <section style={{ float: "right", width: "200px", marginTop: '20px' }}>
-          <label style={{ float: "left", marginRight: "10px" }}>
-            Tổng số lượng: <br />
-            Tổng tiền hàng trả: <br />
-            Giảm giá phiếu trả: <br />
-            Phí trả hàng: <br />
-            Tiền trả khách: <br />
-            Tiền đã trả:
-          </label>
+        <TraHangList trahangList={trahangList} OnButtonTraHangClick={OnButtonTraHangClick}/>
+        <section style={{ float: "right", width: "200px", marginTop: "20px" }}>
+          <h4 style={{ float: "left", marginRight: "10px" }}>
+            Tổng số lượng <span style={{ float: "right" }}> : </span> <br />
+            Tổng tiền hàng trả <span style={{ float: "right" }}> : </span> <br />
+            Giảm giá phiếu trả <span style={{ float: "right" }}> : </span> <br />
+            Phí trả hàng <span style={{ float: "right" }}> : </span> <br />
+            Tiền trả khách <span style={{ float: "right" }}> : </span> <br />
+            Tiền đã trả <span style={{ float: "right" }}> : </span>
+          </h4>
           <label>
             3 <br /> 1440000 <br /> 0 <br /> 60000 <br /> 1500000 <br /> 0{" "}
             <br />

@@ -21,18 +21,15 @@ export const getKhuyenMais = async (req, res) => {
   }
 };
 
-export const createKhuyenMai = async (req, res) => {
+export const createKhuyenMai = async (req, res, next) => {
   try {
     const newKhuyenMai = req.body;
 
     const { MaKM } = req.body;
-    console.log("Makm", MaKM);
     const getKhuyenMais = await KhuyenMaiModel.findOne({ MaKM });
-
-    console.log("getKhuyenMais", getKhuyenMais);
-    if (getKhuyenMais) { ((err) =>
-      res.status(404).send('Đã tồn tại mã'));
-
+    if (getKhuyenMais) {
+        res.status(400).send({message:'Đã tồn tại mã'});
+        next();
     } else {
       console.log('KM', newKhuyenMai);
       const KhuyenMai = new KhuyenMaiModel(newKhuyenMai);
@@ -42,6 +39,7 @@ export const createKhuyenMai = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: err });
+    next();
   }
 };
 

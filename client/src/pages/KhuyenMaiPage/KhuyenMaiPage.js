@@ -4,13 +4,11 @@ import { useDispatch } from "react-redux";
 import {  PageHeader, Row, Button, Space} from "antd";
 import {
   PlusOutlined,
-  RestOutlined,
 } from "@ant-design/icons";
-import "./styles.css";
 
 import KhuyenMaitable from "../../components/table/KhuyenMaitable/KhuyenMaitable";
 import { showModal } from "../../redux/actions";
-import CreateKhuyenMaiModal from "../../components/CreateKMModal/CreateKhuyenMaiModal";
+import CreateKhuyenMaiModal from "../../components/modal/CreateKMModal/CreateKhuyenMaiModal";
 
 export default function KhuyenMaiPage() {
 

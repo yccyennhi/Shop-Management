@@ -1,22 +1,15 @@
 import React, { useState, useEffect } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
-import { modalState$ } from "../../redux/selectors";
+import { modalState$ } from "../../../redux/selectors";
 
-import {
-  Form,
-  Input,
-  DatePicker,
-  InputNumber,
-  Switch,
-  Modal,
-} from "antd";
+import { Form, Input, DatePicker, InputNumber, Switch, Modal, Alert } from "antd";
 
 import {
   createKhuyenMai,
   updateKhuyenMai,
   hideModal,
-} from "../../redux/actions";
+} from "../../../redux/actions";
 import moment from "moment";
 
 export default function CreateKhuyenMaiModal({ currentId, setCurrentId }) {
@@ -35,8 +28,9 @@ export default function CreateKhuyenMaiModal({ currentId, setCurrentId }) {
   });
 
   const KhuyenMaiValue = useSelector((state) =>
-    state.KhuyenMais.data.find((KhuyenMai) =>
-      KhuyenMai._id === currentId ? KhuyenMai : null
+    state.KhuyenMais.data.find((KhuyenMai) => 
+    KhuyenMai._id === currentId ? KhuyenMai : null
+      
     )
   );
   useEffect(() => {
@@ -65,8 +59,7 @@ export default function CreateKhuyenMaiModal({ currentId, setCurrentId }) {
       dispatch(updateKhuyenMai.updateKhuyenMaiRequest(data));
     } else {
       dispatch(createKhuyenMai.createKhuyenMaiRequest(data));
-    }
-
+    };
     onClose();
   }, [data, dispatch, onClose]);
 
@@ -81,9 +74,7 @@ export default function CreateKhuyenMaiModal({ currentId, setCurrentId }) {
         }}
         layout="horizontal"
       >
-        <Form.Item 
-          label="Mã khuyến mãi"
-        >
+        <Form.Item label="Mã khuyến mãi">
           <Input
             value={data.MaKM}
             onChange={(e) => setData({ ...data, MaKM: e.target.value })}
@@ -166,7 +157,7 @@ export default function CreateKhuyenMaiModal({ currentId, setCurrentId }) {
   return (
     <div>
       <Modal
-        title={(currentId?"Câp nhật khuyến mãi":"Thêm khuyến mãi")}
+        title={currentId ? "Câp nhật khuyến mãi" : "Thêm khuyến mãi"}
         visible={isShow}
         onCancel={onClose}
         onOk={onSubmit}

@@ -8,7 +8,7 @@ function* fetchKhachHangsSaga(action) {
     console.log("[KhachHangs]", KhachHangs);
     yield put(actions.getKhachHangs.getKhachHangsSuccess(KhachHangs));
   } catch (err) {
-    console.error(err);
+    console.err(err);
     yield put(actions.getKhachHangs.getKhachHangsFailure(err));
   }
 }
@@ -19,7 +19,7 @@ function* fetchNhanViensSaga(action) {
     console.log("[NhanViens]", NhanViens);
     yield put(actions.getNhanViens.getNhanViensSuccess(NhanViens));
   } catch (err) {
-    console.error(err);
+    console.err(err);
     yield put(actions.getNhanViens.getNhanViensFailure(err));
   }
 }
@@ -32,7 +32,7 @@ function* fetchSanPhamsSaga(action) {
 
     yield put(actions.getSanPhams.getSanPhamsSuccess(SanPhams.data));
   } catch (err) {
-    console.error(err);
+    console.err(err);
     yield put(actions.getSanPhams.getSanPhamsFailure(err));
   }
 }
@@ -42,7 +42,7 @@ function* fetchPhieuBaoHanhsSaga(action) {
     const PhieuBaoHanhs = yield call(api.fetchPhieuBaoHanhs);
     yield put(actions.getPhieuBaoHanhs.getPhieuBaoHanhsSuccess(PhieuBaoHanhs.data));
   } catch (err) {
-    console.error(err);
+    console.err(err);
     yield put(actions.getPhieuBaoHanhs.getPhieuBaoHanhsFailure(err));
   }
 }
@@ -52,7 +52,7 @@ function* fetchPhieuHensSaga(action) {
     const PhieuHens = yield call(api.fetchPhieuHens);
     yield put(actions.getPhieuHens.getPhieuHensSuccess(PhieuHens.data));
   } catch (err) {
-    console.error(err);
+    console.err(err);
     yield put(actions.getPhieuHens.getPhieuHensFailure(err));
   }
 }
@@ -63,7 +63,7 @@ function* fetchTaiKhoansSaga(action) {
     console.log("[TaiKhoans]", TaiKhoans);
     yield put(actions.getTaiKhoans.getTaiKhoansSuccess(TaiKhoans));
   } catch (err) {
-    console.error(err);
+    console.err(err);
     yield put(actions.getTaiKhoans.getTaiKhoansFailure(err));
   }
 }
@@ -81,10 +81,9 @@ function* fetchKhuyenMaisSaga(action) {
 function* createKhuyenMaiSaga(action) {
   try {
     const KhuyenMai = yield call(api.createKhuyenMai, action.payload);
-    console.log('Tạo mới');
     yield put(actions.createKhuyenMai.createKhuyenMaiSuccess(KhuyenMai.data));
-  } catch (err) {
-    yield put(actions.createKhuyenMai.createKhuyenMaiFailure(err));
+  } catch (error) {
+    yield put(actions.createKhuyenMai.createKhuyenMaiFailure(error.response.data));
   }
 }
 
@@ -94,7 +93,6 @@ function* updateKhuyenMaiSaga(action) {
     console.log("updateKhuyenMaiSaga", KhuyenMai.data);
     yield put(actions.updateKhuyenMai.updateKhuyenMaiSuccess(KhuyenMai.data));
   } catch (err) {
-    console.error(err);
     yield put(actions.updateKhuyenMai.updateKhuyenMaiFailure(err));
   }
 }
@@ -106,7 +104,6 @@ function* deleteKhuyenMaiSaga(action) {
       actions.deleteKhuyenMai.deleteKhuyenMaiSuccess(KhuyenMai.data._id)
     );
   } catch (err) {
-    console.error(err);
     yield put(actions.deleteKhuyenMai.deleteKhuyenMaiFailure(err));
   }
 }
@@ -120,7 +117,7 @@ function* createSanPhamSaga(action) {
     console.log("createSanPhamSaga", SanPham);
     yield put(actions.createSanPham.createSanPhamSuccess(SanPham.data));
   } catch (err) {
-    console.error(err);
+    console.err(err);
     yield put(actions.createSanPham.createSanPhamFailure(err));
   }
 }
@@ -130,7 +127,7 @@ function* updateSanPhamSaga(action) {
     console.log("updateSanPhamSaga", SanPham.data);
     yield put(actions.updateSanPham.deleteSanPhamSuccess(SanPham.data));
   } catch (err) {
-    console.error(err);
+    console.err(err);
     yield put(actions.updateSanPham.updateSanPhamFailure(err));
   }
 }
@@ -142,7 +139,7 @@ function* deleteSanPhamSaga(action) {
       actions.deleteSanPham.deleteSanPhamSuccess(SanPham.data._id)
     );
   } catch (err) {
-    console.error(err);
+    console.err(err);
     yield put(actions.deleteSanPham.deleteSanPhamFailure(err));
   }
 }
@@ -156,7 +153,7 @@ function* createPhieuHenSaga(action) {
     console.log("createPhieuHenSaga", PhieuHen);
     yield put(actions.createPhieuHen.createPhieuHenSuccess(PhieuHen.data));
   } catch (err) {
-    console.error(err);
+    console.err(err);
     yield put(actions.createPhieuHen.createPhieuHenFailure(err));
   }
 }
@@ -166,7 +163,7 @@ function* updatePhieuHenSaga(action) {
     console.log("updatePhieuHenSaga", PhieuHen.data);
     yield put(actions.updatePhieuHen.deletePhieuHenSuccess(PhieuHen.data));
   } catch (err) {
-    console.error(err);
+    console.err(err);
     yield put(actions.updatePhieuHen.updatePhieuHenFailure(err));
   }
 }
@@ -178,7 +175,7 @@ function* deletePhieuHenSaga(action) {
       actions.deletePhieuHen.deletePhieuHenSuccess(PhieuHen.data._id)
     );
   } catch (err) {
-    console.error(err);
+    console.err(err);
     yield put(actions.deletePhieuHen.deletePhieuHenFailure(err));
   }
 }
@@ -193,7 +190,7 @@ function* createPhieuBaoHanhSaga(action) {
     console.log("createPhieuBaoHanhSaga", PhieuBaoHanh);
     yield put(actions.createPhieuBaoHanh.createPhieuBaoHanhSuccess(PhieuBaoHanh.data));
   } catch (err) {
-    console.error(err);
+    console.err(err);
     yield put(actions.createPhieuBaoHanh.createPhieuBaoHanhFailure(err));
   }
 }
@@ -203,7 +200,7 @@ function* updatePhieuBaoHanhSaga(action) {
     console.log("updatePhieuBaoHanhSaga", PhieuBaoHanh.data);
     yield put(actions.updatePhieuBaoHanh.deletePhieuBaoHanhSuccess(PhieuBaoHanh.data));
   } catch (err) {
-    console.error(err);
+    console.err(err);
     yield put(actions.updatePhieuBaoHanh.updatePhieuBaoHanhFailure(err));
   }
 }
@@ -215,7 +212,7 @@ function* deletePhieuBaoHanhSaga(action) {
       actions.deletePhieuBaoHanh.deletePhieuBaoHanhSuccess(PhieuBaoHanh.data._id)
     );
   } catch (err) {
-    console.error(err);
+    console.err(err);
     yield put(actions.deletePhieuBaoHanh.deletePhieuBaoHanhFailure(err));
   }
 }
@@ -225,7 +222,7 @@ function* fetchHoaDonsSaga(action) {
     const HoaDons = yield call(api.fetchHoaDons);
     yield put(actions.getHoaDons.getHoaDonsSuccess(HoaDons.data));
   } catch (err) {
-    console.error(err);
+    console.err(err);
     yield put(actions.getHoaDons.getHoaDonsFailure(err));
   }
 }
@@ -235,7 +232,7 @@ function* fetchPhieuDoiTrasSaga(action) {
     const PhieuDoiTras = yield call(api.fetchTraHangs);
     yield put(actions.getPhieuDoiTras.getPhieuDoiTrasSuccess(PhieuDoiTras.data));
   } catch (err) {
-    console.error(err);
+    console.err(err);
     yield put(actions.getPhieuDoiTras.getPhieuDoiTrasFailure(err));
   }
 }

@@ -1,31 +1,15 @@
-import {
-  Modal,
-  Form,
-  Select,
-  Button,
-  InputNumber,
-  Input,
-  Space,
-  message,
-  Upload,
-} from "antd";
+import { Modal, Form, Select, InputNumber, Input } from "antd";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import FileBase64 from "react-file-base64";
-import { SettingOutlined, UploadOutlined } from "@ant-design/icons";
-
-import { TaoSanPhamModalState$ } from "../../../redux/selectors/index.js";
+import { UpdateTrangThaiSanPhamModalState$ } from "../../../redux/selectors/index.js";
 import {
-  hideTaoSanPhamModal,
+  hideUpdateTrangThaiSanPhamModal,
   createSanPham,
   updateSanPham,
 } from "../../../redux/actions/index.js";
 const { Option } = Select;
 
-const formItemLayout = {
-  labelCol: { span: 6 },
-  wrapperCol: { span: 17 },
-};
 const validateMessages = {
   required: "${label} không được bỏ trống!",
   types: {
@@ -36,7 +20,10 @@ const validateMessages = {
   },
 };
 
-export default function TaoSanPhamModal({ currentId, setCurrentId }) {
+export default function UpdateTrangThaiSanPhamModal({
+  currentId,
+  setCurrentId,
+}) {
   const [form] = Form.useForm();
 
   const [data, setData] = useState({
@@ -64,29 +51,15 @@ export default function TaoSanPhamModal({ currentId, setCurrentId }) {
   }, [SanPhamValue]);
   const dispatch = useDispatch();
 
-  const { isShow } = useSelector(TaoSanPhamModalState$);
+  const { isShow } = useSelector(UpdateTrangThaiSanPhamModalState$);
 
   const handleCancel = React.useCallback(() => {
-    dispatch(hideTaoSanPhamModal());
+    dispatch(hideUpdateTrangThaiSanPhamModal());
     // if (currentId) {
     // } else {
     //   form.resetFields();
     // }
     setCurrentId(null);
-    setData({
-      MaSP: "",
-      TenSP: "",
-      MauSac: "",
-      LoaiHang: "",
-      Size: 0,
-      GiaVon: 0,
-      GiaBan: 0,
-      TonKho: 0,
-      TrangThai: 0,
-      BaoHanh: 0,
-      HinhAnh: "",
-      MoTa: "",
-    });
   }, [dispatch]);
 
   const handleOk = React.useCallback(() => {
@@ -114,11 +87,12 @@ export default function TaoSanPhamModal({ currentId, setCurrentId }) {
         layout="horizontal"
       >
         <Form.Item
+          style={{ display: "none" }}
           // name="MaSP"
           label="Mã hàng"
           tooltip="Mã hàng là thông tin duy nhất"
           rules={[
-            { required: true, message: "Vui lòng nhập mã hàng" },
+            // { required: true, message: "Vui lòng nhập mã hàng" },
             {
               type: "string",
               min: 5,
@@ -133,7 +107,8 @@ export default function TaoSanPhamModal({ currentId, setCurrentId }) {
           />
         </Form.Item>
         <Form.Item
-          name="TenSP"
+          style={{ display: "none" }}
+          // name="TenSP"
           label="Tên hàng"
           tooltip="Tên hàng là tên của sản phẩm"
           rules={[
@@ -152,12 +127,13 @@ export default function TaoSanPhamModal({ currentId, setCurrentId }) {
           />
         </Form.Item>
         <Form.Item
-          name="Size"
+          style={{ display: "none" }}
+          // name="Size"
           label="Size"
           tooltip="Nhập kích cỡ cho sản phẩm"
           rules={[
             { type: "number", min: 0, max: 99 },
-            { required: true, message: "Vui lòng nhập size" },
+            // { required: true, message: "Vui lòng nhập size" },
           ]}
         >
           <InputNumber
@@ -168,11 +144,12 @@ export default function TaoSanPhamModal({ currentId, setCurrentId }) {
           />
         </Form.Item>
         <Form.Item
-          name="MauSac"
+          style={{ display: "none" }}
+          // name="MauSac"
           label="Màu sắc"
           tooltip="Nhập màu sắc hoặc họa tiết sản phẩm"
           rules={[
-            { required: true, message: "Vui lòng nhập màu" },
+            // { required: true, message: "Vui lòng nhập màu" },
             {
               type: "string",
               min: 2,
@@ -187,11 +164,12 @@ export default function TaoSanPhamModal({ currentId, setCurrentId }) {
           />
         </Form.Item>
         <Form.Item
-          name="LoaiHang"
+          style={{ display: "none" }}
+          // name="LoaiHang"
           label="Loại hàng"
           tooltip="Nhập loại sản phẩm"
           rules={[
-            { required: true, message: "Vui lòng nhập loại hàng" },
+            // { required: true, message: "Vui lòng nhập loại hàng" },
             {
               type: "string",
               min: 6,
@@ -206,11 +184,12 @@ export default function TaoSanPhamModal({ currentId, setCurrentId }) {
           />
         </Form.Item>
         <Form.Item
-          name="GiaVon"
+          style={{ display: "none" }}
+          // name="GiaVon"
           label="Giá vốn"
           tooltip="Giá vốn để tính lợi nhuận cho sản phẩm"
           rules={[
-            { required: true, message: "Vui lòng nhập giá vốn" },
+            // { required: true, message: "Vui lòng nhập giá vốn" },
             {
               type: "number",
               min: 0,
@@ -226,10 +205,11 @@ export default function TaoSanPhamModal({ currentId, setCurrentId }) {
           />
         </Form.Item>
         <Form.Item
-          name="GiaBan"
+          style={{ display: "none" }}
+          // name="GiaBan"
           label="Giá bán"
           rules={[
-            { required: true, message: "Vui lòng nhập giá bán" },
+            // { required: true, message: "Vui lòng nhập giá bán" },
             {
               type: "number",
               min: 0,
@@ -245,11 +225,12 @@ export default function TaoSanPhamModal({ currentId, setCurrentId }) {
           />
         </Form.Item>
         <Form.Item
-          name="TonKho"
+          style={{ display: "none" }}
+          // name="TonKho"
           label="Tồn kho"
           tooltip="Số lượng tồn kho của sản phẩm"
           rules={[
-            { required: true, message: "Vui lòng nhập số lượng tồn kho" },
+            // { required: true, message: "Vui lòng nhập số lượng tồn kho" },
             {
               type: "number",
               min: 0,
@@ -265,10 +246,10 @@ export default function TaoSanPhamModal({ currentId, setCurrentId }) {
           />
         </Form.Item>
         <Form.Item
-          name="TrangThai"
+          // name="TrangThai"
           label="Trạng thái"
           tooltip="Trạng thái kinh doanh sản phẩm"
-          rules={[{ required: true, message: "Vui lòng chọn trạng thái" }]}
+          // rules={[{ required: true, message: "Vui lòng chọn trạng thái" }]}
         >
           <Select
             placeholder="Chọn trạng thái"
@@ -281,10 +262,11 @@ export default function TaoSanPhamModal({ currentId, setCurrentId }) {
           </Select>
         </Form.Item>
         <Form.Item
-          name="BaoHanh"
+          style={{ display: "none" }}
+          // name="BaoHanh"
           label="Bảo hành"
           tooltip="Trạng thái bảo hành của sản phẩm"
-          rules={[{ required: true, message: "Vui lòng chọn bảo hành" }]}
+          // rules={[{ required: true, message: "Vui lòng chọn bảo hành" }]}
         >
           <Select
             placeholder="Chọn bảo hành"
@@ -295,7 +277,7 @@ export default function TaoSanPhamModal({ currentId, setCurrentId }) {
             <Option value="Có bảo hành">Có bảo hành</Option>
           </Select>
         </Form.Item>
-        <Form.Item name="MoTa" label="Mô tả">
+        <Form.Item style={{ display: "none" }} label="Mô tả">
           <Input
             value={data.MoTa}
             onChange={(e) => setData({ ...data, MoTa: e.target.value })}
@@ -303,7 +285,8 @@ export default function TaoSanPhamModal({ currentId, setCurrentId }) {
           />
         </Form.Item>
         <Form.Item
-          name="HinhAnh"
+          style={{ display: "none" }}
+          // name="HinhAnh"
           label="Hình ảnh"
           tooltip="Hình ảnh của sản phẩm"
         >
@@ -321,7 +304,7 @@ export default function TaoSanPhamModal({ currentId, setCurrentId }) {
   return (
     <div>
       <Modal
-        title="Thêm hàng hóa"
+        title="Cập nhât trạng thái hàng hóa"
         visible={isShow}
         onCancel={handleCancel}
         onOk={handleOk}

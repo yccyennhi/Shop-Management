@@ -14,6 +14,7 @@ import PhieuDoiTras  from "./PhieuDoiTras";
 import TaoHoaDonModal from "./TaoHoaDonModal";
 import TaoPhieuTraHangModal  from "./TaoPhieuTraHangModal";
 
+
 export default combineReducers({
   KhachHangs,
   NhanViens,

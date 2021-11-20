@@ -1,25 +1,16 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
-import { Menu, Layout, PageHeader, Col, Row, Button, Space, Modal } from "antd";
+import "../../App.css";
+import { Menu, Layout, PageHeader, Card, DatePicker, Space } from "antd";
 import "./styles.css";
-import Logo from "../../assets/Logo.png";
-import {
-  UserOutlined,
-  PlusOutlined,
-  ImportOutlined,
-  DownloadOutlined,
-  RestOutlined,
-} from "@ant-design/icons";
-import HangHoatable from "../../components/table/HangHoatable/HangHoatable.js";
-import Menubar from "../../components/header/Menubar/Menubar";
-import Headerbar from "../../components/header/Headerbar/Headerbar";
-import * as actions from "../../redux/actions";
-import { SanPhamsState$ } from "../../redux/selectors";
-import TaoSanPhamModal from "../../components/modal/TaoSanPhamModal/createSanPhamModal";
-const { Header, Content, Footer, Sider } = Layout;
-const { SubMenu } = Menu;
 
+import HangHoatable from "../../components/table/HangHoatable/HangHoatable.js";
+
+import * as actions from "../../redux/actions";
+const { Content, Sider } = Layout;
+const { RangePicker } = DatePicker;
+
+const { SubMenu } = Menu;
 
 export default function HangHoaPage() {
   const dispatch = useDispatch();
@@ -28,35 +19,35 @@ export default function HangHoaPage() {
     dispatch(actions.showTaoSanPhamModal());
   }, [dispatch]);
 
-
   return (
-    <>
-      <div>
-        <PageHeader className="site-page-header" title="Danh mục hàng hóa" />
-        <div>
-          {/* <Row justify="end">
-            <Space>
-              <Button
-                type="primary"
-                icon={<PlusOutlined />}
-                onClick={openTaoSanPhamModal}
-              >
-                Thêm hàng hóa
-              </Button>
-              <TaoSanPhamModal/>
-              <Button type="primary" icon={<ImportOutlined />}>
-                Import
-              </Button>
-              <Button type="primary" icon={<DownloadOutlined />} >
-                Xuất file
-              </Button>
+    <Layout>
+      <Layout>
+        <Content>
+          <PageHeader className="site-page-header" title="Danh mục hàng hóa" />
+        </Content>
+      </Layout>
+      <Layout>
+        <Sider
+          width={300}
+          style={{ padding: "0px 0px 0px 24px" }}
+          className="site-layout-sider"
+        >
+          <div className="site-card-border-less-wrapper">
+            <Space direction="vertical">
+              <Card title="Card title" bordered={false}>
+                <RangePicker />
+              </Card>
             </Space>
-          </Row> */}
-          {/* <TaoSanPhamModal currentId={currentId} setCurrentId={setCurrentId}/> */}
-          <HangHoatable currentId={currentId} setCurrentId={setCurrentId}/>
-        </div>
-      </div>
-      ,
-    </>
+          </div>
+        </Sider>
+        <Content>
+          <Layout style={{ padding: "17px 24px 24px" }}>
+            <div className="site-layout-content">
+              <HangHoatable currentId={currentId} setCurrentId={setCurrentId} />
+            </div>
+          </Layout>
+        </Content>
+      </Layout>
+    </Layout>
   );
 }

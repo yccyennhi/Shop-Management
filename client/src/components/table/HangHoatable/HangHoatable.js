@@ -4,6 +4,7 @@ import {
   ExportTableButton,
   SearchTableInput,
 } from "ant-table-extensions";
+
 import {
   Input,
   Row,
@@ -44,9 +45,6 @@ function HangHoatable({ currentId, setCurrentId }) {
     dispatch(actions.getSanPhams.getSanPhamsRequest());
   }, [dispatch]);
   const dataSource = SanPhams;
-  const refreshPage = () => {
-    window.location.reload();
-  };
 
   const columns = [
     {
@@ -156,7 +154,10 @@ function HangHoatable({ currentId, setCurrentId }) {
       filterIcon: () => {
         return <SearchOutlined />;
       },
-      onFilter: (value, record) => {
+      onFilter: (value, record, nameSearch) => {
+        if (value == "") {
+          value = nameSearch;
+        }
         return record.Size == value;
       },
     },
@@ -198,25 +199,11 @@ function HangHoatable({ currentId, setCurrentId }) {
       title: "Trạng thái",
       dataIndex: "TrangThai",
       key: "TrangThai",
-      // render: (TrangThai) => {
-      //   return (
-      //     <p>
-      //       {TrangThai == "Ngừng kinh doanh"
-      //         ? "Ngừng kinh doanh"
-      //         : TrangThai == "Hết hàng"
-      //         ? "Hết hàng"
-      //         : "Đang kinh doanh"}
-      //     </p>
-      //   );
-      // },
       sorter: (a, b) => a.TrangThai - b.TrangThai,
     },
     {
       title: "Bảo hành",
       dataIndex: "BaoHanh",
-      // render: (BaoHanh) => {
-      //   return <p>{BaoHanh == "Không bảo hành" ? "Không bảo hành" : "Có bảo hành"}</p>;
-      // },
       sorter: (a, b) => a.BaoHanh - b.BaoHanh,
     },
   ];
@@ -232,6 +219,7 @@ function HangHoatable({ currentId, setCurrentId }) {
   const openUpdateSanPhamModal = React.useCallback(() => {
     dispatch(actions.showUpdateSanPhamModal());
   }, [dispatch]);
+
 
   const rowSelection = {
     selectedRowKeys,
@@ -256,9 +244,7 @@ function HangHoatable({ currentId, setCurrentId }) {
   const menu = (
     <Menu onClick={handleMenuClick}>
       <Menu.Item key="1">Nhập hàng</Menu.Item>
-      <Menu.Item key="2">Xóa hàng hóa</Menu.Item>
-      <Menu.Item key="3">Ngừng kinh doanh</Menu.Item>
-      <Menu.Item key="4">Cập nhật bảo hành</Menu.Item>
+     
     </Menu>
   );
   return (
@@ -277,25 +263,25 @@ function HangHoatable({ currentId, setCurrentId }) {
             columns={columns}
             btnProps={{ type: "primary", icon: <FileExcelOutlined /> }}
             showColumnPicker={true}
-            showColumnPickerProps={{id: "Thêm hàng hóa"}}
+            showColumnPickerProps={{ id: "Thêm hàng hóa" }}
             fileName="HangHoaCSV"
           >
             Tải file CSV
           </ExportTableButton>
         </Space>
       </Row>
-      <Row>
-        <div style={{ marginBottom: 16 }}>
+      <Row justify="end">
+        <div style={{ paddingTop: 10, marginBottom: 16 }}>
+          <span style={{ marginRight: 8 }}>
+            {hasSelected
+              ? `Có ${selectedRowKeys.length} hàng hóa được chọn`
+              : ""}
+          </span>
           <Dropdown overlay={menu} disabled={!hasSelected}>
             <Button>
               Thao tác <DownOutlined />
             </Button>
           </Dropdown>
-          <span style={{ marginLeft: 8 }}>
-            {hasSelected
-              ? `Có ${selectedRowKeys.length} hàng hóa được chọn`
-              : ""}
-          </span>
         </div>
       </Row>
 
@@ -308,6 +294,7 @@ function HangHoatable({ currentId, setCurrentId }) {
           inputProps: {
             placeholder: "Nhập nội dung cần tìm",
             prefix: <SearchOutlined />,
+            width: 200,
           },
         }}
         loading={loadingSanPhams}

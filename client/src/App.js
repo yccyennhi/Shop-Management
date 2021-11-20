@@ -30,8 +30,8 @@ const { Header, Content, Footer } = Layout;
           <Header>
             <Menubar />
           </Header>
-          <Content style={{ padding: "0 50px" }}>
-            <div className="site-layout-content">
+          {/* <Content style={{ padding: "50px 50px" }}>
+            <div className="site-layout-content"> */}
               <Switch>
                 <Route path ='/SanPhams' exact component={HangHoaPage}/>
                 <Route path ='/PhieuBaoHanhs' exact component={PhieuBaoHanhPage}/>
@@ -46,8 +46,8 @@ const { Header, Content, Footer } = Layout;
                 <Route path='/BCHangHoas' exact component={BCHangHoaPage}/>
 
               </Switch>
-            </div>
-          </Content>
+            {/* </div>
+          </Content> */}
           <Footer style={{ textAlign: "center" }}>
           </Footer>
         </Layout>

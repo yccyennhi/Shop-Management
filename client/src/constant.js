@@ -30,6 +30,10 @@ export const INIT_STATE = {
     isLoading: false,
     data: [],
   },
+  PhieuHens: {
+    isLoading: false,
+    data: [],
+  },
   Modal: {
     isShow: false,
   },
@@ -44,7 +48,6 @@ export const INIT_STATE = {
     isLoading: false,
     data: [],
   },
-
   data: null,
   PhieuDoiTras: {
     isLoading: false,

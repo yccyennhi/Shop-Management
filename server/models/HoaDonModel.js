@@ -1,45 +1,43 @@
 import mongoose from "mongoose";
-
-const schema = new mongoose.Schema(
-    {
-        MaHD: {
-            type: String,
-            required: true,
-        },
-        MaSP: {
-            type: Array,
-            required: true,
-        },
-        MaNV: {
-            type: String,
-            required: true,
-        },
-        MaKM: {
-            type: String,
-            required: false,
-        },
-        MaKH: {
-            type: String,
-            required: false,
-        },
-        DiemTru: {
-            type: Number,
-            required: false,
-            default: 0,
-        },
-        TongTienHang: {
-            type: Number,
-            required: true,
-        },
-        ThanhTien: {
-            type: Number,
-            required: true,
-        },
-        ThoiGian: {
-            type: Date,
-            required: true,
-        }
+const Schema = mongoose.Schema
+const schema = new Schema(
+  {
+    MaHD: {
+      type: String,
+      required: true,
     },
-    { timestamps: true }
+    ThoiGian: {
+      type: Date,
+      required: true,
+    },
+    MaNV: {
+      type: Schema.Types.ObjectId,
+      ref: 'NhanViens',
+      required: true,
+    },
+    MaKM: {
+      type: Schema.Types.ObjectId,
+      ref: 'KhuyenMais',
+      required: false,
+    },
+    MaKH: {
+      type: Schema.Types.ObjectId,
+      ref: 'KhachHangs',
+      required: false,
+    },
+    DiemTru: {
+      type: Number,
+      required: false,
+    },
+    TongTienHang: {
+      type: Number,
+      required: true,
+    },
+    ThanhTien: {
+      type: Number,
+      required: true,
+    },
+  },
+  { timestamps: true }
 );
-export const HoaDonModel = mongoose.model("HoaDon", schema);
+export const HoaDonModel = mongoose.model("HoaDons", schema);

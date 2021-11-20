@@ -1,13 +1,6 @@
 import { PhieuDoiTraModel } from "../models/PhieuDoiTraModel.js";
 
 export const getPhieuDoiTras = async (req, res) => {
-  // const phieudoitra = new PhieuDoiTraModel({
-  //   MaPDT: "PDT001",
-  //   MaHD: "HD0001",
-  //   MaNV: 'NV001',
-  //   ThoiGian: new Date(),
-  // });
-  // phieudoitra.save();
   try {
     const PhieuDoiTras = await PhieuDoiTraModel.find();
     console.log("PhieuDoiTras", PhieuDoiTras);

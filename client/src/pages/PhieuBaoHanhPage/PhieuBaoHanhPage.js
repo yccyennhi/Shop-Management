@@ -7,6 +7,7 @@ import {
   Card,
   DatePicker,
   Space,
+  Radio,
   Col,
   Row,
 } from "antd";
@@ -34,16 +35,25 @@ export default function PhieuBaoHanhPage() {
           style={{ padding: "0px 0px 0px 24px" }}
           className="site-layout-sider"
         >
-            <Space direction="vertical">
-              <ThoiGianMuaHangcard />
-              <TrangThaiBaoHanhcard />
-            </Space>
+          <Space direction="vertical">
+            <Card title="Trạng thái bảo hành" bordered={false}>
+              <Radio.Group>
+                <Space direction="vertical">
+                  <Radio value={0} onClick={() => {}}>
+                    Tất cả
+                  </Radio>
+                  <Radio value={1}>Còn hạn</Radio>
+                  <Radio value={2}>Hết hạn</Radio>
+                </Space>
+              </Radio.Group>
+            </Card>{" "}
+            <TrangThaiBaoHanhcard />
+          </Space>
         </Sider>
         <Content>
           <Layout style={{ padding: "17px 24px 24px" }}>
             <div className="site-layout-content">
-            <PhieuBaoHanhtable setCurrentId={setCurrentId} />
-
+              <PhieuBaoHanhtable setCurrentId={setCurrentId} />
             </div>
           </Layout>
         </Content>

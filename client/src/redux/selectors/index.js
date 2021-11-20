@@ -6,6 +6,7 @@ export const modalState$ = (state) => state.Modal;
 export const SanPhamsState$ = (state) => state.SanPhams.data;
 export const isloadingSanPhamsState$ = (state) => state.SanPhams.isLoading;
 export const TaoSanPhamModalState$ = (state) => state.TaoSanPhamModal;
+export const TrangThaiBaoHanhCardState$ = (state) => state.TrangThaiBaoHanhCard;
 export const UpdateSanPhamModalState$ = (state) => state.UpdateSanPhamModal;
 export const PhieuBaoHanhsState$ = (state) => state.PhieuBaoHanhs.data;
 export const PhieuDoiTrasState$ = (state)=>state.PhieuDoiTras.data;

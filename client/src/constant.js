@@ -59,4 +59,7 @@ export const INIT_STATE = {
   TaoPhieuTraHangModal: {
     isShow: false,
   },
+  TrangThaiBaoHanhCard:{
+    isShow: 0,
+  },
 };

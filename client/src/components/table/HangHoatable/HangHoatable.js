@@ -20,7 +20,6 @@ import {
 } from "antd";
 import UpdateSanPhamModal from "../../../components/modal/TaoSanPhamModal/updateSanPhamModal";
 
-import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import { useDispatch, useSelector } from "react-redux";
 import ExpandedRowRender from "./ExpandedRowRender";
 import {

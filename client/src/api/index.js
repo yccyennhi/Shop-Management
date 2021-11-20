@@ -46,8 +46,6 @@ export const updateSanPham = (payload) =>
   axios.patch(`${URL}/SanPhams/${payload._id}`, payload);
 
 export const deleteSanPham = (id) => axios.delete(`${URL}/SanPhams/${id}`);
-//
-
 export const fetchNhanViens = ()=> axios.get(`${URL}/NhanViens`);
 export const fetchTaiKhoans = ()=> axios.get(`${URL}/TaiKhoans`);
 export const fetchHoaDons = ()=> axios.get(`${URL}/HoaDons`);

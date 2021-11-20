@@ -8,13 +8,11 @@ import SanPhams from "./routers/SanPhams.js";
 import PhieuBaoHanhs from "./routers/PhieuBaoHanhs.js";
 import PhieuHens from "./routers/PhieuHens.js";
 import TaiKhoans from "./routers/TaiKhoans.js";
-import KhuyenMais from "./routers/KhuyenMais.js"
 import HoaDons from "./routers/HoaDons.js"
 import CTHDs from "./routers/CTHDs.js"
-
 import PhieuDoiTras from "./routers/PhieuDoiTras.js";
 import CTPDTs from "./routers/CTPDTs.js";
-
+import KhuyenMais from "./routers/KhuyenMais.js";
 import mongoose from "mongoose";
 
 const app = express();
@@ -28,19 +26,13 @@ app.use(bodyParser.urlencoded({ extended: true, limit: "30mb" }));
 
 app.use("/posts", posts);
 app.use("/KhachHangs", KhachHangs);
-app.use("/NhanViens", NhanViens),
-app.use("/SanPhams", SanPhams);
-app.use("/HoaDons", HoaDons);
-app.use("/CTHDs",CTHDs);
-app.use("/PhieuDoiTras",PhieuDoiTras);
-app.use("/CTPDTs",CTPDTs);
+app.use("/NhanViens", NhanViens), app.use("/SanPhams", SanPhams);
 app.use("/TaiKhoans", TaiKhoans);
-app.use("/KhuyenMais",KhuyenMais);
+app.use("/KhuyenMais", KhuyenMais);
 app.use("/PhieuHens", PhieuHens);
 app.use("/PhieuBaoHanhs", PhieuBaoHanhs);
-// app.use("/HoaDons", CTPDT);
-
-
+app.use("/HoaDons", HoaDons);
+app.use("/PhieuDoiTras", PhieuDoiTras);
 
 mongoose
   .connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })

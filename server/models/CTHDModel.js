@@ -1,13 +1,15 @@
 import mongoose from "mongoose";
-
-const schema = new mongoose.Schema(
+const Schema = mongoose.Schema
+const schema = new Schema(
   {
-    MaHD:{
-      type: String,
+    MaHD: {
+      type : Schema.Types.ObjectId,
+      ref: 'HoaDons',
       required: true,
     },
     MaSP: {
-      type: String,
+      type:  Schema.Types.ObjectId,
+      ref: 'SanPhams',
       required: true,
     },
     SoLuong: {
@@ -33,4 +35,4 @@ const schema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-export const CTHDModel = mongoose.model("CTHD", schema);
+export const CTHDModel = mongoose.model("CTHDs", schema);

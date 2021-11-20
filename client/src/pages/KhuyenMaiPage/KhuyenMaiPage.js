@@ -4,13 +4,11 @@ import { useDispatch } from "react-redux";
 import {  PageHeader, Row, Button, Space} from "antd";
 import {
   PlusOutlined,
-  RestOutlined,
 } from "@ant-design/icons";
-import "./styles.css";
 
 import KhuyenMaitable from "../../components/table/KhuyenMaitable/KhuyenMaitable";
 import { showModal } from "../../redux/actions";
-import CreateKhuyenMaiModal from "../../components/CreateKMModal/CreateKhuyenMaiModal";
+import KhuyenMaiModal from "../../components/modal/KhuyenMaiModal/KhuyenMaiModal";
 
 export default function KhuyenMaiPage() {
 
@@ -36,12 +34,9 @@ export default function KhuyenMaiPage() {
               >
                 Thêm khuyến mãi
               </Button>
-              <Button type="secondary" icon={<RestOutlined />}>
-                Xóa khuyến mãi
-              </Button>
             </Space>
           </Row>
-          <CreateKhuyenMaiModal currentId={currentId} setCurrentId={setCurrentId}/>
+          <KhuyenMaiModal currentId={currentId} setCurrentId={setCurrentId}/>
           <KhuyenMaitable setCurrentId={setCurrentId} />
         </div>
       </div>

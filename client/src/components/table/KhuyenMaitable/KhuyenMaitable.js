@@ -14,6 +14,7 @@ function KhuyenMaitable({setCurrentId}) {
   const dispatch = useDispatch();
 
   const KhuyenMais = useSelector(KhuyenMaisState$);
+  
 
   React.useEffect(() => {
     dispatch(actions.getKhuyenMais.getKhuyenMaisRequest());
@@ -32,7 +33,6 @@ function KhuyenMaitable({setCurrentId}) {
   //   let eDate = moment(el.NgayKT);
   //   el.NgayKT = eDate.format("DD/MM/YYYY");
   // });
-
   const columns = [
     {
       title: "Mã KM",

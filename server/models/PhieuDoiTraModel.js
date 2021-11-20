@@ -1,17 +1,19 @@
 import mongoose from "mongoose";
-
-const schema = new mongoose.Schema(
+const Schema = mongoose.Schema
+const schema = new Schema(
   {
     MaPDT: {
       type: String,
       required: true,
     },
     MaHD: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'HoaDons',
       required: true,
     },
     MaNV: {
-      type: String,
+      type:  Schema.Types.ObjectId,
+      ref: 'NhanViens',
       required: true,
     },
     ThoiGian: {
@@ -21,4 +23,4 @@ const schema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-export const PhieuDoiTraModel = mongoose.model("PhieuDoiTra", schema);
+export const PhieuDoiTraModel = mongoose.model("PhieuDoiTras", schema);

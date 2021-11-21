@@ -8,7 +8,7 @@ const { TabPane } = Tabs;
 export default function FormHoaDon({ record, dataCTHDs }) {
   const CTHDs = [];
   dataCTHDs.forEach(CTHD => {
-    if (CTHD.MaHD === record._id) {
+    if (CTHD.idHD === record._id) {
       CTHDs.push(CTHD);
     }
   });

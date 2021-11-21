@@ -1,27 +1,20 @@
-import {
-  Modal,
-  Form,
-  Input,
-  Col,
-  Row,
-  Button,
-  InputNumber,
-  DatePicker,
-} from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { Modal, Form, Input, DatePicker } from "antd";
 import React, { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
+import * as actions from "../../../redux/actions";
 import { hideTaoPhieuTraHangModal } from "../../../redux/actions";
-import { TaoPhieuTraHangState$ } from "../../../redux/selectors";
+import { TaoPhieuTraHangState$, CTHDsState$ } from "../../../redux/selectors";
 import { useDispatch } from "react-redux";
 import { v4 } from "uuid";
 import moment from "moment";
 import SanPhamTraHang from "./SanPhamTraHang";
+import ListSPs from "./ListSPs";
 const { Search } = Input;
-
 
 export default function TaoPhieuTraHang() {
   const dispatch = useDispatch();
+  const CTHDs = useSelector(CTHDsState$);
+  const [ListSPTraHangs, setListSP] = useState([]);
   const { isShow } = useSelector(TaoPhieuTraHangState$);
   const onClosePhieuTraHang = React.useCallback(() => {
     dispatch(hideTaoPhieuTraHangModal());
@@ -30,13 +23,23 @@ export default function TaoPhieuTraHang() {
   const [data, setData] = React.useState({
     MaHD: "",
     ThoiGian: new Date(Date.now()),
+    SoLuong: 0,
+    TongTien: 0,
   });
-  const [trahangList, settrahangList] = useState([]);
+  const [textInpMaSP, setDataTextMaSP] = React.useState("");
+  React.useEffect(() => {
+    dispatch(actions.getCTHDs.getCTHDsRequest());
+  }, [dispatch]);
 
-  const onSearch = useCallback((e)=> {
-    
-  });
-
+  const onSearch = () => {
+    CTHDs.forEach((e) => {
+      if (e.MaHD === textInpMaSP) {
+        data.MaHD = textInpMaSP;
+        setDataTextMaSP("");
+        return;
+      }
+    });
+  };
   const body = (
     <>
       <Form
@@ -52,7 +55,10 @@ export default function TaoPhieuTraHang() {
           <Search
             placeholder="Nhập mã hóa đơn"
             allowClear
+            value={textInpMaSP}
             enterButton="Search"
+            onPressEnter={onSearch}
+            onChange={(e) => setDataTextMaSP(e.target.value)}
             size="large"
             onSearch={onSearch}
           />
@@ -61,7 +67,7 @@ export default function TaoPhieuTraHang() {
           <DatePicker defaultValue={moment(data.ThoiGian)} disabled={true} />
         </Form.Item>
         <Form.Item>
-          <SanPhamTraHang/>
+          <ListSPs data={data} CTHDs={CTHDs} />
         </Form.Item>
         <Form.Item>
           <section
@@ -73,7 +79,7 @@ export default function TaoPhieuTraHang() {
               <br />
             </h4>
             <label>
-              3 <br /> 1440000
+              {data.SoLuong} <br /> {data.TongTien}
             </label>
           </section>
         </Form.Item>

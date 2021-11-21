@@ -11,18 +11,30 @@ const schema = new Schema(
       required: true,
     },
     MaNV: {
+      type: String,
+      required: true,
+    },
+    idNV: {
       type: Schema.Types.ObjectId,
       ref: 'NhanViens',
       required: true,
     },
-    MaKM: {
+    idKM: {
       type: Schema.Types.ObjectId,
       ref: 'KhuyenMais',
       required: false,
     },
-    MaKH: {
+    MaKM: {
+      type: String,
+      required: true,
+    },
+    idKH: {
       type: Schema.Types.ObjectId,
       ref: 'KhachHangs',
+      required: false,
+    },
+    MaKH: {
+      type: String,
       required: false,
     },
     DiemTru: {

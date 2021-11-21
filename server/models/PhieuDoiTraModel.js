@@ -6,14 +6,22 @@ const schema = new Schema(
       type: String,
       required: true,
     },
-    MaHD: {
+    idHD: {
       type: Schema.Types.ObjectId,
       ref: 'HoaDons',
       required: true,
     },
-    MaNV: {
+    MaHD: {
+      type: String,
+      required: true,
+    },
+    idNV: {
       type:  Schema.Types.ObjectId,
       ref: 'NhanViens',
+      required: true,
+    },
+    MaNV: {
+      type: String,
       required: true,
     },
     SoLuong: {

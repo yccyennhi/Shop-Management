@@ -14,8 +14,6 @@ import {
 import "./styles.css";
 import "../../App.css";
 import PhieuBaoHanhtable from "../../components/table/PhieuBaoHanhtable/PhieuBaoHanhtable";
-import ThoiGianMuaHangcard from "../../components/card/PhieuBaoHanh/ThoiGianMuaHangcard";
-import TrangThaiBaoHanhcard from "../../components/card/PhieuBaoHanh/TrangThaiBaoHanhcard";
 const { Content, Sider } = Layout;
 const { RangePicker } = DatePicker;
 
@@ -36,7 +34,7 @@ export default function PhieuBaoHanhPage() {
           className="site-layout-sider"
         >
           <Space direction="vertical">
-            <Card title="Trạng thái bảo hành" bordered={false}>
+            <Card title="Trạng thái bảo hành" bordered={false} style={{width:300}}>
               <Radio.Group>
                 <Space direction="vertical">
                   <Radio value={0} onClick={() => {}}>
@@ -47,7 +45,6 @@ export default function PhieuBaoHanhPage() {
                 </Space>
               </Radio.Group>
             </Card>{" "}
-            <TrangThaiBaoHanhcard />
           </Space>
         </Sider>
         <Content>

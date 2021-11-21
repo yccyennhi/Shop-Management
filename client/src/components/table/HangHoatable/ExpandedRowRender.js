@@ -17,8 +17,6 @@ import { deleteSanPham, showUpdateSanPhamModal } from "../../../redux/actions";
 
 export default function ExpandedRowRender({ record, setCurrentId }) {
   const dispatch = useDispatch();
-  const [status, setStatus] = useState("blue");
-  const [statuss, setStatuss] = useState("Đang kinh doanh");
 
   const openUpdateSanPhamModal = React.useCallback(() => {
     setCurrentId(record._id);

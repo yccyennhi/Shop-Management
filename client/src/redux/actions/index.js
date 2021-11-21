@@ -46,7 +46,9 @@ export const deleteSanPham = createActions({
   deleteSanPhamFailure: (err) => err,
 });
 
+
 //Phieu Hen
+
 
 export const getPhieuHens = createActions({
   getPhieuHensRequest: undefined,
@@ -72,7 +74,9 @@ export const deletePhieuHen = createActions({
   deletePhieuHenFailure: (err) => err,
 });
 
+
 //Phieu bao hanh
+
 
 export const getPhieuBaoHanhs = createActions({
   getPhieuBaoHanhsRequest: undefined,
@@ -97,6 +101,7 @@ export const deletePhieuBaoHanh = createActions({
   deletePhieuBaoHanhSuccess: (payload) => payload,
   deletePhieuBaoHanhFailure: (err) => err,
 });
+
 
 export const getTaiKhoans = createActions({
   getTaiKhoansRequest: undefined,
@@ -130,12 +135,14 @@ export const deleteKhuyenMai = createActions({
 });
 
 export const getPhieuDoiTras = createActions({
-  getPhieuDoiTrasRequest: undefined,
-  getPhieuDoiTrasSuccess: (payload) => payload,
-  getPhieuDoiTrasFailure: (err) => err,
-});
+    getPhieuDoiTrasRequest: undefined,
+    getPhieuDoiTrasSuccess: (payload) => payload,
+    getPhieuDoiTrasFailure: (err) => err,
+})
 
-export const createHoaDon = createAction({});
+export const createHoaDon = createAction({
+
+})
 /* #endregion */
 
 export const showTaoSanPhamModal = createAction("SHOW_TAOSANPHAM_MODAL");
@@ -144,19 +151,11 @@ export const hideTaoSanPhamModal = createAction("HIDE_TAOSANPHAM_MODAL");
 export const showUpdateSanPhamModal = createAction("SHOW_UPDATESANPHAM_MODAL");
 export const hideUpdateSanPhamModal = createAction("HIDE_UPDATESANPHAM_MODAL");
 
-export const showTaoHoaDonModal = createAction("SHOW_TAOHOADON_MODAL");
-export const hideTaoHoaDonModal = createAction("HIDE_TAOHOADON_MODAL");
+export const showTaoHoaDonModal = createAction('SHOW_TAOHOADON_MODAL');
+export const hideTaoHoaDonModal = createAction('HIDE_TAOHOADON_MODAL');
 
-export const showTaoPhieuTraHangModal = createAction(
-  "SHOW_TAOPHIEUTRAHANG_MODAL"
-);
-export const hideTaoPhieuTraHangModal = createAction(
-  "HIDE_TAOPHIEUTRAHANG_MODAL"
-);
+export const showTaoPhieuTraHangModal = createAction('SHOW_TAOPHIEUTRAHANG_MODAL');
+export const hideTaoPhieuTraHangModal = createAction('HIDE_TAOPHIEUTRAHANG_MODAL');
 
-export const showModal = createAction("SHOW_CREATE_MODAL");
-export const hideModal = createAction("HIDE_CREATE_MODAL");
-
-export const showTatCaTrangThai = createAction("SHOW_TATCATRANGTHAI");
-export const showConHanTrangThai = createAction("HIDE_CONHANTRANGTHAI");
-export const showHetHanTrangThai = createAction("HIDE_HETHANTRANGTHAI");
+export const showModal = createAction('SHOW_CREATE_MODAL');
+export const hideModal = createAction('HIDE_CREATE_MODAL');

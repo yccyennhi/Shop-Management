@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import {
-  Table,
-  ExportTableButton,
-  SearchTableInput,
-} from "ant-table-extensions";
+import { ExportTableButton, Table } from "ant-table-extensions";
 
 import {
   Input,
@@ -13,10 +9,14 @@ import {
   Dropdown,
   message,
   Menu,
+  Image,
+  Divider,
   Switch,
   Radio,
   Form,
   Space,
+  Typography,
+  Avatar,
 } from "antd";
 import UpdateSanPhamModal from "../../../components/modal/TaoSanPhamModal/updateSanPhamModal";
 
@@ -27,6 +27,10 @@ import {
   DownOutlined,
   FileExcelOutlined,
   PlusOutlined,
+  DollarTwoTone,
+  ShopTwoTone,
+  SafetyCertificateTwoTone,
+  DatabaseTwoTone,
 } from "@ant-design/icons";
 import {
   SanPhamsState$,
@@ -34,18 +38,105 @@ import {
 } from "../../../redux/selectors";
 import * as actions from "../../../redux/actions";
 const { Search } = Input;
+const { Text } = Typography;
 
-function HangHoatable({ currentId, setCurrentId }) {
+function HangHoatable({ trangthai, baohanh, currentId, setCurrentId }) {
   const dispatch = useDispatch();
-  const SanPhams = useSelector(SanPhamsState$);
+  const [SanPhams, setSanPhams] = useState(useSelector(SanPhamsState$));
+  const SP = useSelector(SanPhamsState$);
   const loadingSanPhams = useSelector(isloadingSanPhamsState$);
-
   React.useEffect(() => {
     dispatch(actions.getSanPhams.getSanPhamsRequest());
   }, [dispatch]);
-  const dataSource = SanPhams;
+  React.useEffect(() => {
+    setSanPhams(SP);
+  }, [SP]);
+  React.useEffect(() => {
+    if (trangthai == 1 && baohanh == 1) {
+      setSanPhams(SP);
+    }
+    if (trangthai == 1 && baohanh == 2) {
+      let listSP = SP.filter(function (e) {
+        return e.BaoHanh == "Có bảo hành";
+      });
+      setSanPhams(listSP);
+    }
+    if (trangthai == 1 && baohanh == 3) {
+      let listSP = SP.filter(function (e) {
+        return e.BaoHanh == "Không bảo hành";
+      });
+      setSanPhams(listSP);
+    }
+    if (trangthai == 2 && baohanh == 1) {
+      let listSP = SP.filter(function (e) {
+        return e.TrangThai == "Đang kinh doanh";
+      });
+      setSanPhams(listSP);
+    }
+    if (trangthai == 2 && baohanh == 2) {
+      let listSP = SP.filter(function (e) {
+        return e.TrangThai == "Đang kinh doanh" && e.BaoHanh == "Có bảo hành";
+      });
 
+      setSanPhams(listSP);
+    }
+    if (trangthai == 2 && baohanh == 3) {
+      let listSP = SP.filter(function (e) {
+        return (
+          e.TrangThai == "Đang kinh doanh" && e.BaoHanh == "Không bảo hành"
+        );
+      });
+
+      setSanPhams(listSP);
+    }
+    if (trangthai == 3 && baohanh == 1) {
+      let listSP = SP.filter(function (e) {
+        return e.TrangThai == "Ngừng kinh doanh";
+      });
+      setSanPhams(listSP);
+    }
+    if (trangthai == 3 && baohanh == 2) {
+      let listSP = SP.filter(function (e) {
+        return e.TrangThai == "Ngừng kinh doanh" && e.BaoHanh == "Có bảo hành";
+      });
+      setSanPhams(listSP);
+    }
+    if (trangthai == 3 && baohanh == 3) {
+      let listSP = SP.filter(function (e) {
+        return (
+          e.TrangThai == "Ngừng kinh doanh" && e.BaoHanh == "Không bảo hành"
+        );
+      });
+      setSanPhams(listSP);
+    }
+    if (trangthai == 4 && baohanh == 1) {
+      let listSP = SP.filter(function (e) {
+        return e.TrangThai == "Hết hàng";
+      });
+      setSanPhams(listSP);
+    }
+    if (trangthai == 4 && baohanh == 2) {
+      let listSP = SP.filter(function (e) {
+        return e.TrangThai == "Hết hàng" && e.BaoHanh == "Có bảo hành";
+      });
+      setSanPhams(listSP);
+    }
+    if (trangthai == 4 && baohanh == 3) {
+      let listSP = SP.filter(function (e) {
+        return e.TrangThai == "Hết hàng" && e.BaoHanh == "Không bảo hành";
+      });
+      setSanPhams(listSP);
+    }
+  }, [trangthai, baohanh]);
+  const dataSource = SanPhams;
   const columns = [
+    {
+      title: "",
+      dataIndex: "HinhAnh",
+      key: "HinhAnh",
+      render: (HinhAnh) => <Image src={HinhAnh} style={{}} />,
+      width: "80px",
+    },
     {
       title: "Mã hàng",
       dataIndex: "MaSP",
@@ -153,10 +244,7 @@ function HangHoatable({ currentId, setCurrentId }) {
       filterIcon: () => {
         return <SearchOutlined />;
       },
-      onFilter: (value, record, nameSearch) => {
-        if (value == "") {
-          value = nameSearch;
-        }
+      onFilter: (value, record) => {
         return record.Size == value;
       },
     },
@@ -192,7 +280,10 @@ function HangHoatable({ currentId, setCurrentId }) {
       title: "Tồn kho",
       dataIndex: "TonKho",
       key: "TonKho",
-      sorter: (a, b) => a.TonKho - b.TonKho,
+      sorter: (a, b) => {
+        console.log();
+        return a.TonKho - b.TonKho;
+      },
     },
     {
       title: "Trạng thái",
@@ -215,10 +306,17 @@ function HangHoatable({ currentId, setCurrentId }) {
 
   const { selectedRowKeys, loading } = select;
 
+  const SPDKD = SP.filter(function (e) {
+    return e.TrangThai == "Đang kinh doanh";
+  });
+
+  const SPCBH = SP.filter(function (e) {
+    return e.BaoHanh == "Có bảo hành";
+  });
+
   const openUpdateSanPhamModal = React.useCallback(() => {
     dispatch(actions.showUpdateSanPhamModal());
   }, [dispatch]);
-
 
   const rowSelection = {
     selectedRowKeys,
@@ -239,15 +337,50 @@ function HangHoatable({ currentId, setCurrentId }) {
     message.info("Click on menu item.");
     console.log("click", e);
   }
-
   const menu = (
     <Menu onClick={handleMenuClick}>
       <Menu.Item key="1">Nhập hàng</Menu.Item>
-     
     </Menu>
   );
   return (
     <div>
+      <Row justify="start">
+        <Space direction="horizontal" size={80}>
+          <Space align="center" size={20}>
+            <DatabaseTwoTone style={{ fontSize: "40px" }} />
+            <Space direction="vertical" size={0}>
+              <Text strong>{SP.length} sản phẩm</Text>
+              <Text strong style={{ fontSize: "1.5rem" }}>
+                {SP.length}
+              </Text>
+              <Text type="secondary">Tổng số lượng sản phẩm</Text>
+            </Space>
+          </Space>
+
+          <Space align="center" size={20}>
+            <ShopTwoTone style={{ fontSize: "40px" }} />
+            <Space direction="vertical" size={0}>
+              <Text strong>{SPDKD.length} sản phẩm</Text>
+              <Text strong style={{ fontSize: "1.5rem" }}>
+                {SPDKD.length}
+              </Text>
+              <Text type="secondary">Số sản phẩm đang kinh doanh</Text>
+            </Space>
+          </Space>
+          <Space align="center">
+            <SafetyCertificateTwoTone style={{ fontSize: "40px" }} />
+            <Space direction="vertical" size={0}>
+              <Text strong>{SPCBH.length} sản phẩm</Text>
+              <Text strong style={{ fontSize: "1.5rem" }}>
+                {SPCBH.length}
+              </Text>
+              <Text type="secondary">Số sản phẩm có bảo hành</Text>
+            </Space>
+          </Space>
+        </Space>
+      </Row>
+      <Divider orientation="left"></Divider>
+
       <Row justify="end">
         <Space>
           <Button
@@ -299,7 +432,6 @@ function HangHoatable({ currentId, setCurrentId }) {
         loading={loadingSanPhams}
         pagination={true}
         scroll={{ x: 1500, y: 500 }}
-        columns={columns}
         rowSelection={rowSelection}
         expandable={{
           expandedRowRender: (record) => (
@@ -308,22 +440,10 @@ function HangHoatable({ currentId, setCurrentId }) {
 
           rowExpandable: (record) => record.TenSP !== "Not Expandable",
         }}
-        rowKey="MaSP"
+        rowKey="_id"
         dataSource={dataSource}
       ></Table>
       <UpdateSanPhamModal currentId={currentId} setCurrentId={setCurrentId} />
-
-      {/* <Button
-        onClick={() => {
-          <ReactHTMLTableToExcel
-            table="table1"
-            filename="Emp file"
-            sheet="Sheet 1"
-          ></ReactHTMLTableToExcel>;
-        }}
-      >
-        xuat <DownOutlined />
-      </Button> */}
     </div>
   );
 }

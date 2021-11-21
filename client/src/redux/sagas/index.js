@@ -36,6 +36,7 @@ function* fetchSanPhamsSaga(action) {
   }
 }
 
+
 function* fetchPhieuBaoHanhsSaga(action) {
   try {
     const PhieuBaoHanhs = yield call(api.fetchPhieuBaoHanhs);
@@ -84,7 +85,9 @@ function* createKhuyenMaiSaga(action) {
     const KhuyenMai = yield call(api.createKhuyenMai, action.payload);
     yield put(actions.createKhuyenMai.createKhuyenMaiSuccess(KhuyenMai.data));
   } catch (error) {
-    yield put(actions.createKhuyenMai.createKhuyenMaiFailure(error.response.data));
+    yield put(
+      actions.createKhuyenMai.createKhuyenMaiFailure(error.response.data)
+    );
   }
 }
 
@@ -93,7 +96,9 @@ function* updateKhuyenMaiSaga(action) {
     const KhuyenMai = yield call(api.updateKhuyenMai, action.payload);
     yield put(actions.updateKhuyenMai.updateKhuyenMaiSuccess(KhuyenMai.data));
   } catch (err) {
-    yield put(actions.updateKhuyenMai.updateKhuyenMaiFailure(err.response.data));
+    yield put(
+      actions.updateKhuyenMai.updateKhuyenMaiFailure(err.response.data)
+    );
   }
 }
 
@@ -104,7 +109,9 @@ function* deleteKhuyenMaiSaga(action) {
       actions.deleteKhuyenMai.deleteKhuyenMaiSuccess(KhuyenMai.data._id)
     );
   } catch (err) {
-    yield put(actions.deleteKhuyenMai.deleteKhuyenMaiFailure(err.response.data));
+    yield put(
+      actions.deleteKhuyenMai.deleteKhuyenMaiFailure(err.response.data)
+    );
   }
 }
 /* #endregion */
@@ -138,7 +145,7 @@ function* deleteSanPhamSaga(action) {
     yield put(actions.deleteSanPham.deleteSanPhamSuccess(SanPham.data._id));
   } catch (err) {
     console.err(err);
-    yield put(actions.deleteSanPham.deleteSanPhamFailure(err));
+    yield put(actions.deleteSanPham.deleteSanPhamFailure(err.response.data));
   }
 }
 /* #endregion */

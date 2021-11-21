@@ -59,4 +59,12 @@ export const INIT_STATE = {
   TaoPhieuTraHangModal: {
     isShow: false,
   },
+  CTHDs: {
+    isLoading: false,
+    data: [],
+  },
+  CTPDTs:{
+    isLoading: false,
+    data: [],
+  }
 };

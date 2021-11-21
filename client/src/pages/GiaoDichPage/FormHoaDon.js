@@ -1,16 +1,24 @@
 import { Tabs } from "antd";
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./FormHoaDon.css";
 import HangHoaBanTable from "../../components/table/HoaDonTable/HangHoaBanTable";
 
 const { TabPane } = Tabs;
 
-export default function app() {
+export default function FormHoaDon({ record, dataCTHDs }) {
+  const CTHDs = [];
+  dataCTHDs.forEach(CTHD => {
+    if (CTHD.MaHD === record._id) {
+      CTHDs.push(CTHD);
+    }
+  });
+
+  
   return (
     <div className="card-container">
       <Tabs type="card">
         <TabPane tab="Thông tin" key="1">
-          <HangHoaBanTable />
+          <HangHoaBanTable  dataCTHDs={CTHDs} />
           <section className="info_bill">
             <label className="tittle">
               Tổng số lượng: <br />
@@ -21,7 +29,7 @@ export default function app() {
               Tiền trả khách:
             </label>
             <label>
-              3 <br /> 1440000 <br /> 0 <br /> 1440000 <br /> 1500000 <br /> 60000 <br />
+              {record.SoLuong} <br /> {record.TongTienHang} <br /> {record.GiamGia} <br /> {record.ThanhTien} <br /> {record.TienKhachTra} <br /> {record.TienTraKhach} <br />
             </label>
           </section>
         </TabPane>

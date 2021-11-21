@@ -48,5 +48,9 @@ export const updateSanPham = (payload) =>
 export const deleteSanPham = (id) => axios.delete(`${URL}/SanPhams/${id}`);
 export const fetchNhanViens = ()=> axios.get(`${URL}/NhanViens`);
 export const fetchTaiKhoans = ()=> axios.get(`${URL}/TaiKhoans`);
+
+//GiaoDich
 export const fetchHoaDons = ()=> axios.get(`${URL}/HoaDons`);
 export const fetchTraHangs = () => axios.get(`${URL}/PhieuDoiTras`)
+export const fetchCTHDs = () => axios.get(`${URL}/CTHDs`)
+export const fetchCTPDTs = () => axios.get(`${URL}/CTPDTs`)

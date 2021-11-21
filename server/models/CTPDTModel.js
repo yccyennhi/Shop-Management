@@ -12,9 +12,12 @@ const schema = new mongoose.Schema(
       ref: 'SanPhams',
       required: true,
     },
-    MaHD: {
-      type:  Schema.Types.ObjectId,
-      ref: 'HoaDons',
+    TenSP: {
+      type: String,
+      required: true,
+    },
+    GiaBan: {
+      type: Number,
       required: true,
     },
     SoLuong: {

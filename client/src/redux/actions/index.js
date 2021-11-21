@@ -140,6 +140,18 @@ export const getPhieuDoiTras = createActions({
     getPhieuDoiTrasFailure: (err) => err,
 })
 
+export const getCTHDs = createActions({
+  getCTHDsRequest: undefined,
+  getCTHDsSuccess: (payload) => payload,
+  getCTHDsFailure: (err) => err,
+})
+
+export const getCTPDTs = createActions({
+  getCTPDTsRequest: undefined,
+  getCTPDTsSuccess: (payload) => payload,
+  getCTPDTsFailure: (err) => err,
+})
+
 export const createHoaDon = createAction({
 
 })

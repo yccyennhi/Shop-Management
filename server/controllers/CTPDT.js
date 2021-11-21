@@ -1,6 +1,6 @@
-import { CTPDTModel } from "../models/CTPDTModel";
+import { CTPDTModel } from "../models/CTPDTModel.js";
 
-export const getCTPDT = async (req, res) => {
+export const getCTPDTs = async (req, res) => {
   try {
     const CTPDTs = await CTPDTModel.find();
     console.log("CTPDTs", CTPDTs);

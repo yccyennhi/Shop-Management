@@ -8,7 +8,7 @@ export default function CTPDTsReducer(state = INIT_STATE.CTPDTs, action) {
         ...state,
         isLoading: true,
       };
-    case getType(getCTPDTs.getCTPDTSuccess):
+    case getType(getCTPDTs.getCTPDTsSuccess):
       return {
         ...state,
         isLoading: false,

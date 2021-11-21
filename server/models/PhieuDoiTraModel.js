@@ -16,8 +16,16 @@ const schema = new Schema(
       ref: 'NhanViens',
       required: true,
     },
+    SoLuong: {
+      type: Number,
+      required: true,
+    },
     ThoiGian: {
       type: Date,
+      required: true,
+    },
+    TongTien: {
+      type: Number,
       required: true,
     },
   },

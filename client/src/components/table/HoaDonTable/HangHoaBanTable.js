@@ -1,31 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Table } from "antd";
+function HangHoaBanTable({ dataCTHDs }) {
 
-function HangHoaBanTable() {
-  const [dataSource, setDataSource] = useState([
-    {
-      key: 1,
-      MaSP: "MA001",
-      TenSP: "Giày Sandal quai hậu da",
-      Size: 39,
-      SoLuong: 1,
-      GiaBan: 320000,
-      GiaVon: 250000,
-      BaoHanh: 0,
-      ThanhTien: 640000,
-    },
-    {
-      key: 2,
-      MaSP: "MA002",
-      TenSP: "Giày cao gót quai trong",
-      Size: 38,
-      SoLuong: 2,
-      GiaBan: 400000,
-      GiaVon: 350000,
-      BaoHanh: 1,
-      ThanhTien: 800000,
-    },
-  ]);
+  const dataSource = dataCTHDs;
   const columns = [
     {
       title: "Mã hàng",
@@ -71,7 +48,15 @@ function HangHoaBanTable() {
     },
   ];
 
-  return <Table pagination={false} dataSource={dataSource} columns={columns} />;
+  return (
+    <Table
+      tableLayout={"auto"}
+      pagination={false}
+      dataSource={dataSource}
+      columns={columns}
+      rowKey='_id'
+    />
+  );
 }
 
 export default HangHoaBanTable;

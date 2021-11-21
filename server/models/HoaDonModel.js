@@ -29,6 +29,14 @@ const schema = new Schema(
       type: Number,
       required: false,
     },
+    GiamGia:{
+      type: Number,
+      required: true,
+    },
+    SoLuong: {
+      type: Number,
+      required: true,
+    },
     TongTienHang: {
       type: Number,
       required: true,
@@ -37,6 +45,14 @@ const schema = new Schema(
       type: Number,
       required: true,
     },
+    TienKhachTra: {
+      type: Number,
+      required: true,
+    },
+    TienTraKhach: {
+      type: Number,
+      required: true,
+    }
   },
   { timestamps: true }
 );

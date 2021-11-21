@@ -1,28 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Table } from "antd";
 
-export default function ChiTietTraHangTable() {
-  const [dataSource, setDataSource] = useState([
-    {
-      key: 1,
-      MaSP: "MA001",
-      TenSP: "Giày Sandal quai hậu da",
-      SoLuong: 1,
-      GiaBan: 320000,
-      GiaNhapLai: 320000,
-      ThanhTien: 640000,
-    },
-    {
-      key: 2,
-      MaSP: "MA002",
-      TenSP: "Giày cao gót quai trong",
-      Size: 38,
-      SoLuong: 2,
-      GiaBan: 400000,
-      GiaNhapLai: 400000,
-      ThanhTien: 800000,
-    },
-  ]);
+export default function ChiTietTraHangTable({ dataCTPDTs }) {
+  const dataSource = dataCTPDTs;
   const columns = [
     {
       title: "Mã hàng",
@@ -40,14 +20,9 @@ export default function ChiTietTraHangTable() {
       key: "SoLuong",
     },
     {
-      title: "Giá bán",
+      title: "Giá nhập",
       dataIndex: "GiaBan",
       key: "GiaBan",
-    },
-    {
-        title: "Giá nhập lại",
-        dataIndex: "GiaNhapLai",
-        key: "GiaNhapLai",
     },
     {
       title: "Thành tiền",
@@ -56,5 +31,13 @@ export default function ChiTietTraHangTable() {
     },
   ];
 
-  return <Table pagination={false} dataSource={dataSource} columns={columns} />;
+  return (
+    <Table
+      tableLayout={"auto"}
+      pagination={false}
+      dataSource={dataSource}
+      columns={columns}
+      rowKey="_id"
+    />
+  );
 }

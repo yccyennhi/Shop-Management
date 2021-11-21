@@ -12,6 +12,7 @@ export default function CTHDsReducer(state = INIT_STATE.CTHDs, action) {
             return {
                 ...state,
                 isLoading: false,
+                data: action.payload,
             };
         case getType(getCTHDs.getCTHDsFailure):
             return {

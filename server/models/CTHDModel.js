@@ -2,14 +2,22 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema
 const schema = new Schema(
   {
-    MaHD: {
+    idHD: {
       type : Schema.Types.ObjectId,
       ref: 'HoaDons',
       required: true,
     },
-    MaSP: {
+    MaHD: {
+      type: String,
+      required: true,
+    },
+    idSP: {
       type:  Schema.Types.ObjectId,
       ref: 'SanPhams',
+      required: true,
+    },
+    MaSP:{
+      type: String,
       required: true,
     },
     SoLuong: {

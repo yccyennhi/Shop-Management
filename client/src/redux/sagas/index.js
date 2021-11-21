@@ -218,6 +218,8 @@ function* deletePhieuBaoHanhSaga(action) {
   }
 }
 /* #endregion */
+
+/* #region Giao dich */
 function* fetchHoaDonsSaga(action) {
   try {
     const HoaDons = yield call(api.fetchHoaDons);
@@ -240,6 +242,29 @@ function* fetchPhieuDoiTrasSaga(action) {
   }
 }
 
+function* fetchCTHDsSaga(action) {
+  try {
+    const CTHDs = yield call(api.fetchCTHDs);
+    yield put(
+      actions.getCTHDs.getCTHDsSuccess(CTHDs.data)
+    );
+  } catch (err) {
+    console.error(err);
+    yield put(actions.getCTHDs.getCTHDsFailure(err));
+  }
+}
+function* fetchCTPDTsSaga(action) {
+  try {
+    const CTPDTs = yield call(api.fetchCTPDTs);
+    yield put(
+      actions.getCTPDTs.getCTPDTsSuccess(CTPDTs.data)
+    );
+  } catch (err) {
+    console.error(err);
+    yield put(actions.getCTPDTs.getCTPDTsFailure(err));
+  }
+}
+/* #endregion */
 function* mySaga() {
   yield takeLatest(
     actions.getKhachHangs.getKhachHangsRequest,
@@ -307,6 +332,7 @@ function* mySaga() {
     createPhieuHenSaga
   );
 
+<<<<<<< HEAD
   yield takeLatest(
     actions.getTaiKhoans.getTaiKhoansRequest,
     fetchTaiKhoansSaga
@@ -316,6 +342,9 @@ function* mySaga() {
     actions.getPhieuDoiTras.getPhieuDoiTrasRequest,
     fetchPhieuDoiTrasSaga
   );
+=======
+  yield takeLatest(actions.getTaiKhoans.getTaiKhoansRequest, fetchTaiKhoansSaga);
+>>>>>>> UX_GiaoDich
   yield takeLatest(
     actions.updatePhieuHen.updatePhieuHenRequest,
     updatePhieuHenSaga
@@ -344,6 +373,13 @@ function* mySaga() {
     actions.deleteKhuyenMai.deleteKhuyenMaiRequest,
     deleteKhuyenMaiSaga
   );
+  /* #endregion */
+
+  /* #region  GiaoD dich */
+  yield takeLatest(actions.getHoaDons.getHoaDonsRequest,fetchHoaDonsSaga);
+  yield takeLatest(actions.getPhieuDoiTras.getPhieuDoiTrasRequest,fetchPhieuDoiTrasSaga);
+  yield takeLatest(actions.getCTHDs.getCTHDsRequest,fetchCTHDsSaga);
+  yield takeLatest(actions.getCTPDTs.getCTPDTsRequest,fetchCTPDTsSaga);
   /* #endregion */
 }
 

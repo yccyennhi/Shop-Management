@@ -11,23 +11,43 @@ const schema = new Schema(
       required: true,
     },
     MaNV: {
+      type: String,
+      required: true,
+    },
+    idNV: {
       type: Schema.Types.ObjectId,
       ref: 'NhanViens',
       required: true,
     },
-    MaKM: {
+    idKM: {
       type: Schema.Types.ObjectId,
       ref: 'KhuyenMais',
       required: false,
     },
-    MaKH: {
+    MaKM: {
+      type: String,
+      required: true,
+    },
+    idKH: {
       type: Schema.Types.ObjectId,
       ref: 'KhachHangs',
+      required: false,
+    },
+    MaKH: {
+      type: String,
       required: false,
     },
     DiemTru: {
       type: Number,
       required: false,
+    },
+    GiamGia:{
+      type: Number,
+      required: true,
+    },
+    SoLuong: {
+      type: Number,
+      required: true,
     },
     TongTienHang: {
       type: Number,
@@ -37,6 +57,14 @@ const schema = new Schema(
       type: Number,
       required: true,
     },
+    TienKhachTra: {
+      type: Number,
+      required: true,
+    },
+    TienTraKhach: {
+      type: Number,
+      required: true,
+    }
   },
   { timestamps: true }
 );

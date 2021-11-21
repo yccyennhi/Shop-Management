@@ -130,10 +130,23 @@ export const deleteKhuyenMai = createActions({
 });
 
 export const getPhieuDoiTras = createActions({
-  getPhieuDoiTrasRequest: undefined,
-  getPhieuDoiTrasSuccess: (payload) => payload,
-  getPhieuDoiTrasFailure: (err) => err,
-});
+    getPhieuDoiTrasRequest: undefined,
+    getPhieuDoiTrasSuccess: (payload) => payload,
+    getPhieuDoiTrasFailure: (err) => err,
+})
+
+export const getCTHDs = createActions({
+  getCTHDsRequest: undefined,
+  getCTHDsSuccess: (payload) => payload,
+  getCTHDsFailure: (err) => err,
+})
+
+export const getCTPDTs = createActions({
+  getCTPDTsRequest: undefined,
+  getCTPDTsSuccess: (payload) => payload,
+  getCTPDTsFailure: (err) => err,
+})
+
 
 export const createHoaDon = createAction({});
 /* #endregion */

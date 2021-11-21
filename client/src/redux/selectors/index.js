@@ -10,3 +10,6 @@ export const TrangThaiBaoHanhCardState$ = (state) => state.TrangThaiBaoHanhCard;
 export const UpdateSanPhamModalState$ = (state) => state.UpdateSanPhamModal;
 export const PhieuBaoHanhsState$ = (state) => state.PhieuBaoHanhs.data;
 export const PhieuDoiTrasState$ = (state)=>state.PhieuDoiTras.data;
+
+export const CTHDsState$ = (state) => state.CTHDs.data;
+export const CTPDTsState$ = (state) => state.CTPDTs.data;

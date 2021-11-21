@@ -66,7 +66,6 @@ export default function KhuyenMaisReducer(
         ),
       };
     case getType(deleteKhuyenMai.deleteKhuyenMaiFailure):
-      console.log('saga', action.payload);
       messageError(action.payload);
       return {
         ...state,

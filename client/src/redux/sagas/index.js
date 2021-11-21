@@ -104,7 +104,10 @@ function* deleteKhuyenMaiSaga(action) {
       actions.deleteKhuyenMai.deleteKhuyenMaiSuccess(KhuyenMai.data._id)
     );
   } catch (err) {
-    yield put(actions.deleteKhuyenMai.deleteKhuyenMaiFailure(err.response.data));
+    if(err.response.data)
+      yield put(actions.deleteKhuyenMai.deleteKhuyenMaiFailure(err.response.data));
+    else
+     yield put(actions.deleteKhuyenMai.deleteKhuyenMaiFailure(err));
   }
 }
 /* #endregion */
@@ -332,7 +335,6 @@ function* mySaga() {
     createPhieuHenSaga
   );
 
-<<<<<<< HEAD
   yield takeLatest(
     actions.getTaiKhoans.getTaiKhoansRequest,
     fetchTaiKhoansSaga
@@ -342,9 +344,6 @@ function* mySaga() {
     actions.getPhieuDoiTras.getPhieuDoiTrasRequest,
     fetchPhieuDoiTrasSaga
   );
-=======
-  yield takeLatest(actions.getTaiKhoans.getTaiKhoansRequest, fetchTaiKhoansSaga);
->>>>>>> UX_GiaoDich
   yield takeLatest(
     actions.updatePhieuHen.updatePhieuHenRequest,
     updatePhieuHenSaga

@@ -128,7 +128,7 @@ export const deleteKhuyenMai = createActions({
   deleteKhuyenMaiSuccess: (payload) => payload,
   deleteKhuyenMaiFailure: (err) => err,
 });
-
+/* #endregion */
 export const getPhieuDoiTras = createActions({
     getPhieuDoiTrasRequest: undefined,
     getPhieuDoiTrasSuccess: (payload) => payload,
@@ -149,7 +149,7 @@ export const getCTPDTs = createActions({
 
 
 export const createHoaDon = createAction({});
-/* #endregion */
+
 
 export const showTaoSanPhamModal = createAction("SHOW_TAOSANPHAM_MODAL");
 export const hideTaoSanPhamModal = createAction("HIDE_TAOSANPHAM_MODAL");

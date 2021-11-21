@@ -12,16 +12,6 @@ import { messageError } from "../../message";
 
 import moment from "moment";
 
-const validateMessages = {
-  required: "${label} không được bỏ trống!",
-  types: {
-    number: "${label} không phải là số hợp lệ!",
-  },
-  number: {
-    range: "${label} phải nằm trong khoảng từ ${min} đến ${max}",
-  },
-};
-
 export default function KhuyenMaiModal({ currentId, setCurrentId }) {
   const { isShow } = useSelector(modalState$);
   const [form] = Form.useForm();
@@ -87,7 +77,6 @@ export default function KhuyenMaiModal({ currentId, setCurrentId }) {
     <>
       <Form
         form={form}
-        validateMessages={validateMessages}
         labelCol={{
           span: 4,
         }}
@@ -121,7 +110,7 @@ export default function KhuyenMaiModal({ currentId, setCurrentId }) {
             <DatePicker
               defaultValue={moment(data.NgayBD)}
               onChange={(e) => {
-                if (e) setData({ ...data, NgayBD: e.toDate() });
+                if (e) setData({ ...data, NgayBD: e });
               }}
             />
           </Form.Item>
@@ -144,7 +133,7 @@ export default function KhuyenMaiModal({ currentId, setCurrentId }) {
               min
               defaultValue={moment(data.NgayKT)}
               onChange={(e) => {
-                if (e) setData({ ...data, NgayKT: e.toDate() });
+                if (e) setData({ ...data, NgayKT: e });
               }}
             />
           </Form.Item>

@@ -2,8 +2,9 @@ import { HoaDonModel } from "../models/HoaDonModel.js";
 import { KhuyenMaiModel } from "../models/KhuyenMaiModel.js";
 
 export async function isNotExistHoaDon(idKhuyenMai) {
-  const HoaDons = await HoaDonModel.find({ MaKM: idKhuyenMai });
-
+  const HoaDons = await HoaDonModel.find({ idKM: idKhuyenMai });
+  consosle.log('id', idKhuyenMai);
+  console.log('HoaDon', HoaDons);
   if (HoaDons.length) {
     return false;
   } else {

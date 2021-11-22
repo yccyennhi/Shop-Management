@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
-import { TongQuanStatistics$ } from "../../../redux/selectors";
+import { TongQuanStatistics$ } from "../../redux/selectors";
 import { Card, Space, Typography } from "antd";
 import { DollarTwoTone } from "@ant-design/icons";
-import * as actions from "../../../redux/actions";
+import * as actions from "../../redux/actions";
 
 const { Text } = Typography;
 
@@ -17,6 +17,9 @@ export default function TodayReportOverall() {
     dispatch(actions.getTongQuans.getDataRequest());
   }, [dispatch]);
 
+  const { hoaDonTodayCount, doanhThuToday, doiTraCount } = statisics;
+
+  console.log('statistics trong page', statisics);
 
   return (
     <div>
@@ -25,9 +28,9 @@ export default function TodayReportOverall() {
           <Space align="center" size={20}>
             <DollarTwoTone style={{ fontSize: "40px" }} />
             <Space direction="vertical" size={0}>
-              <Text strong>{countHD} Hóa đơn</Text>
+              <Text strong> {hoaDonTodayCount} Hóa đơn</Text>
               <Text strong style={{ fontSize: "1.5rem" }}>
-                0
+                {doanhThuToday}
               </Text>
               <Text type="secondary">Doanh thu</Text>
             </Space>

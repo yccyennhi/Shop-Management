@@ -4,13 +4,14 @@ import { PhieuDoiTraModel } from './../models/PhieuDoiTraModel.js';
 
 export const getHoaDonsToday = async (req, res) => {
   try {
+    console.log('Vào getHoaDonsToday trong server');
     var today = moment().startOf("day");
     var tomorrow = moment(today).endOf("day");
     const HoaDonsToday = await HoaDonModel.find({
       // find in today
       ThoiGian: { $gte: today, $lte: tomorrow },
     });
-
+    console.log('HoaDonsToday in controllers', HoaDonsToday);
     res.status(200).json(HoaDonsToday);
   } catch (err) {
     res.status(500).json({ error: err });

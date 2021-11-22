@@ -148,9 +148,6 @@ export const createHoaDon = createAction({
 export const showTaoSanPhamModal = createAction("SHOW_TAOSANPHAM_MODAL");
 export const hideTaoSanPhamModal = createAction("HIDE_TAOSANPHAM_MODAL");
 
-export const showUpdateSanPhamModal = createAction("SHOW_UPDATESANPHAM_MODAL");
-export const hideUpdateSanPhamModal = createAction("HIDE_UPDATESANPHAM_MODAL");
-
 export const showTaoHoaDonModal = createAction('SHOW_TAOHOADON_MODAL');
 export const hideTaoHoaDonModal = createAction('HIDE_TAOHOADON_MODAL');
 

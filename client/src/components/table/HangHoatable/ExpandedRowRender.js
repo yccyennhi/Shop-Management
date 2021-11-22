@@ -11,22 +11,48 @@ import {
   Tag,
   Button,
   Space,
+  Modal,
 } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteSanPham, showUpdateSanPhamModal } from "../../../redux/actions";
+import {
+  deleteSanPham,
+  showTaoSanPhamModal,
+  updateSanPham,
+} from "../../../redux/actions";
 
 export default function ExpandedRowRender({ record, setCurrentId }) {
   const dispatch = useDispatch();
-
+  const [isShow, setIsShow] = useState(false);
+  function warning() {
+    setIsShow(true);
+    Modal.warning({
+      visible: isShow,
+      title: "Cảnh báo",
+      content:
+        "Việc xóa sản phẩm sẽ làm ảnh hưởng đến dữ liệu kiểm kho. Xác nhận đưa tồn kho sản phẩm về 0 để thay thế?",
+      onOk() { handleDelete() },
+    //  onCancel: {}
+    });
+  }
   const openUpdateSanPhamModal = React.useCallback(() => {
     setCurrentId(record._id);
-    dispatch(showUpdateSanPhamModal());
+    dispatch(showTaoSanPhamModal());
   }, [dispatch]);
-
-  const onDelete = React.useCallback(() => {
+  const SanPhamValue = useSelector((state) =>
+    state.SanPhams.data.find((SanPham) =>
+      SanPham._id === record._id ? SanPham : null
+    )
+  );
+  const [data, setData] = useState(SanPhamValue);
+  console.log("SPVL", SanPhamValue);
+  const handleDelete = React.useCallback(() => {
     console.log("record data", record);
-    dispatch(deleteSanPham.deleteSanPhamRequest(record._id));
+    setData({ ...data, TonKho: 0, TrangThai: "Hết hàng" });
+    dispatch(updateSanPham.updateSanPhamRequest(data));
+    setIsShow(false);
+    // dispatch(deleteSanPham.deleteSanPhamRequest(record._id));
   }, [record, dispatch]);
+
   return (
     <>
       <PageHeader
@@ -37,7 +63,10 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
           <Button key="1" type="primary" onClick={openUpdateSanPhamModal}>
             Sửa
           </Button>,
-          <Button key="2" onClick={onDelete}>
+          <Button
+            key="2"
+            onClick={warning}
+          >
             Xóa
           </Button>,
         ]}
@@ -47,16 +76,25 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
             <Space direction="vertical">
               <Row>
                 <Space direction="horizontal">
-                  <Tag color="red" visible={record.TrangThai == "Ngừng kinh doanh"}>
+                  <Tag
+                    color="red"
+                    visible={record.TrangThai == "Ngừng kinh doanh"}
+                  >
                     {record.TrangThai}
                   </Tag>
                   <Tag color="yellow" visible={record.TrangThai == "Hết hàng"}>
                     {record.TrangThai}
                   </Tag>
-                  <Tag color="blue" visible={record.TrangThai == "Đang kinh doanh"}>
+                  <Tag
+                    color="blue"
+                    visible={record.TrangThai == "Đang kinh doanh"}
+                  >
                     {record.TrangThai}
                   </Tag>
-                  <Tag color="grey" visible={record.BaoHanh == "Không bảo hành"}>
+                  <Tag
+                    color="grey"
+                    visible={record.BaoHanh == "Không bảo hành"}
+                  >
                     Không bảo hành
                   </Tag>
                   <Tag color="green" visible={record.BaoHanh == "Có bảo hành"}>

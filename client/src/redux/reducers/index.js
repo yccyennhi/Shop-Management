@@ -7,7 +7,6 @@ import HoaDons from "./HoaDons";
 import KhuyenMais from './KhuyenMais'
 import Modal from './Modal';
 import TaoSanPhamModal from "./TaoSanPhamModal";
-import UpdateSanPhamModal from "./UpdateSanPhamModal";
 import PhieuBaoHanhs from "./PhieuBaoHanhs.js";
 import PhieuHens from "./PhieuHens";
 import PhieuDoiTras  from "./PhieuDoiTras";
@@ -23,7 +22,6 @@ export default combineReducers({
   HoaDons,
   Modal,
   TaoSanPhamModal,
-  UpdateSanPhamModal,
   PhieuBaoHanhs,
   PhieuHens,
   PhieuDoiTras,

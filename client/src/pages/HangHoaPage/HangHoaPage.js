@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "../../App.css";
 import COLOR from "../../color.js";
+import SanPhamModal from "../../components/modal/SanPhamModal/SanPhamModal";
 
 import {
   Menu,
@@ -12,9 +13,17 @@ import {
   Space,
   Typography,
   Radio,
+  Row,
+  Divider,
+  Button,
 } from "antd";
 import "./styles.css";
-import { DatabaseTwoTone } from "@ant-design/icons";
+import {
+  DatabaseTwoTone,
+  SafetyCertificateTwoTone,
+  ShopTwoTone,
+  PlusOutlined,
+} from "@ant-design/icons";
 
 import HangHoatable from "../../components/table/HangHoatable/HangHoatable.js";
 import { SanPhamsState$ } from "../../redux/selectors";
@@ -26,11 +35,23 @@ const { SubMenu } = Menu;
 
 export default function HangHoaPage() {
   const [currentId, setCurrentId] = useState(null);
+  const dispatch = useDispatch();
   const SanPhams = useSelector(SanPhamsState$);
   const SLSanPham = SanPhams.length;
   const [trangthai, setTrangthai] = useState(1);
   const [baohanh, setBaohanh] = useState(1);
 
+  const openCreateSanPhamModal = React.useCallback(() => {
+    dispatch(actions.showTaoSanPhamModal());
+  }, [dispatch]);
+
+  const SPDKD = SanPhams.filter(function (e) {
+    return e.TrangThai == "Đang kinh doanh";
+  });
+
+  const SPCBH = SanPhams.filter(function (e) {
+    return e.BaoHanh == "Có bảo hành";
+  });
   return (
     <Layout>
       <Layout>
@@ -46,21 +67,6 @@ export default function HangHoaPage() {
         >
           <div className="site-card-border-less-wrapper">
             <Space direction="vertical">
-              {/* <Card
-                title="Số lượng hàng hóa"
-                bordered={false}
-                style={{ width: 250, color: COLOR.darkblue }}
-              >
-                <Space direction="horizontal">
-                  <DatabaseTwoTone style={{ fontSize: "40px" }} />
-                  <Text
-                    strong
-                    style={{ fontSize: "1.4rem", color: COLOR.darkblue }}
-                  >
-                    {SLSanPham} sản phẩm
-                  </Text>
-                </Space>
-              </Card> */}
               <Card
                 title="Trạng thái kinh doanh"
                 bordered={false}
@@ -108,9 +114,56 @@ export default function HangHoaPage() {
         <Content>
           <Layout style={{ padding: "17px 24px 24px" }}>
             <div className="site-layout-content">
+              <Row justify="start">
+                <Space direction="horizontal" size={80}>
+                  <Space align="center" size={20}>
+                    <DatabaseTwoTone style={{ fontSize: "40px" }} />
+                    <Space direction="vertical" size={0}>
+                      <Text strong>{SanPhams.length} sản phẩm</Text>
+                      <Text strong style={{ fontSize: "1.5rem" }}>
+                        {SanPhams.length}
+                      </Text>
+                      <Text type="secondary">Tổng số lượng sản phẩm</Text>
+                    </Space>
+                  </Space>
+
+                  <Space align="center" size={20}>
+                    <ShopTwoTone style={{ fontSize: "40px" }} />
+                    <Space direction="vertical" size={0}>
+                      <Text strong>{SPDKD.length} sản phẩm</Text>
+                      <Text strong style={{ fontSize: "1.5rem" }}>
+                        {SPDKD.length}
+                      </Text>
+                      <Text type="secondary">Số sản phẩm đang kinh doanh</Text>
+                    </Space>
+                  </Space>
+                  <Space align="center">
+                    <SafetyCertificateTwoTone style={{ fontSize: "40px" }} />
+                    <Space direction="vertical" size={0}>
+                      <Text strong>{SPCBH.length} sản phẩm</Text>
+                      <Text strong style={{ fontSize: "1.5rem" }}>
+                        {SPCBH.length}
+                      </Text>
+                      <Text type="secondary">Số sản phẩm có bảo hành</Text>
+                    </Space>
+                  </Space>
+                </Space>
+              </Row>
+              <Divider orientation="left"></Divider>
+              <Button
+                type="primary"
+                icon={<PlusOutlined />}
+                onClick={openCreateSanPhamModal}
+              >
+                Thêm hàng hóa
+              </Button>
+
               <HangHoatable
                 trangthai={trangthai}
                 baohanh={baohanh}
+                setCurrentId={setCurrentId}
+              />
+              <SanPhamModal
                 currentId={currentId}
                 setCurrentId={setCurrentId}
               />

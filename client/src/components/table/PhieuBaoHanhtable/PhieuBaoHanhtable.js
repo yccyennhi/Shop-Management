@@ -1,20 +1,20 @@
 import React, { useState } from "react";
-import { Table, Input, Row, PageHeader, Descriptions, Tag } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { Input, Row, Space, Descriptions, Tag } from "antd";
+import { SearchOutlined, FileExcelOutlined } from "@ant-design/icons";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../../redux/actions";
-
-import { PhieuBaoHanhsState$ } from "../../../redux/selectors";
+import { ExportTableButton, Table } from "ant-table-extensions";
+import { PhieuBaoHanhsState$, isloadingPhieuBaoHanhsState$ } from "../../../redux/selectors";
 import ExpandedRowRender from "./ExpandedRowRender";
 
 const { Search } = Input;
 
-function PhieuBaoHanhtable({setCurrentId}) {
+function PhieuBaoHanhtable({ baohanh, setCurrentId }) {
   const dispatch = useDispatch();
-
-  const PhieuBaoHanhs = useSelector(PhieuBaoHanhsState$);
-
+  const [PhieuBaoHanhs, setPhieuBaoHanhs] = useState(useSelector(PhieuBaoHanhsState$));
+  const PBH = useSelector(PhieuBaoHanhsState$);
+  const loadingPhieuBaoHanhs = useSelector(isloadingPhieuBaoHanhsState$);
   React.useEffect(() => {
     dispatch(actions.getPhieuBaoHanhs.getPhieuBaoHanhsRequest());
   }, [dispatch]);
@@ -100,7 +100,7 @@ function PhieuBaoHanhtable({setCurrentId}) {
         return record.MaHD.toLowerCase().includes(value.toLowerCase());
       },
     },
-    
+
     {
       title: "Tên sản phẩm",
       dataIndex: "TenSP",
@@ -170,7 +170,6 @@ function PhieuBaoHanhtable({setCurrentId}) {
         return record.NgayKetThucBH == value;
       },
     },
-
   ];
 
   const [select, setSelect] = useState({
@@ -192,21 +191,47 @@ function PhieuBaoHanhtable({setCurrentId}) {
 
   return (
     <div>
-      <Row></Row>
-
-      <span style={{ marginLeft: 8 }}>
-        {selectedRowKeys.length > 0 ? `${selectedRowKeys.length} đã chọn` : ""}
-      </span>
+      <Row justify="end">
+        <Space
+          direction="horizontal"
+          style={{ paddingTop: 10, marginBottom: 16 }}
+        >
+          <span style={{ marginLeft: 8 }}>
+            {selectedRowKeys.length > 0
+              ? `${selectedRowKeys.length} đã chọn`
+              : ""}
+          </span>
+          <ExportTableButton
+            dataSource={dataSource}
+            columns={columns}
+            btnProps={{ icon: <FileExcelOutlined /> }}
+            showColumnPicker={true}
+            showColumnPickerProps={{ id: "Thêm hàng hóa" }}
+            fileName="HangHoaCSV"
+          >
+            Tải file CSV
+          </ExportTableButton>
+        </Space>
+      </Row>
 
       <Table
         tableLayout={"auto"}
         loading={false}
         pagination={true}
-        //  scroll={{ x: 1500, y: 500 }}
+        scroll={{ x: 1500, y: 500 }}
+        searchableProps={{
+          inputProps: {
+            placeholder: "Nhập nội dung cần tìm",
+            prefix: <SearchOutlined />,
+            width: 200,
+          },
+        }}
         columns={columns}
         rowSelection={rowSelection}
         expandable={{
-          expandedRowRender: (record) => <ExpandedRowRender record={record} setCurrentId={setCurrentId} />,
+          expandedRowRender: (record) => (
+            <ExpandedRowRender record={record} setCurrentId={setCurrentId} />
+          ),
 
           rowExpandable: (record) => record.TenPBH !== "Not Expandable",
         }}

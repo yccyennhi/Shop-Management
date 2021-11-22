@@ -18,7 +18,6 @@ import {
   Typography,
   Avatar,
 } from "antd";
-import UpdateSanPhamModal from "../../../components/modal/TaoSanPhamModal/updateSanPhamModal";
 
 import { useDispatch, useSelector } from "react-redux";
 import ExpandedRowRender from "./ExpandedRowRender";
@@ -249,6 +248,45 @@ function HangHoatable({ trangthai, baohanh, currentId, setCurrentId }) {
       },
     },
     {
+      title: "Màu sắc",
+      dataIndex: "MauSac",
+      key: "MauSac",
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => {
+        return (
+          <Search
+            allowClear
+            autoFocus
+            placeholder="Nhập màu sắc cần tìm"
+            value={selectedKeys[0]}
+            onChange={(e) => {
+              setSelectedKeys(e.target.value ? [e.target.value] : []);
+              confirm({ closeDropdown: false });
+            }}
+            onPressEnter={() => {
+              confirm();
+            }}
+            onBlur={() => {
+              confirm();
+            }}
+            onSearch={() => {
+              confirm();
+            }}
+          ></Search>
+        );
+      },
+      filterIcon: () => {
+        return <SearchOutlined />;
+      },
+      onFilter: (value, record) => {
+        return record.MauSac.toLowerCase().includes(value.toLowerCase());
+      },
+    },
+    {
       title: "Loại Hàng",
       dataIndex: "LoaiHang",
       key: "LoaiHang",
@@ -306,18 +344,6 @@ function HangHoatable({ trangthai, baohanh, currentId, setCurrentId }) {
 
   const { selectedRowKeys, loading } = select;
 
-  const SPDKD = SP.filter(function (e) {
-    return e.TrangThai == "Đang kinh doanh";
-  });
-
-  const SPCBH = SP.filter(function (e) {
-    return e.BaoHanh == "Có bảo hành";
-  });
-
-  const openUpdateSanPhamModal = React.useCallback(() => {
-    dispatch(actions.showUpdateSanPhamModal());
-  }, [dispatch]);
-
   const rowSelection = {
     selectedRowKeys,
     onChange: (selectedRowKeys) => {
@@ -344,65 +370,32 @@ function HangHoatable({ trangthai, baohanh, currentId, setCurrentId }) {
   );
   return (
     <div>
-      <Row justify="start">
-        <Space direction="horizontal" size={80}>
-          <Space align="center" size={20}>
-            <DatabaseTwoTone style={{ fontSize: "40px" }} />
-            <Space direction="vertical" size={0}>
-              <Text strong>{SP.length} sản phẩm</Text>
-              <Text strong style={{ fontSize: "1.5rem" }}>
-                {SP.length}
-              </Text>
-              <Text type="secondary">Tổng số lượng sản phẩm</Text>
-            </Space>
-          </Space>
-
-          <Space align="center" size={20}>
-            <ShopTwoTone style={{ fontSize: "40px" }} />
-            <Space direction="vertical" size={0}>
-              <Text strong>{SPDKD.length} sản phẩm</Text>
-              <Text strong style={{ fontSize: "1.5rem" }}>
-                {SPDKD.length}
-              </Text>
-              <Text type="secondary">Số sản phẩm đang kinh doanh</Text>
-            </Space>
-          </Space>
-          <Space align="center">
-            <SafetyCertificateTwoTone style={{ fontSize: "40px" }} />
-            <Space direction="vertical" size={0}>
-              <Text strong>{SPCBH.length} sản phẩm</Text>
-              <Text strong style={{ fontSize: "1.5rem" }}>
-                {SPCBH.length}
-              </Text>
-              <Text type="secondary">Số sản phẩm có bảo hành</Text>
-            </Space>
-          </Space>
-        </Space>
-      </Row>
-      <Divider orientation="left"></Divider>
-
       <Row justify="end">
-        <Space>
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={openUpdateSanPhamModal}
-          >
-            Thêm hàng hóa
-          </Button>
+        <Space direction="horizontal" style={{ paddingTop: 10, marginBottom: 16 }}>
+            <span style={{ marginRight: 8 }}>
+              {hasSelected
+                ? `Có ${selectedRowKeys.length} hàng hóa được chọn`
+                : ""}
+            </span>
+            <Dropdown overlay={menu} disabled={!hasSelected}>
+              <Button>
+                Thao tác <DownOutlined />
+              </Button>
+            </Dropdown>
           <ExportTableButton
             dataSource={dataSource}
             columns={columns}
-            btnProps={{ type: "primary", icon: <FileExcelOutlined /> }}
+            btnProps={{  icon: <FileExcelOutlined /> }}
             showColumnPicker={true}
             showColumnPickerProps={{ id: "Thêm hàng hóa" }}
             fileName="HangHoaCSV"
           >
             Tải file CSV
           </ExportTableButton>
+
         </Space>
       </Row>
-      <Row justify="end">
+      {/* <Row justify="end">
         <div style={{ paddingTop: 10, marginBottom: 16 }}>
           <span style={{ marginRight: 8 }}>
             {hasSelected
@@ -417,7 +410,7 @@ function HangHoatable({ trangthai, baohanh, currentId, setCurrentId }) {
         </div>
       </Row>
 
-      <Row></Row>
+      <Row></Row> */}
 
       <Table
         columns={columns}
@@ -443,7 +436,6 @@ function HangHoatable({ trangthai, baohanh, currentId, setCurrentId }) {
         rowKey="_id"
         dataSource={dataSource}
       ></Table>
-      <UpdateSanPhamModal currentId={currentId} setCurrentId={setCurrentId} />
     </div>
   );
 }

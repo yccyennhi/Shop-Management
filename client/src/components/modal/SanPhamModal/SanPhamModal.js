@@ -8,24 +8,21 @@ import {
   Space,
   message,
   Upload,
+  Row,
 } from "antd";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import FileBase64 from "react-file-base64";
 import { SettingOutlined, UploadOutlined } from "@ant-design/icons";
-
-import { UpdateSanPhamModalState$ } from "../../../redux/selectors/index.js";
+import { messageError, messageLoadingSuccess } from "../../message";
+import { TaoSanPhamModalState$ } from "../../../redux/selectors/index.js";
 import {
-  hideUpdateSanPhamModal,
+  hideTaoSanPhamModal,
   createSanPham,
   updateSanPham,
 } from "../../../redux/actions/index.js";
 const { Option } = Select;
 
-const formItemLayout = {
-  labelCol: { span: 6 },
-  wrapperCol: { span: 17 },
-};
 const validateMessages = {
   required: "${label} không được bỏ trống!",
   types: {
@@ -36,9 +33,10 @@ const validateMessages = {
   },
 };
 
-export default function UpdateSanPhamModal({ currentId, setCurrentId }) {
+export default function SanPhamModal({ currentId, setCurrentId }) {
+  const [trangthai, setTrangthai] = useState(false);
+  const { isShow } = useSelector(TaoSanPhamModalState$);
   const [form] = Form.useForm();
-
   const [data, setData] = useState({
     MaSP: "",
     TenSP: "",
@@ -48,29 +46,47 @@ export default function UpdateSanPhamModal({ currentId, setCurrentId }) {
     GiaVon: 0,
     GiaBan: 0,
     TonKho: 0,
-    TrangThai: 0,
-    BaoHanh: 0,
+    TrangThai: "Hết hàng",
+    BaoHanh: "Có bảo hành",
     HinhAnh: "",
     MoTa: "",
   });
-
+  console.log(currentId);
   const SanPhamValue = useSelector((state) =>
     state.SanPhams.data.find((SanPham) =>
       SanPham._id === currentId ? SanPham : null
     )
   );
   useEffect(() => {
+    form.resetFields();
+    setData({
+      MaSP: "",
+      TenSP: "",
+      MauSac: "",
+      LoaiHang: "",
+      Size: 0,
+      GiaVon: 0,
+      GiaBan: 0,
+      TonKho: 0,
+      TrangThai: "Hết hàng",
+      BaoHanh: "Có bảo hành",
+      HinhAnh: "",
+      MoTa: "",
+    });
     if (SanPhamValue) setData(SanPhamValue);
+    console.log("SanPham", data);
+    if (data.TonKho>0) setTrangthai(true);
+
   }, [SanPhamValue]);
+  console.log("SanPham", data);
   const dispatch = useDispatch();
 
-  const { isShow } = useSelector(UpdateSanPhamModalState$);
-
   const handleCancel = React.useCallback(() => {
-    dispatch(hideUpdateSanPhamModal());
+    setTrangthai(false);
+    dispatch(hideTaoSanPhamModal());
     // if (currentId) {
     // } else {
-    //   form.resetFields();
+      form.resetFields();
     // }
     setCurrentId(null);
     setData({
@@ -82,22 +98,62 @@ export default function UpdateSanPhamModal({ currentId, setCurrentId }) {
       GiaVon: 0,
       GiaBan: 0,
       TonKho: 0,
-      TrangThai: 0,
-      BaoHanh: 0,
+      TrangThai: "Hết hàng",
+      BaoHanh: "Có bảo hành",
+      HinhAnh: "",
+      MoTa: "",
+    });
+
+    // form.resetFields();
+  }, [dispatch]);
+
+  const handleReset = React.useCallback(() => {
+    if (data.TonKho>0) {setTrangthai(true)} else {setTrangthai(false)};
+    form.resetFields();
+    setData({
+      MaSP: "",
+      TenSP: "",
+      MauSac: "",
+      LoaiHang: "",
+      Size: 0,
+      GiaVon: 0,
+      GiaBan: 0,
+      TonKho: 0,
+      TrangThai: "Hết hàng",
+      BaoHanh: "Có bảo hành",
       HinhAnh: "",
       MoTa: "",
     });
   }, [dispatch]);
 
   const handleOk = React.useCallback(() => {
-    if (currentId) {
-      dispatch(updateSanPham.updateSanPhamRequest(data));
+    if (
+      data.GiaBan < 0 ||
+      data.GiaVon < 0 ||
+      data.Size < 0 ||
+      data.TonKho < 0
+    ) {
+      messageError("Vui lòng nhập đúng thông tin!");
+    } else if (
+      data.MaSP == "" ||
+      data.TenSP == "" ||
+      data.MauSac == "" ||
+      data.LoaiHang == "" ||
+      data.GiaBan == "" ||
+      data.GiaBan == ""
+    ) {
+      messageError("Vui lòng nhập đầy đủ thông tin");
     } else {
-      dispatch(createSanPham.createSanPhamRequest(data));
+      if (currentId) {
+        //messageLoadingSuccess("Cập nhật sản phẩm");
+        dispatch(updateSanPham.updateSanPhamRequest(data));
+      } else {
+        //messageLoadingSuccess("Tạo mới sản phẩm");
+        dispatch(createSanPham.createSanPhamRequest(data));
+      }
+      handleCancel();
     }
-
-    handleCancel();
-  }, [data, dispatch, handleCancel]);
+  }, [data, dispatch, handleCancel, messageLoadingSuccess]);
 
   const body = (
     <>
@@ -114,15 +170,15 @@ export default function UpdateSanPhamModal({ currentId, setCurrentId }) {
         layout="horizontal"
       >
         <Form.Item
-          // name="MaSP"
+          name="MaSP"
           label="Mã hàng"
           tooltip="Mã hàng là thông tin duy nhất"
           rules={[
-            // { required: true, message: "Vui lòng nhập mã hàng" },
+            { required: true, message: "Vui lòng nhập mã hàng" },
             {
               type: "string",
-              min: 5,
-              message: "Mã hàng phải có ít nhất 5 kí tự",
+              min: 2,
+              message: "Mã hàng phải có ít nhất 2 kí tự",
             },
           ]}
         >
@@ -130,18 +186,19 @@ export default function UpdateSanPhamModal({ currentId, setCurrentId }) {
             placeholder="Nhập mã hàng"
             value={data.MaSP}
             onChange={(e) => setData({ ...data, MaSP: e.target.value })}
+            defaultValue={data.MaSP}
           />
         </Form.Item>
         <Form.Item
-          // name="TenSP"
+          name="TenSP"
           label="Tên hàng"
           tooltip="Tên hàng là tên của sản phẩm"
           rules={[
             { required: true, message: "Vui lòng nhập tên hàng" },
             {
               type: "string",
-              min: 6,
-              message: "Tên hàng phải có ít nhất 6 kí tự",
+              min: 2,
+              message: "Tên hàng phải có ít nhất 2 kí tự",
             },
           ]}
         >
@@ -149,15 +206,16 @@ export default function UpdateSanPhamModal({ currentId, setCurrentId }) {
             placeholder="Nhập tên hàng"
             value={data.TenSP}
             onChange={(e) => setData({ ...data, TenSP: e.target.value })}
+            defaultValue={data.TenSP}
           />
         </Form.Item>
         <Form.Item
-          // name="Size"
+          name="Size"
           label="Size"
           tooltip="Nhập kích cỡ cho sản phẩm"
           rules={[
             { type: "number", min: 0, max: 99 },
-            // { required: true, message: "Vui lòng nhập size" },
+            { required: true, message: "Vui lòng nhập size" },
           ]}
         >
           <InputNumber
@@ -165,14 +223,15 @@ export default function UpdateSanPhamModal({ currentId, setCurrentId }) {
             onChange={(e) => setData({ ...data, Size: e })}
             style={{ width: 120 }}
             placeholder="Nhập size"
+            defaultValue={data.Size}
           />
         </Form.Item>
         <Form.Item
-          // name="MauSac"
+          name="MauSac"
           label="Màu sắc"
           tooltip="Nhập màu sắc hoặc họa tiết sản phẩm"
           rules={[
-            // { required: true, message: "Vui lòng nhập màu" },
+            { required: true, message: "Vui lòng nhập màu" },
             {
               type: "string",
               min: 2,
@@ -181,36 +240,38 @@ export default function UpdateSanPhamModal({ currentId, setCurrentId }) {
           ]}
         >
           <Input
-            value={data.MauSac}
+           // value={data.MauSac}
+            defaultValue={data.MauSac}
             onChange={(e) => setData({ ...data, MauSac: e.target.value })}
             placeholder="Nhập màu"
           />
         </Form.Item>
         <Form.Item
-          // name="LoaiHang"
+          name="LoaiHang"
           label="Loại hàng"
           tooltip="Nhập loại sản phẩm"
           rules={[
-            // { required: true, message: "Vui lòng nhập loại hàng" },
+            { required: true, message: "Vui lòng nhập loại hàng" },
             {
               type: "string",
-              min: 6,
-              message: "Loại hàng phải có ít nhất 6 kí tự",
+              min: 2,
+              message: "Loại hàng phải có ít nhất 2 kí tự",
             },
           ]}
         >
           <Input
             value={data.LoaiHang}
+            defaultValue={data.LoaiHang}
             onChange={(e) => setData({ ...data, LoaiHang: e.target.value })}
             placeholder="Nhập loại hàng"
           />
         </Form.Item>
         <Form.Item
-          // name="GiaVon"
+          name="GiaVon"
           label="Giá vốn"
           tooltip="Giá vốn để tính lợi nhuận cho sản phẩm"
           rules={[
-            // { required: true, message: "Vui lòng nhập giá vốn" },
+            { required: true, message: "Vui lòng nhập giá vốn" },
             {
               type: "number",
               min: 0,
@@ -220,16 +281,17 @@ export default function UpdateSanPhamModal({ currentId, setCurrentId }) {
         >
           <InputNumber
             value={data.GiaVon}
+            defaultValue={data.GiaVon}
             onChange={(e) => setData({ ...data, GiaVon: e })}
             style={{ width: 120 }}
             placeholder="VNĐ"
           />
         </Form.Item>
         <Form.Item
-          // name="GiaBan"
+          name="GiaBan"
           label="Giá bán"
           rules={[
-            // { required: true, message: "Vui lòng nhập giá bán" },
+            { required: true, message: "Vui lòng nhập giá bán" },
             {
               type: "number",
               min: 0,
@@ -239,17 +301,18 @@ export default function UpdateSanPhamModal({ currentId, setCurrentId }) {
         >
           <InputNumber
             value={data.GiaBan}
+            defaultValue={data.GiaBan}
             onChange={(e) => setData({ ...data, GiaBan: e })}
             style={{ width: 120 }}
             placeholder="VNĐ"
           />
         </Form.Item>
         <Form.Item
-          // name="TonKho"
+          name="TonKho"
           label="Tồn kho"
           tooltip="Số lượng tồn kho của sản phẩm"
           rules={[
-            // { required: true, message: "Vui lòng nhập số lượng tồn kho" },
+            { required: true, message: "Vui lòng nhập số lượng tồn kho" },
             {
               type: "number",
               min: 0,
@@ -259,32 +322,38 @@ export default function UpdateSanPhamModal({ currentId, setCurrentId }) {
         >
           <InputNumber
             value={data.TonKho}
-            onChange={(e) => setData({ ...data, TonKho: e })}
+            onChange={(e) => {
+              // setData({ ...data, TonKho: e });
+              if (e <= 0) {
+                console.log(trangthai);
+                setData({ ...data, TonKho: e, TrangThai: "Hết hàng" });
+                setTrangthai(false);
+              } else {
+                console.log(trangthai);
+                setData({ ...data, TonKho: e, TrangThai: "Đang kinh doanh" });
+                setTrangthai(true);
+              }
+            }}
+            defaultValue={data.TonKho}
             style={{ width: 120 }}
-            defaultValue={0}
           />
         </Form.Item>
-        <Form.Item
-          // name="TrangThai"
-          label="Trạng thái"
-          tooltip="Trạng thái kinh doanh sản phẩm"
-          // rules={[{ required: true, message: "Vui lòng chọn trạng thái" }]}
-        >
+        <Form.Item label="Trạng thái" tooltip="Trạng thái kinh doanh sản phẩm">
           <Select
+            disabled={!trangthai}
             placeholder="Chọn trạng thái"
             value={data.TrangThai}
             onChange={(e) => setData({ ...data, TrangThai: e })}
+            defaultValue={data.TrangThai}
           >
             <Option value="Ngừng kinh doanh">Ngừng kinh doanh</Option>
-            <Option value="Hết hàng">Hết hàng</Option>
             <Option value="Đang kinh doanh">Đang kinh doanh</Option>
           </Select>
         </Form.Item>
         <Form.Item
-          // name="BaoHanh"
           label="Bảo hành"
+          defaultValue={data.BaoHanh}
           tooltip="Trạng thái bảo hành của sản phẩm"
-          // rules={[{ required: true, message: "Vui lòng chọn bảo hành" }]}
         >
           <Select
             placeholder="Chọn bảo hành"
@@ -295,15 +364,16 @@ export default function UpdateSanPhamModal({ currentId, setCurrentId }) {
             <Option value="Có bảo hành">Có bảo hành</Option>
           </Select>
         </Form.Item>
-        <Form.Item label="Mô tả">
+        <Form.Item name="MoTa" label="Mô tả">
           <Input
             value={data.MoTa}
+            defaultValue={data.MoTa}
             onChange={(e) => setData({ ...data, MoTa: e.target.value })}
             placeholder="Nhập mô tả"
           />
         </Form.Item>
         <Form.Item
-          // name="HinhAnh"
+          name="HinhAnh"
           label="Hình ảnh"
           tooltip="Hình ảnh của sản phẩm"
         >
@@ -311,6 +381,7 @@ export default function UpdateSanPhamModal({ currentId, setCurrentId }) {
             accept="image/*"
             multiple={false}
             type="file"
+            defaultValue={data.HinhAnh}
             value={data.HinhAnh}
             onDone={({ base64 }) => setData({ ...data, HinhAnh: base64 })}
           />
@@ -321,10 +392,21 @@ export default function UpdateSanPhamModal({ currentId, setCurrentId }) {
   return (
     <div>
       <Modal
-        title="Cập nhât hàng hóa"
+        title={currentId ? "Câp nhật hàng hóa" : "Thêm hàng hóa"}
         visible={isShow}
         onCancel={handleCancel}
         onOk={handleOk}
+        footer={[
+          <Button key="back" onClick={handleCancel}>
+            Cancel
+          </Button>,
+          <Button key="back" onClick={handleReset}>
+            Reset
+          </Button>,
+          <Button key="submit" type="primary" onClick={handleOk}>
+            OK
+          </Button>,
+        ]}
         width={800}
       >
         {body}

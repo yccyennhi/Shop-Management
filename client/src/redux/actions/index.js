@@ -129,6 +129,7 @@ export const deleteKhuyenMai = createActions({
   deleteKhuyenMaiFailure: (err) => err,
 });
 /* #endregion */
+
 export const getPhieuDoiTras = createActions({
     getPhieuDoiTrasRequest: undefined,
     getPhieuDoiTrasSuccess: (payload) => payload,
@@ -145,6 +146,17 @@ export const getCTPDTs = createActions({
   getCTPDTsRequest: undefined,
   getCTPDTsSuccess: (payload) => payload,
   getCTPDTsFailure: (err) => err,
+})
+
+export const getTongQuans = createActions({
+  getDataRequest: undefined,
+  getDataSuccess: (payload) => payload,
+  getDataFailure: (err) => err,
+
+  getStatistics: (payload) => payload,
+  getRankingByDoanhThu: (payload) => payload,
+  getHighestSanPhamList: (payload) => payload,
+
 })
 
 

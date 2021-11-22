@@ -63,8 +63,19 @@ export const INIT_STATE = {
     isLoading: false,
     data: [],
   },
-  CTPDTs:{
+  CTPDTs: {
     isLoading: false,
     data: [],
-  }
+  },
+
+  TongQuans: {
+    isLoading: false,
+    statistics: {
+      hoaDonTodayCount: 0,
+      doanhThuToday: 0,
+      doiTraCount: 0,
+    },
+    rankingByDoanhThu: [],
+    hightestSanPhamList: [],
+  },
 };

@@ -99,7 +99,7 @@ function* updateKhuyenMaiSaga(action) {
 
 function* deleteKhuyenMaiSaga(action) {
   try {
-    const KhuyenMai = yield call(api.deleteKhuyenMai, action.payload);
+    const KhuyenMai = yield call(api.deleteKhuyenMai);
     yield put(
       actions.deleteKhuyenMai.deleteKhuyenMaiSuccess(KhuyenMai.data._id)
     );
@@ -223,6 +223,8 @@ function* deletePhieuBaoHanhSaga(action) {
 /* #endregion */
 
 /* #region Giao dich */
+
+
 function* fetchHoaDonsSaga(action) {
   try {
     const HoaDons = yield call(api.fetchHoaDons);
@@ -268,6 +270,17 @@ function* fetchCTPDTsSaga(action) {
   }
 }
 /* #endregion */
+
+function* getTongQuansSaga(action) {
+  try {
+    const HoaDonsToday =  yield call(api.getHoaDonsToday, action.payload);
+    console.log(HoaDonsToday.data);
+    }
+    catch (error) {
+    }
+  }
+
+
 function* mySaga() {
   yield takeLatest(
     actions.getKhachHangs.getKhachHangsRequest,
@@ -380,6 +393,11 @@ function* mySaga() {
   yield takeLatest(actions.getCTHDs.getCTHDsRequest,fetchCTHDsSaga);
   yield takeLatest(actions.getCTPDTs.getCTPDTsRequest,fetchCTPDTsSaga);
   /* #endregion */
+  yield takeLatest(
+    actions.getTongQuans.getDataRequest,
+    getTongQuansSaga
+  );
+
 }
 
 export default mySaga;

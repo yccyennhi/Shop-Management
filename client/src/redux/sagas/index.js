@@ -166,7 +166,7 @@ function* updatePhieuHenSaga(action) {
   try {
     const PhieuHen = yield call(api.updatePhieuHen, action.payload);
     console.log("updatePhieuHenSaga", PhieuHen.data);
-    yield put(actions.updatePhieuHen.updatehieuHenSuccess(PhieuHen.data));
+    yield put(actions.updatePhieuHen.updatePhieuHenSuccess(PhieuHen.data));
   } catch (err) {
     console.err(err);
     yield put(actions.updatePhieuHen.updatePhieuHenFailure(err));
@@ -313,6 +313,16 @@ function* mySaga() {
     actions.createPhieuHen.createPhieuHenRequest,
     createPhieuHenSaga
   );
+  
+  yield takeLatest(
+    actions.updatePhieuHen.updatePhieuHenRequest,
+    updatePhieuHenSaga
+  );
+  yield takeLatest(
+    actions.deletePhieuHen.deletePhieuHenRequest,
+    deletePhieuHenSaga
+  );
+  /* #endregion */
 
   yield takeLatest(
     actions.getTaiKhoans.getTaiKhoansRequest,
@@ -323,15 +333,6 @@ function* mySaga() {
     actions.getPhieuDoiTras.getPhieuDoiTrasRequest,
     fetchPhieuDoiTrasSaga
   );
-  yield takeLatest(
-    actions.updatePhieuHen.updatePhieuHenRequest,
-    updatePhieuHenSaga
-  );
-  yield takeLatest(
-    actions.deletePhieuHen.deletePhieuHenRequest,
-    deletePhieuHenSaga
-  );
-  /* #endregion */
 
   /* #region  KhuyenMai */
   yield takeLatest(

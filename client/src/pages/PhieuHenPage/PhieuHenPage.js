@@ -11,6 +11,7 @@ import {
   Typography,
   Divider,
   Row,
+  Col,
 } from "antd";
 import "./styles.css";
 import moment from "moment";
@@ -30,12 +31,14 @@ import {
 import PhieuHenModal from "../../components/modal/PhieuHenModal/PhieuHenModal";
 const { Text } = Typography;
 const { Content, Sider } = Layout;
+const { RangePicker } = DatePicker;
 
 export default function PhieuHenPage() {
   const [currentId, setCurrentId] = useState(null);
-  const [thoigian, setThoigian] = useState(null);
-  const [thang, setThang] = useState(null);
-  const [trangthai, setTrangthai] = useState(null);
+  const [thoigian, setThoigian] = useState(0);
+  const [ngayBD, setngayBD] = useState(null);
+  const [ngayKT, setngayKT] = useState(null);
+  const [trangthai, setTrangthai] = useState(0);
   const dispatch = useDispatch();
   const isShow = useSelector(isloadingPhieuHensState$);
   const PhieuHens = useSelector(PhieuHensState$);
@@ -45,7 +48,7 @@ export default function PhieuHenPage() {
   });
 
   const SPHH = PhieuHens.filter(function (e) {
-    return moment(e.NgayKT) < dateNow;
+    return e.TrangThai=="Chưa hoàn thành";
   });
 
   const openCreatePhieuHenModal = React.useCallback(() => {
@@ -54,9 +57,12 @@ export default function PhieuHenPage() {
   }, [dispatch]);
 
   function onChange(date, dateString) {
-    console.log(date, "datétring", dateString);
-    console.log(moment(date).format("M"));
-    setThang(moment(date).format("M"));
+    if (date != null) {
+      console.log(moment(date[0]));
+      console.log(moment(date[1]));
+    }
+    setngayBD(moment(date[0]));
+    setngayKT(moment(date[1]));
   }
   return (
     <Layout>
@@ -70,12 +76,8 @@ export default function PhieuHenPage() {
           className="site-layout-sider"
         >
           <Space direction="vertical">
-            <Card
-              title="Thời gian mua hàng"
-              bordered={false}
-              style={{ width: 250 }}
-            >
-              <Radio.Group>
+            <Card title="Lịch hẹn" bordered={false} style={{ width: 250 }}>
+              <Radio.Group defaultValue={0}>
                 <Space direction="vertical">
                   <Radio
                     value={0}
@@ -91,17 +93,18 @@ export default function PhieuHenPage() {
                       setThoigian(1);
                     }}
                   >
-                    <DatePicker onChange={onChange} picker="month" />
+                    <RangePicker onChange={onChange} />
+                    {/* <DatePicker onChange={onChange} picker="month" /> */}
                   </Radio>
                 </Space>
               </Radio.Group>
             </Card>
             <Card
-              title="Trạng thái bảo hành"
+              title="Trạng thái hẹn"
               bordered={false}
               style={{ width: 250 }}
             >
-              <Radio.Group>
+              <Radio.Group defaultValue={0}>
                 <Space direction="vertical">
                   <Radio
                     value={0}
@@ -117,7 +120,7 @@ export default function PhieuHenPage() {
                       setTrangthai(1);
                     }}
                   >
-                    Còn hạn
+                    Đã hoàn thành
                   </Radio>
                   <Radio
                     value={2}
@@ -125,64 +128,53 @@ export default function PhieuHenPage() {
                       setTrangthai(2);
                     }}
                   >
-                    Hết hạn
+                    Chưa hoàn thành
                   </Radio>
                 </Space>
               </Radio.Group>
             </Card>
-            {/* <Card
-              title="Trạng thái bảo trì"
-              bordered={false}
-              style={{ width: 250 }}
-            >
-              <Radio.Group>
-                <Space direction="vertical">
-                  <Radio value={0} onClick={() => {}}>
-                    Tất cả
-                  </Radio>
-                  <Radio value={1}>Đã hoàn thành</Radio>
-                  <Radio value={2}>Chưa hoàn thành</Radio>
-                </Space>
-              </Radio.Group>
-            </Card> */}
           </Space>
         </Sider>
         <Content>
           <Layout style={{ padding: "17px 24px 24px" }}>
             <div className="site-layout-content">
               <Row justify="start">
-                <Space direction="horizontal" size={200}>
+                <Col span={8}>
                   <Space align="center" size={20}>
                     <SafetyCertificateTwoTone style={{ fontSize: "40px" }} />
                     <Space direction="vertical" size={0}>
-                      <Text strong>{PhieuHens.length} phiếu bảo hành</Text>
+                      <Text strong>{PhieuHens.length} phiếu hẹn</Text>
                       <Text strong style={{ fontSize: "1.5rem" }}>
                         {PhieuHens.length}
                       </Text>
-                      <Text type="secondary">Tổng số lượng phiếu bảo hành</Text>
+                      <Text type="secondary">Tổng số lượng phiếu hẹn</Text>
                     </Space>
                   </Space>
+                </Col>
+                <Col span={8}>
                   <Space align="center" size={20}>
                     <CheckCircleTwoTone style={{ fontSize: "40px" }} />
                     <Space direction="vertical" size={0}>
-                      <Text strong>{SPCH.length} phiếu bảo hành</Text>
+                      <Text strong>{SPCH.length} phiếu hẹn</Text>
                       <Text strong style={{ fontSize: "1.5rem" }}>
                         {SPCH.length}
                       </Text>
-                      <Text type="secondary">Phiếu bảo hành còn hạn</Text>
+                      <Text type="secondary">Phiếu hẹn chưa đến hẹn</Text>
                     </Space>
                   </Space>
+                </Col>
+                <Col span={8}>
                   <Space align="center" size={20}>
                     <CloseCircleTwoTone style={{ fontSize: "40px" }} />
                     <Space direction="vertical" size={0}>
-                      <Text strong>{SPHH.length} phiếu bảo hành</Text>
+                      <Text strong>{SPHH.length} phiếu hẹn</Text>
                       <Text strong style={{ fontSize: "1.5rem" }}>
                         {SPHH.length}
                       </Text>
-                      <Text type="secondary">Phiếu bảo hành hết hạn</Text>
+                      <Text type="secondary">Phiếu hẹn khách chưa lấy</Text>
                     </Space>
                   </Space>
-                </Space>
+                </Col>
               </Row>
               <Divider orientation="left"></Divider>
               <Button
@@ -190,12 +182,13 @@ export default function PhieuHenPage() {
                 icon={<PlusOutlined />}
                 onClick={openCreatePhieuHenModal}
               >
-                Thêm phiếu bảo hành
+                Thêm phiếu hẹn
               </Button>
               <PhieuHentable
                 trangthai={trangthai}
                 thoigian={thoigian}
-                thang={thang}
+                ngayBD={ngayBD}
+                ngayKT={ngayKT}
                 setCurrentId={setCurrentId}
               />
               <PhieuHenModal

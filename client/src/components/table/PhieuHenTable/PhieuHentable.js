@@ -14,64 +14,112 @@ import ExpandedRowRender from "./ExpandedRowRender";
 
 const { Search } = Input;
 
-function PhieuHentable({ trangthai, thoigian, thang, setCurrentId }) {
+function PhieuHentable({ trangthai, thoigian, ngayBD, ngayKT, setCurrentId }) {
   const dispatch = useDispatch();
-  const SP = useSelector(SanPhamsState$);
-  const PBH = useSelector(PhieuHensState$);
+  const PH = useSelector(PhieuHensState$);
   const dateNow = moment().toDate();
 
-  const SPCH = PBH.filter(function (e) {
-    return moment(e.NgayKT) >= dateNow;
+  const SPCH = PH.filter(function (e) {
+    return moment(e.NgayHen) <= dateNow;
   });
 
-  const SPHH = PBH.filter(function (e) {
-    return moment(e.NgayKT) < dateNow;
+  const SPHH = PH.filter(function (e) {
+    return moment(e.NgayHen) > dateNow;
+  });
+
+  const SPHHT = PH.filter(function (e) {
+    return e.TrangThai == "Hoàn thành";
+  });
+  const SPHCHT = PH.filter(function (e) {
+    return e.TrangThai == "Chưa hoàn thành";
   });
 
   React.useEffect(() => {
-    dispatch(actions.getSanPhams.getSanPhamsRequest());
     dispatch(actions.getPhieuHens.getPhieuHensRequest());
   }, [dispatch]);
-  const [PhieuHens, setPhieuHens] = useState(
-    useSelector(PhieuHensState$)
-  );
+  const [PhieuHens, setPhieuHens] = useState(useSelector(PhieuHensState$));
   const loadingPhieuHens = useSelector(isloadingPhieuHensState$);
 
   React.useEffect(() => {
-    setPhieuHens(PBH);
-  }, [PBH]);
+    setPhieuHens(PH);
+  }, [PH]);
 
   React.useEffect(() => {
     if (trangthai === 0 && thoigian === 0) {
-      setPhieuHens(PBH);
+      setPhieuHens(PH);
     }
     if (trangthai === 1 && thoigian === 0) {
-      setPhieuHens(SPCH);
+      setPhieuHens(SPHHT);
     }
     if (trangthai === 2 && thoigian === 0) {
-      setPhieuHens(SPHH);
+      setPhieuHens(SPHCHT);
     }
     if (trangthai === 0 && thoigian === 1) {
-      const listPBH = PBH.filter(function (e) {
-        return moment(e.NgayBD).format("M") == thang;
-      });
-      setPhieuHens(listPBH);
+      if (ngayBD != null) {
+        const listPH = PH.filter(function (e) {
+          return moment(e.NgayHen) <= moment(ngayKT) && moment(e.NgayHen) >= moment(ngayBD);
+        });
+        setPhieuHens(listPH);
+      }
     }
     if (trangthai === 1 && thoigian === 1) {
-      const listPBH = SPCH.filter(function (e) {
-        return moment(e.NgayBD).format("M") == thang;
-      });
-      setPhieuHens(listPBH);
+      if (ngayBD != null) {
+        const listPH = SPHHT.filter(function (e) {
+          return moment(e.NgayHen) <= moment(ngayKT) && moment(e.NgayHen) >= moment(ngayBD);
+        });
+        setPhieuHens(listPH);
+      }
     }
     if (trangthai === 2 && thoigian === 1) {
-      const listPBH = SPHH.filter(function (e) {
-        return moment(e.NgayBD).format("M") == thang;
-      });
-      setPhieuHens(listPBH);
+      if (ngayBD != null) {
+        const listPH = SPHCHT.filter(function (e) {
+          return moment(e.NgayHen) <= moment(ngayKT) && moment(e.NgayHen) >= moment(ngayBD);
+        });
+        setPhieuHens(listPH);
+      }
     }
-  }, [trangthai, thoigian, thang]);
+  }, [trangthai, thoigian, ngayBD, ngayKT]);
   const dataSource = PhieuHens;
   const columns = [
+    {
+      title: "Mã phiếu hẹn",
+      dataIndex: "MaPH",
+      key: "MaPH",
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => {
+        return (
+          <Search
+            allowClear
+            autoFocus
+            placeholder="Nhập mã cần tìm"
+            value={selectedKeys[0]}
+            onChange={(e) => {
+              setSelectedKeys(e.target.value ? [e.target.value] : []);
+              confirm({ closeDropdown: false });
+            }}
+            onPressEnter={() => {
+              confirm();
+            }}
+            onBlur={() => {
+              confirm();
+            }}
+            onSearch={() => {
+              confirm();
+            }}
+          ></Search>
+        );
+      },
+      filterIcon: () => {
+        return <SearchOutlined />;
+      },
+      onFilter: (value, record) => {
+        return record.MaPH.toLowerCase().includes(value.toLowerCase());
+      },
+    },
     {
       title: "Mã phiếu bảo hành",
       dataIndex: "MaPBH",
@@ -108,46 +156,7 @@ function PhieuHentable({ trangthai, thoigian, thang, setCurrentId }) {
         return <SearchOutlined />;
       },
       onFilter: (value, record) => {
-        return record.MaSP.toLowerCase().includes(value.toLowerCase());
-      },
-    },
-    {
-      title: "Mã hóa đơn",
-      dataIndex: "MaHD",
-      key: "MaHD",
-      filterDropdown: ({
-        setSelectedKeys,
-        selectedKeys,
-        confirm,
-        clearFilters,
-      }) => {
-        return (
-          <Search
-            allowClear
-            autoFocus
-            placeholder="Nhập mã cần tìm"
-            value={selectedKeys[0]}
-            onChange={(e) => {
-              setSelectedKeys(e.target.value ? [e.target.value] : []);
-              confirm({ closeDropdown: false });
-            }}
-            onPressEnter={() => {
-              confirm();
-            }}
-            onBlur={() => {
-              confirm();
-            }}
-            onSearch={() => {
-              confirm();
-            }}
-          ></Search>
-        );
-      },
-      filterIcon: () => {
-        return <SearchOutlined />;
-      },
-      onFilter: (value, record) => {
-        return record.MaHD.toLowerCase().includes(value.toLowerCase());
+        return record.MaPBH.toLowerCase().includes(value.toLowerCase());
       },
     },
     {
@@ -186,55 +195,15 @@ function PhieuHentable({ trangthai, thoigian, thang, setCurrentId }) {
         return <SearchOutlined />;
       },
       onFilter: (value, record) => {
-        return record.MaHD.toLowerCase().includes(value.toLowerCase());
+        return record.MaSP.toLowerCase().includes(value.toLowerCase());
       },
     },
     {
-      title: "Tên sản phẩm",
-      dataIndex: "TenSP",
-      key: "TenSP",
-      render: (TenSP, record) => {
-        let listSP = SP.find(function (e) {
-          return e.MaSP === record.MaSP;
-        });
-        if (listSP !== undefined) return listSP.TenSP;
-      },
-      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
-        return (
-          <Search
-            allowClear
-            autoFocus
-            placeholder="Nhập tên sản phẩm cần tìm"
-            value={selectedKeys[0]}
-            onChange={(e) => {
-              setSelectedKeys(e.target.value ? [e.target.value] : []);
-              confirm({ closeDropdown: false });
-            }}
-            onPressEnter={() => {
-              confirm();
-            }}
-            onBlur={() => {
-              confirm();
-            }}
-            onSearch={() => {
-              confirm();
-            }}
-          ></Search>
-        );
-      },
-      filterIcon: () => {
-        return <SearchOutlined />;
-      },
-      onFilter: (value, record) => {
-        return record.TenPBH.toLowerCase().includes(value.toLowerCase());
-      },
-    },
-    {
-      title: "Thời hạn bảo hành",
-      dataIndex: "NgayKT",
-      key: "NgayKT",
-      render: (NgayKT) => moment(NgayKT).format("DD-MM-YYYY"),
-      sorter: (a, b) => a.NgayKT - b.NgayKT,
+      title: "Ngày hẹn",
+      dataIndex: "NgayHen",
+      key: "NgayHen",
+      render: (NgayHen) => moment(NgayHen).format("DD-MM-YYYY"),
+      // sorter: (a, b) => a.NgayHen - b.NgayHen,
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
         return (
           <Search
@@ -262,7 +231,64 @@ function PhieuHentable({ trangthai, thoigian, thang, setCurrentId }) {
         return <SearchOutlined />;
       },
       onFilter: (value, record) => {
-        return record.NgayKT == value;
+        return record.NgayHen == value;
+      },
+    },
+
+    {
+      title: "Trạng thái",
+      dataIndex: "TrangThai",
+      key: "TrangThai",
+      sorter: (a, b) => a.TrangThai - b.TrangThai,
+      filters: [
+        {
+          text: "Hoàn thành",
+          value: "Hoàn thành",
+        },
+        {
+          text: "Chưa hoàn thành",
+          value: "Chưa hoàn thành",
+        },
+      ],
+      onFilter: (value, record) => record.TrangThai.indexOf(value) === 0,
+    },
+    {
+      title: "Ghi chú",
+      dataIndex: "GhiChu",
+      key: "GhiChu",
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => {
+        return (
+          <Search
+            allowClear
+            autoFocus
+            placeholder="Nhập ghi chú cần tìm"
+            value={selectedKeys[0]}
+            onChange={(e) => {
+              setSelectedKeys(e.target.value ? [e.target.value] : []);
+              confirm({ closeDropdown: false });
+            }}
+            onPressEnter={() => {
+              confirm();
+            }}
+            onBlur={() => {
+              confirm();
+            }}
+            onSearch={() => {
+              confirm();
+            }}
+          ></Search>
+        );
+      },
+      filterIcon: () => {
+        return <SearchOutlined />;
+      },
+      onFilter: (value, record) => {
+        return record.MaPH.toLowerCase().includes(value.toLowerCase());
       },
     },
   ];
@@ -301,7 +327,7 @@ function PhieuHentable({ trangthai, thoigian, thang, setCurrentId }) {
             columns={columns}
             btnProps={{ icon: <FileExcelOutlined /> }}
             showColumnPicker={true}
-            showColumnPickerProps={{ id: "Thêm hàng hóa" }}
+            showColumnPickerProps={{ id: "PhieuHen" }}
             fileName="PhieuHenCSV"
           >
             Tải file CSV

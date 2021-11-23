@@ -52,22 +52,28 @@ function PhieuBaoHanhtable({ trangthai, thoigian, thang, setCurrentId }) {
       setPhieuBaoHanhs(SPHH);
     }
     if (trangthai === 0 && thoigian === 1) {
-      const listPBH = PBH.filter(function (e) {
-        return moment(e.NgayBD).format("M") == thang;
-      });
-      setPhieuBaoHanhs(listPBH);
+      if (thang != null) {
+        const listPBH = PBH.filter(function (e) {
+          return moment(e.NgayBD).format("M") == thang;
+        });
+        setPhieuBaoHanhs(listPBH);
+      }
     }
     if (trangthai === 1 && thoigian === 1) {
-      const listPBH = SPCH.filter(function (e) {
-        return moment(e.NgayBD).format("M") == thang;
-      });
-      setPhieuBaoHanhs(listPBH);
+      if (thang != null) {
+        const listPBH = SPCH.filter(function (e) {
+          return moment(e.NgayBD).format("M") == thang;
+        });
+        setPhieuBaoHanhs(listPBH);
+      }
     }
     if (trangthai === 2 && thoigian === 1) {
-      const listPBH = SPHH.filter(function (e) {
-        return moment(e.NgayBD).format("M") == thang;
-      });
-      setPhieuBaoHanhs(listPBH);
+      if (thang != null) {
+        const listPBH = SPHH.filter(function (e) {
+          return moment(e.NgayBD).format("M") == thang;
+        });
+        setPhieuBaoHanhs(listPBH);
+      }
     }
   }, [trangthai, thoigian, thang]);
   const dataSource = PhieuBaoHanhs;

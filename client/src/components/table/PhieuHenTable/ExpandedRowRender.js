@@ -2,10 +2,7 @@ import React, { useState } from "react";
 import { Table, Input, Row, PageHeader, Descriptions, Tag, Button } from "antd";
 import * as actions from "../../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  deletePhieuHen,
-  showTaoPhieuHenModal,
-} from "../../../redux/actions";
+import { deletePhieuHen, showTaoPhieuHenModal } from "../../../redux/actions";
 import { SanPhamsState$ } from "../../../redux/selectors";
 import moment from "moment";
 
@@ -15,7 +12,7 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
   React.useEffect(() => {
     dispatch(actions.getSanPhams.getSanPhamsRequest());
   }, [dispatch]);
-  const openCreatePBHModal = React.useCallback(() => {
+  const openCreatePHModal = React.useCallback(() => {
     setCurrentId(record._id);
     dispatch(showTaoPhieuHenModal());
   }, [dispatch]);
@@ -31,10 +28,10 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
     <>
       <PageHeader
         className="site-page-header"
-        title={record.MaPBH}
+        title={record.MaPH}
         subTitle={record.MaSP}
         extra={[
-          <Button key="1" type="primary" onClick={openCreatePBHModal}>
+          <Button key="1" type="primary" onClick={openCreatePHModal}>
             Sửa
           </Button>,
           <Button key="2" onClick={onDelete}>
@@ -42,19 +39,23 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
           </Button>,
         ]}
       >
-        <Descriptions size="small" column={2}>
-          <Descriptions.Item label="Mã hóa đơn">
-            {record.MaHD}
+        <Tag color="red" visible={record.TrangThai == "Chưa hoàn thành"}>
+          {record.TrangThai}
+        </Tag>
+        <Tag color="blue" visible={record.TrangThai == "Hoàn thành"}>
+          {record.TrangThai}
+        </Tag>
+        <Descriptions title="Thông tin chi tiết" size="default" column={2}>
+          <Descriptions.Item label="Mã phiếu bảo hành">
+            {record.MaPBH}
           </Descriptions.Item>
           <Descriptions.Item label="Tên sản phẩm">
             {listSP.TenSP}
           </Descriptions.Item>
-          <Descriptions.Item label="Ngày bắt đầu bảo hành">
+          <Descriptions.Item label="Ngày hẹn">
             {moment(record.NgayBD).format("DD-MM-YYYY")}
           </Descriptions.Item>
-          <Descriptions.Item label="Ngày kết thúc bảo hành">
-            {moment(record.NgayKT).format("DD-MM-YYYY")}
-          </Descriptions.Item>
+          <Descriptions.Item label="Ghi chú">{record.GhiChu}</Descriptions.Item>
         </Descriptions>
       </PageHeader>
     </>

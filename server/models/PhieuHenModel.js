@@ -5,6 +5,7 @@ const schema = new mongoose.Schema(
     MaPH: {
       type: String,
       required: true,
+      unique: true,
     },
     MaPBH: {
       type: String,

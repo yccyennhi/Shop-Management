@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   TaoPhieuBaoHanhModalState$,
   SanPhamsState$,
+  PhieuBaoHanhsState$,
 } from "../../../redux/selectors";
 import {
   createPhieuBaoHanh,
@@ -29,6 +30,7 @@ export default function PhieuBaoHanh({ currentId, setCurrentId }) {
   const { isShow } = useSelector(TaoPhieuBaoHanhModalState$);
   const [form] = Form.useForm();
   const SP = useSelector(SanPhamsState$);
+  const PBH = useSelector(PhieuBaoHanhsState$);
 
   const dateNow = moment().toDate();
   const [data, setData] = useState({
@@ -65,8 +67,8 @@ export default function PhieuBaoHanh({ currentId, setCurrentId }) {
       MaHD: "",
       MaSP: "",
       TenSP: "",
-      NgayBD: new Date(Date.now()),
-      NgayKT: new Date(Date.now()),
+      NgayBD: dateNow,
+      NgayKT: dateNow,
     });
   }, [dispatch]);
 
@@ -80,20 +82,32 @@ export default function PhieuBaoHanh({ currentId, setCurrentId }) {
       let listSP = SP.find(function (e) {
         return e.MaSP === data.MaSP;
       });
+      let listPBH = PBH.find(function (e) {
+        return e.MaPBH === data.MaPBH;
+      });
       if (listSP === undefined) {
         messageError("Mã sản phẩm không tồn tại");
-      } else if (data.NgayBD <= data.NgayKT) {
+      }
+      if (moment(data.NgayBD) <= moment(data.NgayKT)) {
         if (currentId) {
           if (listSP.BaoHanh == "Có bảo hành") {
-            dispatch(updatePhieuBaoHanh.updatePhieuBaoHanhRequest(data));
-            onClose();
+            if (listPBH && data.MaPBH !== PhieuBaoHanhValue.MaPBH) {
+              messageError("Mã phiếu bảo hành đã tồn tại");
+            } else {
+              dispatch(updatePhieuBaoHanh.updatePhieuBaoHanhRequest(data));
+              onClose();
+            }
           } else {
             messageError("Sản phẩm không được bảo hành");
           }
         } else {
           if (listSP.BaoHanh == "Có bảo hành") {
-            dispatch(createPhieuBaoHanh.createPhieuBaoHanhRequest(data));
-            onClose();
+            if (listPBH == undefined) {
+              dispatch(createPhieuBaoHanh.createPhieuBaoHanhRequest(data));
+              onClose();
+            } else {
+              messageError("Mã phiếu bảo hành đã tồn tại");
+            }
           } else {
             messageError("Sản phẩm không được bảo hành");
           }
@@ -174,6 +188,7 @@ export default function PhieuBaoHanh({ currentId, setCurrentId }) {
             style={{ display: "inline-block", width: "calc(30% - 12px)" }}
           >
             <DatePicker
+            disabled={currentId}
               value={moment(data.NgayBD)}
               defaultValue={moment(data.NgayBD)}
               onChange={(e) => {
@@ -197,6 +212,7 @@ export default function PhieuBaoHanh({ currentId, setCurrentId }) {
           >
             <DatePicker
               min
+              disabled={currentId}
               value={moment(data.NgayKT)}
               defaultValue={
                 (moment(data.NgayKT), console.log(moment(data.NgayKT)))
@@ -214,7 +230,7 @@ export default function PhieuBaoHanh({ currentId, setCurrentId }) {
   return (
     <div>
       <Modal
-        title={currentId ? "Câp nhật khuyến mãi" : "Thêm khuyến mãi"}
+        title={currentId ? "Câp nhật phiếu bảo hành" : "Thêm phiếu bảo hành"}
         visible={isShow}
         onCancel={onClose}
         onOk={onSubmit}

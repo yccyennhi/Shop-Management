@@ -30,8 +30,10 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
       title: "Cảnh báo",
       content:
         "Việc xóa sản phẩm sẽ làm ảnh hưởng đến dữ liệu kiểm kho. Xác nhận đưa tồn kho sản phẩm về 0 để thay thế?",
-      onOk() { handleDelete() },
-    //  onCancel: {}
+      onOk() {
+        handleDelete();
+      },
+      //  onCancel: {}
     });
   }
   const openUpdateSanPhamModal = React.useCallback(() => {
@@ -63,54 +65,35 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
           <Button key="1" type="primary" onClick={openUpdateSanPhamModal}>
             Sửa
           </Button>,
-          <Button
-            key="2"
-            onClick={warning}
-          >
+          <Button key="2" onClick={warning}>
             Xóa
           </Button>,
+        ]}
+        tags={[
+          <Tag color="red" visible={record.TrangThai == "Ngừng kinh doanh"}>
+            {record.TrangThai}
+          </Tag>,
+          <Tag color="yellow" visible={record.TrangThai == "Hết hàng"}>
+            {record.TrangThai}
+          </Tag>,
+          <Tag color="blue" visible={record.TrangThai == "Đang kinh doanh"}>
+            {record.TrangThai}
+          </Tag>,
+          <Tag color="grey" visible={record.BaoHanh == "Không bảo hành"}>
+            Không bảo hành
+          </Tag>,
+          <Tag color="green" visible={record.BaoHanh == "Có bảo hành"}>
+            Có bảo hành
+          </Tag>,
         ]}
       >
         <Row justify="start">
           <Col flex={1}>
-            <Space direction="vertical">
-              <Row>
-                <Space direction="horizontal">
-                  <Tag
-                    color="red"
-                    visible={record.TrangThai == "Ngừng kinh doanh"}
-                  >
-                    {record.TrangThai}
-                  </Tag>
-                  <Tag color="yellow" visible={record.TrangThai == "Hết hàng"}>
-                    {record.TrangThai}
-                  </Tag>
-                  <Tag
-                    color="blue"
-                    visible={record.TrangThai == "Đang kinh doanh"}
-                  >
-                    {record.TrangThai}
-                  </Tag>
-                  <Tag
-                    color="grey"
-                    visible={record.BaoHanh == "Không bảo hành"}
-                  >
-                    Không bảo hành
-                  </Tag>
-                  <Tag color="green" visible={record.BaoHanh == "Có bảo hành"}>
-                    Có bảo hành
-                  </Tag>
-                </Space>
-              </Row>
-
               <Image width={300} src={record.HinhAnh || ""} />
-            </Space>
           </Col>
-
           <Col flex={10}>
             <Descriptions title="Thông tin chi tiết" size="default">
               <Descriptions.Item label="Mô tả">{record.MoTa}</Descriptions.Item>
-
               <Descriptions.Item label="Size">{record.Size}</Descriptions.Item>
               <Descriptions.Item label="Loại hàng">
                 {record.LoaiHang}
@@ -125,7 +108,6 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
                 {record.TonKho}
               </Descriptions.Item>
             </Descriptions>
-            ,
           </Col>
         </Row>
       </PageHeader>

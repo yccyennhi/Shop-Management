@@ -15,7 +15,10 @@ import { useSelector, useDispatch } from "react-redux";
 import FileBase64 from "react-file-base64";
 import { SettingOutlined, UploadOutlined } from "@ant-design/icons";
 import { messageError, messageLoadingSuccess } from "../../message";
-import { TaoSanPhamModalState$ } from "../../../redux/selectors/index.js";
+import {
+  TaoSanPhamModalState$,
+  SanPhamsState$,
+} from "../../../redux/selectors/index.js";
 import {
   hideTaoSanPhamModal,
   createSanPham,
@@ -37,6 +40,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
   const [trangthai, setTrangthai] = useState(false);
   const { isShow } = useSelector(TaoSanPhamModalState$);
   const [form] = Form.useForm();
+  const SP = useSelector(SanPhamsState$);
   const [data, setData] = useState({
     MaSP: "",
     TenSP: "",
@@ -149,12 +153,26 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
     } else {
       if (currentId) {
         //messageLoadingSuccess("Cập nhật sản phẩm");
-        dispatch(updateSanPham.updateSanPhamRequest(data));
+        let listSP = SP.find(function (e) {
+          return e.MaSP === data.MaSP && e.MaSP != SanPhamValue.MaSP;
+        });
+        if (listSP) {
+          messageError("Mã sản phẩm đã tồn tại!");
+        } else {
+          dispatch(updateSanPham.updateSanPhamRequest(data));
+          handleCancel();
+        }
       } else {
-        //messageLoadingSuccess("Tạo mới sản phẩm");
-        dispatch(createSanPham.createSanPhamRequest(data));
+        let listSP = SP.find(function (e) {
+          return e.MaSP === data.MaSP;
+        });
+        if (listSP) {
+          messageError("Mã sản phẩm đã tồn tại!");
+        } else {
+          dispatch(createSanPham.createSanPhamRequest(data));
+          handleCancel();
+        }
       }
-      handleCancel();
     }
   }, [data, dispatch, handleCancel, messageLoadingSuccess]);
 

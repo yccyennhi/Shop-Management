@@ -11,6 +11,7 @@ import {
   Typography,
   Divider,
   Row,
+  Col,
 } from "antd";
 import "./styles.css";
 import moment from "moment";
@@ -33,9 +34,9 @@ const { Content, Sider } = Layout;
 
 export default function PhieuBaoHanhPage() {
   const [currentId, setCurrentId] = useState(null);
-  const [thoigian, setThoigian] = useState(null);
+  const [thoigian, setThoigian] = useState(0);
   const [thang, setThang] = useState(null);
-  const [trangthai, setTrangthai] = useState(null);
+  const [trangthai, setTrangthai] = useState(0);
   const dispatch = useDispatch();
   const isShow = useSelector(isloadingPhieuBaoHanhsState$);
   const PhieuBaoHanhs = useSelector(PhieuBaoHanhsState$);
@@ -75,7 +76,7 @@ export default function PhieuBaoHanhPage() {
               bordered={false}
               style={{ width: 250 }}
             >
-              <Radio.Group>
+              <Radio.Group  defaultValue={0}>
                 <Space direction="vertical">
                   <Radio
                     value={0}
@@ -101,7 +102,7 @@ export default function PhieuBaoHanhPage() {
               bordered={false}
               style={{ width: 250 }}
             >
-              <Radio.Group>
+              <Radio.Group defaultValue={0}>
                 <Space direction="vertical">
                   <Radio
                     value={0}
@@ -130,28 +131,13 @@ export default function PhieuBaoHanhPage() {
                 </Space>
               </Radio.Group>
             </Card>
-            {/* <Card
-              title="Trạng thái bảo trì"
-              bordered={false}
-              style={{ width: 250 }}
-            >
-              <Radio.Group>
-                <Space direction="vertical">
-                  <Radio value={0} onClick={() => {}}>
-                    Tất cả
-                  </Radio>
-                  <Radio value={1}>Đã hoàn thành</Radio>
-                  <Radio value={2}>Chưa hoàn thành</Radio>
-                </Space>
-              </Radio.Group>
-            </Card> */}
           </Space>
         </Sider>
         <Content>
           <Layout style={{ padding: "17px 24px 24px" }}>
             <div className="site-layout-content">
               <Row justify="start">
-                <Space direction="horizontal" size={200}>
+                <Col span={8}>
                   <Space align="center" size={20}>
                     <SafetyCertificateTwoTone style={{ fontSize: "40px" }} />
                     <Space direction="vertical" size={0}>
@@ -162,6 +148,8 @@ export default function PhieuBaoHanhPage() {
                       <Text type="secondary">Tổng số lượng phiếu bảo hành</Text>
                     </Space>
                   </Space>
+                </Col>
+                <Col span={8}>
                   <Space align="center" size={20}>
                     <CheckCircleTwoTone style={{ fontSize: "40px" }} />
                     <Space direction="vertical" size={0}>
@@ -172,17 +160,21 @@ export default function PhieuBaoHanhPage() {
                       <Text type="secondary">Phiếu bảo hành còn hạn</Text>
                     </Space>
                   </Space>
-                  <Space align="center" size={20}>
-                    <CloseCircleTwoTone style={{ fontSize: "40px" }} />
-                    <Space direction="vertical" size={0}>
-                      <Text strong>{SPHH.length} phiếu bảo hành</Text>
-                      <Text strong style={{ fontSize: "1.5rem" }}>
-                        {SPHH.length}
-                      </Text>
-                      <Text type="secondary">Phiếu bảo hành hết hạn</Text>
+                </Col>
+                <Col span={8}>
+                  <Space direction="horizontal" size={200}>
+                    <Space align="center" size={20}>
+                      <CloseCircleTwoTone style={{ fontSize: "40px" }} />
+                      <Space direction="vertical" size={0}>
+                        <Text strong>{SPHH.length} phiếu bảo hành</Text>
+                        <Text strong style={{ fontSize: "1.5rem" }}>
+                          {SPHH.length}
+                        </Text>
+                        <Text type="secondary">Phiếu bảo hành hết hạn</Text>
+                      </Space>
                     </Space>
                   </Space>
-                </Space>
+                </Col>
               </Row>
               <Divider orientation="left"></Divider>
               <Button

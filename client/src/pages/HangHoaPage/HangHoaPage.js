@@ -14,6 +14,7 @@ import {
   Row,
   Divider,
   Button,
+  Col,
 } from "antd";
 import "./styles.css";
 import {
@@ -110,7 +111,7 @@ export default function HangHoaPage() {
           <Layout style={{ padding: "17px 24px 24px" }}>
             <div className="site-layout-content">
               <Row justify="start">
-                <Space direction="horizontal" size={200}>
+                <Col span={8}>
                   <Space align="center" size={20}>
                     <DatabaseTwoTone style={{ fontSize: "40px" }} />
                     <Space direction="vertical" size={0}>
@@ -121,7 +122,8 @@ export default function HangHoaPage() {
                       <Text type="secondary">Tổng số lượng sản phẩm</Text>
                     </Space>
                   </Space>
-
+                </Col>
+                <Col span={8}>
                   <Space align="center" size={20}>
                     <ShopTwoTone style={{ fontSize: "40px" }} />
                     <Space direction="vertical" size={0}>
@@ -132,6 +134,8 @@ export default function HangHoaPage() {
                       <Text type="secondary">Số sản phẩm đang kinh doanh</Text>
                     </Space>
                   </Space>
+                </Col>
+                <Col span={8}>
                   <Space align="center">
                     <SafetyCertificateTwoTone style={{ fontSize: "40px" }} />
                     <Space direction="vertical" size={0}>
@@ -142,7 +146,7 @@ export default function HangHoaPage() {
                       <Text type="secondary">Số sản phẩm có bảo hành</Text>
                     </Space>
                   </Space>
-                </Space>
+                </Col>
               </Row>
               <Divider orientation="left"></Divider>
               <Button

@@ -4,16 +4,18 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   TaoPhieuHenModalState$,
   SanPhamsState$,
+  PhieuBaoHanhsState$,
+  PhieuHensState$,
 } from "../../../redux/selectors";
 import {
   createPhieuHen,
   updatePhieuHen,
   hideTaoPhieuHenModal,
 } from "../../../redux/actions";
-import { Form, Input, DatePicker, Modal } from "antd";
+import { Form, Input, DatePicker, Modal, Select } from "antd";
 import { messageError } from "../../message";
-
 import moment from "moment";
+const { Option } = Select;
 
 const validateMessages = {
   required: "${label} không được bỏ trống!",
@@ -29,15 +31,17 @@ export default function PhieuHen({ currentId, setCurrentId }) {
   const { isShow } = useSelector(TaoPhieuHenModalState$);
   const [form] = Form.useForm();
   const SP = useSelector(SanPhamsState$);
-
+  const PH = useSelector(PhieuHensState$);
+  const PBH = useSelector(PhieuBaoHanhsState$);
+  console.log("PBH", PBH);
   const dateNow = moment().toDate();
   const [data, setData] = useState({
+    MaPH: "",
     MaPBH: "",
-    MaHD: "",
     MaSP: "",
-    TenSP: "",
-    NgayBD: new Date(Date.now()),
-    NgayKT: new Date(Date.now()),
+    NgayHen: new Date(Date.now()),
+    TrangThai: "Chưa hoàn thành",
+    GhiChu: "",
   });
 
   const PhieuHenValue = useSelector((state) =>
@@ -55,51 +59,67 @@ export default function PhieuHen({ currentId, setCurrentId }) {
 
   React.useEffect(() => {
     dispatch(actions.getSanPhams.getSanPhamsRequest());
+    dispatch(actions.getPhieuBaoHanhs.getPhieuBaoHanhsRequest());
   }, [dispatch]);
 
   const onClose = React.useCallback(() => {
     dispatch(hideTaoPhieuHenModal());
     setCurrentId(null);
     setData({
+      MaPH: "",
       MaPBH: "",
-      MaHD: "",
       MaSP: "",
-      TenSP: "",
-      NgayBD: new Date(Date.now()),
-      NgayKT: new Date(Date.now()),
+      NgayHen: dateNow,
+      TrangThai: "Chưa hoàn thành",
+      GhiChu: "",
     });
   }, [dispatch]);
 
   const onSubmit = React.useCallback(() => {
-    if (
-      data.MaPBH !== "" ||
-      data.MaHD !== "" ||
-      data.MaSP !== "" ||
-      data.TenSP !== ""
-    ) {
-      let listSP = SP.find(function (e) {
-        return e.MaSP === data.MaSP;
+    console.log("data", data);
+    if (data.MaPBH !== "" || data.MaSP !== "" || data.MaPH !== "") {
+      let listPH = PH.find(function (e) {
+        return e.MaPH === data.MaPH;
       });
-      if (listSP === undefined) {
+      console.log("listPH", listPH);
+
+      let listPBH = PBH.find(function (e) {
+        return e.MaPBH === data.MaPBH;
+      });
+      console.log("dataPBH", data.MaPBH);
+
+      console.log("listPBH", listPBH);
+
+      console.log(listPBH);
+      if (listPBH == undefined) {
+        messageError("Mã phiếu bảo hành không tồn tại");
+      } else if (listPBH.MaSP != data.MaSP) {
         messageError("Mã sản phẩm không tồn tại");
-      } else if (data.NgayBD <= data.NgayKT) {
-        if (currentId) {
-          if (listSP.BaoHanh == "Có bảo hành") {
+      } else if (moment(data.NgayHen) < moment(dateNow)) {
+        console.log(moment().toDate());
+        messageError("Ngày hẹn phải lớn hơn hôm nay");
+      } else if (currentId) {
+        if (moment(listPBH.NgayKT) > moment(dateNow)) {
+          if (listPH && listPH.MaPH != PhieuHenValue.MaPH) {
+            messageError("Mã phiếu hẹn đã tồn tại");
+          } else {
             dispatch(updatePhieuHen.updatePhieuHenRequest(data));
             onClose();
-          } else {
-            messageError("Sản phẩm không được bảo hành");
           }
         } else {
-          if (listSP.BaoHanh == "Có bảo hành") {
+          messageError("Sản phẩm đã hết hạn bảo hành");
+        }
+      } else if (!currentId) {
+        if (moment(listPBH.NgayKT) > moment(dateNow)) {
+          if (listPH == undefined) {
             dispatch(createPhieuHen.createPhieuHenRequest(data));
             onClose();
           } else {
-            messageError("Sản phẩm không được bảo hành");
+            messageError("Mã phiếu hẹn đã tồn tại");
           }
+        } else {
+          messageError("Sản phẩm đã hết hạn bảo hành");
         }
-      } else {
-        messageError("Ngày bắt đầu phải nhỏ hơn ngày kết thúc");
       }
     } else {
       messageError("Vui lòng nhập đầy đủ thông tin");
@@ -120,8 +140,21 @@ export default function PhieuHen({ currentId, setCurrentId }) {
         layout="horizontal"
       >
         <Form.Item
+          label="Mã phiếu hẹn"
+          tooltip="Mã phiếu hẹn là thông tin duy nhất"
+          required
+        >
+          <Input
+            placeholder="Nhập mã phiếu hẹn"
+            value={data.MaPH}
+            onChange={(e) => setData({ ...data, MaPH: e.target.value })}
+            defaultValue={data.MaPH}
+          />
+        </Form.Item>
+
+        <Form.Item
           label="Mã phiếu bảo hành"
-          tooltip="Mã phiếu bảo hành là thông tin duy nhất"
+          tooltip="Mã phiếu bảo hành của sản phẩm hẹn bảo hành"
           required
         >
           <Input
@@ -131,19 +164,6 @@ export default function PhieuHen({ currentId, setCurrentId }) {
             defaultValue={data.MaPBH}
           />
         </Form.Item>
-        <Form.Item
-          label="Mã hóa đơn"
-          tooltip="Mã hóa đơn có sản phẩm được bảo hành"
-          required
-        >
-          <Input
-            placeholder="Nhập mã hóa đơn"
-            value={data.MaHD}
-            onChange={(e) => setData({ ...data, MaHD: e.target.value })}
-            defaultValue={data.MaHD}
-          />
-        </Form.Item>
-
         <Form.Item
           label="Mã sản phẩm"
           tooltip="Mã sản phẩm được bảo hành"
@@ -156,57 +176,33 @@ export default function PhieuHen({ currentId, setCurrentId }) {
             defaultValue={data.MaSP}
           />
         </Form.Item>
-        {/* <Form.Item
-          label="Tên hàng"
-          tooltip="Tên hàng là tên của sản phẩm"
+        <Form.Item required label="Trạng thái" tooltip="Trạng thái phiếu hẹn">
+          <Select
+            disabled={!currentId}
+            placeholder="Chọn trạng thái"
+            value={data.TrangThai}
+            onChange={(e) => setData({ ...data, TrangThai: e })}
+            defaultValue={data.TrangThai}
+          >
+            <Option value="Hoàn thành">Hoàn thành</Option>
+            <Option value="Chưa hoàn thành">Chưa hoàn thành</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item
+          label="Ngày hẹn"
+          tooltip="Ngày hẹn lấy sản phẩm cần bảo hành"
+          style={{ marginBottom: 0 }}
           required
         >
-          <Input
-            placeholder="Nhập tên hàng"
-            value={data.TenSP}
-            onChange={(e) => setData({ ...data, TenSP: e.target.value })}
-            defaultValue={data.TenSP}
-          />
-        </Form.Item> */}
-
-        <Form.Item label="Ngày bắt đầu" style={{ marginBottom: 0 }} required>
-          <Form.Item
-            style={{ display: "inline-block", width: "calc(30% - 12px)" }}
-          >
-            <DatePicker
-              value={moment(data.NgayBD)}
-              defaultValue={moment(data.NgayBD)}
-              onChange={(e) => {
-                if (e) setData({ ...data, NgayBD: e.toDate() });
-              }}
-            />
-          </Form.Item>
-          <span
-            style={{
-              display: "inline-block",
-              lineHeight: "32px",
-              textAlign: "center",
-              margin: "0 8px",
+          <DatePicker
+            value={moment(data.NgayHen)}
+            defaultValue={moment(data.NgayHen)}
+            onChange={(e) => {
+              if (e) setData({ ...data, NgayHen: e.toDate() });
             }}
-          >
-            Ngày kết thúc:
-          </span>
-          <Form.Item
-            required
-            style={{ display: "inline-block", width: "calc(30% - 12px)" }}
-          >
-            <DatePicker
-              min
-              value={moment(data.NgayKT)}
-              defaultValue={
-                (moment(data.NgayKT), console.log(moment(data.NgayKT)))
-              }
-              onChange={(e) => {
-                if (e) setData({ ...data, NgayKT: e.toDate() });
-              }}
-            />
-          </Form.Item>
+          />
         </Form.Item>
+        
       </Form>
     </>
   );
@@ -214,7 +210,7 @@ export default function PhieuHen({ currentId, setCurrentId }) {
   return (
     <div>
       <Modal
-        title={currentId ? "Câp nhật khuyến mãi" : "Thêm khuyến mãi"}
+        title={currentId ? "Câp nhật phiếu hẹn" : "Thêm phiếu hẹn"}
         visible={isShow}
         onCancel={onClose}
         onOk={onSubmit}

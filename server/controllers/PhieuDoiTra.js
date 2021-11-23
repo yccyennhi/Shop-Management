@@ -1,7 +1,20 @@
 import { PhieuDoiTraModel } from "../models/PhieuDoiTraModel.js";
+import moment from 'moment';
 
 export const getPhieuDoiTras = async (req, res) => {
   try {
+    // const newPhieuDoiTra = new PhieuDoiTraModel({
+    //   MaPDT: 'DT001',
+    //   idHD: '619b037675c410c00a58b1d6',
+    //   MaHD: 'HD006',
+    //   idNV: '618f87add7f3f02b3fe340d5', 
+    //   MaNV: 'NV001',
+    //   SoLuong: 2,
+    //   ThoiGian: moment(),
+    //   TongTien: 500000,
+    // })
+
+    // await newPhieuDoiTra.save();
     const PhieuDoiTras = await PhieuDoiTraModel.find();
     console.log("PhieuDoiTras", PhieuDoiTras);
     res.status(200).json(PhieuDoiTras);

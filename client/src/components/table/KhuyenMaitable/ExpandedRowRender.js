@@ -13,7 +13,7 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
   }, [dispatch]);
 
   const onDelete = React.useCallback(() => {
-
+    console.log('record', record);
     dispatch(deleteKhuyenMai.deleteKhuyenMaiRequest(record._id));
   }, [record, dispatch]);
 

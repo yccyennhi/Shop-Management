@@ -17,32 +17,21 @@ import FormTraHang from "../../../pages/GiaoDichPage/FormTraHang";
 
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../../redux/actions";
-import { PhieuDoiTrasState$ } from "../../../redux/selectors";
+import { PhieuDoiTrasState$, CTPDTsState$ } from "../../../redux/selectors";
 const { Search } = Input;
 
 export default function TraHangTable() {
   const dispatch = useDispatch();
   const PhieuDoiTras = useSelector(PhieuDoiTrasState$);
-
+  const CTPDTs = useSelector(CTPDTsState$);
   React.useEffect(() => {
     dispatch(actions.getPhieuDoiTras.getPhieuDoiTrasRequest());
   }, [dispatch]);
-
+  React.useEffect(() => {
+    dispatch(actions.getCTPDTs.getCTPDTsRequest());
+  }, [dispatch]);
   const dataSource = PhieuDoiTras;
 
-  // const [dataSource, setDataSource] = useState([
-  //   {
-  //     key: 1,
-  //     MaHD: "HD0001",
-  //     ThoiGian: "10/11/2021 11:00",
-  //     MaNV: "NV001",
-  //     MaKM: "KM001",
-  //     MaKH: "YN",
-  //     TongTienHang: 0,
-  //     GiamGia: 0,
-  //     ThanhTien: 0,
-  //   },
-  // ]);
   const columns = [
     {
       title: "Mã phiếu trả hàng",
@@ -175,8 +164,6 @@ export default function TraHangTable() {
     loading: false,
   });
 
-  console.log("selectedRowKeys", select);
-
   const { selectedRowKeys, loading } = select;
 
   const rowSelection = {
@@ -205,7 +192,7 @@ export default function TraHangTable() {
         scroll={{ y: 600 }}
         rowSelection={rowSelection}
         expandable={{
-          expandedRowRender: (record) => <FormTraHang />,
+          expandedRowRender: (record) => <FormTraHang record = {record} dataCTPDTs = {CTPDTs}/>,
           rowExpandable: (record) => record.MaPDT !== "Not Expandable",
         }}
         dataSource={dataSource}

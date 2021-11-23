@@ -2,8 +2,8 @@ import { HoaDonModel } from "../models/HoaDonModel.js";
 import { KhuyenMaiModel } from "../models/KhuyenMaiModel.js";
 
 export async function isNotExistHoaDon(idKhuyenMai) {
-  const HoaDons = await HoaDonModel.find({ MaKM: idKhuyenMai });
-
+  const HoaDons = await HoaDonModel.find({ idKM: idKhuyenMai });
+  console.log('HoaDon', HoaDons);
   if (HoaDons.length) {
     return false;
   } else {
@@ -67,9 +67,7 @@ export const updateKhuyenMai = async (req, res, next) => {
 export const deleteKhuyenMai = async (req, res, next) => {
   try {
     const { id } = req.params;
-
     const check = await isNotExistHoaDon(id);
-
     if (check) {
       const KhuyenMai = await KhuyenMaiModel.findByIdAndRemove(id);
       res.status(200).json(KhuyenMai);

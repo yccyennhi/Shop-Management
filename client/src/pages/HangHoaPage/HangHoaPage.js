@@ -5,11 +5,9 @@ import COLOR from "../../color.js";
 import SanPhamModal from "../../components/modal/SanPhamModal/SanPhamModal";
 
 import {
-  Menu,
   Layout,
   PageHeader,
   Card,
-  DatePicker,
   Space,
   Typography,
   Radio,
@@ -29,15 +27,12 @@ import HangHoatable from "../../components/table/HangHoatable/HangHoatable.js";
 import { SanPhamsState$ } from "../../redux/selectors";
 import * as actions from "../../redux/actions";
 const { Content, Sider } = Layout;
-const { RangePicker } = DatePicker;
 const { Text } = Typography;
-const { SubMenu } = Menu;
 
 export default function HangHoaPage() {
   const [currentId, setCurrentId] = useState(null);
   const dispatch = useDispatch();
   const SanPhams = useSelector(SanPhamsState$);
-  const SLSanPham = SanPhams.length;
   const [trangthai, setTrangthai] = useState(1);
   const [baohanh, setBaohanh] = useState(1);
 
@@ -115,7 +110,7 @@ export default function HangHoaPage() {
           <Layout style={{ padding: "17px 24px 24px" }}>
             <div className="site-layout-content">
               <Row justify="start">
-                <Space direction="horizontal" size={80}>
+                <Space direction="horizontal" size={200}>
                   <Space align="center" size={20}>
                     <DatabaseTwoTone style={{ fontSize: "40px" }} />
                     <Space direction="vertical" size={0}>
@@ -163,10 +158,7 @@ export default function HangHoaPage() {
                 baohanh={baohanh}
                 setCurrentId={setCurrentId}
               />
-              <SanPhamModal
-                currentId={currentId}
-                setCurrentId={setCurrentId}
-              />
+              <SanPhamModal currentId={currentId} setCurrentId={setCurrentId} />
             </div>
           </Layout>
         </Content>

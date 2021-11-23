@@ -5,7 +5,7 @@ const schema = new mongoose.Schema(
     MaSP: {
       type: String,
       required: true,
-      unique: false,
+      unique: true,
     },
     TenSP: {
       type: String,

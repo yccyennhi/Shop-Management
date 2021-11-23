@@ -75,8 +75,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
     });
     if (SanPhamValue) setData(SanPhamValue);
     console.log("SanPham", data);
-    if (data.TonKho>0) setTrangthai(true);
-
+    if (data.TonKho > 0) setTrangthai(true);
   }, [SanPhamValue]);
   console.log("SanPham", data);
   const dispatch = useDispatch();
@@ -86,7 +85,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
     dispatch(hideTaoSanPhamModal());
     // if (currentId) {
     // } else {
-      form.resetFields();
+    form.resetFields();
     // }
     setCurrentId(null);
     setData({
@@ -108,7 +107,11 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
   }, [dispatch]);
 
   const handleReset = React.useCallback(() => {
-    if (data.TonKho>0) {setTrangthai(true)} else {setTrangthai(false)};
+    if (data.TonKho > 0) {
+      setTrangthai(true);
+    } else {
+      setTrangthai(false);
+    }
     form.resetFields();
     setData({
       MaSP: "",
@@ -170,17 +173,9 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
         layout="horizontal"
       >
         <Form.Item
-          name="MaSP"
           label="Mã hàng"
           tooltip="Mã hàng là thông tin duy nhất"
-          rules={[
-            { required: true, message: "Vui lòng nhập mã hàng" },
-            {
-              type: "string",
-              min: 2,
-              message: "Mã hàng phải có ít nhất 2 kí tự",
-            },
-          ]}
+          required
         >
           <Input
             placeholder="Nhập mã hàng"
@@ -190,17 +185,9 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
           />
         </Form.Item>
         <Form.Item
-          name="TenSP"
           label="Tên hàng"
           tooltip="Tên hàng là tên của sản phẩm"
-          rules={[
-            { required: true, message: "Vui lòng nhập tên hàng" },
-            {
-              type: "string",
-              min: 2,
-              message: "Tên hàng phải có ít nhất 2 kí tự",
-            },
-          ]}
+          required
         >
           <Input
             placeholder="Nhập tên hàng"
@@ -209,15 +196,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
             defaultValue={data.TenSP}
           />
         </Form.Item>
-        <Form.Item
-          name="Size"
-          label="Size"
-          tooltip="Nhập kích cỡ cho sản phẩm"
-          rules={[
-            { type: "number", min: 0, max: 99 },
-            { required: true, message: "Vui lòng nhập size" },
-          ]}
-        >
+        <Form.Item label="Size" tooltip="Nhập kích cỡ cho sản phẩm" required>
           <InputNumber
             value={data.Size}
             onChange={(e) => setData({ ...data, Size: e })}
@@ -227,38 +206,18 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
           />
         </Form.Item>
         <Form.Item
-          name="MauSac"
           label="Màu sắc"
           tooltip="Nhập màu sắc hoặc họa tiết sản phẩm"
-          rules={[
-            { required: true, message: "Vui lòng nhập màu" },
-            {
-              type: "string",
-              min: 2,
-              message: "Màu sắc phải có ít nhất 2 kí tự",
-            },
-          ]}
+          required
         >
           <Input
-           // value={data.MauSac}
+            // value={data.MauSac}
             defaultValue={data.MauSac}
             onChange={(e) => setData({ ...data, MauSac: e.target.value })}
             placeholder="Nhập màu"
           />
         </Form.Item>
-        <Form.Item
-          name="LoaiHang"
-          label="Loại hàng"
-          tooltip="Nhập loại sản phẩm"
-          rules={[
-            { required: true, message: "Vui lòng nhập loại hàng" },
-            {
-              type: "string",
-              min: 2,
-              message: "Loại hàng phải có ít nhất 2 kí tự",
-            },
-          ]}
-        >
+        <Form.Item label="Loại hàng" tooltip="Nhập loại sản phẩm" required>
           <Input
             value={data.LoaiHang}
             defaultValue={data.LoaiHang}
@@ -267,17 +226,9 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
           />
         </Form.Item>
         <Form.Item
-          name="GiaVon"
           label="Giá vốn"
           tooltip="Giá vốn để tính lợi nhuận cho sản phẩm"
-          rules={[
-            { required: true, message: "Vui lòng nhập giá vốn" },
-            {
-              type: "number",
-              min: 0,
-              max: 999999999,
-            },
-          ]}
+          required
         >
           <InputNumber
             value={data.GiaVon}
@@ -287,18 +238,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
             placeholder="VNĐ"
           />
         </Form.Item>
-        <Form.Item
-          name="GiaBan"
-          label="Giá bán"
-          rules={[
-            { required: true, message: "Vui lòng nhập giá bán" },
-            {
-              type: "number",
-              min: 0,
-              max: 999999999,
-            },
-          ]}
-        >
+        <Form.Item label="Giá bán" required>
           <InputNumber
             value={data.GiaBan}
             defaultValue={data.GiaBan}
@@ -308,17 +248,9 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
           />
         </Form.Item>
         <Form.Item
-          name="TonKho"
           label="Tồn kho"
           tooltip="Số lượng tồn kho của sản phẩm"
-          rules={[
-            { required: true, message: "Vui lòng nhập số lượng tồn kho" },
-            {
-              type: "number",
-              min: 0,
-              max: 100000000,
-            },
-          ]}
+          required
         >
           <InputNumber
             value={data.TonKho}
@@ -400,7 +332,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
           <Button key="back" onClick={handleCancel}>
             Cancel
           </Button>,
-          <Button key="back" onClick={handleReset}>
+          <Button key="reset" onClick={handleReset}>
             Reset
           </Button>,
           <Button key="submit" type="primary" onClick={handleOk}>

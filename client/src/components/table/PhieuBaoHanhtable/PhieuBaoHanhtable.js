@@ -1,26 +1,76 @@
 import React, { useState } from "react";
-import { Input, Row, Space, Descriptions, Tag } from "antd";
+import { Input, Row, Space } from "antd";
 import { SearchOutlined, FileExcelOutlined } from "@ant-design/icons";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../../redux/actions";
 import { ExportTableButton, Table } from "ant-table-extensions";
-import { PhieuBaoHanhsState$, isloadingPhieuBaoHanhsState$ } from "../../../redux/selectors";
+import {
+  PhieuBaoHanhsState$,
+  isloadingPhieuBaoHanhsState$,
+  SanPhamsState$,
+} from "../../../redux/selectors";
 import ExpandedRowRender from "./ExpandedRowRender";
 
 const { Search } = Input;
 
-function PhieuBaoHanhtable({ baohanh, setCurrentId }) {
+function PhieuBaoHanhtable({ trangthai, thoigian, thang, setCurrentId }) {
   const dispatch = useDispatch();
-  const [PhieuBaoHanhs, setPhieuBaoHanhs] = useState(useSelector(PhieuBaoHanhsState$));
+  const SP = useSelector(SanPhamsState$);
   const PBH = useSelector(PhieuBaoHanhsState$);
-  const loadingPhieuBaoHanhs = useSelector(isloadingPhieuBaoHanhsState$);
+  const dateNow = moment().toDate();
+
+  const SPCH = PBH.filter(function (e) {
+    return moment(e.NgayKT) >= dateNow;
+  });
+
+  const SPHH = PBH.filter(function (e) {
+    return moment(e.NgayKT) < dateNow;
+  });
+
   React.useEffect(() => {
+    dispatch(actions.getSanPhams.getSanPhamsRequest());
     dispatch(actions.getPhieuBaoHanhs.getPhieuBaoHanhsRequest());
   }, [dispatch]);
+  const [PhieuBaoHanhs, setPhieuBaoHanhs] = useState(
+    useSelector(PhieuBaoHanhsState$)
+  );
+  const loadingPhieuBaoHanhs = useSelector(isloadingPhieuBaoHanhsState$);
 
+  React.useEffect(() => {
+    setPhieuBaoHanhs(PBH);
+  }, [PBH]);
+
+  React.useEffect(() => {
+    if (trangthai === 0 && thoigian === 0) {
+      setPhieuBaoHanhs(PBH);
+    }
+    if (trangthai === 1 && thoigian === 0) {
+      setPhieuBaoHanhs(SPCH);
+    }
+    if (trangthai === 2 && thoigian === 0) {
+      setPhieuBaoHanhs(SPHH);
+    }
+    if (trangthai === 0 && thoigian === 1) {
+      const listPBH = PBH.filter(function (e) {
+        return moment(e.NgayBD).format("M") == thang;
+      });
+      setPhieuBaoHanhs(listPBH);
+    }
+    if (trangthai === 1 && thoigian === 1) {
+      const listPBH = SPCH.filter(function (e) {
+        return moment(e.NgayBD).format("M") == thang;
+      });
+      setPhieuBaoHanhs(listPBH);
+    }
+    if (trangthai === 2 && thoigian === 1) {
+      const listPBH = SPHH.filter(function (e) {
+        return moment(e.NgayBD).format("M") == thang;
+      });
+      setPhieuBaoHanhs(listPBH);
+    }
+  }, [trangthai, thoigian, thang]);
   const dataSource = PhieuBaoHanhs;
-
   const columns = [
     {
       title: "Mã phiếu bảo hành",
@@ -100,11 +150,55 @@ function PhieuBaoHanhtable({ baohanh, setCurrentId }) {
         return record.MaHD.toLowerCase().includes(value.toLowerCase());
       },
     },
-
+    {
+      title: "Mã sản phẩm",
+      dataIndex: "MaSP",
+      key: "MaSP",
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => {
+        return (
+          <Search
+            allowClear
+            autoFocus
+            placeholder="Nhập mã cần tìm"
+            value={selectedKeys[0]}
+            onChange={(e) => {
+              setSelectedKeys(e.target.value ? [e.target.value] : []);
+              confirm({ closeDropdown: false });
+            }}
+            onPressEnter={() => {
+              confirm();
+            }}
+            onBlur={() => {
+              confirm();
+            }}
+            onSearch={() => {
+              confirm();
+            }}
+          ></Search>
+        );
+      },
+      filterIcon: () => {
+        return <SearchOutlined />;
+      },
+      onFilter: (value, record) => {
+        return record.MaHD.toLowerCase().includes(value.toLowerCase());
+      },
+    },
     {
       title: "Tên sản phẩm",
       dataIndex: "TenSP",
       key: "TenSP",
+      render: (TenSP, record) => {
+        let listSP = SP.find(function (e) {
+          return e.MaSP === record.MaSP;
+        });
+        if (listSP !== undefined) return listSP.TenSP;
+      },
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
         return (
           <Search
@@ -137,9 +231,10 @@ function PhieuBaoHanhtable({ baohanh, setCurrentId }) {
     },
     {
       title: "Thời hạn bảo hành",
-      dataIndex: "NgayKetThucBH",
-      key: "NgayKetThucBH",
-      sorter: (a, b) => a.NgayKetThucBH - b.NgayKetThucBH,
+      dataIndex: "NgayKT",
+      key: "NgayKT",
+      render: (NgayKT) => moment(NgayKT).format("DD-MM-YYYY"),
+      sorter: (a, b) => a.NgayKT - b.NgayKT,
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
         return (
           <Search
@@ -167,7 +262,7 @@ function PhieuBaoHanhtable({ baohanh, setCurrentId }) {
         return <SearchOutlined />;
       },
       onFilter: (value, record) => {
-        return record.NgayKetThucBH == value;
+        return record.NgayKT == value;
       },
     },
   ];
@@ -207,7 +302,7 @@ function PhieuBaoHanhtable({ baohanh, setCurrentId }) {
             btnProps={{ icon: <FileExcelOutlined /> }}
             showColumnPicker={true}
             showColumnPickerProps={{ id: "Thêm hàng hóa" }}
-            fileName="HangHoaCSV"
+            fileName="PhieuBaoHanhCSV"
           >
             Tải file CSV
           </ExportTableButton>
@@ -216,9 +311,9 @@ function PhieuBaoHanhtable({ baohanh, setCurrentId }) {
 
       <Table
         tableLayout={"auto"}
-        loading={false}
-        pagination={true}
-        scroll={{ x: 1500, y: 500 }}
+        loading={loadingPhieuBaoHanhs}
+        pagination={false}
+        scroll={{ x: 1000, y: 500 }}
         searchableProps={{
           inputProps: {
             placeholder: "Nhập nội dung cần tìm",

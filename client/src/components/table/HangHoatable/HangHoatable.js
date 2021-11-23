@@ -4,16 +4,11 @@ import { ExportTableButton, Table } from "ant-table-extensions";
 import {
   Input,
   Row,
-  Col,
   Button,
   Dropdown,
   message,
   Menu,
   Image,
-  Divider,
-  Switch,
-  Radio,
-  Form,
   Space,
   Typography,
   Avatar,
@@ -25,11 +20,6 @@ import {
   SearchOutlined,
   DownOutlined,
   FileExcelOutlined,
-  PlusOutlined,
-  DollarTwoTone,
-  ShopTwoTone,
-  SafetyCertificateTwoTone,
-  DatabaseTwoTone,
 } from "@ant-design/icons";
 import {
   SanPhamsState$,
@@ -37,7 +27,6 @@ import {
 } from "../../../redux/selectors";
 import * as actions from "../../../redux/actions";
 const { Search } = Input;
-const { Text } = Typography;
 
 function HangHoatable({ trangthai, baohanh, currentId, setCurrentId }) {
   const dispatch = useDispatch();
@@ -395,22 +384,6 @@ function HangHoatable({ trangthai, baohanh, currentId, setCurrentId }) {
 
         </Space>
       </Row>
-      {/* <Row justify="end">
-        <div style={{ paddingTop: 10, marginBottom: 16 }}>
-          <span style={{ marginRight: 8 }}>
-            {hasSelected
-              ? `Có ${selectedRowKeys.length} hàng hóa được chọn`
-              : ""}
-          </span>
-          <Dropdown overlay={menu} disabled={!hasSelected}>
-            <Button>
-              Thao tác <DownOutlined />
-            </Button>
-          </Dropdown>
-        </div>
-      </Row>
-
-      <Row></Row> */}
 
       <Table
         columns={columns}

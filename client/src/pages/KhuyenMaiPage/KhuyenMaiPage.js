@@ -21,7 +21,6 @@ export default function KhuyenMaiPage() {
   return (
     <Layout>
       <PageHeader className="site-page-header" title="Khuyến mãi" />
-
       <Content style={{ padding: "0px 50px" }}>
         <div className="site-layout-content">
           <div>

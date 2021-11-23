@@ -1,42 +1,62 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  Menu,
   Layout,
   PageHeader,
   Card,
   DatePicker,
   Space,
   Radio,
-  Col,
+  Button,
   Typography,
   Divider,
   Row,
 } from "antd";
 import "./styles.css";
-
+import moment from "moment";
 import "../../App.css";
 import {
-  DatabaseTwoTone,
   SafetyCertificateTwoTone,
-  ShopTwoTone,
   PlusOutlined,
+  CheckCircleTwoTone,
+  CloseCircleTwoTone,
 } from "@ant-design/icons";
+import * as actions from "../../redux/actions";
 import PhieuBaoHanhtable from "../../components/table/PhieuBaoHanhtable/PhieuBaoHanhtable";
-import { PhieuBaoHanhsState$ } from "../../redux/selectors";
+import {
+  PhieuBaoHanhsState$,
+  isloadingPhieuBaoHanhsState$,
+} from "../../redux/selectors";
+import PhieuBaoHanhModal from "../../components/modal/PhieuBaoHanhModal/PhieuBaoHanhModal";
 const { Text } = Typography;
 const { Content, Sider } = Layout;
-const { RangePicker } = DatePicker;
 
 export default function PhieuBaoHanhPage() {
   const [currentId, setCurrentId] = useState(null);
-  const [baohanh, setBaohanh] = useState(null);
-
+  const [thoigian, setThoigian] = useState(null);
+  const [thang, setThang] = useState(null);
+  const [trangthai, setTrangthai] = useState(null);
   const dispatch = useDispatch();
+  const isShow = useSelector(isloadingPhieuBaoHanhsState$);
   const PhieuBaoHanhs = useSelector(PhieuBaoHanhsState$);
+  const dateNow = moment().toDate();
+  const SPCH = PhieuBaoHanhs.filter(function (e) {
+    return moment(e.NgayKT) >= dateNow;
+  });
+
+  const SPHH = PhieuBaoHanhs.filter(function (e) {
+    return moment(e.NgayKT) < dateNow;
+  });
+
+  const openCreatePhieuBaoHanhModal = React.useCallback(() => {
+    dispatch(actions.showTaoPhieuBaoHanhModal());
+    console.log("isshow", isShow);
+  }, [dispatch]);
 
   function onChange(date, dateString) {
-    console.log(date, dateString);
+    console.log(date, "datétring", dateString);
+    console.log(moment(date).format("M"));
+    setThang(moment(date).format("M"));
   }
   return (
     <Layout>
@@ -57,13 +77,22 @@ export default function PhieuBaoHanhPage() {
             >
               <Radio.Group>
                 <Space direction="vertical">
-                  <Radio value={0} onClick={() => {}}>
+                  <Radio
+                    value={0}
+                    onClick={() => {
+                      setThoigian(0);
+                    }}
+                  >
                     Tất cả
                   </Radio>
-                  <Radio value={1}>
+                  <Radio
+                    value={1}
+                    onClick={() => {
+                      setThoigian(1);
+                    }}
+                  >
                     <DatePicker onChange={onChange} picker="month" />
                   </Radio>
-                  {/* <p>Lựa chọn khác</p>  */}
                 </Space>
               </Radio.Group>
             </Card>
@@ -77,7 +106,7 @@ export default function PhieuBaoHanhPage() {
                   <Radio
                     value={0}
                     onClick={() => {
-                      setBaohanh(0);
+                      setTrangthai(0);
                     }}
                   >
                     Tất cả
@@ -85,7 +114,7 @@ export default function PhieuBaoHanhPage() {
                   <Radio
                     value={1}
                     onClick={() => {
-                      setBaohanh(1);
+                      setTrangthai(1);
                     }}
                   >
                     Còn hạn
@@ -93,7 +122,7 @@ export default function PhieuBaoHanhPage() {
                   <Radio
                     value={2}
                     onClick={() => {
-                      setBaohanh(2);
+                      setTrangthai(2);
                     }}
                   >
                     Hết hạn
@@ -122,7 +151,7 @@ export default function PhieuBaoHanhPage() {
           <Layout style={{ padding: "17px 24px 24px" }}>
             <div className="site-layout-content">
               <Row justify="start">
-                <Space direction="horizontal" size={80}>
+                <Space direction="horizontal" size={200}>
                   <Space align="center" size={20}>
                     <SafetyCertificateTwoTone style={{ fontSize: "40px" }} />
                     <Space direction="vertical" size={0}>
@@ -133,10 +162,46 @@ export default function PhieuBaoHanhPage() {
                       <Text type="secondary">Tổng số lượng phiếu bảo hành</Text>
                     </Space>
                   </Space>
+                  <Space align="center" size={20}>
+                    <CheckCircleTwoTone style={{ fontSize: "40px" }} />
+                    <Space direction="vertical" size={0}>
+                      <Text strong>{SPCH.length} phiếu bảo hành</Text>
+                      <Text strong style={{ fontSize: "1.5rem" }}>
+                        {SPCH.length}
+                      </Text>
+                      <Text type="secondary">Phiếu bảo hành còn hạn</Text>
+                    </Space>
+                  </Space>
+                  <Space align="center" size={20}>
+                    <CloseCircleTwoTone style={{ fontSize: "40px" }} />
+                    <Space direction="vertical" size={0}>
+                      <Text strong>{SPHH.length} phiếu bảo hành</Text>
+                      <Text strong style={{ fontSize: "1.5rem" }}>
+                        {SPHH.length}
+                      </Text>
+                      <Text type="secondary">Phiếu bảo hành hết hạn</Text>
+                    </Space>
+                  </Space>
                 </Space>
               </Row>
               <Divider orientation="left"></Divider>
-              <PhieuBaoHanhtable baohanh={baohanh} setCurrentId={setCurrentId} />
+              <Button
+                type="primary"
+                icon={<PlusOutlined />}
+                onClick={openCreatePhieuBaoHanhModal}
+              >
+                Thêm phiếu bảo hành
+              </Button>
+              <PhieuBaoHanhtable
+                trangthai={trangthai}
+                thoigian={thoigian}
+                thang={thang}
+                setCurrentId={setCurrentId}
+              />
+              <PhieuBaoHanhModal
+                currentId={currentId}
+                setCurrentId={setCurrentId}
+              />
             </div>
           </Layout>
         </Content>

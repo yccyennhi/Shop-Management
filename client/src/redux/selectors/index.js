@@ -9,3 +9,5 @@ export const isloadingPhieuBaoHanhsState$ = (state) => state.PhieuBaoHanhs.isLoa
 export const TaoSanPhamModalState$ = (state) => state.TaoSanPhamModal;
 export const PhieuBaoHanhsState$ = (state) => state.PhieuBaoHanhs.data;
 export const PhieuDoiTrasState$ = (state)=>state.PhieuDoiTras.data;
+export const TaoPhieuBaoHanhModalState$ = (state) => state.TaoPhieuBaoHanhModal;
+

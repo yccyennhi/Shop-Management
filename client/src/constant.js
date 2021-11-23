@@ -62,5 +62,8 @@ export const INIT_STATE = {
   TaoPhieuBaoHanhModal: {
     isShow: false,
   },
+  TaoPhieuHenModal: {
+    isShow: false,
+  },
 
 };

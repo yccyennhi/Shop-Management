@@ -13,6 +13,8 @@ import PhieuDoiTras  from "./PhieuDoiTras";
 import TaoHoaDonModal from "./TaoHoaDonModal";
 import TaoPhieuTraHangModal  from "./TaoPhieuTraHangModal";
 import TaoPhieuBaoHanhModal  from "./TaoPhieuBaoHanhModal";
+import TaoPhieuHenModal  from "./TaoPhieuHenModal";
+
 
 
 export default combineReducers({
@@ -29,5 +31,6 @@ export default combineReducers({
   PhieuDoiTras,
   TaoHoaDonModal,
   TaoPhieuTraHangModal,
-  TaoPhieuBaoHanhModal
+  TaoPhieuBaoHanhModal,
+  TaoPhieuHenModal,
 });

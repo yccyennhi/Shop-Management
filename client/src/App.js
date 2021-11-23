@@ -11,6 +11,7 @@ import BCCuoiNgayPage from "./pages/BaoCaoPage/BCCuoiNgayPage";
 import BCBanHangPage from "./pages/BaoCaoPage/BCBanHangPage";
 import BCHangHoaPage from "./pages/BaoCaoPage/BCHangHoaPage";
 import PhieuBaoHanhPage from "./pages/PhieuBaoHanhPage/PhieuBaoHanhPage";
+import PhieuHenPage from "./pages/PhieuHenPage/PhieuHenPage";
 import NhanVienPage from "./pages/NhanVienPage/NhanVienPage";
 import HoaDonPage from "./pages/GiaoDichPage/HoaDonPage";
 import DoiTraPage from "./pages/GiaoDichPage/DoiTraPage";
@@ -36,6 +37,7 @@ function App() {
               <Switch>
                 <Route path ='/SanPhams' exact component={HangHoaPage}/>
                 <Route path ='/PhieuBaoHanhs' exact component={PhieuBaoHanhPage}/>
+                <Route path ='/PhieuHens' exact component={PhieuHenPage}/>
                 <Route path='/KhuyenMais' exact component={KhuyenMaiPage}/>
                 <Route path ='/HoaDons' exact component ={HoaDonPage}/>
                 <Route path = '/TraHangs' exact component ={DoiTraPage}/>

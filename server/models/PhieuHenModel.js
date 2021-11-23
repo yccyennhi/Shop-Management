@@ -14,14 +14,18 @@ const schema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    TenSP: {
-      type: String,
-      required: true,
-    },
-    ThoiGianHen: {
+    NgayHen: {
       type: Date,
       required: true,
-    } 
+    },
+    TrangThai: {
+      type: String,
+      enum: ["Hoàn thành", "Chưa hoàn thành"],
+      default: "Chưa hoàn thành",
+    },
+    GhiChu: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

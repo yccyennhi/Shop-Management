@@ -14,15 +14,15 @@ export const updateKhuyenMai = (payload) =>
 export const deleteKhuyenMai = (id) => axios.delete(`${URL}/KhuyenMais/${id}`);
 //
 //Phieu Hen
-export const fetchPhieuHens = () => axios.get(`${URL}/PhieuBaoHanhs`);
+export const fetchPhieuHens = () => axios.get(`${URL}/PhieuHens`);
 
 export const createPhieuHen = (payload) =>
-  axios.post(`${URL}/PhieuBaoHanhs`, payload);
+  axios.post(`${URL}/PhieuHens`, payload);
 
 export const updatePhieuHen = (payload) =>
-  axios.patch(`${URL}/PhieuBaoHanhs/${payload._id}`, payload);
+  axios.patch(`${URL}/PhieuHens/${payload._id}`, payload);
 
-export const deletePhieuHen = (id) => axios.delete(`${URL}/PhieuBaoHanhs/${id}`);
+export const deletePhieuHen = (id) => axios.delete(`${URL}/PhieuHens/${id}`);
 //
 //Phieu Bao Hanh
 export const fetchPhieuBaoHanhs = () => axios.get(`${URL}/PhieuBaoHanhs`);

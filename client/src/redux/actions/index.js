@@ -102,7 +102,6 @@ export const deletePhieuBaoHanh = createActions({
   deletePhieuBaoHanhFailure: (err) => err,
 });
 
-
 export const getTaiKhoans = createActions({
   getTaiKhoansRequest: undefined,
   getTaiKhoansSuccess: (payload) => payload,
@@ -151,6 +150,8 @@ export const hideTaoSanPhamModal = createAction("HIDE_TAOSANPHAM_MODAL");
 export const showTaoPhieuBaoHanhModal = createAction("SHOW_TAOPHIEUBAOHANH_MODAL");
 export const hideTaoPhieuBaoHanhModal = createAction("HIDE_TAOPHIEUBAOHANH_MODAL");
 
+export const showTaoPhieuHenModal = createAction("SHOW_TAOPHIEUHEN_MODAL");
+export const hideTaoPhieuHenModal = createAction("HIDE_TAOPHIEUHEN_MODAL");
 
 export const showTaoHoaDonModal = createAction('SHOW_TAOHOADON_MODAL');
 export const hideTaoHoaDonModal = createAction('HIDE_TAOHOADON_MODAL');

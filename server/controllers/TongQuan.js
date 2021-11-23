@@ -1,6 +1,7 @@
 import moment from "moment";
 import { HoaDonModel } from "../models/HoaDonModel.js";
 import { PhieuDoiTraModel } from "./../models/PhieuDoiTraModel.js";
+import { CTHDModel } from './../models/CTHDModel';
 
 export const getHoaDonsToday = async (req, res, next) => {
   try {
@@ -39,8 +40,6 @@ const rankingByDoanhThu = {};
 export const getRankingByDoanhThu = async (req, res) => {
 
   try {
-    console.log("Vào getRankingByDoanhThu");
-
     var firstDay = moment().startOf("month");
     const endDay = moment().endOf("month");
   
@@ -69,6 +68,33 @@ export const getRankingByDoanhThu = async (req, res) => {
 
       firstDay = firstDay.add(1,'d');
     }
+    res.status(200).json(rankingByDoanhThu);
+  } catch (err) {
+
+    res.status(500).json({ error: err });
+  }
+}
+
+const highestSanPhamList = {}
+
+export const getHighestSanPhamList = async (req, res) => {
+
+  try {
+  
+      await CTHDModel.find()
+      .then((CTHDs) => {
+
+        if (CTHDs.length) {
+
+          Object.values(CTHDs).forEach((CTHD) => {
+            let types = CTHD.TenSP
+            highestSanPhamList[day]+= CTHD.ThanhTien;
+         });
+
+        }
+
+      });
+
     res.status(200).json(rankingByDoanhThu);
   } catch (err) {
 

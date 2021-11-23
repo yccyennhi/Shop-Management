@@ -1,7 +1,6 @@
 import { takeLatest, call, put } from "redux-saga/effects";
 import * as actions from "../actions";
 import * as api from "../../api";
-import { getTongQuans } from "./../actions/index";
 
 function* fetchKhachHangsSaga(action) {
   try {
@@ -275,7 +274,6 @@ function* fetchCTPDTsSaga(action) {
 function* getTongQuansSaga(action) {
   try {
     const HoaDonsToday = yield call(api.getHoaDonsToday, action.payload);
-    console.log("HoaDonsToday trong saga", HoaDonsToday.data);
 
     var tongDoanhThu = 0;
 
@@ -292,6 +290,12 @@ function* getTongQuansSaga(action) {
     };
 
     yield put(actions.getTongQuans.getStatistics(statistics));
+
+    //Ranking
+    const rankingList = yield call(api.getRanking, action.payload);
+
+    yield put(actions.getTongQuans.getRankingByDoanhThu(rankingList.data))
+
   } catch (error) {
     console.log(error);
   }

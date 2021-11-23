@@ -1,25 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector} from "react-redux";
 import { TongQuanStatistics$ } from "../../redux/selectors";
 import { Card, Space, Typography } from "antd";
 import { DollarTwoTone } from "@ant-design/icons";
-import * as actions from "../../redux/actions";
 
 const { Text } = Typography;
 
 export default function TodayReportOverall() {
-  const dispatch = useDispatch();
 
   const statisics = useSelector(TongQuanStatistics$);
 
-  React.useEffect(() => {
-    dispatch(actions.getTongQuans.getDataRequest());
-  }, [dispatch]);
-
   const { hoaDonTodayCount, doanhThuToday, doiTraCount } = statisics;
 
-  console.log('statistics trong page', statisics);
 
   return (
     <div>

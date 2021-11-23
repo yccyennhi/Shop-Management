@@ -56,4 +56,5 @@ export const fetchCTHDs = () => axios.get(`${URL}/CTHDs`)
 export const fetchCTPDTs = () => axios.get(`${URL}/CTPDTs`)
 
 //TongQuan
-export const getHoaDonsToday = () => axios.get(`${URL}/TongQuans`);
+export const getHoaDonsToday = () => axios.get(`${URL}/TongQuans/HoaDonsToday`);
+export const getRanking = () => axios.get(`${URL}/TongQuans/Ranking`);

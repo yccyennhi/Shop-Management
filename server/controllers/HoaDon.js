@@ -3,7 +3,7 @@ import { HoaDonModel } from "../models/HoaDonModel.js";
 export const getHoaDons = async (req, res) => {
   try {
     // const newHoaDon = new HoaDonModel({
-    //   MaHD: "HD006",
+    //   MaHD: "HD0010",
     //   ThoiGian: moment(),
     //   idNV: "618f87add7f3f02b3fe340d5",
     //   idKM: "618f5168430731ecab82f463",

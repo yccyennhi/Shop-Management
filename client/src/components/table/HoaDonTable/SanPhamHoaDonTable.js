@@ -1,8 +1,7 @@
-import React from "react";
-import { Table } from "antd";
-function HangHoaBanTable({ dataCTHDs }) {
+import { Row, Table } from "antd";
+import React, { useState } from "react";
 
-  const dataSource = dataCTHDs;
+export default function SanPhamHoaDonTable({ SPsInfo, onListSPclick }) {
   const columns = [
     {
       title: "Mã hàng",
@@ -15,6 +14,11 @@ function HangHoaBanTable({ dataCTHDs }) {
       key: "TenSP",
     },
     {
+      title: "Màu sắc",
+      dataIndex: "MauSac",
+      key: "MauSac",
+    },
+    {
       title: "Size",
       dataIndex: "Size",
       key: "Size",
@@ -23,11 +27,6 @@ function HangHoaBanTable({ dataCTHDs }) {
       title: "Số lượng",
       dataIndex: "SoLuong",
       key: "SoLuong",
-    },
-    {
-      title: "Đơn giá",
-      dataIndex: "GiaVon",
-      key: "GiaVon",
     },
     {
       title: "Giá bán",
@@ -47,16 +46,30 @@ function HangHoaBanTable({ dataCTHDs }) {
       key: "ThanhTien",
     },
   ];
-
+  const [select, setSelect] = useState({
+    selectedRowKeys: [],
+    pagination: {
+      current: 1,
+      pageSize: 5,
+    },
+    loading: false,
+  });
   return (
-    <Table
-      tableLayout={"auto"}
-      pagination={false}
-      dataSource={dataSource}
-      columns={columns}
-      rowKey='_id'
-    />
+    <>
+      <Table
+        tableLayout={"auto"}
+        pagination={true}
+        loading={false}
+        size={'small'}
+        columns={columns}
+        onRow={(record, index) => {
+            return{
+                onDoubleClick:event => {onListSPclick()}
+            }
+        }}
+        dataSource={SPsInfo}
+        rowKey="_id"
+      />
+    </>
   );
 }
-
-export default HangHoaBanTable;

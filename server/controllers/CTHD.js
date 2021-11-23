@@ -1,9 +1,8 @@
 import { CTHDModel } from "../models/CTHDModel.js";
 
-export const getCTHD = async (req, res) => {
+export const getCTHDs = async (req, res) => {
   try {
     const CTHDs = await CTHDModel.find();
-    console.log("CTHDs", CTHDs);
     res.status(200).json(CTHDs);
   } catch (err) {
     res.status(500).json({ error: err });

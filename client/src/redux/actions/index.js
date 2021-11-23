@@ -132,6 +132,7 @@ export const deleteKhuyenMai = createActions({
   deleteKhuyenMaiSuccess: (payload) => payload,
   deleteKhuyenMaiFailure: (err) => err,
 });
+/* #endregion */
 
 export const getPhieuDoiTras = createActions({
     getPhieuDoiTrasRequest: undefined,
@@ -143,6 +144,30 @@ export const createHoaDon = createAction({
 
 })
 /* #endregion */
+
+export const getCTHDs = createActions({
+  getCTHDsRequest: undefined,
+  getCTHDsSuccess: (payload) => payload,
+  getCTHDsFailure: (err) => err,
+})
+
+export const getCTPDTs = createActions({
+  getCTPDTsRequest: undefined,
+  getCTPDTsSuccess: (payload) => payload,
+  getCTPDTsFailure: (err) => err,
+})
+
+export const getTongQuans = createActions({
+  getDataRequest: undefined,
+  getDataSuccess: (payload) => payload,
+  getDataFailure: (err) => err,
+
+  getStatistics: (payload) => payload,
+  getRankingByDoanhThu: (payload) => payload,
+  getHighestSanPhamList: (payload) => payload,
+
+})
+
 
 export const showTaoSanPhamModal = createAction("SHOW_TAOSANPHAM_MODAL");
 export const hideTaoSanPhamModal = createAction("HIDE_TAOSANPHAM_MODAL");

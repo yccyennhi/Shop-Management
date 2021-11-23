@@ -1,10 +1,10 @@
 import express from "express";
-import { getCTPDT, createCTPDT, updateCTPDT } from "../controllers/CTPDT.js";
+import { getCTPDTs, createCTPDT, updateCTPDT } from "../controllers/CTPDT.js";
 
 const router = express.Router();
 //http://localhost:5000/CTPDTs
 
-router.get("/", getCTPDT);
+router.get("/", getCTPDTs);
 router.post("/", createCTPDT);
 router.post("/update", updateCTPDT);
 

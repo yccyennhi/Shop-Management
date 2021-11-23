@@ -1,35 +1,26 @@
 import React, { useState } from "react";
-import {
-  Table,
-  Input,
-  Row,
-  Button,
-  Dropdown,
-  message,
-  Menu,
-  Switch,
-  Radio,
-  Form,
-  Space,
-} from "antd";
-import { SearchOutlined, DownOutlined } from "@ant-design/icons";
+import { Table, Input, Row } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
 import FormHoaDon from "../../../pages/GiaoDichPage/FormHoaDon";
 
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../../redux/actions";
-import { HoaDonsState$ } from "../../../redux/selectors";
+import { HoaDonsState$, CTHDsState$ } from "../../../redux/selectors";
 const { Search } = Input;
 
 export default function HoaDontable() {
   const dispatch = useDispatch();
   const HoaDons = useSelector(HoaDonsState$);
+  const CTHDs = useSelector(CTHDsState$);
 
   React.useEffect(() => {
     dispatch(actions.getHoaDons.getHoaDonsRequest());
   }, [dispatch]);
+  React.useEffect(() => {
+    dispatch(actions.getCTHDs.getCTHDsRequest());
+  }, [dispatch]);
 
   const dataSource = HoaDons;
-
   // const [dataSource, setDataSource] = useState([
   //   {
   //     key: 1,
@@ -223,31 +214,17 @@ export default function HoaDontable() {
     loading: false,
   });
 
-  console.log("selectedRowKeys", select);
-
-  const { selectedRowKeys, loading } = select;
-
-  function handleMenuClick(e) {
-    message.info("Click on menu item.");
-    console.log("click", e);
-  }
-  const menu = (
-    <Menu onClick={handleMenuClick}>
-      <Menu.Item key="1">1st menu item</Menu.Item>
-      <Menu.Item key="2">2nd menu item</Menu.Item>
-      <Menu.Item key="3">3rd menu item</Menu.Item>
-    </Menu>
-  );
   return (
     <div>
       <Row></Row>
       <Table
+        tableLayout={"auto"}
         loading={false}
+        scroll={{ x: 1100 }}
         pagination={true}
-        scroll = {{x: 600,y : 500}}
         columns={columns}
         expandable={{
-          expandedRowRender: (record) => <FormHoaDon />,
+          expandedRowRender: (record) => <FormHoaDon record={record} dataCTHDs={CTHDs} />,
           rowExpandable: (record) => record.MaHD !== "Not Expandable",
         }}
         dataSource={dataSource}

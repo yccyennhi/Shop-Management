@@ -62,4 +62,25 @@ export const INIT_STATE = {
     isShow: false,
   },
 
+  CTHDs: {
+    isLoading: false,
+    data: [],
+  },
+  CTPDTs: {
+    isLoading: false,
+    data: [],
+  },
+
+  TongQuans: {
+    isLoading: false,
+    statistics: {
+      hoaDonTodayCount: 0,
+      doanhThuToday: 0,
+      doiTraCount: 0,
+      soLuongDT:0,
+    },
+    rankingByDoanhThu: [],
+    highestSanPhamList: [],
+  },
+
 };

@@ -14,6 +14,8 @@ import PhieuDoiTras from "./routers/PhieuDoiTras.js";
 import CTPDTs from "./routers/CTPDTs.js";
 import KhuyenMais from "./routers/KhuyenMais.js";
 import TongQuans from "./routers/TongQuans.js";
+import PhieuNhaps from "./routers/PhieuNhaps.js";
+
 
 import mongoose from "mongoose";
 
@@ -39,6 +41,7 @@ app.use("/PhieuDoiTras", PhieuDoiTras);
 app.use("/CTHDs", CTHDs);
 app.use("/CTPDTs",CTPDTs);
 app.use("/TongQuans", TongQuans);
+app.use("/PhieuNhaps", PhieuNhaps);
 
 mongoose
   .connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })

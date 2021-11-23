@@ -59,6 +59,18 @@ export default function TaoHoaDonModal() {
     ThanhTien: 0,
   });
   const [SPsInfo, setSPsInfo] = useState([]);
+  React.useEffect(() => {
+    setDataSP({
+      MaSP: "",
+      TenSP: "",
+      MauSac: "",
+      Size: 0,
+      SoLuong: 0,
+      BaoHanh: 0,
+      GiaBan: 0,
+      ThanhTien: 0,
+    });
+  }, [SPsInfo]);
   const btnAddSP = useCallback(() => {
     const result = SanPhams.find((SanPham) => SanPham.MaSP === dataSP.MaSP);
     if (result) {
@@ -69,6 +81,7 @@ export default function TaoHoaDonModal() {
         GiaBan: result.GiaBan,
         BaoHanh: result.BaoHanh,
       });
+      console.log(SPsInfo);
       SPsInfo.push(dataSP);
       setDataSP({
         MaSP: "",
@@ -228,7 +241,7 @@ export default function TaoHoaDonModal() {
           </Form.Item>
         </Form.Item>
         <Form.Item>
-          <SanPhamHoaDonTable SPsInfo={SPsInfo} onListSPclick={onListSPclick}/>
+          <SanPhamHoaDonTable SPsInfo={SPsInfo} onListSPclick={onListSPclick} />
         </Form.Item>
         <Form.Item label=" " colon={false}>
           <Button type="primary" htmlType="submit">

@@ -1,7 +1,15 @@
 import { Row, Table } from "antd";
 import React, { useState } from "react";
-
+import { useDispatch, useSelector } from "react-redux";
+import * as actions from "../../../redux/actions";
 export default function SanPhamHoaDonTable({ SPsInfo, onListSPclick }) {
+  console.log("Table",SPsInfo);
+  const dispatch = useDispatch();
+
+  const [data, setData] = useState(SPsInfo);
+  React.useEffect(() => {
+    setData(SPsInfo);
+  }, [SPsInfo]);
   const columns = [
     {
       title: "Mã hàng",
@@ -67,7 +75,7 @@ export default function SanPhamHoaDonTable({ SPsInfo, onListSPclick }) {
                 onDoubleClick:event => {onListSPclick()}
             }
         }}
-        dataSource={SPsInfo}
+        dataSource={data}
         rowKey="_id"
       />
     </>

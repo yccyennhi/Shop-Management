@@ -11,7 +11,7 @@ export default function TodayReportOverall() {
 
   const statisics = useSelector(TongQuanStatistics$);
 
-  const { hoaDonTodayCount, doanhThuToday, doiTraCount } = statisics;
+  const { hoaDonTodayCount, doanhThuToday, doiTraCount, soLuongDT } = statisics;
 
 
   return (
@@ -32,9 +32,9 @@ export default function TodayReportOverall() {
           <Space align="center" size={20}>
             <DollarTwoTone style={{ fontSize: "40px" }} />
             <Space direction="vertical" size={0}>
-              <Text strong>0 Phiếu</Text>
+              <Text strong>{doiTraCount} Phiếu</Text>
               <Text strong style={{ fontSize: "1.5rem" }}>
-                0
+                {soLuongDT}
               </Text>
               <Text type="secondary">Trả hàng</Text>
             </Space>

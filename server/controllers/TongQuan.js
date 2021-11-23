@@ -1,7 +1,7 @@
 import moment from "moment";
 import { HoaDonModel } from "../models/HoaDonModel.js";
 import { PhieuDoiTraModel } from "./../models/PhieuDoiTraModel.js";
-import { CTHDModel } from './../models/CTHDModel';
+import { CTHDModel } from './../models/CTHDModel.js';
 
 export const getHoaDonsToday = async (req, res, next) => {
   try {
@@ -12,7 +12,6 @@ export const getHoaDonsToday = async (req, res, next) => {
       // find in today
       ThoiGian: { $gte: today, $lte: tomorrow },
     });
-    console.log("HoaDonsToday in controllers", HoaDonsToday);
     res.status(200).json(HoaDonsToday);
     next();
   } catch (err) {
@@ -29,15 +28,18 @@ export const getDoiTrasToday = async (req, res) => {
       ThoiGian: { $gte: today, $lte: tomorrow },
     });
 
+    console.log("DoiTrasToday in controllers", DoiTrasToday);
     res.status(200).json(DoiTrasToday);
   } catch (err) {
     res.status(500).json({ error: err });
   }
 };
 
-const rankingByDoanhThu = {};
+
 
 export const getRankingByDoanhThu = async (req, res) => {
+
+const rankingByDoanhThu = {};
 
   try {
     var firstDay = moment().startOf("month");
@@ -75,9 +77,11 @@ export const getRankingByDoanhThu = async (req, res) => {
   }
 }
 
-const highestSanPhamList = {}
+
 
 export const getHighestSanPhamList = async (req, res) => {
+
+const highestSanPhamList = {}
 
   try {
   
@@ -87,15 +91,19 @@ export const getHighestSanPhamList = async (req, res) => {
         if (CTHDs.length) {
 
           Object.values(CTHDs).forEach((CTHD) => {
-            let types = CTHD.TenSP
-            highestSanPhamList[day]+= CTHD.ThanhTien;
+            let types = CTHD.TenSP.concat(' (',CTHD.MauSac,')');
+            if(!highestSanPhamList[types])
+            {
+              highestSanPhamList[types] = 0;
+            }
+              highestSanPhamList[types]+= CTHD.SoLuong;
          });
+
 
         }
 
       });
-
-    res.status(200).json(rankingByDoanhThu);
+      res.status(200).json(highestSanPhamList);
   } catch (err) {
 
     res.status(500).json({ error: err });

@@ -8,7 +8,7 @@ import { TongQuanRankingByDoanhThu$ } from "../../redux/selectors";
 const DemoColumn = () => {
   
   const rankingList = useSelector(TongQuanRankingByDoanhThu$);
-   console.log(rankingList);
+   //console.log(rankingList);
   //const data = Array(30).fill().map((_,i) => ({'type': i+1, 'sales':Math.round(Math.random() * 1000000)}));
   const data = Object.keys(rankingList).map((key) => ({'type': key, 'sales': rankingList [key] }))
   var config = {

@@ -74,8 +74,9 @@ export const INIT_STATE = {
       hoaDonTodayCount: 0,
       doanhThuToday: 0,
       doiTraCount: 0,
+      soLuongDT:0,
     },
     rankingByDoanhThu: [],
-    hightestSanPhamList: [],
+    highestSanPhamList: [],
   },
 };

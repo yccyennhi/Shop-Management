@@ -33,7 +33,6 @@ export default function KhuyenMaisReducer(
       };
 
     case getType(getTongQuans.getRankingByDoanhThu):
-      console.log('ranking trong reducer',action.payload);
       return {
         ...state,
         rankingByDoanhThu: action.payload,

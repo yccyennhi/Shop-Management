@@ -271,30 +271,43 @@ function* fetchCTPDTsSaga(action) {
 }
 /* #endregion */
 
-function* getTongQuansSaga(action) {
+function*  getTongQuansSaga(action) {
   try {
-    const HoaDonsToday = yield call(api.getHoaDonsToday, action.payload);
+    const HoaDonsToday = yield call(api.getHoaDonsToday);
+    const DoiTrasToday = yield call(api.getDoiTrasToday);
 
     var tongDoanhThu = 0;
+    var tongSoLuongDT = 0;
 
     Object.values(HoaDonsToday.data).forEach((HoaDon) => {
       Object.entries(HoaDon).forEach(([key, value]) => {
         if (key === "ThanhTien") tongDoanhThu += value;
       });
     });
+    Object.values(DoiTrasToday.data).forEach((DoiTra) => {
+      Object.entries(DoiTra).forEach(([key, value]) => {
+        if (key === "SoLuong") tongSoLuongDT += value;
+      });
+    });
 
     const statistics = {
       hoaDonTodayCount: HoaDonsToday.data.length,
       doanhThuToday: tongDoanhThu,
-      doiTraCount: 0,
+      doiTraCount: DoiTrasToday.data.length,
+      soLuongDT: tongSoLuongDT,
     };
 
     yield put(actions.getTongQuans.getStatistics(statistics));
 
     //Ranking
-    const rankingList = yield call(api.getRanking, action.payload);
+    const rankingList = yield call(api.getRanking);
 
-    yield put(actions.getTongQuans.getRankingByDoanhThu(rankingList.data))
+    yield put(actions.getTongQuans.getRankingByDoanhThu(rankingList.data));
+
+    //highestSanPhamList
+    const highestSanPhamList = yield call(api.getHighestSanPhamList);
+
+    yield put(actions.getTongQuans.getHighestSanPhamList(highestSanPhamList.data));
 
   } catch (error) {
     console.log(error);

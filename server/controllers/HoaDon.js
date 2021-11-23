@@ -22,7 +22,6 @@ export const getHoaDons = async (req, res) => {
     // });
 
     // await newHoaDon.save();
-
     const HoaDons = await HoaDonModel.find();
 
     console.log("HoaDons", HoaDons);

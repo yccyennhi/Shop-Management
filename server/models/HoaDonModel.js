@@ -5,6 +5,7 @@ const schema = new Schema(
     MaHD: {
       type: String,
       required: true,
+      unique: true,
     },
     ThoiGian: {
       type: Date,

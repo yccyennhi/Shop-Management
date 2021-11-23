@@ -20,6 +20,10 @@ const schema = new Schema(
       type: String,
       required: true,
     },
+    TenSP: {
+      type: String,
+      required: true,
+    },
     SoLuong: {
       type: Number,
       required: true,

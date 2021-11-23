@@ -84,11 +84,20 @@ export default function PhieuBaoHanh({ currentId, setCurrentId }) {
         messageError("Mã sản phẩm không tồn tại");
       } else if (data.NgayBD <= data.NgayKT) {
         if (currentId) {
-          dispatch(updatePhieuBaoHanh.updatePhieuBaoHanhRequest(data));
+          if (listSP.BaoHanh == "Có bảo hành") {
+            dispatch(updatePhieuBaoHanh.updatePhieuBaoHanhRequest(data));
+            onClose();
+          } else {
+            messageError("Sản phẩm không được bảo hành");
+          }
         } else {
-          dispatch(createPhieuBaoHanh.createPhieuBaoHanhRequest(data));
+          if (listSP.BaoHanh == "Có bảo hành") {
+            dispatch(createPhieuBaoHanh.createPhieuBaoHanhRequest(data));
+            onClose();
+          } else {
+            messageError("Sản phẩm không được bảo hành");
+          }
         }
-        onClose();
       } else {
         messageError("Ngày bắt đầu phải nhỏ hơn ngày kết thúc");
       }

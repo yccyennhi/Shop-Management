@@ -5,10 +5,8 @@ import * as actions from "../../../redux/actions";
 import { hideTaoPhieuTraHangModal } from "../../../redux/actions";
 import { TaoPhieuTraHangState$, CTHDsState$ } from "../../../redux/selectors";
 import { useDispatch } from "react-redux";
-import { v4 } from "uuid";
 import moment from "moment";
-import SanPhamTraHang from "./SanPhamTraHang";
-import ListSPs from "./ListSPs";
+import ListSPs from "./ListSPTraHangs";
 const { Search } = Input;
 
 export default function TaoPhieuTraHang() {
@@ -40,6 +38,14 @@ export default function TaoPhieuTraHang() {
       }
     });
   };
+
+  const setDataPDT = useCallback((SL, T_Tien) => {
+    setData({
+      ...data,
+      SoLuong: data.SoLuong + SL,
+      TongTien: data.TongTien + T_Tien,
+    });
+  }, []);
   const body = (
     <>
       <Form
@@ -67,7 +73,7 @@ export default function TaoPhieuTraHang() {
           <DatePicker defaultValue={moment(data.ThoiGian)} disabled={true} />
         </Form.Item>
         <Form.Item>
-          <ListSPs data={data} CTHDs={CTHDs} />
+          <ListSPs data={data} setDatas={setDataPDT} CTHDs={CTHDs} />
         </Form.Item>
         <Form.Item>
           <section

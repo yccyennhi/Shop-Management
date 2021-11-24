@@ -27,9 +27,9 @@ export default function HoaDonPage() {
       <div style = {{marginBottom : '20px'}}>
         <Row justify="end">
           <Space>
-            <Button type="primary" icon={<PlusOutlined />} >
+            <Button type="primary" icon={<PlusOutlined />} onClick={openTaoSanPhamModal}>
               Thêm hóa đơn
-            </Button>
+            </Button> 
             <Button type="primary" icon={<ImportOutlined />}>
               Import
             </Button>

@@ -5,6 +5,7 @@ const schema = new Schema(
     MaPDT: {
       type: String,
       required: true,
+      unique: true,
     },
     idHD: {
       type: Schema.Types.ObjectId,

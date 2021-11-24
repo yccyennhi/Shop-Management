@@ -16,7 +16,7 @@ export const getKhuyenMais = async (req, res) => {
   try {
     const today = moment().startOf("day");
 
-    await KhuyenMaiModel.update(
+    await KhuyenMaiModel.updateMany(
       {},
       [
         {
@@ -34,7 +34,9 @@ export const getKhuyenMais = async (req, res) => {
       { multi: true }
     );
 
-    const KhuyenMais = await KhuyenMaiModel.find();
+    const KhuyenMais = await KhuyenMaiModel.find().then((KhuyenMais) =>
+      KhuyenMais.filter((KhuyenMai) => KhuyenMai.MaKM != "KM000")
+    );
 
     res.status(200).json(KhuyenMais);
   } catch (err) {

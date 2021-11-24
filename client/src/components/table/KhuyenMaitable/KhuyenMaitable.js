@@ -1,27 +1,29 @@
 import React, { useState } from "react";
-import { Table, Input, Row, PageHeader, Descriptions, Tag } from "antd";
+import { Input, Row} from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import { useSelector, useDispatch } from "react-redux";
-import * as actions from "../../../redux/actions";
+// import { useSelector, useDispatch } from "react-redux";
+// import * as actions from "../../../redux/actions";
 
-import { KhuyenMaisState$ } from "../../../redux/selectors";
+// import { KhuyenMaisState$ } from "../../../redux/selectors";
 import ExpandedRowRender from "./ExpandedRowRender";
 import moment from "moment";
+import { ExportTableButton, Table } from "ant-table-extensions";
 
 const { Search } = Input;
 
-function KhuyenMaitable({ filterStatus, setCurrentId }) {
-  const dispatch = useDispatch();
+function KhuyenMaitable({ dataSource, setCurrentId }) {
+  // const dispatch = useDispatch();
 
-  const KhuyenMais = useSelector(KhuyenMaisState$);
+  // const KhuyenMais = useSelector(KhuyenMaisState$);
 
-  React.useEffect(() => {
-    dispatch(actions.getKhuyenMais.getKhuyenMaisRequest());
-  }, [dispatch]);
+  // React.useEffect(() => {
+  //   dispatch(actions.getKhuyenMais.getKhuyenMaisRequest());
+  // }, [dispatch]);
 
-  const dataSource = filterStatus == null
-    ? KhuyenMais
-    : KhuyenMais.filter((KhuyenMai) => KhuyenMai.TrangThai === filterStatus);
+  // const dataSource =
+  //   filterStatus == null
+  //     ? KhuyenMais
+  //     : KhuyenMais.filter((KhuyenMai) => KhuyenMai.TrangThai === filterStatus);
 
   const columns = [
     {
@@ -213,8 +215,15 @@ function KhuyenMaitable({ filterStatus, setCurrentId }) {
       </span>
 
       <Table
-        tableLayout={"auto"}
-        loading={false}
+        tableLayout={"auto"}   
+        searchable
+        searchableProps={{
+          inputProps: {
+            placeholder: "Nhập mã, tên khuyến mãi",
+            prefix: <SearchOutlined />,
+            width: 200,
+          },
+        }}
         pagination={true}
         columns={columns}
         rowSelection={rowSelection}

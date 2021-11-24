@@ -1,19 +1,15 @@
 import React, { useState } from "react";
 
 import { useDispatch } from "react-redux";
-import {  PageHeader, Row, Button, Space} from "antd";
-import {
-  PlusOutlined,
-  RestOutlined,
-} from "@ant-design/icons";
-import "./styles.css";
+import { PageHeader, Row, Button, Space, Layout } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 
 import KhuyenMaitable from "../../components/table/KhuyenMaitable/KhuyenMaitable";
 import { showModal } from "../../redux/actions";
-import CreateKhuyenMaiModal from "../../components/CreateKMModal/CreateKhuyenMaiModal";
+import KhuyenMaiModal from "../../components/modal/KhuyenMaiModal/KhuyenMaiModal";
+import { Content } from "antd/lib/layout/layout";
 
 export default function KhuyenMaiPage() {
-
   const [currentId, setCurrentId] = useState(null);
 
   const dispatch = useDispatch();
@@ -23,28 +19,27 @@ export default function KhuyenMaiPage() {
   }, [dispatch]);
 
   return (
-    <>
-      <div>
-        <PageHeader className="site-page-header" title="Khuyến mãi" />
-        <div>
-          <Row justify="end">
-            <Space>
-              <Button
-                type="primary"
-                icon={<PlusOutlined />}
-                onClick={openCreateKMModal}
-              >
-                Thêm khuyến mãi
-              </Button>
-              <Button type="secondary" icon={<RestOutlined />}>
-                Xóa khuyến mãi
-              </Button>
-            </Space>
-          </Row>
-          <CreateKhuyenMaiModal currentId={currentId} setCurrentId={setCurrentId}/>
-          <KhuyenMaitable setCurrentId={setCurrentId} />
+    <Layout>
+      <PageHeader className="site-page-header" title="Khuyến mãi" />
+      <Content style={{ padding: "0px 50px" }}>
+        <div className="site-layout-content">
+          <div>
+            <Row justify="end">
+              <Space>
+                <Button
+                  type="primary"
+                  icon={<PlusOutlined />}
+                  onClick={openCreateKMModal}
+                >
+                  Thêm khuyến mãi
+                </Button>
+              </Space>
+            </Row>
+            <KhuyenMaiModal currentId={currentId} setCurrentId={setCurrentId} />
+            <KhuyenMaitable setCurrentId={setCurrentId} />
+          </div>
         </div>
-      </div>
-    </>
+      </Content>
+    </Layout>
   );
 }

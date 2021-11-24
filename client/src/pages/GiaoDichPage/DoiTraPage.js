@@ -17,16 +17,18 @@ import TraHangTable from "../../components/table/HoaDonTable/TraHangTable";
 import TaoPhieuTraHangModal from "../../components/modal/TaoGiaoDichModal/TaoPhieuDoiTraModal";
 import { showTaoPhieuTraHangModal } from "../../redux/actions";
 import { useDispatch } from "react-redux";
+import { Content } from "antd/lib/layout/layout";
 
 export default function DoiTraPage() {
   const dispatch = useDispatch();
-  const openTaoPhieuTraHangModal = React.useCallback(()=>{
+  const openTaoPhieuTraHangModal = React.useCallback(() => {
     dispatch(showTaoPhieuTraHangModal());
   }, [dispatch]);
   return (
-    <>
+    <Layout>
       <PageHeader className="site-page-header" title="Trả hàng" />
-      <div>
+      <Content style={{ padding: "0px 50px" }}>
+        <div className="site-layout-content">
         <Row justify="end">
           <Space>
             <Button type="primary" icon={<PlusOutlined />} onClick={openTaoPhieuTraHangModal}>
@@ -43,7 +45,7 @@ export default function DoiTraPage() {
         <TaoPhieuTraHangModal/>
         <TraHangTable />
       </div>
-      ,
-    </>
+      </Content>
+    </Layout>
   );
 }

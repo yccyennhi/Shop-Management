@@ -11,24 +11,50 @@ import {
   Tag,
   Button,
   Space,
+  Modal,
 } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteSanPham, showTaoSanPhamModal } from "../../../redux/actions";
+import {
+  deleteSanPham,
+  showTaoSanPhamModal,
+  updateSanPham,
+} from "../../../redux/actions";
 
 export default function ExpandedRowRender({ record, setCurrentId }) {
   const dispatch = useDispatch();
-  const [status, setStatus] = useState("blue");
-  const [statuss, setStatuss] = useState("Đang kinh doanh");
-
-  const openCreateSanPhamModal = React.useCallback(() => {
+  const [isShow, setIsShow] = useState(false);
+  function warning() {
+    setIsShow(true);
+    Modal.warning({
+      visible: isShow,
+      title: "Cảnh báo",
+      content:
+        "Việc xóa sản phẩm sẽ làm ảnh hưởng đến dữ liệu kiểm kho. Xác nhận đưa tồn kho sản phẩm về 0 để thay thế?",
+      onOk() {
+        handleDelete();
+      },
+      //  onCancel: {}
+    });
+  }
+  const openUpdateSanPhamModal = React.useCallback(() => {
     setCurrentId(record._id);
     dispatch(showTaoSanPhamModal());
   }, [dispatch]);
-
-  const onDelete = React.useCallback(() => {
+  const SanPhamValue = useSelector((state) =>
+    state.SanPhams.data.find((SanPham) =>
+      SanPham._id === record._id ? SanPham : null
+    )
+  );
+  const [data, setData] = useState(SanPhamValue);
+  console.log("SPVL", SanPhamValue);
+  const handleDelete = React.useCallback(() => {
     console.log("record data", record);
-    dispatch(deleteSanPham.deleteSanPhamRequest(record._id));
+    setData({ ...data, TonKho: 0, TrangThai: "Hết hàng" });
+    dispatch(updateSanPham.updateSanPhamRequest(data));
+    setIsShow(false);
+    // dispatch(deleteSanPham.deleteSanPhamRequest(record._id));
   }, [record, dispatch]);
+
   return (
     <>
       <PageHeader
@@ -36,54 +62,38 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
         title={record.TenSP}
         subTitle={record.MaSP}
         extra={[
-          <Button key="1" type="primary" onClick={openCreateSanPhamModal}>
+          <Button key="1" type="primary" onClick={openUpdateSanPhamModal}>
             Sửa
           </Button>,
-          <Button key="2" onClick={onDelete}>
+          <Button key="2" onClick={warning}>
             Xóa
           </Button>,
         ]}
+        tags={[
+          <Tag color="red" visible={record.TrangThai == "Ngừng kinh doanh"}>
+            {record.TrangThai}
+          </Tag>,
+          <Tag color="yellow" visible={record.TrangThai == "Hết hàng"}>
+            {record.TrangThai}
+          </Tag>,
+          <Tag color="blue" visible={record.TrangThai == "Đang kinh doanh"}>
+            {record.TrangThai}
+          </Tag>,
+          <Tag color="grey" visible={record.BaoHanh == "Không bảo hành"}>
+            Không bảo hành
+          </Tag>,
+          <Tag color="green" visible={record.BaoHanh == "Có bảo hành"}>
+            Có bảo hành
+          </Tag>,
+        ]}
       >
-        {/* <Tag color="red" visible={record.TrangThai == 0}>
-          {record.TrangThai == 0 ? "Ngừng kinh doanh" : ""}
-        </Tag>
-        <Tag color="yellow" visible={record.TrangThai == 1}>
-          {record.TrangThai == 1 ? "Hết hàng" : ""}
-        </Tag>
-        <Tag color="blue" visible={record.TrangThai == 2}>
-          {record.TrangThai == 2 ? "Đang kinh doanh" : ""}
-        </Tag> */}
         <Row justify="start">
           <Col flex={1}>
-            <Space direction="vertical">
-              <Row>
-                <Space direction="horizontal">
-                  <Tag color="red" visible={record.TrangThai == 0}>
-                    {record.TrangThai == 0 ? "Ngừng kinh doanh" : ""}
-                  </Tag>
-                  <Tag color="yellow" visible={record.TrangThai == 1}>
-                    {record.TrangThai == 1 ? "Hết hàng" : ""}
-                  </Tag>
-                  <Tag color="blue" visible={record.TrangThai == 2}>
-                    {record.TrangThai == 2 ? "Đang kinh doanh" : ""}
-                  </Tag>
-                  <Tag color="grey" visible={record.BaoHanh == 0}>
-                    Không bảo hành
-                  </Tag>
-                  <Tag color="green" visible={record.BaoHanh == 1}>
-                    Có bảo hành
-                  </Tag>
-                </Space>
-              </Row>
-
               <Image width={300} src={record.HinhAnh || ""} />
-            </Space>
           </Col>
-
           <Col flex={10}>
             <Descriptions title="Thông tin chi tiết" size="default">
               <Descriptions.Item label="Mô tả">{record.MoTa}</Descriptions.Item>
-
               <Descriptions.Item label="Size">{record.Size}</Descriptions.Item>
               <Descriptions.Item label="Loại hàng">
                 {record.LoaiHang}
@@ -98,21 +108,8 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
                 {record.TonKho}
               </Descriptions.Item>
             </Descriptions>
-            ,
           </Col>
         </Row>
-
-        <>
-          {/* <Descriptions size="medium" column={3} row={5}>
-            <Descriptions.Item></Descriptions.Item>
-            <Descriptions.Item label="Phần trăm giảm">
-              {record.PhanTram}
-            </Descriptions.Item>
-            <Descriptions.Item label="Số lượng">
-              {record.SoLuong}
-            </Descriptions.Item>
-          </Descriptions> */}
-        </>
       </PageHeader>
     </>
   );

@@ -1,33 +1,30 @@
 import React, { useState, useEffect } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
-import { modalState$ } from "../../redux/selectors";
-
-import {
-  Form,
-  Input,
-  Button,
-  Radio,
-  Select,
-  Cascader,
-  DatePicker,
-  InputNumber,
-  TreeSelect,
-  Switch,
-  Modal,
-  Col,
-  Row,
-} from "antd";
-
+import { modalState$ } from "../../../redux/selectors";
 import {
   createKhuyenMai,
   updateKhuyenMai,
   hideModal,
-} from "../../redux/actions";
+} from "../../../redux/actions";
+import { Form, Input, DatePicker, InputNumber, Switch, Modal } from "antd";
+import { messageError } from "../../message";
+
 import moment from "moment";
 
-export default function CreateKhuyenMaiModal({ currentId, setCurrentId }) {
+const validateMessages = {
+  required: "${label} không được bỏ trống!",
+  types: {
+    number: "${label} không phải là số hợp lệ!",
+  },
+  number: {
+    range: "${label} phải nằm trong khoảng từ ${min} đến ${max}",
+  },
+};
+
+export default function KhuyenMaiModal({ currentId, setCurrentId }) {
   const { isShow } = useSelector(modalState$);
+  const [form] = Form.useForm();
 
   const dateNow = moment().toDate();
   const [data, setData] = useState({
@@ -35,8 +32,8 @@ export default function CreateKhuyenMaiModal({ currentId, setCurrentId }) {
     TenKM: "",
     NgayBD: new Date(Date.now()),
     NgayKT: new Date(Date.now()),
-    GiaTri: 0,
-    PhanTram: 0,
+    GiaTri: 1000,
+    PhanTram: 1,
     SoLuong: 0,
     TrangThai: false,
   });
@@ -49,6 +46,8 @@ export default function CreateKhuyenMaiModal({ currentId, setCurrentId }) {
   useEffect(() => {
     if (KhuyenMaiValue) setData(KhuyenMaiValue);
   }, [KhuyenMaiValue]);
+
+  console.log("KhuyenMai", data);
 
   const dispatch = useDispatch();
 
@@ -68,18 +67,27 @@ export default function CreateKhuyenMaiModal({ currentId, setCurrentId }) {
   }, [dispatch]);
 
   const onSubmit = React.useCallback(() => {
-    if (currentId) {
-      dispatch(updateKhuyenMai.updateKhuyenMaiRequest(data));
+    if (data.TenKM) {
+      if (data.NgayBD < data.NgayKT) {
+        if (currentId) {
+          dispatch(updateKhuyenMai.updateKhuyenMaiRequest(data));
+        } else {
+          dispatch(createKhuyenMai.createKhuyenMaiRequest(data));
+        }
+        onClose();
+      } else {
+        messageError("Ngày bắt đầu phải nhỏ hơn ngày kết thúc");
+      }
     } else {
-      dispatch(createKhuyenMai.createKhuyenMaiRequest(data));
+      messageError("Chưa nhập tên chương trình Khuyến mãi");
     }
-
-    onClose();
-  }, [data, dispatch, onClose]);
+  }, [data, dispatch, onClose, messageError]);
 
   const body = (
     <>
       <Form
+        form={form}
+        validateMessages={validateMessages}
         labelCol={{
           span: 4,
         }}
@@ -88,21 +96,25 @@ export default function CreateKhuyenMaiModal({ currentId, setCurrentId }) {
         }}
         layout="horizontal"
       >
-        <Form.Item 
-          label="Mã khuyến mãi"
-        >
+        <Form.Item label="Mã khuyến mãi" required>
           <Input
-            value={data.MaKM}
-            onChange={(e) => setData({ ...data, MaKM: e.target.value })}
+            placeholder="Nhập mã khuyến mãi"
+            value={data.MaKM.toUpperCase()}
+            onChange={(e) =>
+              setData({ ...data, MaKM: e.target.value.toUpperCase() })
+            }
           />
         </Form.Item>
-        <Form.Item label="Tên chương trình">
+
+        <Form.Item label="Tên chương trình" required>
           <Input
+            placeholder="Nhập tên chương trình"
             value={data.TenKM}
             onChange={(e) => setData({ ...data, TenKM: e.target.value })}
           />
         </Form.Item>
-        <Form.Item label="Ngày bắt đầu" style={{ marginBottom: 0 }}>
+
+        <Form.Item label="Ngày bắt đầu" style={{ marginBottom: 0 }} required>
           <Form.Item
             style={{ display: "inline-block", width: "calc(30% - 12px)" }}
           >
@@ -124,9 +136,12 @@ export default function CreateKhuyenMaiModal({ currentId, setCurrentId }) {
             Ngày kết thúc:
           </span>
           <Form.Item
+            required
             style={{ display: "inline-block", width: "calc(30% - 12px)" }}
+            rules={[{ required: true, message: "Vui lòng nhập ngày" }]}
           >
             <DatePicker
+              min
               defaultValue={moment(data.NgayKT)}
               onChange={(e) => {
                 if (e) setData({ ...data, NgayKT: e.toDate() });
@@ -134,23 +149,25 @@ export default function CreateKhuyenMaiModal({ currentId, setCurrentId }) {
             />
           </Form.Item>
         </Form.Item>
-        <Form.Item label="Trị giá hóa đơn">
+        <Form.Item label="Trị giá hóa đơn" required>
           <InputNumber
             min={0}
             value={data.GiaTri}
+            formatter={(value) =>
+              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            }
             onChange={(e) => setData({ ...data, GiaTri: e })}
           />
           <span className="ant-form-text"> VNĐ </span>
         </Form.Item>
-        <Form.Item label="Phần trăm giảm">
-          <Form.Item noStyle>
-            <InputNumber
-              min={1}
-              max={100}
-              value={data.PhanTram}
-              onChange={(e) => setData({ ...data, PhanTram: e })}
-            />
-          </Form.Item>
+
+        <Form.Item label="Phần trăm giảm" required>
+          <InputNumber
+            min={1}
+            max={100}
+            value={data.PhanTram}
+            onChange={(e) => setData({ ...data, PhanTram: e })}
+          />
           <span className="ant-form-text"> % </span>
         </Form.Item>
 
@@ -173,7 +190,7 @@ export default function CreateKhuyenMaiModal({ currentId, setCurrentId }) {
   return (
     <div>
       <Modal
-        title={(currentId?"Câp nhật khuyến mãi":"Thêm khuyến mãi")}
+        title={currentId ? "Câp nhật khuyến mãi" : "Thêm khuyến mãi"}
         visible={isShow}
         onCancel={onClose}
         onOk={onSubmit}

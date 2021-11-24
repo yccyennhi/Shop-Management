@@ -5,6 +5,7 @@ const schema = new mongoose.Schema(
     MaSP: {
       type: String,
       required: true,
+      unique: true,
     },
     TenSP: {
       type: String,
@@ -40,12 +41,14 @@ const schema = new mongoose.Schema(
       default: "",
     },
     TrangThai: {
-      type: Number,
-      default: 0,
+      type: String,
+      enum: ["Ngừng kinh doanh", "Hết hàng", "Đang kinh doanh"],
+      default: "Đang kinh doanh",
     },
     BaoHanh: {
-      type: Number,
-      default: 0,
+      type: String,
+      enum: ["Không bảo hành", "Có bảo hành"],
+      default: "Không bảo hành",
     },
   },
   { timestamps: true }

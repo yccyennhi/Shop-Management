@@ -1,36 +1,129 @@
 import React, { useState } from "react";
+import { ExportTableButton, Table } from "ant-table-extensions";
+
 import {
-  Table,
   Input,
   Row,
   Button,
   Dropdown,
   message,
   Menu,
-  Switch,
-  Radio,
-  Form,
+  Image,
   Space,
+  Typography,
+  Avatar,
 } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import ExpandedRowRender from "./ExpandedRowRender";
-import { SearchOutlined, DownOutlined } from "@ant-design/icons";
-import { SanPhamsState$ } from "../../../redux/selectors";
+import {
+  SearchOutlined,
+  DownOutlined,
+  FileExcelOutlined,
+} from "@ant-design/icons";
+import {
+  SanPhamsState$,
+  isloadingSanPhamsState$,
+} from "../../../redux/selectors";
 import * as actions from "../../../redux/actions";
 const { Search } = Input;
 
-function HangHoatable({ setCurrentId }) {
+function HangHoatable({ trangthai, baohanh, currentId, setCurrentId }) {
   const dispatch = useDispatch();
-  const SanPhams = useSelector(SanPhamsState$);
+  const [SanPhams, setSanPhams] = useState(useSelector(SanPhamsState$));
+  const SP = useSelector(SanPhamsState$);
+  const loadingSanPhams = useSelector(isloadingSanPhamsState$);
   React.useEffect(() => {
     dispatch(actions.getSanPhams.getSanPhamsRequest());
   }, [dispatch]);
-  const dataSource = SanPhams;
-  const refreshPage = () => {
-    window.location.reload();
-  };
+  React.useEffect(() => {
+    setSanPhams(SP);
+  }, [SP]);
+  React.useEffect(() => {
+    if (trangthai == 1 && baohanh == 1) {
+      setSanPhams(SP);
+    }
+    if (trangthai == 1 && baohanh == 2) {
+      let listSP = SP.filter(function (e) {
+        return e.BaoHanh == "Có bảo hành";
+      });
+      setSanPhams(listSP);
+    }
+    if (trangthai == 1 && baohanh == 3) {
+      let listSP = SP.filter(function (e) {
+        return e.BaoHanh == "Không bảo hành";
+      });
+      setSanPhams(listSP);
+    }
+    if (trangthai == 2 && baohanh == 1) {
+      let listSP = SP.filter(function (e) {
+        return e.TrangThai == "Đang kinh doanh";
+      });
+      setSanPhams(listSP);
+    }
+    if (trangthai == 2 && baohanh == 2) {
+      let listSP = SP.filter(function (e) {
+        return e.TrangThai == "Đang kinh doanh" && e.BaoHanh == "Có bảo hành";
+      });
 
+      setSanPhams(listSP);
+    }
+    if (trangthai == 2 && baohanh == 3) {
+      let listSP = SP.filter(function (e) {
+        return (
+          e.TrangThai == "Đang kinh doanh" && e.BaoHanh == "Không bảo hành"
+        );
+      });
+
+      setSanPhams(listSP);
+    }
+    if (trangthai == 3 && baohanh == 1) {
+      let listSP = SP.filter(function (e) {
+        return e.TrangThai == "Ngừng kinh doanh";
+      });
+      setSanPhams(listSP);
+    }
+    if (trangthai == 3 && baohanh == 2) {
+      let listSP = SP.filter(function (e) {
+        return e.TrangThai == "Ngừng kinh doanh" && e.BaoHanh == "Có bảo hành";
+      });
+      setSanPhams(listSP);
+    }
+    if (trangthai == 3 && baohanh == 3) {
+      let listSP = SP.filter(function (e) {
+        return (
+          e.TrangThai == "Ngừng kinh doanh" && e.BaoHanh == "Không bảo hành"
+        );
+      });
+      setSanPhams(listSP);
+    }
+    if (trangthai == 4 && baohanh == 1) {
+      let listSP = SP.filter(function (e) {
+        return e.TrangThai == "Hết hàng";
+      });
+      setSanPhams(listSP);
+    }
+    if (trangthai == 4 && baohanh == 2) {
+      let listSP = SP.filter(function (e) {
+        return e.TrangThai == "Hết hàng" && e.BaoHanh == "Có bảo hành";
+      });
+      setSanPhams(listSP);
+    }
+    if (trangthai == 4 && baohanh == 3) {
+      let listSP = SP.filter(function (e) {
+        return e.TrangThai == "Hết hàng" && e.BaoHanh == "Không bảo hành";
+      });
+      setSanPhams(listSP);
+    }
+  }, [trangthai, baohanh]);
+  const dataSource = SanPhams;
   const columns = [
+    {
+      title: "",
+      dataIndex: "HinhAnh",
+      key: "HinhAnh",
+      render: (HinhAnh) => <Image src={HinhAnh} style={{}} />,
+      width: "80px",
+    },
     {
       title: "Mã hàng",
       dataIndex: "MaSP",
@@ -143,6 +236,45 @@ function HangHoatable({ setCurrentId }) {
       },
     },
     {
+      title: "Màu sắc",
+      dataIndex: "MauSac",
+      key: "MauSac",
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => {
+        return (
+          <Search
+            allowClear
+            autoFocus
+            placeholder="Nhập màu sắc cần tìm"
+            value={selectedKeys[0]}
+            onChange={(e) => {
+              setSelectedKeys(e.target.value ? [e.target.value] : []);
+              confirm({ closeDropdown: false });
+            }}
+            onPressEnter={() => {
+              confirm();
+            }}
+            onBlur={() => {
+              confirm();
+            }}
+            onSearch={() => {
+              confirm();
+            }}
+          ></Search>
+        );
+      },
+      filterIcon: () => {
+        return <SearchOutlined />;
+      },
+      onFilter: (value, record) => {
+        return record.MauSac.toLowerCase().includes(value.toLowerCase());
+      },
+    },
+    {
       title: "Loại Hàng",
       dataIndex: "LoaiHang",
       key: "LoaiHang",
@@ -174,31 +306,20 @@ function HangHoatable({ setCurrentId }) {
       title: "Tồn kho",
       dataIndex: "TonKho",
       key: "TonKho",
-      sorter: (a, b) => a.TonKho - b.TonKho,
+      sorter: (a, b) => {
+        console.log();
+        return a.TonKho - b.TonKho;
+      },
     },
     {
       title: "Trạng thái",
       dataIndex: "TrangThai",
       key: "TrangThai",
-      render: (TrangThai) => {
-        return (
-          <p>
-            {TrangThai == 0
-              ? "Ngừng kinh doanh"
-              : TrangThai == 1
-              ? "Hết hàng"
-              : "Đang kinh doanh"}
-          </p>
-        );
-      },
       sorter: (a, b) => a.TrangThai - b.TrangThai,
     },
     {
       title: "Bảo hành",
       dataIndex: "BaoHanh",
-      render: (BaoHanh) => {
-        return <p>{BaoHanh == 0 ? "Không bảo hành" : "Có bảo hành"}</p>;
-      },
       sorter: (a, b) => a.BaoHanh - b.BaoHanh,
     },
   ];
@@ -211,15 +332,6 @@ function HangHoatable({ setCurrentId }) {
 
   const { selectedRowKeys, loading } = select;
 
-  function resolveAfter1Second() {
-    console.log("starting fast promise")
-    return new Promise(resolve => {
-      setTimeout(function() {
-        resolve("fast")
-        console.log("fast promise is done")
-      }, 1000)
-    })
-  }
   const rowSelection = {
     selectedRowKeys,
     onChange: (selectedRowKeys) => {
@@ -239,56 +351,52 @@ function HangHoatable({ setCurrentId }) {
     message.info("Click on menu item.");
     console.log("click", e);
   }
-
   const menu = (
     <Menu onClick={handleMenuClick}>
-      <Menu.Item
-        key="1"
-        onClick={async () => {
-          // const fast = resolveAfter1Second()
-          // console.log(selectedRowKeys.length+' o day');
-          // for (let i = 0; i < selectedRowKeys.length; i++) {
-          //   console.log("delete la " + i);
-          //   console.log(selectedRowKeys[i]);
-          //   dispatch(deleteSanPham.deleteSanPhamRequest(selectedRowKeys[i]));
-          //   const fast = resolveAfter1Second()
-          // };
-        }}
-      >
-        Nhập hàng
-      </Menu.Item>
-      <Menu.Item key="2">Xóa hàng hóa</Menu.Item>
-      <Menu.Item key="3">Ngừng kinh doanh</Menu.Item>
-      <Menu.Item key="4">Cập nhật bảo hành</Menu.Item>
-      <Menu.Item
-        key="5"
-        onClick={() => {
-
-        }}
-      >
-        Xuất file
-      </Menu.Item>
+      <Menu.Item key="1">Nhập hàng</Menu.Item>
     </Menu>
   );
   return (
     <div>
-      <Row></Row>
-      <div style={{ marginBottom: 16 }}>
-        <Dropdown overlay={menu} disabled={!hasSelected}>
-          <Button>
-            Thao tác <DownOutlined />
-          </Button>
-        </Dropdown>
-        <span style={{ marginLeft: 8 }}>
-          {hasSelected ? `Có ${selectedRowKeys.length} hàng hóa được chọn` : ""}
-        </span>
-      </div>
+      <Row justify="end">
+        <Space direction="horizontal" style={{ paddingTop: 10, marginBottom: 16 }}>
+            <span style={{ marginRight: 8 }}>
+              {hasSelected
+                ? `Có ${selectedRowKeys.length} hàng hóa được chọn`
+                : ""}
+            </span>
+            <Dropdown overlay={menu} disabled={!hasSelected}>
+              <Button>
+                Thao tác <DownOutlined />
+              </Button>
+            </Dropdown>
+          <ExportTableButton
+            dataSource={dataSource}
+            columns={columns}
+            btnProps={{  icon: <FileExcelOutlined /> }}
+            showColumnPicker={true}
+            showColumnPickerProps={{ id: "Thêm hàng hóa" }}
+            fileName="HangHoaCSV"
+          >
+            Tải file CSV
+          </ExportTableButton>
+
+        </Space>
+      </Row>
+
       <Table
-        //key="table1"
-        loading={false}
+        columns={columns}
+        searchable
+        searchableProps={{
+          inputProps: {
+            placeholder: "Nhập nội dung cần tìm",
+            prefix: <SearchOutlined />,
+            width: 200,
+          },
+        }}
+        loading={loadingSanPhams}
         pagination={true}
         scroll={{ x: 1500, y: 500 }}
-        columns={columns}
         rowSelection={rowSelection}
         expandable={{
           expandedRowRender: (record) => (
@@ -300,18 +408,6 @@ function HangHoatable({ setCurrentId }) {
         rowKey="_id"
         dataSource={dataSource}
       ></Table>
-      
-      {/* <Button
-        onClick={() => {
-          <ReactHTMLTableToExcel
-            table="table1"
-            filename="Emp file"
-            sheet="Sheet 1"
-          ></ReactHTMLTableToExcel>;
-        }}
-      >
-        xuat <DownOutlined />
-      </Button> */}
     </div>
   );
 }

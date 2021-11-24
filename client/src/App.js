@@ -11,6 +11,7 @@ import BCCuoiNgayPage from "./pages/BaoCaoPage/BCCuoiNgayPage";
 import BCBanHangPage from "./pages/BaoCaoPage/BCBanHangPage";
 import BCHangHoaPage from "./pages/BaoCaoPage/BCHangHoaPage";
 import PhieuBaoHanhPage from "./pages/PhieuBaoHanhPage/PhieuBaoHanhPage";
+import PhieuHenPage from "./pages/PhieuHenPage/PhieuHenPage";
 import NhanVienPage from "./pages/NhanVienPage/NhanVienPage";
 import HoaDonPage from "./pages/GiaoDichPage/HoaDonPage";
 import DoiTraPage from "./pages/GiaoDichPage/DoiTraPage";
@@ -31,11 +32,12 @@ function App() {
           <Header>
             <Menubar />
           </Header>
-          <Content style={{ padding: "0 50px" }}>
-            <div className="site-layout-content">
+          {/* <Content style={{ padding: "50px 50px" }}>
+            <div className="site-layout-content"> */}
               <Switch>
                 <Route path ='/SanPhams' exact component={HangHoaPage}/>
                 <Route path ='/PhieuBaoHanhs' exact component={PhieuBaoHanhPage}/>
+                <Route path ='/PhieuHens' exact component={PhieuHenPage}/>
                 <Route path='/KhuyenMais' exact component={KhuyenMaiPage}/>
                 <Route path ='/HoaDons' exact component ={HoaDonPage}/>
                 <Route path = '/TraHangs' exact component ={DoiTraPage}/>
@@ -46,8 +48,8 @@ function App() {
                 <Route path='/BCBanHangs' exact component={BCBanHangPage}/>    
                 <Route path='/BCHangHoas' exact component={BCHangHoaPage}/>
               </Switch>
-            </div>
-          </Content>
+            {/* </div>
+          </Content> */}
           <Footer style={{ textAlign: "center" }}></Footer>
         </Layout>
       </Router>

@@ -1,4 +1,6 @@
 import { PhieuBaoHanhModel } from "../models/PhieuBaoHanhModel.js";
+import { SanPhamModel } from "../models/SanPhamModel.js";
+
 
 export const getPhieuBaoHanhs = async (req, res) => {
   try {
@@ -23,7 +25,6 @@ export const createPhieuBaoHanh = async (req, res) => {
 export const updatePhieuBaoHanh = async (req, res) => {
   try {
     const updatePhieuBaoHanh = req.body;
-
     const PhieuBaoHanh = await PhieuBaoHanhModel.findOneAndUpdate(
       { _id: updatePhieuBaoHanh._id },
       updatePhieuBaoHanh,

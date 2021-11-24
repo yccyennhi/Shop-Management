@@ -8,12 +8,17 @@ import SanPhams from "./routers/SanPhams.js";
 import PhieuBaoHanhs from "./routers/PhieuBaoHanhs.js";
 import PhieuHens from "./routers/PhieuHens.js";
 import TaiKhoans from "./routers/TaiKhoans.js";
+import HoaDons from "./routers/HoaDons.js"
+import CTHDs from "./routers/CTHDs.js"
+import PhieuDoiTras from "./routers/PhieuDoiTras.js";
+import CTPDTs from "./routers/CTPDTs.js";
 import KhuyenMais from "./routers/KhuyenMais.js";
 import mongoose from "mongoose";
 import HoaDons from "./routers/HoaDons.js";
 import PhieuDoiTras from "./routers/PhieuDoiTras.js";
 import CTHDs from "./routers/CTHDs.js";
 import CTPDTs from "./routers/CTPDTs.js";
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 const URI =

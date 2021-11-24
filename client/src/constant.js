@@ -30,20 +30,16 @@ export const INIT_STATE = {
     isLoading: false,
     data: [],
   },
-  PhieuHens: {
-    isLoading: false,
-    data: [],
-  },
   Modal: {
     isShow: false,
   },
   TaoSanPhamModal: {
     isShow: false,
   },
-  TaoSanPhamModal: {
+
+  UpdateSanPhamModal: {
     isShow: false,
   },
-
   HoaDons: {
     isLoading: false,
     data: [],
@@ -66,5 +62,12 @@ export const INIT_STATE = {
   CTPDTs:{
     isLoading: false,
     data: [],
-  }
+  },
+  TaoPhieuBaoHanhModal: {
+    isShow: false,
+  },
+  TaoPhieuHenModal: {
+    isShow: false,
+  },
+
 };

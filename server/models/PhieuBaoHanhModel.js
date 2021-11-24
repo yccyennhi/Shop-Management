@@ -5,6 +5,7 @@ const schema = new mongoose.Schema(
     MaPBH: {
       type: String,
       required: true,
+      unique: true,
     },
     MaHD: {
       type: String,
@@ -14,14 +15,14 @@ const schema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    TenSP: {
-      type: String,
-      required: true,
-    },
-    NgayKetThucBH:{
+    NgayBD:{
       type: Date,
       required: true,
-    } 
+    },
+    NgayKT:{
+      type: Date,
+      required: true,
+    },
   },
   { timestamps: true }
 );

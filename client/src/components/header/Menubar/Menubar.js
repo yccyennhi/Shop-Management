@@ -31,6 +31,9 @@ function Menubar() {
   const handlePhieuBaoHanh = () => {
     history.push("/PhieuBaoHanhs");
   };
+  const handlePhieuHen = () => {
+    history.push("/PhieuHens");
+  };
   const handleKiemKho = () => {
     history.push("/KiemKhos");
   };
@@ -118,6 +121,9 @@ function Menubar() {
           </Menu.Item>
           <Menu.Item key="PhieuBaoHanh" onClick={handlePhieuBaoHanh}>
             Phiếu bảo hành
+          </Menu.Item>
+          <Menu.Item key="PhieuHen" onClick={handlePhieuHen}>
+            Phiếu hẹn
           </Menu.Item>
           <Menu.Item key="KiemKho" onClick={handleKiemKho}>
             Kiểm kho

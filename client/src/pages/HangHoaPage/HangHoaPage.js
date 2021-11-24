@@ -1,146 +1,172 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import "../../App.css";
+import COLOR from "../../color.js";
+import SanPhamModal from "../../components/modal/SanPhamModal/SanPhamModal";
 
-import { Menu, Layout, PageHeader, Col, Row, Button, Space, Modal } from "antd";
-import "./styles.css";
-import Logo from "../../assets/Logo.png";
 import {
-  UserOutlined,
+  Layout,
+  PageHeader,
+  Card,
+  Space,
+  Typography,
+  Radio,
+  Row,
+  Divider,
+  Button,
+  Col,
+} from "antd";
+import "./styles.css";
+import {
+  DatabaseTwoTone,
+  SafetyCertificateTwoTone,
+  ShopTwoTone,
   PlusOutlined,
-  ImportOutlined,
-  DownloadOutlined,
-  RestOutlined,
 } from "@ant-design/icons";
+
 import HangHoatable from "../../components/table/HangHoatable/HangHoatable.js";
-import Menubar from "../../components/header/Menubar/Menubar";
-import Headerbar from "../../components/header/Headerbar/Headerbar";
-import * as actions from "../../redux/actions";
 import { SanPhamsState$ } from "../../redux/selectors";
-import ReactExport from "react-data-export";
+import * as actions from "../../redux/actions";
+const { Content, Sider } = Layout;
+const { Text } = Typography;
 
-import TaoSanPhamModal from "../../components/modal/TaoSanPhamModal/createSanPhamModal";
-const { Header, Content, Footer, Sider } = Layout;
-const { SubMenu } = Menu;
-
-const ExcelFile = ReactExport.ExcelFile;
-const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
-const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
-
-const dataSet1 = [
-  {
-      name: "Johson",
-      amount: 30000,
-      sex: 'M',
-      is_married: true
-  },
-  {
-      name: "Monika",
-      amount: 355000,
-      sex: 'F',
-      is_married: false
-  },
-  {
-      name: "John",
-      amount: 250000,
-      sex: 'M',
-      is_married: false
-  },
-  {
-      name: "Josef",
-      amount: 450500,
-      sex: 'M',
-      is_married: true
-  }
-];
-
-const dataSet2 = [
-  {
-      name: "Johnson",
-      total: 25,
-      remainig: 16
-  },
-  {
-      name: "Josef",
-      total: 25,
-      remainig: 7
-  }
-];
-
-
-// class Download extends React.Component {
-//   render() {
-//       return (
-//           <ExcelFile>
-//               <ExcelSheet data={dataSet1} name="Employees">
-//                   <ExcelColumn label="Name" value="name"/>
-//                   <ExcelColumn label="Wallet Money" value="amount"/>
-//                   <ExcelColumn label="Gender" value="sex"/>
-//                   <ExcelColumn label="Marital Status"
-//                                value={(col) => col.is_married ? "Married" : "Single"}/>
-//               </ExcelSheet>
-//               <ExcelSheet data={dataSet2} name="Leaves">
-//                   <ExcelColumn label="Name" value="name"/>
-//                   <ExcelColumn label="Total Leaves" value="total"/>
-//                   <ExcelColumn label="Remaining Leaves" value="remaining"/>
-//               </ExcelSheet>
-//           </ExcelFile>
-//       );
-//   }
-// }
 export default function HangHoaPage() {
-  const dispatch = useDispatch();
   const [currentId, setCurrentId] = useState(null);
-  const openTaoSanPhamModal = React.useCallback(() => {
+  const dispatch = useDispatch();
+  const SanPhams = useSelector(SanPhamsState$);
+  const [trangthai, setTrangthai] = useState(1);
+  const [baohanh, setBaohanh] = useState(1);
+
+  const openCreateSanPhamModal = React.useCallback(() => {
     dispatch(actions.showTaoSanPhamModal());
   }, [dispatch]);
 
+  const SPDKD = SanPhams.filter(function (e) {
+    return e.TrangThai == "Đang kinh doanh";
+  });
 
-//   const onExport = React.useCallback(() => {
-//     console.log('export');
-//     <ExcelFile>
-//     <ExcelSheet data={dataSet1} name="Employees">
-//         <ExcelColumn label="Name" value="name"/>
-//         <ExcelColumn label="Wallet Money" value="amount"/>
-//         <ExcelColumn label="Gender" value="sex"/>
-//         <ExcelColumn label="Marital Status"
-//                      value={(col) => col.is_married ? "Married" : "Single"}/>
-//     </ExcelSheet>
-//     <ExcelSheet data={dataSet2} name="Leaves">
-//         <ExcelColumn label="Name" value="name"/>
-//         <ExcelColumn label="Total Leaves" value="total"/>
-//         <ExcelColumn label="Remaining Leaves" value="remaining"/>
-//     </ExcelSheet>
-// </ExcelFile>
-//   }, [dispatch]);
-
+  const SPCBH = SanPhams.filter(function (e) {
+    return e.BaoHanh == "Có bảo hành";
+  });
   return (
-    <>
-      <div>
-        <PageHeader className="site-page-header" title="Danh mục hàng hóa" />
-        <div>
-          <Row justify="end">
-            <Space>
+    <Layout>
+      <Layout>
+        <Content>
+          <PageHeader className="site-page-header" title="Danh mục hàng hóa" />
+        </Content>
+      </Layout>
+      <Layout>
+        <Sider
+          width={300}
+          style={{ padding: "0px 0px 0px 24px" }}
+          className="site-layout-sider"
+        >
+          <div className="site-card-border-less-wrapper">
+            <Space direction="vertical">
+              <Card
+                title="Trạng thái kinh doanh"
+                bordered={false}
+                style={{ width: 250, color: COLOR.darkblue }}
+              >
+                <Radio.Group defaultValue={1}>
+                  <Space direction="vertical">
+                    <Radio value={1} onClick={() => setTrangthai(1)}>
+                      Tất cả
+                    </Radio>
+                    <Radio value={2} onClick={() => setTrangthai(2)}>
+                      Đang kinh doanh
+                    </Radio>
+                    <Radio value={3} onClick={() => setTrangthai(3)}>
+                      Ngừng kinh doanh
+                    </Radio>
+                    <Radio value={4} onClick={() => setTrangthai(4)}>
+                      Hết hàng
+                    </Radio>
+                  </Space>
+                </Radio.Group>
+              </Card>
+              <Card
+                title="Bảo hành"
+                bordered={false}
+                style={{ width: 250, color: COLOR.darkblue }}
+              >
+                <Radio.Group defaultValue={1}>
+                  <Space direction="vertical">
+                    <Radio value={1} onClick={() => setBaohanh(1)}>
+                      Tất cả
+                    </Radio>
+                    <Radio value={2} onClick={() => setBaohanh(2)}>
+                      Có bảo hành
+                    </Radio>
+                    <Radio value={3} onClick={() => setBaohanh(3)}>
+                      Không bảo hành
+                    </Radio>
+                  </Space>
+                </Radio.Group>
+              </Card>
+            </Space>
+          </div>
+        </Sider>
+        <Content>
+          <Layout style={{ padding: "17px 24px 24px" }}>
+            <div className="site-layout-content">
+              <Row justify="start">
+                <Col span={8}>
+                  <Space align="center" size={20}>
+                    <DatabaseTwoTone style={{ fontSize: "40px" }} />
+                    <Space direction="vertical" size={0}>
+                      <Text strong>{SanPhams.length} sản phẩm</Text>
+                      <Text strong style={{ fontSize: "1.5rem" }}>
+                        {SanPhams.length}
+                      </Text>
+                      <Text type="secondary">Tổng số lượng sản phẩm</Text>
+                    </Space>
+                  </Space>
+                </Col>
+                <Col span={8}>
+                  <Space align="center" size={20}>
+                    <ShopTwoTone style={{ fontSize: "40px" }} />
+                    <Space direction="vertical" size={0}>
+                      <Text strong>{SPDKD.length} sản phẩm</Text>
+                      <Text strong style={{ fontSize: "1.5rem" }}>
+                        {SPDKD.length}
+                      </Text>
+                      <Text type="secondary">Số sản phẩm đang kinh doanh</Text>
+                    </Space>
+                  </Space>
+                </Col>
+                <Col span={8}>
+                  <Space align="center">
+                    <SafetyCertificateTwoTone style={{ fontSize: "40px" }} />
+                    <Space direction="vertical" size={0}>
+                      <Text strong>{SPCBH.length} sản phẩm</Text>
+                      <Text strong style={{ fontSize: "1.5rem" }}>
+                        {SPCBH.length}
+                      </Text>
+                      <Text type="secondary">Số sản phẩm có bảo hành</Text>
+                    </Space>
+                  </Space>
+                </Col>
+              </Row>
+              <Divider orientation="left"></Divider>
               <Button
                 type="primary"
                 icon={<PlusOutlined />}
-                onClick={openTaoSanPhamModal}
+                onClick={openCreateSanPhamModal}
               >
                 Thêm hàng hóa
               </Button>
-              <TaoSanPhamModal/>
-              <Button type="primary" icon={<ImportOutlined />}>
-                Import
-              </Button>
-              <Button type="primary" icon={<DownloadOutlined />} >
-                Xuất file
-              </Button>
-            </Space>
-          </Row>
-          <TaoSanPhamModal currentId={currentId} setCurrentId={setCurrentId}/>
-          <HangHoatable setCurrentId={setCurrentId}/>
-        </div>
-      </div>
-      ,
-    </>
+
+              <HangHoatable
+                trangthai={trangthai}
+                baohanh={baohanh}
+                setCurrentId={setCurrentId}
+              />
+              <SanPhamModal currentId={currentId} setCurrentId={setCurrentId} />
+            </div>
+          </Layout>
+        </Content>
+      </Layout>
+    </Layout>
   );
 }

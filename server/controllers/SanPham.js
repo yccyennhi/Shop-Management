@@ -36,10 +36,9 @@ export const updateSanPham = async (req, res) => {
 };
 
 
-export const deleteSanPham = async (req, res) => {
+export const deleteSanPham = async (req, res, next) => {
   try {
     const {id} = req.params;
-
     const SanPham = await SanPhamModel.findByIdAndRemove(id);
     res.status(200).json(SanPham);
   } catch (err) {

@@ -91,7 +91,10 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
     // } else {
     form.resetFields();
     // }
-    setCurrentId(null);
+
+    if (currentId) {
+      setCurrentId(null);
+    }
     setData({
       MaSP: "",
       TenSP: "",
@@ -229,7 +232,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
           required
         >
           <Input
-            // value={data.MauSac}
+            value={data.MauSac}
             defaultValue={data.MauSac}
             onChange={(e) => setData({ ...data, MauSac: e.target.value })}
             placeholder="Nhập màu"

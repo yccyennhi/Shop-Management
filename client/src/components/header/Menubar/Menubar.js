@@ -52,7 +52,7 @@ function Menubar() {
     history.push("/YeuCauSuaChuas");
   };
   const handleNhapHang = () => {
-    history.push("/NhapHang");
+    history.push("/PhieuNhaps");
   };
   const handleTraHangNhap = () => {
     history.push("/TraHangNhaps");

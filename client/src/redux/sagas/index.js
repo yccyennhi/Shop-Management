@@ -27,7 +27,7 @@ function* fetchNhanViensSaga(action) {
 function* fetchSanPhamsSaga(action) {
   try {
     const SanPhams = yield call(api.fetchSanPhams);
-    console.log("[NhanViens]", SanPhams);
+    console.log("[SanPhams]", SanPhams);
 
     yield put(actions.getSanPhams.getSanPhamsSuccess(SanPhams.data));
   } catch (err) {
@@ -58,6 +58,19 @@ function* fetchPhieuHensSaga(action) {
     yield put(actions.getPhieuHens.getPhieuHensFailure(err));
   }
 }
+
+function* fetchPhieuNhapsSaga(action) {
+  try {
+    const PhieuNhaps = yield call(api.fetchPhieuNhaps);
+    console.log("[NhanViens]", PhieuNhaps);
+
+    yield put(actions.getPhieuNhaps.getPhieuNhapsSuccess(PhieuNhaps.data));
+  } catch (err) {
+    console.err(err);
+    yield put(actions.getPhieuNhaps.getPhieuNhapsFailure(err));
+  }
+}
+
 
 function* fetchTaiKhoansSaga(action) {
   try {
@@ -228,6 +241,41 @@ function* deletePhieuBaoHanhSaga(action) {
 }
 /* #endregion */
 
+
+/* #region  PhieuNhap */
+
+function* createPhieuNhapSaga(action) {
+  try {
+    const PhieuNhap = yield call(api.createPhieuNhap, action.payload);
+    console.log("createPhieuNhapSaga", PhieuNhap);
+    yield put(actions.createPhieuNhap.createPhieuNhapSuccess(PhieuNhap.data));
+  } catch (err) {
+    console.err(err);
+    yield put(actions.createPhieuNhap.createPhieuNhapFailure(err));
+  }
+}
+function* updatePhieuNhapSaga(action) {
+  try {
+    const PhieuNhap = yield call(api.updatePhieuNhap, action.payload);
+    console.log("updatePhieuNhapSaga", PhieuNhap.data);
+    yield put(actions.updatePhieuNhap.updatePhieuNhapSuccess(PhieuNhap.data));
+  } catch (err) {
+    console.err(err);
+    yield put(actions.updatePhieuNhap.updatePhieuNhapFailure(err));
+  }
+}
+
+function* deletePhieuNhapSaga(action) {
+  try {
+    const PhieuNhap = yield call(api.deletePhieuNhap, action.payload);
+    yield put(actions.deletePhieuNhap.deletePhieuNhapSuccess(PhieuNhap.data._id));
+  } catch (err) {
+    console.err(err);
+    yield put(actions.deletePhieuNhap.deletePhieuNhapFailure(err.response.data));
+  }
+}
+/* #endregion */
+
 /* #region Giao dich */
 
 function* fetchHoaDonsSaga(action) {
@@ -389,6 +437,26 @@ function* mySaga() {
   yield takeLatest(
     actions.deletePhieuHen.deletePhieuHenRequest,
     deletePhieuHenSaga
+  );
+  /* #endregion */
+
+  
+  /* #region  PhieuNhap */
+
+  yield takeLatest(actions.getPhieuNhaps.getPhieuNhapsRequest, fetchPhieuNhapsSaga);
+
+  yield takeLatest(
+    actions.createPhieuNhap.createPhieuNhapRequest,
+    createPhieuNhapSaga
+  );
+
+  yield takeLatest(
+    actions.updatePhieuNhap.updatePhieuNhapRequest,
+    updatePhieuNhapSaga
+  );
+  yield takeLatest(
+    actions.deletePhieuNhap.deletePhieuNhapRequest,
+    deletePhieuNhapSaga
   );
   /* #endregion */
 

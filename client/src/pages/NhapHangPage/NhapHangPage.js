@@ -16,6 +16,7 @@ import {
 import "./styles.css";
 import moment from "moment";
 import "../../App.css";
+import { useHistory } from "react-router-dom";
 import {
   SafetyCertificateTwoTone,
   PlusOutlined,
@@ -23,34 +24,39 @@ import {
   CloseCircleTwoTone,
 } from "@ant-design/icons";
 import * as actions from "../../redux/actions";
-import PhieuBaoHanhtable from "../../components/table/PhieuBaoHanhtable/PhieuBaoHanhtable";
+import PhieuNhaptable from "../../components/table/PhieuNhaptable/PhieuNhaptable";
 import {
-  PhieuBaoHanhsState$,
-  isloadingPhieuBaoHanhsState$,
+  PhieuNhapsState$,
+  isloadingPhieuNhapsState$,
 } from "../../redux/selectors";
-import PhieuBaoHanhModal from "../../components/modal/PhieuBaoHanhModal/PhieuBaoHanhModal";
+import PhieuNhapModal from "../../components/modal/PhieuNhapModal/PhieuNhapModal";
 const { Text } = Typography;
 const { Content, Sider } = Layout;
 
-export default function PhieuBaoHanhPage() {
+
+export default function PhieuNhapPage() {
+  const history = useHistory();
+  const handleNhapHang = () => {
+    history.push("/ThemPhieuNhaps");
+  };
   const [currentId, setCurrentId] = useState(null);
   const [thoigian, setThoigian] = useState(0);
   const [thang, setThang] = useState(null);
   const [trangthai, setTrangthai] = useState(0);
   const dispatch = useDispatch();
-  const isShow = useSelector(isloadingPhieuBaoHanhsState$);
-  const PhieuBaoHanhs = useSelector(PhieuBaoHanhsState$);
+  const isShow = useSelector(isloadingPhieuNhapsState$);
+  const PhieuNhaps = useSelector(PhieuNhapsState$);
   const dateNow = moment().toDate();
-  const SPCH = PhieuBaoHanhs.filter(function (e) {
+  const SPCH = PhieuNhaps.filter(function (e) {
     return moment(e.NgayKT) >= dateNow;
   });
 
-  const SPHH = PhieuBaoHanhs.filter(function (e) {
+  const SPHH = PhieuNhaps.filter(function (e) {
     return moment(e.NgayKT) < dateNow;
   });
 
-  const openCreatePhieuBaoHanhModal = React.useCallback(() => {
-    dispatch(actions.showTaoPhieuBaoHanhModal());
+  const openCreatePhieuNhapModal = React.useCallback(() => {
+    dispatch(actions.showTaoPhieuNhapModal());
     console.log("isshow", isShow);
   }, [dispatch]);
 
@@ -62,7 +68,7 @@ export default function PhieuBaoHanhPage() {
   return (
     <Layout>
       <Layout>
-        <PageHeader className="site-page-header" title="Bảo hành" />
+        <PageHeader className="site-page-header" title="Nhập hàng" />
       </Layout>
       <Layout>
         <Sider
@@ -98,7 +104,7 @@ export default function PhieuBaoHanhPage() {
               </Radio.Group>
             </Card>
             <Card
-              title="Trạng thái bảo hành"
+              title="Trạng thái phiếu nhập"
               bordered={false}
               style={{ width: 250 }}
             >
@@ -118,7 +124,7 @@ export default function PhieuBaoHanhPage() {
                       setTrangthai(1);
                     }}
                   >
-                    Còn hạn
+                    Phiếu tạm
                   </Radio>
                   <Radio
                     value={2}
@@ -126,7 +132,15 @@ export default function PhieuBaoHanhPage() {
                       setTrangthai(2);
                     }}
                   >
-                    Hết hạn
+                    Đã hoàn thành
+                  </Radio>
+                  <Radio
+                    value={2}
+                    onClick={() => {
+                      setTrangthai(2);
+                    }}
+                  >
+                    Đã hủy
                   </Radio>
                 </Space>
               </Radio.Group>
@@ -141,11 +155,11 @@ export default function PhieuBaoHanhPage() {
                   <Space align="center" size={20}>
                     <SafetyCertificateTwoTone style={{ fontSize: "40px" }} />
                     <Space direction="vertical" size={0}>
-                      <Text strong>{PhieuBaoHanhs.length} phiếu bảo hành</Text>
+                      <Text strong>{PhieuNhaps.length} phiếu nhập</Text>
                       <Text strong style={{ fontSize: "1.5rem" }}>
-                        {PhieuBaoHanhs.length}
+                        {PhieuNhaps.length}
                       </Text>
-                      <Text type="secondary">Tổng số lượng phiếu bảo hành</Text>
+                      <Text type="secondary">Tổng số lượng phiếu nhập</Text>
                     </Space>
                   </Space>
                 </Col>
@@ -153,11 +167,11 @@ export default function PhieuBaoHanhPage() {
                   <Space align="center" size={20}>
                     <CheckCircleTwoTone style={{ fontSize: "40px" }} />
                     <Space direction="vertical" size={0}>
-                      <Text strong>{SPCH.length} phiếu bảo hành</Text>
+                      <Text strong>{SPCH.length} phiếu nhập</Text>
                       <Text strong style={{ fontSize: "1.5rem" }}>
                         {SPCH.length}
                       </Text>
-                      <Text type="secondary">Phiếu bảo hành còn hạn</Text>
+                      <Text type="secondary">phiếu nhập tháng này</Text>
                     </Space>
                   </Space>
                 </Col>
@@ -166,11 +180,11 @@ export default function PhieuBaoHanhPage() {
                     <Space align="center" size={20}>
                       <CloseCircleTwoTone style={{ fontSize: "40px" }} />
                       <Space direction="vertical" size={0}>
-                        <Text strong>{SPHH.length} phiếu bảo hành</Text>
+                        <Text strong>{SPHH.length} phiếu nhập</Text>
                         <Text strong style={{ fontSize: "1.5rem" }}>
                           {SPHH.length}
                         </Text>
-                        <Text type="secondary">Phiếu bảo hành hết hạn</Text>
+                        <Text type="secondary">phiếu nhập hoàn thành</Text>
                       </Space>
                     </Space>
                   </Space>
@@ -180,17 +194,17 @@ export default function PhieuBaoHanhPage() {
               <Button
                 type="primary"
                 icon={<PlusOutlined />}
-                onClick={openCreatePhieuBaoHanhModal}
+                onClick={handleNhapHang}
               >
-                Thêm phiếu bảo hành
+                Thêm phiếu nhập
               </Button>
-              <PhieuBaoHanhtable
+              <PhieuNhaptable
                 trangthai={trangthai}
                 thoigian={thoigian}
                 thang={thang}
                 setCurrentId={setCurrentId}
               />
-              <PhieuBaoHanhModal
+              <PhieuNhapModal
                 currentId={currentId}
                 setCurrentId={setCurrentId}
               />

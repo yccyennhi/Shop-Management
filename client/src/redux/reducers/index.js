@@ -17,6 +17,9 @@ import TaoPhieuHenModal  from "./TaoPhieuHenModal";
 import CTHDs from "./CTHDs";
 import CTPDTs from "./CTPDTs";
 import TongQuans from "./TongQuans";
+import PhieuNhaps from "./PhieuNhaps";
+import TaoPhieuNhapModal  from "./TaoPhieuNhapModal";
+
 
 export default combineReducers({
   KhachHangs,
@@ -37,4 +40,7 @@ export default combineReducers({
   CTHDs,
   CTPDTs,
   TongQuans,
+  PhieuNhaps,
+  TaoPhieuNhapModal,
+  
 });

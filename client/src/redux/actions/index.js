@@ -49,7 +49,6 @@ export const deleteSanPham = createActions({
 
 //Phieu Hen
 
-
 export const getPhieuHens = createActions({
   getPhieuHensRequest: undefined,
   getPhieuHensSuccess: (payload) => payload,
@@ -75,7 +74,7 @@ export const deletePhieuHen = createActions({
 });
 
 
-//Phieu bao hanh
+//PhieuBaoHanhFeature
 
 
 export const getPhieuBaoHanhs = createActions({
@@ -107,6 +106,35 @@ export const getTaiKhoans = createActions({
   getTaiKhoansSuccess: (payload) => payload,
   getTaiKhoansFailure: (err) => err,
 });
+
+//PhieuNhapFeature
+
+
+export const getPhieuNhaps = createActions({
+  getPhieuNhapsRequest: undefined,
+  getPhieuNhapsSuccess: (payload) => payload,
+  getPhieuNhapsFailure: (err) => err,
+});
+
+export const createPhieuNhap = createActions({
+  createPhieuNhapRequest: (payload) => payload,
+  createPhieuNhapSuccess: (payload) => payload,
+  createPhieuNhapFailure: (err) => err,
+});
+
+export const updatePhieuNhap = createActions({
+  updatePhieuNhapRequest: (payload) => payload,
+  updatePhieuNhapSuccess: (payload) => payload,
+  updatePhieuNhapFailure: (err) => err,
+});
+
+export const deletePhieuNhap = createActions({
+  deletePhieuNhapRequest: (payload) => payload,
+  deletePhieuNhapSuccess: (payload) => payload,
+  deletePhieuNhapFailure: (err) => err,
+});
+
+
 
 /* #region  KhuyenMaiFeature */
 export const getKhuyenMais = createActions({
@@ -186,3 +214,7 @@ export const hideTaoPhieuTraHangModal = createAction('HIDE_TAOPHIEUTRAHANG_MODAL
 
 export const showModal = createAction('SHOW_CREATE_MODAL');
 export const hideModal = createAction('HIDE_CREATE_MODAL');
+
+export const showTaoPhieuNhapModal = createAction("SHOW_TAOPHIEUNHAP_MODAL");
+export const hideTaoPhieuNhapModal = createAction("HIDE_TAOPHIEUNHAP_MODAL");
+

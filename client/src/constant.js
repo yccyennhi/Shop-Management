@@ -36,10 +36,6 @@ export const INIT_STATE = {
   TaoSanPhamModal: {
     isShow: false,
   },
-
-  UpdateSanPhamModal: {
-    isShow: false,
-  },
   HoaDons: {
     isLoading: false,
     data: [],
@@ -77,10 +73,18 @@ export const INIT_STATE = {
       hoaDonTodayCount: 0,
       doanhThuToday: 0,
       doiTraCount: 0,
-      soLuongDT:0,
+      soLuongDT: 0,
     },
     rankingByDoanhThu: [],
     highestSanPhamList: [],
   },
 
+  PhieuNhaps: {
+    isLoading: false,
+    data: [],
+  },
+
+  TaoPhieuNhapModal: {
+    isShow: false,
+  },
 };

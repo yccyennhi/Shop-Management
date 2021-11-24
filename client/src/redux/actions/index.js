@@ -151,8 +151,16 @@ export const getCTPDTs = createActions({
   getCTPDTsFailure: (err) => err,
 })
 
-export const createHoaDon = createAction({
+export const createHoaDon = createActions({
+  createHoaDonRequest: (payload) => payload,
+  createHoaDonSuccess: (payload) => payload,
+  createHoaDonFailure: (err) => err,
+})
 
+export const createCTHD = createActions({
+  createCTHDRequest: (payload) => payload,
+  createCTHDSuccess: (payload) => payload,
+  createCTHDFailure: (err) => err,
 })
 /* #endregion */
 

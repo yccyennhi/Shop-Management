@@ -224,7 +224,9 @@ export default function HoaDontable() {
         pagination={true}
         columns={columns}
         expandable={{
-          expandedRowRender: (record) => <FormHoaDon record={record} dataCTHDs={CTHDs} />,
+          expandedRowRender: (record) => (
+            <FormHoaDon record={record} dataCTHDs={CTHDs} />
+          ),
           rowExpandable: (record) => record.MaHD !== "Not Expandable",
         }}
         dataSource={dataSource}

@@ -3,11 +3,12 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 export default function SanPhamHoaDonTable({ SPsInfo, onListSPclick }) {
   const dispatch = useDispatch();
-  const [data, setData] = useState(SPsInfo);
+  const [data, setData] = useState([]);
+
   React.useEffect(() => {
+    if (SPsInfo.length)
     setData(SPsInfo);
   }, [SPsInfo]);
-  console.log("data",data) 
   const columns = [
     {
       title: "Mã hàng",

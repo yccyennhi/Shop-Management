@@ -36,7 +36,6 @@ function* fetchSanPhamsSaga(action) {
   }
 }
 
-
 function* fetchPhieuBaoHanhsSaga(action) {
   try {
     const PhieuBaoHanhs = yield call(api.fetchPhieuBaoHanhs);
@@ -252,9 +251,7 @@ function* fetchPhieuDoiTrasSaga(action) {
 function* fetchCTHDsSaga(action) {
   try {
     const CTHDs = yield call(api.fetchCTHDs);
-    yield put(
-      actions.getCTHDs.getCTHDsSuccess(CTHDs.data)
-    );
+    yield put(actions.getCTHDs.getCTHDsSuccess(CTHDs.data));
   } catch (err) {
     console.error(err);
     yield put(actions.getCTHDs.getCTHDsFailure(err));
@@ -263,12 +260,26 @@ function* fetchCTHDsSaga(action) {
 function* fetchCTPDTsSaga(action) {
   try {
     const CTPDTs = yield call(api.fetchCTPDTs);
-    yield put(
-      actions.getCTPDTs.getCTPDTsSuccess(CTPDTs.data)
-    );
+    yield put(actions.getCTPDTs.getCTPDTsSuccess(CTPDTs.data));
   } catch (err) {
     console.error(err);
     yield put(actions.getCTPDTs.getCTPDTsFailure(err));
+  }
+}
+function* createHoaDonSaga(action) {
+  try {
+    const HoaDon = yield call(api.createHoaDon, action.payload);
+    yield put(actions.createHoaDon.createHoaDonSuccess(HoaDon.data));
+  } catch (error) {
+    yield put(actions.createHoaDon.createHoaDonFailure(error.response.data));
+  }
+}
+function* createCTHDSaga(action) {
+  try {
+    const CTHD = yield call(api.createCTHD, action.payload);
+    yield put(actions.createCTHD.createCTHDSuccess(CTHD.data));
+  } catch (error) {
+    yield put(actions.createCTHD.createCTHDFailure(error.response.data));
   }
 }
 /* #endregion */
@@ -339,8 +350,11 @@ function* mySaga() {
     createPhieuHenSaga
   );
 
-  yield takeLatest(actions.getTaiKhoans.getTaiKhoansRequest, fetchTaiKhoansSaga);
-  
+  yield takeLatest(
+    actions.getTaiKhoans.getTaiKhoansRequest,
+    fetchTaiKhoansSaga
+  );
+
   yield takeLatest(
     actions.updatePhieuHen.updatePhieuHenRequest,
     updatePhieuHenSaga
@@ -382,10 +396,16 @@ function* mySaga() {
   /* #endregion */
 
   /* #region  GiaoD dich */
-  yield takeLatest(actions.getHoaDons.getHoaDonsRequest,fetchHoaDonsSaga);
-  yield takeLatest(actions.getPhieuDoiTras.getPhieuDoiTrasRequest,fetchPhieuDoiTrasSaga);
-  yield takeLatest(actions.getCTHDs.getCTHDsRequest,fetchCTHDsSaga);
-  yield takeLatest(actions.getCTPDTs.getCTPDTsRequest,fetchCTPDTsSaga);
+  yield takeLatest(actions.getHoaDons.getHoaDonsRequest, fetchHoaDonsSaga);
+  yield takeLatest(
+    actions.getPhieuDoiTras.getPhieuDoiTrasRequest,
+    fetchPhieuDoiTrasSaga
+  );
+  yield takeLatest(actions.getCTHDs.getCTHDsRequest, fetchCTHDsSaga);
+  yield takeLatest(actions.getCTPDTs.getCTPDTsRequest, fetchCTPDTsSaga);
+  yield takeLatest(actions.createHoaDon.createHoaDonRequest, createHoaDonSaga);
+  yield takeLatest(actions.createCTHD.createCTHDRequest, createCTHDSaga);
+
   /* #endregion */
 }
 

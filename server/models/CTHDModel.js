@@ -36,6 +36,10 @@ const schema = new Schema(
       type: String,
       required: false,
     },
+    GiaVon:{
+      type:Number,
+      required: true,
+    },
     DonGia: {
       type: Number,
       required: true,

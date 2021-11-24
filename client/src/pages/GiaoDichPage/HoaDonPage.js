@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import {
   PageHeader,
   Row,
@@ -13,15 +13,20 @@ import {
   DownloadOutlined,
 } from "@ant-design/icons";
 import DataTableHoaDon from "../../components/table/HoaDonTable/HoaDonTable.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import TaoHoaDonModal from "../../components/modal/TaoGiaoDichModal/TaoHoaDonModal";
-import { showTaoHoaDonModal } from "../../redux/actions";
+import { showTaoHoaDonModal, getHoaDons } from "../../redux/actions";
 import { Content } from "antd/lib/layout/layout";
+import { HoaDonsState$ } from "../../redux/selectors";
 
 export default function HoaDonPage() {
   const dispatch = useDispatch();
-  const openTaoSanPhamModal = React.useCallback(() => {
+  const openTaoSanPhamModal = useCallback(() => {
     dispatch(showTaoHoaDonModal());
+  }, [dispatch]);
+  const HoaDons = useSelector(HoaDonsState$);
+  React.useEffect(() => {
+    dispatch(getHoaDons.getHoaDonsRequest());
   }, [dispatch]);
   return (
     <Layout>
@@ -41,7 +46,7 @@ export default function HoaDonPage() {
               </Button>
             </Space>
           </Row>
-          <TaoHoaDonModal />
+          <TaoHoaDonModal HoaDons = {HoaDons}/>
           <DataTableHoaDon />
         </div>
       </Content>

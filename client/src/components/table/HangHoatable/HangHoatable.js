@@ -12,7 +12,6 @@ import {
   Form,
   Space,
 } from "antd";
-import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import { useDispatch, useSelector } from "react-redux";
 import ExpandedRowRender from "./ExpandedRowRender";
 import { SearchOutlined, DownOutlined } from "@ant-design/icons";
@@ -264,11 +263,7 @@ function HangHoatable({ setCurrentId }) {
       <Menu.Item
         key="5"
         onClick={() => {
-          <ReactHTMLTableToExcel
-            table="table1"
-            filename="Emp file"
-            sheet="Sheet 1"
-          ></ReactHTMLTableToExcel>;
+
         }}
       >
         Xuất file

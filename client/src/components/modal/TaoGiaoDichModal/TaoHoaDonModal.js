@@ -7,12 +7,17 @@ import {
   DatePicker,
   Descriptions,
   message,
+  Col,
+  Row,
 } from "antd";
 import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   TaoHoaDonModalState$,
   SanPhamsState$,
+  KhuyenMaisState$,
+  //KhachHangsState$
+  //NhanViensState$
 } from "../../../redux/selectors/index.js";
 import { hideTaoHoaDonModal } from "../../../redux/actions";
 import { PlusOutlined } from "@ant-design/icons";
@@ -27,9 +32,13 @@ export default function TaoHoaDonModal() {
     dispatch(hideTaoHoaDonModal());
   }, [dispatch]);
   const SanPhams = useSelector(SanPhamsState$);
+  //const KhachHangs = useSelector(KhachHangsState$);
+  //const NhanViens = useSelector(NhanViensState$);
+  const KhuyenMais = useSelector(KhuyenMaisState$);
   React.useEffect(() => {
     dispatch(actions.getSanPhams.getSanPhamsRequest());
   }, [dispatch]);
+
   const layout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 50 },
@@ -42,8 +51,10 @@ export default function TaoHoaDonModal() {
     idKH: "",
     MaKM: "",
     idKM: "",
+    SoLuong: 0,
     ThoiGian: new Date(Date.now()),
-    GiamGia: "",
+    GiamGia: 0,
+    TongTienHang: 0,
     ThanhTien: 0,
     TienKhachTra: 0,
     TienTraKhach: 0,
@@ -85,9 +96,42 @@ export default function TaoHoaDonModal() {
     }
   }, [dataSP, SPsInfo]);
 
-  const onListSPclick = () => {};
+  const onListSPclick = (record, index) => {
+    //const SP = SPsInfo.find(sp => sp.MaSP=record.MaSP);
+    const ListSPtamp = new [...SPsInfo]();
+    ListSPtamp.splice(index, 1);
+    setDataSP(ListSPtamp);
+  };
+  SPsInfo.forEach((SP) => {
+    dataHD.SoLuong += SP.SoLuong
+  });
 
-  const onFinish = () => {};
+  const onFinish = () => {
+    if (dataHD.MaKM) {
+      const KM = KhuyenMais.find((e) => e.MaKM === dataHD.MaKM);
+      if (KM) setDataHD({ ...dataHD, idKM: KM._id });
+      else {
+        message.error("Mã khuyến mãi không tồn tại");
+        return;
+      }
+    }
+    // if (dataHD.MaKH) {
+    //   const KH = KhachHangs.find((e) => e.MaKH === dataHD.MaKH);
+    //   if (KH) setDataHD({ ...dataHD, idKH: KH._id });
+    //   else {
+    //     message.error('Mã khách hàng không tồn tại');
+    //     return;
+    //   }
+    // }
+    // if (dataHD.MaNV) {
+    //   const NV = KhuyenMais.find((e) => e.MaNV === dataHD.MaNV);
+    //   if (NV) setDataHD({ ...dataHD, idKM: NV._id });
+    //   else {
+    //     message.error('Mã nhân viên không đúng');
+    //     return;
+    //   }
+    // }
+  };
   const body = (
     <>
       <Form
@@ -228,7 +272,100 @@ export default function TaoHoaDonModal() {
           </Form.Item>
         </Form.Item>
         <Form.Item>
-          <SanPhamHoaDonTable SPsInfo={SPsInfo} onListSPclick={onListSPclick}/>
+          <SanPhamHoaDonTable SPsInfo={SPsInfo} onListSPclick={onListSPclick} />
+        </Form.Item>
+        <Form.Item>
+          <Col style={{ float: "right", marginRight: "100px", width: "170px" }}>
+            <Row>
+              <Col flex="120px">
+                <label style={{ float: "right", fontWeight: "bold" }}>
+                  Tổng số lượng:{" "}
+                </label>
+              </Col>
+              <Col>
+                <label style={{ float: "right", fontWeight: "bold" }}>
+                  {dataHD.SoLuong}
+                </label>
+              </Col>
+            </Row>
+            <Row>
+              <Col flex="120px">
+                <label style={{ float: "right", fontWeight: "bold" }}>
+                  Tổng tiền hàng:{" "}
+                </label>
+              </Col>
+              <Col>
+                <label style={{ float: "right", fontWeight: "bold" }}>
+                  {dataHD.TongTienHang}
+                </label>
+              </Col>
+            </Row>
+            <Row>
+              <Col flex="120px">
+                <label style={{ float: "right", fontWeight: "bold" }}>
+                  Giảm giá:{" "}
+                </label>
+              </Col>
+              <Col>
+                <label style={{ float: "right", fontWeight: "bold" }}>
+                  {dataHD.GiamGia}
+                </label>
+              </Col>
+            </Row>
+            <Row>
+              <Col flex="120px">
+                <label style={{ float: "right", fontWeight: "bold" }}>
+                  Thành tiền:{" "}
+                </label>
+              </Col>
+              <Col>
+                <label style={{ float: "right", fontWeight: "bold" }}>
+                  {dataHD.ThanhTien}
+                </label>
+              </Col>
+            </Row>
+            <Row>
+              <Col flex="120px">
+                <label style={{ float: "right", fontWeight: "bold" }}>
+                  Tiền khách trả:{" "}
+                </label>
+              </Col>
+              <Col>
+                <InputNumber
+                  value={dataHD.TienKhachTra}
+                  onChange={(e) => setDataHD({ ...dataHD, TienKhachTra: e })}
+                  size="small"
+                  bordered={false}
+                  style={{
+                    width: "50px",
+                    borderBottomStyle: "solid",
+                    borderWidth: "1px",
+                    borderColor: "lightgreen",
+                    textAlign: "center",
+                    top: "-3px",
+                  }}
+                />
+              </Col>
+            </Row>
+            <Row
+              style={{
+                borderTopStyle: "solid",
+                borderWidth: "2px",
+                borderColor: "lightblue",
+              }}
+            >
+              <Col flex="120px">
+                <label style={{ float: "right", fontWeight: "bold" }}>
+                  Tiền trả khách:{" "}
+                </label>
+              </Col>
+              <Col>
+                <label style={{ float: "right", fontWeight: "bold" }}>
+                  {dataHD.ThanhTien}
+                </label>
+              </Col>
+            </Row>
+          </Col>
         </Form.Item>
         <Form.Item label=" " colon={false}>
           <Button type="primary" htmlType="submit">
@@ -244,7 +381,7 @@ export default function TaoHoaDonModal() {
     <div>
       <Modal
         title="Thêm hóa đơn"
-        width={800}
+        width={1000}
         visible={isShow}
         onCancel={onCloseHoaDonModal}
       >

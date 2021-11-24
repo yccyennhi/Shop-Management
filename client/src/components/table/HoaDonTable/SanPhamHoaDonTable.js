@@ -54,22 +54,25 @@ export default function SanPhamHoaDonTable({ SPsInfo, onListSPclick }) {
     },
     loading: false,
   });
-  return (
+  const body = (
     <>
       <Table
         tableLayout={"auto"}
         pagination={true}
         loading={false}
-        size={'small'}
+        size={"small"}
         columns={columns}
         onRow={(record, index) => {
-            return{
-                onDoubleClick:event => {onListSPclick()}
-            }
+          return {
+            onDoubleClick: (event) => {
+              onListSPclick(record, index);
+            },
+          };
         }}
         dataSource={SPsInfo}
         rowKey="_id"
       />
     </>
   );
+  return <>{body}</>;
 }

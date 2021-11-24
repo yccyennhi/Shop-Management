@@ -38,7 +38,6 @@ export default function TaoHoaDonModal() {
   React.useEffect(() => {
     dispatch(actions.getSanPhams.getSanPhamsRequest());
   }, [dispatch]);
-
   const layout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 50 },
@@ -76,7 +75,7 @@ export default function TaoHoaDonModal() {
       setDataSP({
         ...dataSP,
         TenSP: result.TenSP,
-        ThanhTien: result.ThanhTien,
+        ThanhTien: result.GiaBan * dataSP.SoLuong,
         GiaBan: result.GiaBan,
         BaoHanh: result.BaoHanh,
       });
@@ -91,6 +90,13 @@ export default function TaoHoaDonModal() {
         GiaBan: 0,
         ThanhTien: 0,
       });
+
+      SPsInfo.forEach((SP) => {
+        dataHD.SoLuong += SP.SoLuong;
+        dataHD.TongTienHang += SP.ThanhTien;
+      });
+      dataHD.ThanhTien = dataHD.TongTienHang - dataHD.GiamGia;
+      dataHD.TienTraKhach = dataHD.TienKhachTra - dataHD.ThanhTien;
     } else {
       message.error("Mã sản phẩm không tồn tại");
     }
@@ -102,19 +108,12 @@ export default function TaoHoaDonModal() {
     ListSPtamp.splice(index, 1);
     setDataSP(ListSPtamp);
   };
-  SPsInfo.forEach((SP) => {
-    dataHD.SoLuong += SP.SoLuong
-  });
-
   const onFinish = () => {
-    if (dataHD.MaKM) {
-      const KM = KhuyenMais.find((e) => e.MaKM === dataHD.MaKM);
-      if (KM) setDataHD({ ...dataHD, idKM: KM._id });
-      else {
-        message.error("Mã khuyến mãi không tồn tại");
-        return;
-      }
+    if (dataHD.idKM) {
+      message.error("Mã khuyến mãi không tồn tại");
+      return;
     }
+
     // if (dataHD.MaKH) {
     //   const KH = KhachHangs.find((e) => e.MaKH === dataHD.MaKH);
     //   if (KH) setDataHD({ ...dataHD, idKH: KH._id });
@@ -181,7 +180,17 @@ export default function TaoHoaDonModal() {
             value={dataHD.MaKM}
             placeholder="Nhập mã khuyến mãi"
             size="small"
-            onChange={(e) => setDataHD({ ...dataHD, MaKM: e.target.value })}
+            onChange={(e) => {
+              setDataHD({ ...dataHD, MaKM: e.target.value });
+              const KM = KhuyenMais.find((e) => e.MaKM === dataHD.MaKM);
+              if (KM) {
+                dataHD.idKM = KM.id;
+                dataHD.GiamGia = KM.GiaTri;
+              } else {
+                dataHD.idKM = "";
+                dataHD.GiamGia = 0;
+              }
+            }}
           />
         </Form.Item>
         <Form.Item name="date-time-picker" label="Thời gian">

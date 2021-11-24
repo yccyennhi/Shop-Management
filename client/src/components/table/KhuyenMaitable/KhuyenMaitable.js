@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Table, Input, Row, PageHeader, Descriptions, Tag } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import moment from "moment";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../../redux/actions";
 
 import { KhuyenMaisState$ } from "../../../redux/selectors";

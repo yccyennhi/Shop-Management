@@ -28,7 +28,6 @@ export const getDoiTrasToday = async (req, res) => {
       ThoiGian: { $gte: today, $lte: tomorrow },
     });
 
-    console.log("DoiTrasToday in controllers", DoiTrasToday);
     res.status(200).json(DoiTrasToday);
   } catch (err) {
     res.status(500).json({ error: err });

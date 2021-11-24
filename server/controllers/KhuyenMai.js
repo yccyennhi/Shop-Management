@@ -1,9 +1,10 @@
 import { HoaDonModel } from "../models/HoaDonModel.js";
 import { KhuyenMaiModel } from "../models/KhuyenMaiModel.js";
+import moment from "moment";
 
 export async function isNotExistHoaDon(idKhuyenMai) {
   const HoaDons = await HoaDonModel.find({ idKM: idKhuyenMai });
-  console.log('HoaDon', HoaDons);
+  console.log("HoaDon", HoaDons);
   if (HoaDons.length) {
     return false;
   } else {
@@ -13,6 +14,26 @@ export async function isNotExistHoaDon(idKhuyenMai) {
 
 export const getKhuyenMais = async (req, res) => {
   try {
+    const today = moment().startOf("day");
+
+    await KhuyenMaiModel.update(
+      {},
+      [
+        {
+          $set: {
+            TrangThai: {
+              $cond: {
+                if: { $gte: ["NgayKT", today] },
+                then: "$TrangThai",
+                else: false,
+              },
+            },
+          },
+        },
+      ],
+      { multi: true }
+    );
+
     const KhuyenMais = await KhuyenMaiModel.find();
 
     res.status(200).json(KhuyenMais);
@@ -24,16 +45,10 @@ export const getKhuyenMais = async (req, res) => {
 export const createKhuyenMai = async (req, res, next) => {
   try {
     const newKhuyenMai = req.body;
-    const { MaKM } = req.body;
-    const getKhuyenMais = await KhuyenMaiModel.findOne({ MaKM });
-    if (getKhuyenMais) {
-      res.status(400).send( "Đã tồn tại mã trong hệ thống");
-      next();
-    } else {
-      const KhuyenMai = new KhuyenMaiModel(newKhuyenMai);
-      await KhuyenMai.save();
-      res.status(200).json(KhuyenMai);
-    }
+
+    const KhuyenMai = new KhuyenMaiModel(newKhuyenMai);
+    await KhuyenMai.save();
+    res.status(200).json(KhuyenMai);
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: err });
@@ -55,7 +70,7 @@ export const updateKhuyenMai = async (req, res, next) => {
       );
       res.status(200).json(KhuyenMai);
     } else {
-      res.status(400).send("Đã tồn tại giao dịch");
+      res.status(400).send("Đã tồn tại giao dịch. Không được chỉnh sửa");
       next();
     }
   } catch (err) {
@@ -72,7 +87,7 @@ export const deleteKhuyenMai = async (req, res, next) => {
       const KhuyenMai = await KhuyenMaiModel.findByIdAndRemove(id);
       res.status(200).json(KhuyenMai);
     } else {
-      res.status(400).send("Đã tồn tại giao dịch");
+      res.status(400).send("Đã tồn tại giao dịch. Không được xóa");
       next();
     }
   } catch (err) {

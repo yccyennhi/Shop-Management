@@ -1,7 +1,7 @@
 import { Row, Table } from "antd";
 import React, { useState } from "react";
 
-export default function SanPhamHoaDonTable({ SPsInfo }) {
+export default function SanPhamHoaDonTable({ SPsInfo, onListSPclick }) {
   const columns = [
     {
       title: "Mã hàng",
@@ -60,7 +60,13 @@ export default function SanPhamHoaDonTable({ SPsInfo }) {
         tableLayout={"auto"}
         pagination={true}
         loading={false}
+        size={'small'}
         columns={columns}
+        onRow={(record, index) => {
+            return{
+                onDoubleClick:event => {onListSPclick()}
+            }
+        }}
         dataSource={SPsInfo}
         rowKey="_id"
       />

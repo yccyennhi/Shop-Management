@@ -64,7 +64,7 @@ export default function TaoHoaDonModal() {
     if (result) {
       setDataSP({
         ...dataSP,
-        TenSP:result.TenSP,
+        TenSP: result.TenSP,
         ThanhTien: result.ThanhTien,
         GiaBan: result.GiaBan,
         BaoHanh: result.BaoHanh,
@@ -80,12 +80,12 @@ export default function TaoHoaDonModal() {
         GiaBan: 0,
         ThanhTien: 0,
       });
-    }
-    else 
-    {
+    } else {
       message.error("Mã sản phẩm không tồn tại");
     }
   }, [dataSP, SPsInfo]);
+
+  const onListSPclick = () => {};
 
   const onFinish = () => {};
   const body = (
@@ -228,7 +228,7 @@ export default function TaoHoaDonModal() {
           </Form.Item>
         </Form.Item>
         <Form.Item>
-          <SanPhamHoaDonTable SPsInfo={SPsInfo} />
+          <SanPhamHoaDonTable SPsInfo={SPsInfo} onListSPclick={onListSPclick}/>
         </Form.Item>
         <Form.Item label=" " colon={false}>
           <Button type="primary" htmlType="submit">

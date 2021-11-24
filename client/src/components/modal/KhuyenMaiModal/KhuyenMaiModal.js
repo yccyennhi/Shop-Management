@@ -56,7 +56,7 @@ export default function KhuyenMaiModal({ currentId, setCurrentId }) {
 
   const checkData = () => {
     const isExistMaKM = KhuyenMais.find((KhuyenMai) =>
-      KhuyenMai.MaKM === data.MaKM ? true : false
+      KhuyenMai.MaKM === data.MaKM && data.MaKM!=KhuyenMaiValue.MaKM ? true : false
     );
     if (isExistMaKM) {
       messageError("Đã tồn tại mã chương trình");
@@ -70,7 +70,7 @@ export default function KhuyenMaiModal({ currentId, setCurrentId }) {
       messageError("Chưa nhập tên chương trình Khuyến mãi");
       return false;
     }
-    if (data.NgayBD < data.NgayKT) {
+    if (data.NgayBD > data.NgayKT) {
       messageError("Ngày bắt đầu phải nhỏ hơn ngày kết thúc");
       return false;
     }

@@ -104,16 +104,14 @@ function* updateKhuyenMaiSaga(action) {
 
 function* deleteKhuyenMaiSaga(action) {
   try {
-    const KhuyenMai = yield call(api.deleteKhuyenMai);
+    const KhuyenMai = yield call(api.deleteKhuyenMai, action.payload);
     yield put(
       actions.deleteKhuyenMai.deleteKhuyenMaiSuccess(KhuyenMai.data._id)
     );
   } catch (err) {
-    if (err.response.data)
       yield put(
         actions.deleteKhuyenMai.deleteKhuyenMaiFailure(err.response.data)
       );
-    else yield put(actions.deleteKhuyenMai.deleteKhuyenMaiFailure(err));
   }
 }
 /* #endregion */

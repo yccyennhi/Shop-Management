@@ -6,32 +6,23 @@ import * as actions from "../../../redux/actions";
 
 import { KhuyenMaisState$ } from "../../../redux/selectors";
 import ExpandedRowRender from "./ExpandedRowRender";
+import moment from "moment";
 
 const { Search } = Input;
 
-function KhuyenMaitable({setCurrentId}) {
+function KhuyenMaitable({ filterStatus, setCurrentId }) {
   const dispatch = useDispatch();
 
   const KhuyenMais = useSelector(KhuyenMaisState$);
-  
 
   React.useEffect(() => {
     dispatch(actions.getKhuyenMais.getKhuyenMaisRequest());
   }, [dispatch]);
 
-  const dataSource = KhuyenMais;
+  const dataSource = filterStatus == null
+    ? KhuyenMais
+    : KhuyenMais.filter((KhuyenMai) => KhuyenMai.TrangThai === filterStatus);
 
-  // //Format Date to Moment(dd/mm/yy)
-  // dataSource.map((el) => {
-    
-  //   //Ngày bắt đầu
-  //   let sDate = moment(el.NgayBD);
-  //   el.NgayBD = sDate.format("DD/MM/YYYY");
-
-  //   //Ngày kết thúc
-  //   let eDate = moment(el.NgayKT);
-  //   el.NgayKT = eDate.format("DD/MM/YYYY");
-  // });
   const columns = [
     {
       title: "Mã KM",
@@ -110,6 +101,9 @@ function KhuyenMaitable({setCurrentId}) {
       title: "Ngày bắt đầu",
       dataIndex: "NgayBD",
       key: "NgayBD",
+      render: (date) => {
+        return <p>{moment(date).format("DD/MM/YYYY")}</p>;
+      },
       sorter: (a, b) => a.NgayBD - b.NgayBD,
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
         return (
@@ -146,6 +140,9 @@ function KhuyenMaitable({setCurrentId}) {
       title: "Ngày kết thúc",
       dataIndex: "NgayKT",
       key: "NgayKT",
+      render: (date) => {
+        return <p>{moment(date).format("DD/MM/YYYY")}</p>;
+      },
       sorter: (a, b) => a.NgayKT - b.NgayKT,
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
         return (
@@ -183,9 +180,10 @@ function KhuyenMaitable({setCurrentId}) {
       dataIndex: "TrangThai",
       key: "TrangThai",
       render: (TrangThai) => {
-        return <p>{TrangThai == false ? "Ch­ưa kích hoạt" : "Đã kích hoạt"}</p>;
+        return <p>{TrangThai == false ? "Không áp dụng" : "Đang áp dụng"}</p>;
       },
       sorter: (a, b) => a.TrangThai - b.TrangThai,
+      defaultSortOrder: "descend",
     },
   ];
 
@@ -218,11 +216,12 @@ function KhuyenMaitable({setCurrentId}) {
         tableLayout={"auto"}
         loading={false}
         pagination={true}
-        //  scroll={{ x: 1500, y: 500 }}
         columns={columns}
         rowSelection={rowSelection}
         expandable={{
-          expandedRowRender: (record) => <ExpandedRowRender record={record} setCurrentId={setCurrentId} />,
+          expandedRowRender: (record) => (
+            <ExpandedRowRender record={record} setCurrentId={setCurrentId} />
+          ),
 
           rowExpandable: (record) => record.TenKM !== "Not Expandable",
         }}

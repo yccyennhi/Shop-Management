@@ -37,8 +37,6 @@ export default function KhuyenMaiModal({ currentId, setCurrentId }) {
     if (KhuyenMaiValue) setData(KhuyenMaiValue);
   }, [KhuyenMaiValue]);
 
-  console.log("KhuyenMai", data);
-
   const dispatch = useDispatch();
 
   const onClose = React.useCallback(() => {

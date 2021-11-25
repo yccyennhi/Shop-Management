@@ -55,11 +55,18 @@ export const INIT_STATE = {
   TaoPhieuTraHangModal: {
     isShow: false,
   },
+  TaoPhieuBaoHanhModal: {
+    isShow: false,
+  },
+  TaoPhieuHenModal: {
+    isShow: false,
+  },
+
   CTHDs: {
     isLoading: false,
     data: [],
   },
-  CTPDTs:{
+  CTPDTs: {
     isLoading: false,
     data: [],
   },
@@ -68,6 +75,17 @@ export const INIT_STATE = {
   },
   TaoPhieuHenModal: {
     isShow: false,
+  },
+  TongQuans: {
+    isLoading: false,
+    statistics: {
+      hoaDonTodayCount: 0,
+      doanhThuToday: 0,
+      doiTraCount: 0,
+      soLuongDT:0,
+    },
+    rankingByDoanhThu: [],
+    highestSanPhamList: [],
   },
 
 };

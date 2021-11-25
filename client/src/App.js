@@ -1,3 +1,4 @@
+import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import { Layout } from "antd";
@@ -19,7 +20,7 @@ import DoiTraPage from "./pages/GiaoDichPage/DoiTraPage";
 
 function App() {
   const { Header, Content, Footer } = Layout;
-
+  
   return (
     <div className="App">
       <Router>

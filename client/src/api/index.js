@@ -57,3 +57,9 @@ export const fetchCTHDs = () => axios.get(`${URL}/CTHDs`);
 export const fetchCTPDTs = () => axios.get(`${URL}/CTPDTs`);
 export const createHoaDon = (payload) => axios.post(`${URL}/HoaDons`, payload);
 export const createCTHD = (payload) => axios.post(`${URL}/CTHDs`, payload);
+
+//TongQuan
+export const getHoaDonsToday = () => axios.get(`${URL}/TongQuans/HoaDonsToday`);
+export const getDoiTrasToday = () => axios.get(`${URL}/TongQuans/DoiTrasToday`);
+export const getRanking = () => axios.get(`${URL}/TongQuans/Ranking`);
+export const getHighestSanPhamList = () => axios.get(`${URL}/TongQuans/SanPhanList`);

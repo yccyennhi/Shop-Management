@@ -1,12 +1,13 @@
 import { HoaDonModel } from "../models/HoaDonModel.js";
+import moment from 'moment';
 
 export const getHoaDons = async (req, res) => {
   try {
     // const newHoaDon = new HoaDonModel({
-    //   MaHD: "HD008",
-    //   ThoiGian: new Date(),
+    //   MaHD: "HD015",
+    //   ThoiGian: moment(),
     //   idNV: "61957eace198c2fe3f3f5402",
-    //   idKM: "618f5168430731ecab82f463",
+    //   idKM:"618f5168430731ecab82f463",
     //   idKH: "61957aa9e198c2fe3f3f53f6",
     //   MaKH: "KH001",
     //   MaKM: "KM001",
@@ -22,6 +23,7 @@ export const getHoaDons = async (req, res) => {
 
     // await newHoaDon.save();
     const HoaDons = await HoaDonModel.find();
+
     console.log("HoaDons", HoaDons);
     res.status(200).json(HoaDons);
   } catch (err) {

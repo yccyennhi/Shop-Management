@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { PageHeader, Descriptions, Tag, Button } from "antd";
 import { useDispatch } from "react-redux";
 import { deleteKhuyenMai, showModal } from "../../../redux/actions";
-
+import moment from "moment";
 export default function ExpandedRowRender({ record, setCurrentId }) {
   
   const dispatch = useDispatch();
@@ -13,7 +13,7 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
   }, [dispatch]);
 
   const onDelete = React.useCallback(() => {
-
+    console.log('record', record);
     dispatch(deleteKhuyenMai.deleteKhuyenMaiRequest(record._id));
   }, [record, dispatch]);
 
@@ -26,8 +26,8 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
           <Tag color="blue">
           
             {record.TrangThai == false
-              ? "Ch­ưa kích hoạt"
-              : "Đã kích hoạt"}
+              ? "Không áp dụng"
+              : "Đang áp dụng"}
           </Tag>
         }
         subTitle={record.MaKM}
@@ -40,10 +40,10 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
       >
         <Descriptions size="small" column={2}>
           <Descriptions.Item label="Ngày bắt đầu">
-            {record.NgayBD}
+            {moment(record.NgayBD).format("DD/MM/YYYY")}
           </Descriptions.Item>
           <Descriptions.Item label="Ngày kết thúc">
-            {record.NgayKT}
+            {moment(record.NgayKT).format("DD/MM/YYYY")}
           </Descriptions.Item>
           <Descriptions.Item label="Trị giá hóa đơn">
             {record.GiaTri}

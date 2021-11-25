@@ -1,29 +1,43 @@
 import React from "react";
-import moment from 'moment';
-import {  PageHeader, Row, Space, Typography, DatePicker} from "antd";
-import CuoiNgaytable from '../../components/table/BaoCaoTable/CuoiNgaytable';
+import moment from "moment";
+import { PageHeader, Space, Card, DatePicker, Layout } from "antd";
+import CuoiNgaytable from "../../components/table/BaoCaoTable/CuoiNgaytable";
 
+import COLOR from "../../color.js";
 
-const {Title } = Typography;
-
-
+const { Content, Sider } = Layout;
 export default function BCCuoiNgayPage() {
-
   return (
-    <>
-      <div>
-        <PageHeader className="site-page-header" title="Báo cáo cuối ngày" /> 
-        <div>
-          <Row justify="end">
-            <Space direction='horizontal' align='baseline' size='large'>
-             <Title level={5}>Ngày</Title>
-
-           <DatePicker defaultValue={moment()}  format='DD/MM/YYYY' />
+    <Layout>
+      <Layout>
+        <Content>
+          <PageHeader className="site-page-header" title="Báo cáo cuối ngày" />
+        </Content>
+      </Layout>
+      <Layout>
+        <Sider
+          width={300}
+          style={{ padding: "0px 0px 0px 24px" }}
+          className="site-layout-sider"
+        >
+          <div className="site-card-border-less-wrapper">
+            <Space direction="vertical">
+              <Card
+                title="Thời gian áp dụng"
+                bordered={false}
+                style={{ width: 250, color: COLOR.darkblue }}
+              >
+                <DatePicker defaultValue={moment()} format="DD/MM/YYYY" />
+              </Card>
             </Space>
-          </Row>
-        </div>
-        <CuoiNgaytable/>
-      </div>
-    </>
+          </div>
+        </Sider>
+        <Content style={{ padding: "17px 24px 24px" }}>
+          <div className="site-layout-content">
+            <CuoiNgaytable />
+          </div>
+        </Content>
+      </Layout>
+    </Layout>
   );
 }

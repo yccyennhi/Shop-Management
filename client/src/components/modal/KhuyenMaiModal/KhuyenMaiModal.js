@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
-import { modalState$ } from "../../../redux/selectors";
+import { KhuyenMaisState$, modalState$ } from "../../../redux/selectors";
 import {
   createKhuyenMai,
   updateKhuyenMai,
@@ -12,18 +12,9 @@ import { messageError } from "../../message";
 
 import moment from "moment";
 
-const validateMessages = {
-  required: "${label} không được bỏ trống!",
-  types: {
-    number: "${label} không phải là số hợp lệ!",
-  },
-  number: {
-    range: "${label} phải nằm trong khoảng từ ${min} đến ${max}",
-  },
-};
-
 export default function KhuyenMaiModal({ currentId, setCurrentId }) {
   const { isShow } = useSelector(modalState$);
+  const KhuyenMais = useSelector(KhuyenMaisState$);
   const [form] = Form.useForm();
 
   const dateNow = moment().toDate();
@@ -38,16 +29,13 @@ export default function KhuyenMaiModal({ currentId, setCurrentId }) {
     TrangThai: false,
   });
 
-  const KhuyenMaiValue = useSelector((state) =>
-    state.KhuyenMais.data.find((KhuyenMai) =>
-      KhuyenMai._id === currentId ? KhuyenMai : null
-    )
+  const KhuyenMaiValue = KhuyenMais.find((KhuyenMai) =>
+    KhuyenMai._id === currentId ? KhuyenMai : null
   );
+
   useEffect(() => {
     if (KhuyenMaiValue) setData(KhuyenMaiValue);
   }, [KhuyenMaiValue]);
-
-  console.log("KhuyenMai", data);
 
   const dispatch = useDispatch();
 
@@ -66,28 +54,44 @@ export default function KhuyenMaiModal({ currentId, setCurrentId }) {
     });
   }, [dispatch]);
 
-  const onSubmit = React.useCallback(() => {
-    if (data.TenKM) {
-      if (data.NgayBD < data.NgayKT) {
-        if (currentId) {
-          dispatch(updateKhuyenMai.updateKhuyenMaiRequest(data));
-        } else {
-          dispatch(createKhuyenMai.createKhuyenMaiRequest(data));
-        }
-        onClose();
-      } else {
-        messageError("Ngày bắt đầu phải nhỏ hơn ngày kết thúc");
-      }
-    } else {
-      messageError("Chưa nhập tên chương trình Khuyến mãi");
+  const checkData = () => {
+    const isExistMaKM = KhuyenMais.find((KhuyenMai) =>
+      KhuyenMai.MaKM === data.MaKM && data.MaKM!=KhuyenMaiValue.MaKM ? true : false
+    );
+    if (isExistMaKM) {
+      messageError("Đã tồn tại mã chương trình");
+      return false;
     }
-  }, [data, dispatch, onClose, messageError]);
+    if (!data.MaKM) {
+      messageError("Chưa nhập mã chương trình Khuyến mãi");
+      return false;
+    }
+    if (!data.TenKM) {
+      messageError("Chưa nhập tên chương trình Khuyến mãi");
+      return false;
+    }
+    if (data.NgayBD > data.NgayKT) {
+      messageError("Ngày bắt đầu phải nhỏ hơn ngày kết thúc");
+      return false;
+    }
+    return true;
+  };
+
+  const onSubmit = React.useCallback(() => {
+    if (checkData()) {
+      if (currentId) {
+        dispatch(updateKhuyenMai.updateKhuyenMaiRequest(data));
+      } else {
+        dispatch(createKhuyenMai.createKhuyenMaiRequest(data));
+      }
+      onClose();
+    }
+  }, [data, dispatch, onClose, checkData]);
 
   const body = (
     <>
       <Form
         form={form}
-        validateMessages={validateMessages}
         labelCol={{
           span: 4,
         }}
@@ -121,7 +125,7 @@ export default function KhuyenMaiModal({ currentId, setCurrentId }) {
             <DatePicker
               defaultValue={moment(data.NgayBD)}
               onChange={(e) => {
-                if (e) setData({ ...data, NgayBD: e.toDate() });
+                if (e) setData({ ...data, NgayBD: e });
               }}
             />
           </Form.Item>
@@ -144,7 +148,7 @@ export default function KhuyenMaiModal({ currentId, setCurrentId }) {
               min
               defaultValue={moment(data.NgayKT)}
               onChange={(e) => {
-                if (e) setData({ ...data, NgayKT: e.toDate() });
+                if (e) setData({ ...data, NgayKT: e });
               }}
             />
           </Form.Item>

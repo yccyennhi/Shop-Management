@@ -1,34 +1,50 @@
 import React from "react";
 import moment from "moment";
-import { PageHeader, Row, Space, Typography, DatePicker } from "antd";
+import { PageHeader, Space, Card, DatePicker, Layout } from "antd";
 import BanHangtable from "../../components/table/BaoCaoTable/BanHangtable";
 import BanHangColumnReport from "../../components/chart/BanHangColoumnReport";
 
-const { Title } = Typography;
+import COLOR from "../../color.js";
 
+const { Content, Sider } = Layout;
 const { RangePicker } = DatePicker;
 
 export default function BCBanHangPage() {
   const dataSource = [];
   return (
-    <>
-      <div>
-        <PageHeader className="site-page-header" title="Báo cáo bán hàng" />
-        <div>
-          <Row justify="end">
-            <Space direction="horizontal" align="baseline" size="large">
-              <Title level={5}>Ngày</Title>
-              <RangePicker
-                defaultValue={[moment(), moment()]}
-                format="DD/MM/YYYY"
-              />
+    <Layout>
+      <Layout>
+        <Content>
+          <PageHeader className="site-page-header" title="Báo cáo hàng hóa" />
+        </Content>
+      </Layout>
+      <Layout>
+        <Sider
+          width={300}
+          style={{ padding: "0px 0px 0px 24px" }}
+          className="site-layout-sider"
+        >
+          <div className="site-card-border-less-wrapper">
+            <Space direction="vertical">
+              <Card
+                title="Thời gian áp dụng"
+                bordered={false}
+                style={{ width: 250, color: COLOR.darkblue }}
+              >
+                <DatePicker defaultValue={moment()} format="DD/MM/YYYY" />
+              </Card>
             </Space>
-          </Row>
-        </div>
-        <BanHangColumnReport/>
-        
-        <BanHangtable dataSource={dataSource} />
-      </div>
-    </>
+          </div>
+        </Sider>
+        <Content style={{ padding: "17px 24px 24px" }}>
+          <div className="site-layout-content">
+            <Space direction='vertical' size="large" style={{ width: "100%" }} >
+              <BanHangColumnReport /> 
+              <BanHangtable dataSource={dataSource} />
+            </Space>
+          </div>
+        </Content>
+      </Layout>
+    </Layout>
   );
 }

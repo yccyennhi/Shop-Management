@@ -108,9 +108,9 @@ function* deleteKhuyenMaiSaga(action) {
       actions.deleteKhuyenMai.deleteKhuyenMaiSuccess(KhuyenMai.data._id)
     );
   } catch (err) {
-    yield put(
-      actions.deleteKhuyenMai.deleteKhuyenMaiFailure(err.response.data)
-    );
+      yield put(
+        actions.deleteKhuyenMai.deleteKhuyenMaiFailure(err.response.data)
+      );
   }
 }
 /* #endregion */
@@ -226,6 +226,7 @@ function* deletePhieuBaoHanhSaga(action) {
 /* #endregion */
 
 /* #region Giao dich */
+
 function* fetchHoaDonsSaga(action) {
   try {
     const HoaDons = yield call(api.fetchHoaDons);
@@ -283,6 +284,50 @@ function* createCTHDSaga(action) {
   }
 }
 /* #endregion */
+
+function*  getTongQuansSaga(action) {
+  try {
+    const HoaDonsToday = yield call(api.getHoaDonsToday);
+    const DoiTrasToday = yield call(api.getDoiTrasToday);
+
+    var tongDoanhThu = 0;
+    var tongSoLuongDT = 0;
+
+    Object.values(HoaDonsToday.data).forEach((HoaDon) => {
+      Object.entries(HoaDon).forEach(([key, value]) => {
+        if (key === "ThanhTien") tongDoanhThu += value;
+      });
+    });
+    Object.values(DoiTrasToday.data).forEach((DoiTra) => {
+      Object.entries(DoiTra).forEach(([key, value]) => {
+        if (key === "SoLuong") tongSoLuongDT += value;
+      });
+    });
+
+    const statistics = {
+      hoaDonTodayCount: HoaDonsToday.data.length,
+      doanhThuToday: tongDoanhThu,
+      doiTraCount: DoiTrasToday.data.length,
+      soLuongDT: tongSoLuongDT,
+    };
+
+    yield put(actions.getTongQuans.getStatistics(statistics));
+
+    //Ranking
+    const rankingList = yield call(api.getRanking);
+
+    yield put(actions.getTongQuans.getRankingByDoanhThu(rankingList.data));
+
+    //highestSanPhamList
+    const highestSanPhamList = yield call(api.getHighestSanPhamList);
+
+    yield put(actions.getTongQuans.getHighestSanPhamList(highestSanPhamList.data));
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 function* mySaga() {
   yield takeLatest(
     actions.getKhachHangs.getKhachHangsRequest,
@@ -355,6 +400,7 @@ function* mySaga() {
     fetchTaiKhoansSaga
   );
 
+  
   yield takeLatest(
     actions.updatePhieuHen.updatePhieuHenRequest,
     updatePhieuHenSaga
@@ -407,6 +453,7 @@ function* mySaga() {
   yield takeLatest(actions.createCTHD.createCTHDRequest, createCTHDSaga);
 
   /* #endregion */
+  yield takeLatest(actions.getTongQuans.getDataRequest, getTongQuansSaga);
 }
 
 export default mySaga;

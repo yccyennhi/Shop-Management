@@ -11,6 +11,8 @@ const { RangePicker } = DatePicker;
 
 export default function BCBanHangPage() {
   const dataSource = [];
+  
+const dateFormat = 'DD/MM/YYYY';
   return (
     <Layout>
       <Layout>
@@ -31,7 +33,8 @@ export default function BCBanHangPage() {
                 bordered={false}
                 style={{ width: 250, color: COLOR.darkblue }}
               >
-                <DatePicker defaultValue={moment()} format="DD/MM/YYYY" />
+                <RangePicker defaultValue={[moment('2015/01/01', dateFormat), moment('2015/01/01', dateFormat)]}
+        format={dateFormat} />
               </Card>
             </Space>
           </div>

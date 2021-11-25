@@ -59,7 +59,6 @@ const rankingByDoanhThu = {};
         if (HoaDonsOfDay.length) {
 
           Object.values(HoaDonsOfDay).forEach((HoaDon) => {
-            console.log(HoaDon);
             rankingByDoanhThu[day]+= HoaDon.ThanhTien;
          });
 

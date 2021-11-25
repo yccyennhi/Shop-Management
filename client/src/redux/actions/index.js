@@ -46,9 +46,7 @@ export const deleteSanPham = createActions({
   deleteSanPhamFailure: (err) => err,
 });
 
-
 //Phieu Hen
-
 
 export const getPhieuHens = createActions({
   getPhieuHensRequest: undefined,
@@ -74,9 +72,7 @@ export const deletePhieuHen = createActions({
   deletePhieuHenFailure: (err) => err,
 });
 
-
 //Phieu bao hanh
-
 
 export const getPhieuBaoHanhs = createActions({
   getPhieuBaoHanhsRequest: undefined,
@@ -135,28 +131,27 @@ export const deleteKhuyenMai = createActions({
 /* #endregion */
 
 export const getPhieuDoiTras = createActions({
-    getPhieuDoiTrasRequest: undefined,
-    getPhieuDoiTrasSuccess: (payload) => payload,
-    getPhieuDoiTrasFailure: (err) => err,
-})
+  getPhieuDoiTrasRequest: undefined,
+  getPhieuDoiTrasSuccess: (payload) => payload,
+  getPhieuDoiTrasFailure: (err) => err,
+});
 
-export const createHoaDon = createAction({
-
-})
+export const createHoaDon = createAction({});
 /* #endregion */
 
 export const getCTHDs = createActions({
   getCTHDsRequest: undefined,
   getCTHDsSuccess: (payload) => payload,
   getCTHDsFailure: (err) => err,
-})
+});
 
 export const getCTPDTs = createActions({
   getCTPDTsRequest: undefined,
   getCTPDTsSuccess: (payload) => payload,
   getCTPDTsFailure: (err) => err,
-})
+});
 
+/* #region  TongQuan */
 export const getTongQuans = createActions({
   getDataRequest: undefined,
   getDataSuccess: (payload) => payload,
@@ -165,24 +160,52 @@ export const getTongQuans = createActions({
   getStatistics: (payload) => payload,
   getRankingByDoanhThu: (payload) => payload,
   getHighestSanPhamList: (payload) => payload,
+});
 
-})
+/* #endregion */
+/* #region  BaoCao */
 
+export const getCuoiNgays = createActions({
+  getCuoiNgaysRequest: undefined,
+  getCuoiNgaysSuccess: (payload) => payload,
+  getCuoiNgaysFailure: (err) => err,
+});
+
+export const getBCBanHangs = createActions({
+  getBCBanHangsRequest: undefined,
+  getBCBanHangsSuccess: (payload) => payload,
+  getBCBanHangsFailure: (err) => err,
+});
+
+export const getBCHangHoas = createActions({
+  getBCHangHoasRequest: undefined,
+  getBCHangHoasSuccess: (payload) => payload,
+  getBCHangHoasFailure: (err) => err,
+});
+/* #endregion */
 
 export const showTaoSanPhamModal = createAction("SHOW_TAOSANPHAM_MODAL");
 export const hideTaoSanPhamModal = createAction("HIDE_TAOSANPHAM_MODAL");
 
-export const showTaoPhieuBaoHanhModal = createAction("SHOW_TAOPHIEUBAOHANH_MODAL");
-export const hideTaoPhieuBaoHanhModal = createAction("HIDE_TAOPHIEUBAOHANH_MODAL");
+export const showTaoPhieuBaoHanhModal = createAction(
+  "SHOW_TAOPHIEUBAOHANH_MODAL"
+);
+export const hideTaoPhieuBaoHanhModal = createAction(
+  "HIDE_TAOPHIEUBAOHANH_MODAL"
+);
 
 export const showTaoPhieuHenModal = createAction("SHOW_TAOPHIEUHEN_MODAL");
 export const hideTaoPhieuHenModal = createAction("HIDE_TAOPHIEUHEN_MODAL");
 
-export const showTaoHoaDonModal = createAction('SHOW_TAOHOADON_MODAL');
-export const hideTaoHoaDonModal = createAction('HIDE_TAOHOADON_MODAL');
+export const showTaoHoaDonModal = createAction("SHOW_TAOHOADON_MODAL");
+export const hideTaoHoaDonModal = createAction("HIDE_TAOHOADON_MODAL");
 
-export const showTaoPhieuTraHangModal = createAction('SHOW_TAOPHIEUTRAHANG_MODAL');
-export const hideTaoPhieuTraHangModal = createAction('HIDE_TAOPHIEUTRAHANG_MODAL');
+export const showTaoPhieuTraHangModal = createAction(
+  "SHOW_TAOPHIEUTRAHANG_MODAL"
+);
+export const hideTaoPhieuTraHangModal = createAction(
+  "HIDE_TAOPHIEUTRAHANG_MODAL"
+);
 
-export const showModal = createAction('SHOW_CREATE_MODAL');
-export const hideModal = createAction('HIDE_CREATE_MODAL');
+export const showModal = createAction("SHOW_CREATE_MODAL");
+export const hideModal = createAction("HIDE_CREATE_MODAL");

@@ -83,4 +83,18 @@ export const INIT_STATE = {
     highestSanPhamList: [],
   },
 
+  CuoiNgays: {
+    isLoading: false,
+    data: [],
+  },
+  
+  BCBanHangs: {
+    isLoading: false,
+    data: [],
+  },
+  
+  BCHangHoas: {
+    isLoading: false,
+    data: [],
+  },
 };

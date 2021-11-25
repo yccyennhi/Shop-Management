@@ -60,3 +60,8 @@ export const getHoaDonsToday = () => axios.get(`${URL}/TongQuans/HoaDonsToday`);
 export const getDoiTrasToday = () => axios.get(`${URL}/TongQuans/DoiTrasToday`);
 export const getRanking = () => axios.get(`${URL}/TongQuans/Ranking`);
 export const getHighestSanPhamList = () => axios.get(`${URL}/TongQuans/SanPhanList`);
+
+//BaoCao
+export const getCuoiNgays = () => axios.get(`${URL}/CuoiNgays`);
+export const getBCBanHangs = () => axios.get(`${URL}/BCBanHangs`);
+export const getBCHangHoas = () => axios.get(`${URL}/BCHangHoas`);

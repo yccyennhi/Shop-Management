@@ -35,9 +35,6 @@ export default function TaoHoaDonModal({ HoaDons }) {
   const dateNow = moment().toDate();
   const dispatch = useDispatch();
   const { isShow } = useSelector(TaoHoaDonModalState$);
-  const onCloseHoaDonModal = React.useCallback(() => {
-    dispatch(hideTaoHoaDonModal());
-  }, [dispatch]);
   const HDs = useSelector(HoaDonsState$);
   const SanPhams = useSelector(SanPhamsState$);
   //const KhachHangs = useSelector(KhachHangsState$);
@@ -67,12 +64,12 @@ export default function TaoHoaDonModal({ HoaDons }) {
     MaHD: "",
     MaNV: "",
     idNV: "61957eace198c2fe3f3f5402",
-    MaKH: "Không",
+    MaKH: "",
     idKH: "61957aa9e198c2fe3f3f53f6",
     MaKM: "",
     idKM: "619f673906c0b162302fb7f2",
     SoLuong: 0,
-    ThoiGian: new Date(),
+    ThoiGian: "",
     GiamGia: 0,
     PhanTram: 0,
     GiaVon: 0,
@@ -89,18 +86,35 @@ export default function TaoHoaDonModal({ HoaDons }) {
   const [SPsInfo, setSPsInfo] = React.useState([]);
   const btnAddSP = useCallback(() => {
     const result = SanPhams.find((SanPham) => SanPham.MaSP === dataSP.MaSP);
-    if (result) {
+    console.log(result);
+    if (!result) {
+      message.error("Mã sản phẩm không tồn tại");
+      return;
+    }
+    if (result.TrangThai === "Ngừng kinh doanh") {
+      message.error("Sản phẩm đã ngừng kinh doanh");
+      return;
+    }
+    if (result.TrangThai === "Hết hàng") {
+      message.error("Sản phẩm đã hết hàng");
+      return;
+    }
+    if (result.SoLuong < dataHD.SoLuong) {
+      message.error("Số lượng sản phẩm không đủ");
+      return;
+    } else {
       const SPInfo = {
+        MaHD: "",
         idSP: result._id,
         MaSP: result.MaSP,
         TenSP: result.TenSP,
+        SoLuong: dataSP.SoLuong,
         MauSac: result.MauSac,
         Size: result.Size,
         GiaVon: result.GiaVon,
-        SoLuong: dataSP.SoLuong,
-        ThanhTien: result.GiaBan * dataSP.SoLuong,
         DonGia: result.GiaBan,
         BaoHanh: result.BaoHanh,
+        ThanhTien: result.GiaBan * dataSP.SoLuong,
       };
       SPsInfo.push(SPInfo);
       setDataSP({
@@ -116,14 +130,11 @@ export default function TaoHoaDonModal({ HoaDons }) {
         dataHD.GiaVon += SP.GiaVon;
       });
       dataHD.ThanhTien = dataHD.TongTienHang - dataHD.GiamGia;
-    } else {
-      message.error("Mã sản phẩm không tồn tại");
     }
   }, [dataSP, SPsInfo]);
 
   const btnAddMaKM = () => {
     const KM = KhuyenMais.find((e) => e.MaKM === dataHD.MaKM);
-    console.log(KM);
     if (
       KM.SoLuong == 0 ||
       KM.TrangThai == false ||
@@ -170,6 +181,35 @@ export default function TaoHoaDonModal({ HoaDons }) {
     setDataSP(ListSPtamp);
   };
 
+  const onCancel = React.useCallback(()=>
+  {
+    dispatch(hideTaoHoaDonModal());
+    setDataHD({
+      MaHD: "",
+      MaNV: "",
+      idNV: "61957eace198c2fe3f3f5402",
+      MaKH: "",
+      idKH: "61957aa9e198c2fe3f3f53f6",
+      MaKM: "",
+      idKM: "619f673906c0b162302fb7f2",
+      SoLuong: 0,
+      ThoiGian: "",
+      GiamGia: 0,
+      PhanTram: 0,
+      GiaVon: 0,
+      DiemTru: 0,
+      TongTienHang: 0,
+      ThanhTien: 0,
+      TienKhachTra: 0,
+      TienTraKhach: 0,
+    });
+    setDataSP({
+      MaSP: "",
+      SoLuong: 0,
+    });
+    setSPsInfo([]);
+  },[dispatch])
+
   const onFinish = React.useCallback(() => {
     if (dataHD.MaKM) {
       if (dataHD.id == "619f673906c0b162302fb7f2") {
@@ -177,7 +217,7 @@ export default function TaoHoaDonModal({ HoaDons }) {
         return;
       }
     } else {
-      dataHD.MaKM = "Không";
+      dataHD.MaKM = "KM000";
     }
     if (!dataHD.MaNV) {
       message.warning("Vui lòng thêm nhân viên");
@@ -200,29 +240,29 @@ export default function TaoHoaDonModal({ HoaDons }) {
     } else {
       dataHD.MaHD = "HD" + length;
     }
-    // dispatch(createHoaDon.createHoaDonRequest(dataHD));
-    // console.log(HDs);
-    // const KhuyenMai = KhuyenMais.find((km) => km.MaKM === dataHD.MaKM);
-    // dispatch(
-    //   actions.updateKhuyenMai.updateKhuyenMaiRequest({
-    //     ...KhuyenMai,
-    //     SoLuong: KhuyenMai.SoLuong - 1,
-    //   })
-    // );
+    //dispatch(createHoaDon.createHoaDonRequest(dataHD));
+    //dispatch(actions.updateSLKM.updateSLKMRequest(dataHD));
+    const KhuyenMai = KhuyenMais.find((km) => km.MaKM === dataHD.MaKM);
+    dispatch(
+      actions.updateSLKM.updateSLKMRequest({
+        ...KhuyenMai,
+        SoLuong: KhuyenMai.SoLuong - 1,
+      })
+    );
 
-    SPsInfo.map((sp) => {
-      // const SP = SanPhams.find((elm) => elm._id === sp.idSP);
-      // dispatch(
-      //   actions.updateSanPham.updateSanPhamRequest({
-      //     ...SP,
-      //     TonKho: SP.TonKho - sp.SoLuong,
-      //   })
-      // );
-      sp.MaHD = dataHD.MaHD;
-      const elm = {...sp,MaHD: dataHD.MaHD};
-      console.log(elm);
-      dispatch(createCTHD.createCTHDRequest(elm));
-    });
+    // SPsInfo.map((sp) => {
+    //   const SP = SanPhams.find((elm) => elm._id === sp.idSP);
+    //   dispatch(
+    //     actions.updateSanPham.updateSanPhamRequest({
+    //       ...SP,
+    //       TonKho: SP.TonKho - sp.SoLuong,
+    //     })
+    //   );
+    //   sp.MaHD = dataHD.MaHD;
+    //   const elm = { ...sp, MaHD: dataHD.MaHD };
+    //   console.log(elm);
+    //   dispatch(createCTHD.createCTHDRequest(sp));
+    // });
 
     // if (dataHD.MaKH) {
     //   const KH = KhachHangs.find((e) => e.MaKH === dataHD.MaKH);
@@ -240,6 +280,8 @@ export default function TaoHoaDonModal({ HoaDons }) {
     //     return;
     //   }
     // }
+  
+    onCancel();
   }, [dataHD, dispatch, SPsInfo]);
 
   const body = (
@@ -311,9 +353,10 @@ export default function TaoHoaDonModal({ HoaDons }) {
             onClick={btnCancelKM}
           />
         </Form.Item>
-        <Form.Item name="date-time-picker" label="Thời gian" required={true}>
+        <Form.Item name="date-time-picker" label="Thời gian">
           <DatePicker
             showTime
+            required={true}
             format="YYYY-MM-DD HH:mm:ss"
             value={dataHD.ThoiGian}
             onChange={(e) => {
@@ -481,11 +524,11 @@ export default function TaoHoaDonModal({ HoaDons }) {
         width={1000}
         visible={isShow}
         onOk={onFinish}
+        onCancel={onCancel}
         okText="Thêm"
         okButtonProps={{
           disabled: !(dataHD.TienTraKhach >= 0 && dataHD.TienKhachTra),
         }}
-        onCancel={onCloseHoaDonModal}
       >
         {body}
       </Modal>

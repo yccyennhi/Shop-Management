@@ -8,7 +8,7 @@ const schema = new Schema(
     },
     idSP: {
       type:  Schema.Types.ObjectId,
-      ref: 'SanPhams',
+      ref: 'SanPham',
       required: true,
     },
     MaSP:{
@@ -25,11 +25,11 @@ const schema = new Schema(
     },
     MauSac: {
       type: String,
-      required: true,
+      default: 0
     },
     Size: {
-      type: String,
-      required: false,
+      type: Number,
+      default: 0
     },
     GiaVon:{
       type:Number,
@@ -40,8 +40,9 @@ const schema = new Schema(
       required: true,
     },
     BaoHanh: {
-      type: Boolean,
-      required: false,
+      type: String,
+      enum: ["Không bảo hành", "Có bảo hành"],
+      default: "Không bảo hành",
     },
     ThanhTien: {
       type: Number,
@@ -50,4 +51,4 @@ const schema = new Schema(
   },
   { timestamps: true }
 );
-export const CTHDModel = mongoose.model("CTHDs", schema);
+export const CTHDModel = mongoose.model("CTHD", schema);

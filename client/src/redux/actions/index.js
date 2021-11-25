@@ -139,10 +139,6 @@ export const getPhieuDoiTras = createActions({
     getPhieuDoiTrasSuccess: (payload) => payload,
     getPhieuDoiTrasFailure: (err) => err,
 })
-
-export const createHoaDon = createAction({
-
-})
 /* #endregion */
 
 export const getCTHDs = createActions({
@@ -167,6 +163,12 @@ export const createCTHD = createActions({
   createCTHDSuccess: (payload) => payload,
   createCTHDFailure: (err) => err,
 })
+export const updateSLKM = createActions({
+  updateSLKMRequest: (payload) => payload,
+  updateSLKMSuccess: (payload) => payload,
+  updateSLKMFailure: (err) => err,
+});
+
 export const getTongQuans = createActions({
   getDataRequest: undefined,
   getDataSuccess: (payload) => payload,

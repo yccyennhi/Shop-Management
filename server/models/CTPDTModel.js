@@ -4,7 +4,7 @@ const schema = new mongoose.Schema(
   {
     idPDT: {
       type:  Schema.Types.ObjectId,
-      ref: 'PhieuDoiTras',
+      ref: 'PhieuDoiTra',
       required: true,
     },
     MaPDT: {
@@ -13,7 +13,7 @@ const schema = new mongoose.Schema(
     },
     idSP: {
       type:  Schema.Types.ObjectId,
-      ref: 'SanPhams',
+      ref: 'SanPham',
       required: true,
     },
     MaSP: {
@@ -39,4 +39,4 @@ const schema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-export const CTPDTModel = mongoose.model("CTPDTs", schema);
+export const CTPDTModel = mongoose.model("CTPDT", schema);

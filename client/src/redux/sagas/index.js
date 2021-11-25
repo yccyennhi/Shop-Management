@@ -336,7 +336,6 @@ function* getTongQuansSaga(action) {
 
 function* getCuoiNgaysSaga(action) {
   try {
-    console.log('Vào saga');
     const CuoiNgays = yield call(api.getCuoiNgays);
     yield put(actions.getCuoiNgays.getCuoiNgaysSuccess(CuoiNgays.data));
   } catch (err) {

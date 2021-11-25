@@ -1,14 +1,21 @@
 import React, { useState } from "react";
-import { Table, Input, Row} from "antd";
+import { Table, Input, Row } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import moment from "moment";
 
-
 const { Search } = Input;
 
-function CuoiNgaytable() {
-
- const dataSource =[];
+function CuoiNgaytable({ currentDataSource }) {
+  const dataSource = Array.from(currentDataSource, (HoaDon) => ({
+    MaHD: HoaDon.MaHD,
+    TenNV: HoaDon.idNV.TenNV,
+    ThoiGian: HoaDon.ThoiGian,
+    SoLuong: HoaDon.SoLuong,
+    TongTienHang: HoaDon.TongTienHang,
+    GiamGia: HoaDon.GiamGia,
+    ThanhTien: HoaDon.ThanhTien,
+    LoiNhuan: HoaDon.TongTienHang - HoaDon.GiaVon,
+  }));
 
   const columns = [
     {
@@ -84,11 +91,14 @@ function CuoiNgaytable() {
         return record.TenKM.toLowerCase().includes(value.toLowerCase());
       },
     },
-    
+
     {
       title: "Thời gian",
       dataIndex: "ThoiGian",
       key: "ThoiGian",
+      render: (date) => {
+        return <p>{moment(date).format("DD/MM/YYYY")}</p>;
+      },
       sorter: (a, b) => a.ThoiGian - b.ThoiGian,
     },
 
@@ -101,37 +111,30 @@ function CuoiNgaytable() {
 
     {
       title: "Tổng tiền hàng",
-      dataIndex: "TamTinh",
-      key: "TamTinh",
-      sorter: (a, b) => a.TamTinh - b.TamTinh,
+      dataIndex: "TongTienHang",
+      key: "TongTienHang",
+      sorter: (a, b) => a.TongTienHang - b.TongTienHang,
     },
 
-    
     {
       title: "Giảm giá",
       dataIndex: "GiamGia",
       key: "GiamGia",
       sorter: (a, b) => a.GiamGia - b.GiamGia,
-    
     },
-    
-  
+
     {
       title: "Thành tiền",
       dataIndex: "ThanhTien",
       key: "ThanhTien",
       sorter: (a, b) => a.ThanhTien - b.ThanhTien,
-    
     },
     {
       title: "Lợi nhuận",
       dataIndex: "LoiNhuan",
       key: "LoiNhuan",
       sorter: (a, b) => a.LoiNhuan - b.LoiNhuan,
-    
     },
-    
-    
   ];
 
   const [select, setSelect] = useState({
@@ -159,7 +162,7 @@ function CuoiNgaytable() {
         pagination={true}
         //  scroll={{ x: 1500, y: 500 }}
         columns={columns}
-        rowKey="_id"
+        rowKey="MaHD"
         dataSource={dataSource}
       ></Table>
     </div>

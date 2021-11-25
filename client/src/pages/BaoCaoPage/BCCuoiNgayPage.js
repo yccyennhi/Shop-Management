@@ -20,19 +20,16 @@ export default function BCCuoiNgayPage() {
   }, [dispatch]);
 
   const HoaDons = useSelector(CuoiNgaysState$);
-  const [dataSoure, setdataSoure] = useState(HoaDons);
+  const [currentDataSource, setCurrentDataSource] = useState(HoaDons);
 
   React.useEffect(() => {
     if (HoaDons.length) {
       const data = HoaDons.filter(
-        (HoaDon) => HoaDon.ThoiGian.startOf("day") === currentDate.startOf("day")
+        (HoaDon) =>  moment(HoaDon.ThoiGian).isSame(currentDate,'day')
       );
-      console.log('data', data);
-      setdataSoure(data);
+      setCurrentDataSource(data);
     }
   }, [HoaDons, currentDate]);
-
-  console.log(currentDate, dataSoure);
   return (
     <Layout>
       <Layout>
@@ -60,7 +57,7 @@ export default function BCCuoiNgayPage() {
         </Sider>
         <Content style={{ padding: "17px 24px 24px" }}>
           <div className="site-layout-content">
-            <CuoiNgaytable />
+            <CuoiNgaytable currentDataSource={currentDataSource} />
           </div>
         </Content>
       </Layout>

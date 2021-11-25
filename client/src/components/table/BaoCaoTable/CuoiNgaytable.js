@@ -6,17 +6,21 @@ import moment from "moment";
 const { Search } = Input;
 
 function CuoiNgaytable({ currentDataSource }) {
+  // const dataSource = Array.from(currentDataSource, (HoaDon) => ({
+  //   MaHD: HoaDon.MaHD,
+  //   TenNV: HoaDon.idNV.TenNV,
+  //   ThoiGian: HoaDon.ThoiGian,
+  //   SoLuong: HoaDon.SoLuong,
+  //   TongTienHang: HoaDon.TongTienHang,
+  //   GiamGia: HoaDon.GiamGia,
+  //   ThanhTien: HoaDon.ThanhTien,
+  //   LoiNhuan: HoaDon.TongTienHang - HoaDon.GiaVon,
+  // }));
   const dataSource = Array.from(currentDataSource, (HoaDon) => ({
-    MaHD: HoaDon.MaHD,
+    ...HoaDon,
     TenNV: HoaDon.idNV.TenNV,
-    ThoiGian: HoaDon.ThoiGian,
-    SoLuong: HoaDon.SoLuong,
-    TongTienHang: HoaDon.TongTienHang,
-    GiamGia: HoaDon.GiamGia,
-    ThanhTien: HoaDon.ThanhTien,
     LoiNhuan: HoaDon.TongTienHang - HoaDon.GiaVon,
   }));
-
   const columns = [
     {
       title: "Mã hóa đơn",
@@ -97,7 +101,7 @@ function CuoiNgaytable({ currentDataSource }) {
       dataIndex: "ThoiGian",
       key: "ThoiGian",
       render: (date) => {
-        return <p>{moment(date).format("DD/MM/YYYY")}</p>;
+        return <p>{moment(date).format("HH:MM:SS")}</p>;
       },
       sorter: (a, b) => a.ThoiGian - b.ThoiGian,
     },

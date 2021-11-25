@@ -6,7 +6,7 @@ import moment from "moment";
 
 const { Search } = Input;
 
-function HangHoatable() {
+function HangHoatable({currentDataSource}) {
 
  const dataSource =[];
 

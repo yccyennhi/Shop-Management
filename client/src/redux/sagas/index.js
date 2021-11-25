@@ -343,6 +343,16 @@ function* getCuoiNgaysSaga(action) {
   }
 }
 
+
+function* getBCBanHangsSaga(action) {
+  try {
+    const BCBanHangs = yield call(api.getBCBanHangs);
+    yield put(actions.getBCBanHangs.getBCBanHangsSuccess(BCBanHangs.data));
+  } catch (err) {
+    yield put(actions.getBCBanHangs.getBCBanHangsFailure(err));
+  }
+}
+
 function* mySaga() {
 
   yield takeLatest(
@@ -470,6 +480,11 @@ function* mySaga() {
   yield takeLatest(
     actions.getCuoiNgays.getCuoiNgaysRequest,
     getCuoiNgaysSaga
+  );
+
+  yield takeLatest(
+    actions.getBCBanHangs.getBCBanHangsRequest,
+    getBCBanHangsSaga
   );
 }
 

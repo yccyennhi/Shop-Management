@@ -32,12 +32,11 @@ export const getBCBanHangs = async (req, res) => {
     //   ThoiGian: { $gte: today, $lte: tomorrow },
     // });
 
-    const HoaDons = await HoaDonModel.find().then((HoaDonsList) => {
+    await HoaDonModel.find().then((HoaDonsList) => {
       if (HoaDonsList.length) {
 
        Object.values(HoaDonsList).forEach((HoaDon) => {
-
-          let date = HoaDon.ThoiGian.startOf("day");
+          let date = moment(HoaDon.ThoiGian).startOf("day");
 
           if (!totalHoaDonByDay[date])
             totalHoaDonByDay[date] = {
@@ -48,17 +47,17 @@ export const getBCBanHangs = async (req, res) => {
               LoiNhuan: 0,
             };
         
-        totalHoaDonByDay[date]['SoLuong']+= HoaDon.SoLuong;
+        totalHoaDonByDay[date]['SoLuong']+=1;
         totalHoaDonByDay[date]['TongTienHang']+=HoaDon.TongTienHang;
         totalHoaDonByDay[date]['GiamGia']+=HoaDon.GiamGia;
         totalHoaDonByDay[date]['ThanhTien']+=HoaDon.ThanhTien;
-        totalHoaDonByDay[date]['LoiNhuan']+=HoaDon.LoiNhuan;
+        totalHoaDonByDay[date]['LoiNhuan']+=HoaDon.TongTienHang - HoaDon.GiaVon;
             
         });
+
       }
     });
-
-    res.status(200).json(HoaDons);
+    res.status(200).json(totalHoaDonByDay);
   } catch (err) {
     res.status(500).json({ error: err });
   }

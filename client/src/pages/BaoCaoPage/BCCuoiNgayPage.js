@@ -50,7 +50,7 @@ export default function BCCuoiNgayPage() {
                 bordered={false}
                 style={{ width: 250, color: COLOR.darkblue }}
               >
-                <DatePicker defaultValue={moment()} format="DD/MM/YYYY"  onChange={(e) => setCurrentDate(e)}/>
+                <DatePicker defaultValue={moment()} format="DD/MM/YYYY"  onChange={(e) => setCurrentDate(e.startOf('day'))}/>
               </Card>
             </Space>
           </div>

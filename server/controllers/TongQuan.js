@@ -5,7 +5,6 @@ import { CTHDModel } from './../models/CTHDModel.js';
 
 export const getHoaDonsToday = async (req, res, next) => {
   try {
-    console.log("Vào getHoaDonsToday trong server");
     var today = moment().startOf("day");
     var tomorrow = moment(today).endOf("day");
     const HoaDonsToday = await HoaDonModel.find({

@@ -27,6 +27,7 @@ export default function BCCuoiNgayPage() {
       const data = HoaDons.filter(
         (HoaDon) => HoaDon.ThoiGian.startOf("day") === currentDate.startOf("day")
       );
+      console.log('data', data);
       setdataSoure(data);
     }
   }, [HoaDons, currentDate]);

@@ -17,12 +17,12 @@ const schema = new Schema(
     },
     idNV: {
       type: Schema.Types.ObjectId,
-      ref: 'NhanViens',
+      ref: 'NhanVien',
       required: true,
     },
     idKM: {
       type: Schema.Types.ObjectId,
-      ref: 'KhuyenMais',
+      ref: 'KhuyenMai',
       required: false,
     },
     MaKM: {
@@ -31,7 +31,7 @@ const schema = new Schema(
     },
     idKH: {
       type: Schema.Types.ObjectId,
-      ref: 'KhachHangs',
+      ref: 'KhachHang',
       required: false,
     },
     MaKH: {

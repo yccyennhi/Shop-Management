@@ -2,6 +2,7 @@ import moment from "moment";
 import { HoaDonModel } from "../models/HoaDonModel.js";
 import { PhieuDoiTraModel } from "./../models/PhieuDoiTraModel.js";
 import { CTHDModel } from "./../models/CTHDModel.js";
+import { NhanVienModel } from './../models/NhanVienModel.js';
 
 export const getCuoiNgays = async (req, res) => {
   try {
@@ -11,9 +12,11 @@ export const getCuoiNgays = async (req, res) => {
     //   // find in today
     //   ThoiGian: { $gte: today, $lte: tomorrow },
     // });
-    const HoaDons = await HoaDonModel.find().populate("idNV", ["TenNV"]);
-    console.log(HoaDons);
-    res.status(200).json(HoaDons);
+    await HoaDonModel.find().populate('idNV','TenNV').exec(function (err, HoaDonsCuoiNgay){
+      if(err)
+        console.log(err);
+      res.status(200).json(HoaDonsCuoiNgay);
+    });
   } catch (err) {
     res.status(500).json({ error: err });
   }

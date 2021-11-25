@@ -16,8 +16,7 @@ export const TaoPhieuBaoHanhModalState$ = (state) => state.TaoPhieuBaoHanhModal;
 export const PhieuHensState$ = (state) => state.PhieuHens.data;
 export const isloadingPhieuHensState$ = (state) => state.PhieuHens.isLoading;
 export const TaoPhieuHenModalState$ = (state) => state.TaoPhieuHenModal;
-export const CTHDsState$ = (state) => state.CTHDs.data;
-export const CTPDTsState$ = (state) => state.CTPDTs.data;
+
 
 //TongQuan
 export const TongQuanStatistics$ =(state) => state.TongQuans.statistics;

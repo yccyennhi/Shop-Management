@@ -136,9 +136,6 @@ export const getPhieuDoiTras = createActions({
   getPhieuDoiTrasFailure: (err) => err,
 });
 
-export const createHoaDon = createAction({});
-/* #endregion */
-
 export const getCTHDs = createActions({
   getCTHDsRequest: undefined,
   getCTHDsSuccess: (payload) => payload,
@@ -151,9 +148,6 @@ export const getCTPDTs = createActions({
   getCTPDTsFailure: (err) => err,
 });
 
-<<<<<<< HEAD
-/* #region  TongQuan */
-=======
 export const createHoaDon = createActions({
   createHoaDonRequest: (payload) => payload,
   createHoaDonSuccess: (payload) => payload,
@@ -164,7 +158,6 @@ export const createCTHD = createActions({
   createCTHDSuccess: (payload) => payload,
   createCTHDFailure: (err) => err,
 })
->>>>>>> add_hd_cthd_pdt_ctpdt
 export const getTongQuans = createActions({
   getDataRequest: undefined,
   getDataSuccess: (payload) => payload,
@@ -173,7 +166,6 @@ export const getTongQuans = createActions({
   getStatistics: (payload) => payload,
   getRankingByDoanhThu: (payload) => payload,
   getHighestSanPhamList: (payload) => payload,
-<<<<<<< HEAD
 });
 
 /* #endregion */
@@ -190,9 +182,6 @@ export const getBCBanHangs = createActions({
   getBCBanHangsSuccess: (payload) => payload,
   getBCBanHangsFailure: (err) => err,
 });
-=======
-})
->>>>>>> add_hd_cthd_pdt_ctpdt
 
 export const getBCHangHoas = createActions({
   getBCHangHoasRequest: undefined,

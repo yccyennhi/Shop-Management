@@ -2,11 +2,6 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema
 const schema = new Schema(
   {
-    idHD: {
-      type : Schema.Types.ObjectId,
-      ref: 'HoaDons',
-      required: true,
-    },
     MaHD: {
       type: String,
       required: true,
@@ -43,6 +38,10 @@ const schema = new Schema(
     DonGia: {
       type: Number,
       required: true,
+    },
+    BaoHanh: {
+      type: Boolean,
+      required: false,
     },
     ThanhTien: {
       type: Number,

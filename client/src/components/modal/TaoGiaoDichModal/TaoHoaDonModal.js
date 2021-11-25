@@ -38,6 +38,7 @@ export default function TaoHoaDonModal({ HoaDons }) {
   const onCloseHoaDonModal = React.useCallback(() => {
     dispatch(hideTaoHoaDonModal());
   }, [dispatch]);
+  const HDs = useSelector(HoaDonsState$);
   const SanPhams = useSelector(SanPhamsState$);
   //const KhachHangs = useSelector(KhachHangsState$);
   //const NhanViens = useSelector(NhanViensState$);
@@ -48,7 +49,9 @@ export default function TaoHoaDonModal({ HoaDons }) {
   React.useEffect(() => {
     dispatch(actions.getKhuyenMais.getKhuyenMaisRequest());
   }, [dispatch]);
-
+  React.useEffect(() => {
+    dispatch(actions.getHoaDons.getHoaDonsRequest());
+  }, [dispatch]);
   // React.useEffect(() => {
   //   dispatch(actions.getKhachHangs.getKhachHangsRequest());
   // }, [dispatch]);
@@ -168,7 +171,6 @@ export default function TaoHoaDonModal({ HoaDons }) {
   };
 
   const onFinish = React.useCallback(() => {
-    console.log(dataHD.MaHD);
     if (dataHD.MaKM) {
       if (dataHD.id == "619f673906c0b162302fb7f2") {
         message.warning("Mã khuyến mãi chưa được thêm thành công");
@@ -198,20 +200,33 @@ export default function TaoHoaDonModal({ HoaDons }) {
     } else {
       dataHD.MaHD = "HD" + length;
     }
-    //dispatch(createHoaDon.createHoaDonRequest(dataHD));
-    const KhuyenMai = KhuyenMais.find((km) => km.MaKM === dataHD.MaKM);
-    KhuyenMai.SoLuong -= 1;
-    dispatch(actions.updateKhuyenMai.updateKhuyenMaiRequest(KhuyenMai));
-    // console.log(HoaDons);
+    // dispatch(createHoaDon.createHoaDonRequest(dataHD));
+    // console.log(HDs);
+    // const KhuyenMai = KhuyenMais.find((km) => km.MaKM === dataHD.MaKM);
+    // dispatch(
+    //   actions.updateKhuyenMai.updateKhuyenMaiRequest({
+    //     ...KhuyenMai,
+    //     SoLuong: KhuyenMai.SoLuong - 1,
+    //   })
+    // );
 
-    // const HoaDon = HoaDons.find((e) => e.MaHD === dataHD.MaHD);
+    SPsInfo.map((sp) => {
+      // const SP = SanPhams.find((elm) => elm._id === sp.idSP);
+      // dispatch(
+      //   actions.updateSanPham.updateSanPhamRequest({
+      //     ...SP,
+      //     TonKho: SP.TonKho - sp.SoLuong,
+      //   })
+      // );
+      sp.MaHD = dataHD.MaHD;
+      dispatch(createCTHD.createCTHDRequest(sp));
+    });
 
-    // console.log(HoaDon);
-    // if (HoaDon) {
-    //   SPsInfo.forEach((SP) => {
-    //     dispatch(createCTHD.createCTHDRequest(SP));
-    //   });
-    // }
+    // SPsInfo.forEach((SP) => {
+    //   SP.MaHD = dataHD.MaHD;
+    //   console.log(SP);
+    // });
+
     // if (dataHD.MaKH) {
     //   const KH = KhachHangs.find((e) => e.MaKH === dataHD.MaKH);
     //   if (KH) setDataHD({ ...dataHD, idKH: KH._id });
@@ -228,7 +243,7 @@ export default function TaoHoaDonModal({ HoaDons }) {
     //     return;
     //   }
     // }
-  }, [dataHD, dispatch]);
+  }, [dataHD, dispatch, SPsInfo]);
 
   const body = (
     <>
@@ -466,19 +481,13 @@ export default function TaoHoaDonModal({ HoaDons }) {
     <div>
       <Modal
         title="Thêm hóa đơn"
-        // {
-        //   <>
-        //     <h3 style={{ float: "left", marginRight: "5px" }}>
-        //       Thêm hóa đơn:{" "}
-        //     </h3>{" "}
-        //     <span style={{ fontWeight: "initial" }}>#{MaHD}</span>
-        //   </>
-        // }
         width={1000}
         visible={isShow}
         onOk={onFinish}
         okText="Thêm"
-        okButtonProps={{ disabled: dataHD.TienTraKhach <= 0 }}
+        okButtonProps={{
+          disabled: !(dataHD.TienTraKhach >= 0 && dataHD.TienKhachTra),
+        }}
         onCancel={onCloseHoaDonModal}
       >
         {body}

@@ -84,7 +84,7 @@ export default function TaoHoaDonModal({ HoaDons }) {
   });
   const [dataSP, setDataSP] = React.useState({
     MaSP: "",
-    TenSP: "",
+    SoLuong: 0,
   });
   const [SPsInfo, setSPsInfo] = React.useState([]);
   const btnAddSP = useCallback(() => {
@@ -105,7 +105,7 @@ export default function TaoHoaDonModal({ HoaDons }) {
       SPsInfo.push(SPInfo);
       setDataSP({
         MaSP: "",
-        TenSP: "",
+        SoLuong: 0,
       });
       dataHD.SoLuong = 0;
       dataHD.TongTienHang = 0;
@@ -219,13 +219,10 @@ export default function TaoHoaDonModal({ HoaDons }) {
       //   })
       // );
       sp.MaHD = dataHD.MaHD;
-      dispatch(createCTHD.createCTHDRequest(sp));
+      const elm = {...sp,MaHD: dataHD.MaHD};
+      console.log(elm);
+      dispatch(createCTHD.createCTHDRequest(elm));
     });
-
-    // SPsInfo.forEach((SP) => {
-    //   SP.MaHD = dataHD.MaHD;
-    //   console.log(SP);
-    // });
 
     // if (dataHD.MaKH) {
     //   const KH = KhachHangs.find((e) => e.MaKH === dataHD.MaKH);

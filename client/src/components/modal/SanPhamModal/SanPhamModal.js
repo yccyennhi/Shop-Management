@@ -55,7 +55,6 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
     HinhAnh: "",
     MoTa: "",
   });
-  console.log(currentId);
   const SanPhamValue = useSelector((state) =>
     state.SanPhams.data.find((SanPham) =>
       SanPham._id === currentId ? SanPham : null
@@ -78,10 +77,8 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
       MoTa: "",
     });
     if (SanPhamValue) setData(SanPhamValue);
-    console.log("SanPham", data);
     if (data.TonKho > 0) setTrangthai(true);
   }, [SanPhamValue]);
-  console.log("SanPham", data);
   const dispatch = useDispatch();
 
   const handleCancel = React.useCallback(() => {

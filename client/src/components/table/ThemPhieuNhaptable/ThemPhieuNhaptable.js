@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { ExportTableButton, Table } from "ant-table-extensions";
-
 import {
   Input,
   Row,
@@ -12,237 +12,290 @@ import {
   Space,
   Typography,
   Avatar,
+  Popconfirm,
+  Form,
+  Modal,
 } from "antd";
-import moment from "moment";
-import { useDispatch, useSelector } from "react-redux";
-import ExpandedRowRender from "./ExpandedRowRender";
-import {
-  SearchOutlined,
-  DownOutlined,
-  FileExcelOutlined,
-} from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import {
   PhieuNhapsState$,
   isloadingPhieuNhapsState$,
+  SanPhamsState$,
 } from "../../../redux/selectors";
 import * as actions from "../../../redux/actions";
+import {
+  messageError,
+  messageSuccess,
+  messageLoadingSuccess,
+} from "../../message";
 const { Search } = Input;
 
-function ThemPhieuNhaptable({ trangthai, baohanh, currentId, setCurrentId }) {
+function ThemPhieuNhaptable({ MaSP, data, setData }) {
+  const SP = useSelector(SanPhamsState$);
   const dispatch = useDispatch();
-  const [PhieuNhaps, setPhieuNhaps] = useState(useSelector(PhieuNhapsState$));
-  const PN = useSelector(PhieuNhapsState$);
-  const loadingPhieuNhaps = useSelector(isloadingPhieuNhapsState$);
+  const [isEditing, setIsEditing] = useState(false);
+  const [Editing, setEditing] = useState(false);
+  const [dataSource, setDataSource] = useState(data);
   React.useEffect(() => {
-    dispatch(actions.getPhieuNhaps.getPhieuNhapsRequest());
+    dispatch(actions.getSanPhams.getSanPhamsRequest());
   }, [dispatch]);
+
   React.useEffect(() => {
-    setPhieuNhaps(PN);
-  }, [PN]);
-  React.useEffect(() => {}, [trangthai, baohanh]);
-  const dataSource = PhieuNhaps;
+    let SanPham = SP.find(function (e) {
+      return e.MaSP == MaSP;
+    });
+    if (dataSource.length != 0) {
+      let IDData = dataSource.find(function (e) {
+        return e.MaSP == MaSP;
+      });
+      if (IDData == undefined) {
+        if (SanPham != undefined) {
+          const newData = {
+            MaSP: SanPham.MaSP,
+            TenSP: SanPham.TenSP,
+            MauSac: SanPham.MauSac,
+            Size: SanPham.Size,
+            LoaiHang: SanPham.LoaiHang,
+            GiamGia: 0,
+            SoLuong: 0,
+            GiaNhap: 0,
+            ThanhTien: 0,
+          };
+          setDataSource((pre) => {
+            return [...pre, newData];
+          });
+          messageSuccess("Thêm sản phẩm vào danh sách nhập thành công!");
+
+          setData(dataSource);
+          console.log("data", dataSource);
+        }
+      } else {
+        messageError("Sản phẩm đã tồn tại trong danh sách nhập kho!");
+      }
+    } else {
+      if (SanPham != undefined) {
+        const newData = {
+          MaSP: SanPham.MaSP,
+          TenSP: SanPham.TenSP,
+          MauSac: SanPham.MauSac,
+          Size: SanPham.Size,
+          LoaiHang: SanPham.LoaiHang,
+          SoLuong: 0,
+          GiamGia: 0,
+          GiaNhap: 0,
+          ThanhTien: 0,
+        };
+        setDataSource((pre) => {
+          return [...pre, newData];
+        });
+        setData(dataSource);
+        console.log("data", dataSource);
+        messageSuccess("Thêm sản phẩm vào danh sách nhập thành công!");
+      }
+    }
+  }, [MaSP]);
+  const onEdit = (record) => {
+    setIsEditing(true);
+    setEditing({ ...record });
+  };
+  const resetEdit = () => {
+    setIsEditing(false);
+    setEditing(null);
+  };
   const columns = [
     {
-      title: "Mã nhập hàng",
-      dataIndex: "MaPN",
-      key: "MaPN",
-      filterDropdown: ({
-        setSelectedKeys,
-        selectedKeys,
-        confirm,
-        clearFilters,
-      }) => {
+      key: "MaSP",
+      title: "Mã sản phẩm",
+      dataIndex: "MaSP",
+    },
+    {
+      key: "TenSP",
+      title: "Tên sản phẩm",
+      dataIndex: "TenSP",
+    },
+    {
+      key: "MauSac",
+      title: "Màu sắc",
+      dataIndex: "MauSac",
+    },
+    {
+      key: "Size",
+      title: "Size",
+      dataIndex: "Size",
+    },
+    {
+      key: "LoaiHang",
+      title: "Loại hàng",
+      dataIndex: "LoaiHang",
+    },
+    {
+      key: "SoLuong",
+      title: "Số lượng",
+      dataIndex: "SoLuong",
+    },
+    {
+      key: "GiaNhap",
+      title: "Giá nhập",
+      dataIndex: "GiaNhap",
+    },
+    {
+      key: "GiamGia",
+      title: "Giảm giá",
+      dataIndex: "GiamGia",
+    },
+    {
+      key: "ThanhTien",
+      title: "Thành tiền",
+      dataIndex: "ThanhTien",
+    },
+    {
+      key: "Action",
+      title: "Chỉnh sửa",
+      render: (record) => {
         return (
-          <Search
-            allowClear
-            autoFocus
-            style={{ width: 200 }}
-            placeholder="Nhập mã PN cần tìm"
-            value={selectedKeys[0]}
-            onChange={(e) => {
-              setSelectedKeys(e.target.value ? [e.target.value] : []);
-              confirm({ closeDropdown: false });
-            }}
-            onPressEnter={() => {
-              confirm();
-            }}
-            onBlur={() => {
-              confirm();
-            }}
-            onSearch={() => {
-              confirm();
-            }}
-          ></Search>
+          <>
+            <EditOutlined
+              onClick={() => {
+                onEdit(record);
+              }}
+            />
+            <DeleteOutlined
+              onClick={() => {
+                Modal.confirm({
+                  okType: "danger",
+                  title: "Xác nhận xóa sản phẩm khỏi danh sách?",
+                  onOk: () => {
+                    let listSP = dataSource.filter(
+                      (e) => e.MaSP != record.MaSP
+                    );
+                    setDataSource(listSP);
+                    setData(dataSource);
+                  },
+                });
+              }}
+              style={{ color: "red", marginLeft: 12 }}
+            />
+          </>
         );
       },
-      filterIcon: () => {
-        return <SearchOutlined />;
-      },
-      onFilter: (value, record) => {
-        return record.MaPN.toLowerCase().includes(value.toLowerCase());
-      },
-    },
-    {
-      title: "Thời gian",
-      dataIndex: "NgayTao",
-      key: "NgayTao",
-      render: (NgayTao) => moment(NgayTao).format("DD-MM-YYYY"),
-    },
-    {
-      title: "Nhà cung cấp",
-      dataIndex: "TenNCC",
-      key: "TenNCC",
-      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
-        return (
-          <Search
-            allowClear
-            autoFocus
-            style={{ width: 200 }}
-            placeholder="Nhập tên SP cần tìm"
-            value={selectedKeys[0]}
-            onChange={(e) => {
-              setSelectedKeys(e.target.value ? [e.target.value] : []);
-              confirm({ closeDropdown: false });
-            }}
-            onPressEnter={() => {
-              confirm();
-            }}
-            onBlur={() => {
-              confirm();
-            }}
-            onSearch={() => {
-              confirm();
-            }}
-          ></Search>
-        );
-      },
-      filterIcon: () => {
-        return <SearchOutlined />;
-      },
-      onFilter: (value, record) => {
-        return record.TenNCC.toLowerCase().includes(value.toLowerCase());
-      },
-    },
-    {
-      title: "Tổng tiền hàng",
-      dataIndex: "TongTien",
-      key: "TongTien",
-      sorter: (a, b) => a.TongTien - b.TongTien,
-    },
-    {
-      title: "Tiền đã trả NCC",
-      dataIndex: "TienTra",
-      key: "TienTra",
-      sorter: (a, b) => a.TienTra - b.TienTra,
-    },
-    {
-      title: "Trạng thái",
-      dataIndex: "TrangThai",
-      key: "TrangThai",
-      filters: [
-        {
-          text: "Phiếu tạm",
-          value: "Phiếu tạm",
-        },
-        {
-          text: "Đã nhập hàng",
-          value: "Đã nhập hàng",
-        },
-        {
-          text: "Đã hủy",
-          value: "Đã hủy",
-        },
-      ],
-      onFilter: (value, record) => record.TrangThai.indexOf(value) === 0,
     },
   ];
-  const [select, setSelect] = useState({
-    selectedRowKeys: [],
-    loading: false,
-  });
 
-  console.log("selectedRowKeys", select);
-
-  const { selectedRowKeys, loading } = select;
-
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: (selectedRowKeys) => {
-      setSelect({
-        ...select,
-        selectedRowKeys: selectedRowKeys,
-      });
-    },
-  };
-  const hasSelected = selectedRowKeys.length > 0;
-  function handleButtonClick(e) {
-    message.info("Click on left button.");
-    console.log("click left button", e);
-  }
-
-  function handleMenuClick(e) {
-    message.info("Click on menu item.");
-    console.log("click", e);
-  }
-  const menu = (
-    <Menu onClick={handleMenuClick}>
-      <Menu.Item key="1">Nhập hàng</Menu.Item>
-    </Menu>
-  );
   return (
     <div>
-      <Row justify="end">
-        <Space
-          direction="horizontal"
-          style={{ paddingTop: 10, marginBottom: 16 }}
-        >
-          <span style={{ marginRight: 8 }}>
-            {hasSelected
-              ? `Có ${selectedRowKeys.length} hàng hóa được chọn`
-              : ""}
-          </span>
-          <Dropdown overlay={menu} disabled={!hasSelected}>
-            <Button>
-              Thao tác <DownOutlined />
-            </Button>
-          </Dropdown>
-          <ExportTableButton
-            dataSource={dataSource}
-            columns={columns}
-            btnProps={{ icon: <FileExcelOutlined /> }}
-            showColumnPicker={true}
-            showColumnPickerProps={{ id: "Thêm hàng hóa" }}
-            fileName="HangHoaCSV"
-          >
-            Tải file CSV
-          </ExportTableButton>
-        </Space>
-      </Row>
-
       <Table
+        scroll={{ x: 1000, y: 500 }}
         columns={columns}
-        searchable
-        searchableProps={{
-          inputProps: {
-            placeholder: "Nhập nội dung cần tìm",
-            prefix: <SearchOutlined />,
-            width: 200,
-          },
-        }}
-        loading={loadingPhieuNhaps}
-        pagination={true}
-        scroll={{ x: 1500, y: 500 }}
-        rowSelection={rowSelection}
-        expandable={{
-          expandedRowRender: (record) => (
-            <ExpandedRowRender record={record} setCurrentId={setCurrentId} />
-          ),
-
-          rowExpandable: (record) => record.TenSP !== "Not Expandable",
-        }}
-        rowKey="_id"
         dataSource={dataSource}
       ></Table>
+      <Modal
+        title="Chỉnh sửa sản phẩm nhập kho"
+        visible={isEditing}
+        onCancel={() => {
+          resetEdit();
+        }}
+        onOk={() => {
+          if (
+            Editing.SoLuong == "" ||
+            Editing.GiaNhap == "" ||
+            Editing.GiamGia == ""
+          ) {
+            messageError("Vui lòng nhập đầy đủ thông tin!");
+          } else {
+            let list = dataSource.map((data) => {
+              if (data.MaSP === Editing.MaSP) {
+                messageSuccess("Sửa thông tin thành công!")
+                return Editing;
+              } else {
+                return data;
+              }
+            });
+            setDataSource(list);
+            resetEdit();
+          }
+        }}
+      >
+        <Form
+          labelCol={{
+            span: 8,
+          }}
+          wrapperCol={{
+            span: 16,
+          }}
+          layout="horizontal"
+        >
+          <Form.Item label="Số lượng" required>
+            <Input
+              placeholder="Nhập số lượng sản phẩm muốn nhập"
+              value={Editing?.SoLuong}
+              onChange={(e) => {
+                setEditing((pre) => {
+                  return { ...pre, SoLuong: e.target.value };
+                });
+                if (
+                  Editing?.SoLuong != null &&
+                  Editing?.GiaNhap != null &&
+                  Editing?.GiamGia != null
+                ) {
+                  const sum = e * (Editing?.GiaNhap - Editing?.GiamGia);
+
+                  setEditing((pre) => {
+                    return { ...pre, ThanhTien: sum };
+                  });
+                }
+              }}
+            ></Input>
+          </Form.Item>
+          <Form.Item label="Giá nhập" required>
+            <Input
+              placeholder="Nhập giá nhập"
+              value={Editing?.GiaNhap}
+              onChange={(e) => {
+                setEditing((pre) => {
+                  return { ...pre, GiaNhap: e.target.value };
+                });
+                if (
+                  Editing?.SoLuong != null &&
+                  Editing?.GiaNhap != null &&
+                  Editing?.GiamGia != null
+                ) {
+                  const sum = Editing?.SoLuong * (e - Editing?.GiamGia);
+
+                  setEditing((pre) => {
+                    return { ...pre, ThanhTien: sum };
+                  });
+                }
+              }}
+            ></Input>
+          </Form.Item>
+          <Form.Item label="Giảm giá" required>
+            <Input
+              placeholder="Nhập số tiền được giảm"
+              value={Editing?.GiamGia}
+              onChange={(e) => {
+                setEditing((pre) => {
+                  return { ...pre, GiamGia: e.target.value };
+                });
+                if (
+                  Editing?.SoLuong != null &&
+                  Editing?.GiaNhap != null &&
+                  Editing?.GiamGia != null
+                ) {
+                  const sum =
+                    Editing?.SoLuong * (Editing?.GiaNhap - e.target.value);
+
+                  setEditing((pre) => {
+                    return { ...pre, ThanhTien: sum };
+                  });
+                }
+              }}
+            ></Input>
+          </Form.Item>
+          <Form.Item label="Thành tiền">
+            <Input value={Editing?.ThanhTien} disabled="true"></Input>
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 }

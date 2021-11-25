@@ -48,9 +48,9 @@ const { OptGroup, Option } = AutoComplete;
 export default function ThemPhieuNhapPage() {
   const dispatch = useDispatch();
   const [currentId, setCurrentId] = useState(null);
+  const [MaSP, setMaSP] = useState(null);
   const dateNow = moment().toDate();
   const SP = useSelector(SanPhamsState$);
-  const [valuee, setValue] = useState("");
   const [dataSource, setDataSource] = useState([]);
   React.useEffect(() => {
     dispatch(actions.getSanPhams.getSanPhamsRequest());
@@ -58,6 +58,13 @@ export default function ThemPhieuNhapPage() {
 
   const openCreateSanPhamModal = React.useCallback(() => {
     dispatch(actions.showTaoSanPhamModal());
+  }, [dispatch]);
+
+  const onHoanThanh = React.useCallback(() => {
+    
+  }, [dispatch]);
+
+  const onLuuTam = React.useCallback(() => {
   }, [dispatch]);
 
   const options = SP.map((data) => {
@@ -105,122 +112,6 @@ export default function ThemPhieuNhapPage() {
     },
   };
 
-  const hasSelected = selectedRowKeys.length > 0;
-  const columns = [
-    {
-      title: "Mã nhập hàng",
-      dataIndex: "MaPN",
-      key: "MaPN",
-      filterDropdown: ({
-        setSelectedKeys,
-        selectedKeys,
-        confirm,
-        clearFilters,
-      }) => {
-        return (
-          <Search
-            allowClear
-            autoFocus
-            style={{ width: 200 }}
-            placeholder="Nhập mã PN cần tìm"
-            value={selectedKeys[0]}
-            onChange={(e) => {
-              setSelectedKeys(e.target.value ? [e.target.value] : []);
-              confirm({ closeDropdown: false });
-            }}
-            onPressEnter={() => {
-              confirm();
-            }}
-            onBlur={() => {
-              confirm();
-            }}
-            onSearch={() => {
-              confirm();
-            }}
-          ></Search>
-        );
-      },
-      filterIcon: () => {
-        return <SearchOutlined />;
-      },
-      onFilter: (value, record) => {
-        return record.MaPN.toLowerCase().includes(value.toLowerCase());
-      },
-    },
-    {
-      title: "Thời gian",
-      dataIndex: "NgayTao",
-      key: "NgayTao",
-      render: (NgayTao) => moment(NgayTao).format("DD-MM-YYYY"),
-    },
-    {
-      title: "Nhà cung cấp",
-      dataIndex: "TenNCC",
-      key: "TenNCC",
-      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
-        return (
-          <Search
-            allowClear
-            autoFocus
-            style={{ width: 200 }}
-            placeholder="Nhập tên SP cần tìm"
-            value={selectedKeys[0]}
-            onChange={(e) => {
-              setSelectedKeys(e.target.value ? [e.target.value] : []);
-              confirm({ closeDropdown: false });
-            }}
-            onPressEnter={() => {
-              confirm();
-            }}
-            onBlur={() => {
-              confirm();
-            }}
-            onSearch={() => {
-              confirm();
-            }}
-          ></Search>
-        );
-      },
-      filterIcon: () => {
-        return <SearchOutlined />;
-      },
-      onFilter: (value, record) => {
-        return record.TenNCC.toLowerCase().includes(value.toLowerCase());
-      },
-    },
-    {
-      title: "Tổng tiền hàng",
-      dataIndex: "TongTien",
-      key: "TongTien",
-      sorter: (a, b) => a.TongTien - b.TongTien,
-    },
-    {
-      title: "Tiền đã trả NCC",
-      dataIndex: "TienTra",
-      key: "TienTra",
-      sorter: (a, b) => a.TienTra - b.TienTra,
-    },
-    {
-      title: "Trạng thái",
-      dataIndex: "TrangThai",
-      key: "TrangThai",
-      filters: [
-        {
-          text: "Phiếu tạm",
-          value: "Phiếu tạm",
-        },
-        {
-          text: "Đã nhập hàng",
-          value: "Đã nhập hàng",
-        },
-        {
-          text: "Đã hủy",
-          value: "Đã hủy",
-        },
-      ],
-      onFilter: (value, record) => record.TrangThai.indexOf(value) === 0,
-    },
-  ];
   return (
     <Layout>
       <Layout>
@@ -233,27 +124,35 @@ export default function ThemPhieuNhapPage() {
       <Layout>
         <Content>
           <Layout style={{ padding: "0px 24px 24px" }}>
-            <div className="site-layout-content" style={{padding:"0px 24px 24px 24px"}}>
+            <div
+              className="site-layout-content"
+              style={{ padding: "0px 24px 24px 24px" }}
+            >
               <PageHeader title="Thêm sản phẩm muốn nhập" />
               <Row justify="start">
-              <Tooltip placement="bottomLeft" title="Nhập mã sản phẩm cần tìm và chọn sản phẩm trong danh sách đổ xuống để thêm vào phiếu nhập, nếu chưa có vui lòng tạo mới sản phẩm!">
-
-                <AutoComplete
-                  // onSearch={handleSearch}
-                  dropdownClassName="certain-category-search-dropdown"
-                  style={{
-                    width: 250,
-                  }}
-                  dropdownMatchSelectWidth={500}
-                  style={{ width: "880px" }}
-                  options={options}
-                  filterOption
+                <Tooltip
+                  placement="bottomLeft"
+                  title="Nhập mã sản phẩm cần tìm và chọn sản phẩm trong danh sách đổ xuống để thêm vào phiếu nhập, nếu chưa có vui lòng tạo mới sản phẩm!"
                 >
-                  <Input.Search
-                    size="medium"
-                    placeholder="Nhập mã sản phẩm muốn nhập kho"
-                  />
-                </AutoComplete>
+                  <AutoComplete
+                    // onSearch={handleSearch}
+                    dropdownClassName="certain-category-search-dropdown"
+                    style={{
+                      width: 250,
+                    }}
+                    dropdownMatchSelectWidth={500}
+                    style={{ width: "880px" }}
+                    options={options}
+                    filterOption
+                    onSelect={(e) => {
+                      setMaSP(e);
+                    }}
+                  >
+                    <Input.Search
+                      size="medium"
+                      placeholder="Nhập mã sản phẩm muốn nhập kho"
+                    />
+                  </AutoComplete>
                 </Tooltip>
                 <Tooltip title="Thêm mới sản phẩm">
                   <Button
@@ -267,23 +166,11 @@ export default function ThemPhieuNhapPage() {
                 </Tooltip>
               </Row>
               <Divider orientation="left"></Divider>
-              <Table
-                columns={columns}
-                searchable
-                searchableProps={{
-                  inputProps: {
-                    placeholder: "Nhập nội dung cần tìm trong phiếu nhập",
-                    prefix: <SearchOutlined />,
-                    width: 200,
-                  },
-                }}
-                loading={false}
-                pagination={true}
-                scroll={{ x: 1500, y: 500 }}
-                rowSelection={rowSelection}
-                rowKey="_id"
-                dataSource={dataSource}
-              ></Table>{" "}
+              <ThemPhieuNhaptable
+                MaSP={MaSP}
+                data={dataSource}
+                setData={setDataSource}
+              />
             </div>
             <SanPhamModal currentId={currentId} setCurrentId={setCurrentId} />
           </Layout>
@@ -293,8 +180,11 @@ export default function ThemPhieuNhapPage() {
           style={{ padding: "0px 24px 0px 24px" }}
           className="site-layout-sider"
         >
-            <div className="site-layout-content" style={{padding:"0px 24px 24px 24px"}}>
-          <PageHeader title="Thông tin phiếu nhập" />
+          <div
+            className="site-layout-content"
+            style={{ padding: "0px 24px 24px 24px" }}
+          >
+            <PageHeader title="Thông tin phiếu nhập" />
             <Form
               labelCol={{
                 span: 8,
@@ -363,6 +253,7 @@ export default function ThemPhieuNhapPage() {
                   value={data.TrangThai}
                   onChange={(e) => setData({ ...data, TrangThai: e })}
                   defaultValue={data.TrangThai}
+                  disabled="true"
                 >
                   <Select.Option value="Phiếu tạm">Phiếu tạm</Select.Option>
                   <Select.Option value="Đã nhập hàng">
@@ -403,6 +294,12 @@ export default function ThemPhieuNhapPage() {
                   value={data.TienTra}
                   defaultValue={data.TienTra}
                 />
+              </Form.Item>
+              <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                <Button type="primary" htmlType="submit">
+                  Hoàn thành
+                </Button>
+                <Button htmlType="button">Lưu tạm</Button>
               </Form.Item>
             </Form>
           </div>

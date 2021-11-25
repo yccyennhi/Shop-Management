@@ -11,6 +11,22 @@ const schema = new mongoose.Schema(
       type: [String],
       required: true,
     },
+    TenSP: {
+      type: [String],
+      required: true,
+    },
+    MauSac: {
+      type: [String],
+      required: true,
+    },
+    Size: {
+      type: [Number],
+      required: true,
+    },
+    LoaiHang: {
+      type: [String],
+      required: true,
+    },
     NguoiNhap: {
       type: String,
       required: true,
@@ -47,8 +63,8 @@ const schema = new mongoose.Schema(
     },
 
     GiamGia: {
-      type: Number,
-      required: true,
+      type: [Number],
+      required: false,
       default: 0,
     },
     TongSoLuong: {

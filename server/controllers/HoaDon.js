@@ -38,13 +38,14 @@ export const createHoaDon = async (req, res) => {
     const HoaDon = new HoaDonModel(newHoaDon);
     await HoaDon.save();
 
-    res.status(200).json(HoaDon);
+    res.status(200).json(HoaDon);    
   } catch (err) {
+    console.log(err);
     res.status(500).json({ error: err });
-  }
+    }
 };
 
-export const updateHoadon = async (req, res) => {
+export const updateHoaDon = async (req, res) => {
   try {
     const updateHoaDon = req.body;
     const hoadon = await HoaDonModel.findOneAndUpdate(

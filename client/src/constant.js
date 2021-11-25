@@ -70,7 +70,12 @@ export const INIT_STATE = {
     isLoading: false,
     data: [],
   },
-
+  TaoPhieuBaoHanhModal: {
+    isShow: false,
+  },
+  TaoPhieuHenModal: {
+    isShow: false,
+  },
   TongQuans: {
     isLoading: false,
     statistics: {

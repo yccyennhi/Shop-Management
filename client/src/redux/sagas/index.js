@@ -267,6 +267,22 @@ function* fetchCTPDTsSaga(action) {
     yield put(actions.getCTPDTs.getCTPDTsFailure(err));
   }
 }
+function* createHoaDonSaga(action) {
+  try {
+    const HoaDon = yield call(api.createHoaDon, action.payload);
+    yield put(actions.createHoaDon.createHoaDonSuccess(HoaDon.data));
+  } catch (error) {
+    yield put(actions.createHoaDon.createHoaDonFailure(error.response.data));
+  }
+}
+function* createCTHDSaga(action) {
+  try {
+    const CTHD = yield call(api.createCTHD, action.payload);
+    yield put(actions.createCTHD.createCTHDSuccess(CTHD.data));
+  } catch (error) {
+    yield put(actions.createCTHD.createCTHDFailure(error.response.data));
+  }
+}
 /* #endregion */
 
 /* #region  getTongQuansSaga */
@@ -444,6 +460,9 @@ function* mySaga() {
   );
   yield takeLatest(actions.getCTHDs.getCTHDsRequest, fetchCTHDsSaga);
   yield takeLatest(actions.getCTPDTs.getCTPDTsRequest, fetchCTPDTsSaga);
+  yield takeLatest(actions.createHoaDon.createHoaDonRequest, createHoaDonSaga);
+  yield takeLatest(actions.createCTHD.createCTHDRequest, createCTHDSaga);
+
   /* #endregion */
  
  

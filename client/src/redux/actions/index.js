@@ -151,7 +151,20 @@ export const getCTPDTs = createActions({
   getCTPDTsFailure: (err) => err,
 });
 
+<<<<<<< HEAD
 /* #region  TongQuan */
+=======
+export const createHoaDon = createActions({
+  createHoaDonRequest: (payload) => payload,
+  createHoaDonSuccess: (payload) => payload,
+  createHoaDonFailure: (err) => err,
+})
+export const createCTHD = createActions({
+  createCTHDRequest: (payload) => payload,
+  createCTHDSuccess: (payload) => payload,
+  createCTHDFailure: (err) => err,
+})
+>>>>>>> add_hd_cthd_pdt_ctpdt
 export const getTongQuans = createActions({
   getDataRequest: undefined,
   getDataSuccess: (payload) => payload,
@@ -160,6 +173,7 @@ export const getTongQuans = createActions({
   getStatistics: (payload) => payload,
   getRankingByDoanhThu: (payload) => payload,
   getHighestSanPhamList: (payload) => payload,
+<<<<<<< HEAD
 });
 
 /* #endregion */
@@ -176,6 +190,9 @@ export const getBCBanHangs = createActions({
   getBCBanHangsSuccess: (payload) => payload,
   getBCBanHangsFailure: (err) => err,
 });
+=======
+})
+>>>>>>> add_hd_cthd_pdt_ctpdt
 
 export const getBCHangHoas = createActions({
   getBCHangHoasRequest: undefined,
@@ -183,6 +200,7 @@ export const getBCHangHoas = createActions({
   getBCHangHoasFailure: (err) => err,
 });
 /* #endregion */
+
 
 export const showTaoSanPhamModal = createAction("SHOW_TAOSANPHAM_MODAL");
 export const hideTaoSanPhamModal = createAction("HIDE_TAOSANPHAM_MODAL");

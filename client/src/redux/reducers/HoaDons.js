@@ -1,5 +1,6 @@
 import { INIT_STATE } from "../../constant";
-import { getHoaDons, getType } from "../actions";
+import { getHoaDons, getType, createHoaDon } from "../actions";
+import { messageSuccess, messageError } from "../../components/message";
 
 export default function HoaDonsReducer(state = INIT_STATE.HoaDons, action) {
   switch (action.type) {
@@ -18,6 +19,19 @@ export default function HoaDonsReducer(state = INIT_STATE.HoaDons, action) {
       return {
         ...state,
         isLoading: false,
+      };
+    case getType(createHoaDon.createHoaDonSuccess):
+      messageSuccess("Thêm mới thành công");
+      return {
+        ...state,
+        data: [...state.data, action.payload],
+      };
+    case getType(createHoaDon.createHoaDonFailure):
+      messageError(action.payload);
+      return {
+        ...state,
+        isLoading: true,
+        data: [...state.data],
       };
     default:
       return state;

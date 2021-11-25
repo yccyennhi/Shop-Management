@@ -10,7 +10,7 @@ export const createKhuyenMai = (payload) =>
 
 export const updateKhuyenMai = (payload) =>
   axios.patch(`${URL}/KhuyenMais/${payload._id}`, payload);
-  
+
 export const deleteKhuyenMai = (id) => axios.delete(`${URL}/KhuyenMais/${id}`);
 //
 //Phieu Hen
@@ -33,7 +33,8 @@ export const createPhieuBaoHanh = (payload) =>
 export const updatePhieuBaoHanh = (payload) =>
   axios.patch(`${URL}/PhieuBaoHanhs/${payload._id}`, payload);
 
-export const deletePhieuBaoHanh = (id) => axios.delete(`${URL}/PhieuBaoHanhs/${id}`);
+export const deletePhieuBaoHanh = (id) =>
+  axios.delete(`${URL}/PhieuBaoHanhs/${id}`);
 //
 
 //San pham
@@ -46,22 +47,27 @@ export const updateSanPham = (payload) =>
   axios.patch(`${URL}/SanPhams/${payload._id}`, payload);
 
 export const deleteSanPham = (id) => axios.delete(`${URL}/SanPhams/${id}`);
-export const fetchNhanViens = ()=> axios.get(`${URL}/NhanViens`);
-export const fetchTaiKhoans = ()=> axios.get(`${URL}/TaiKhoans`);
+export const fetchNhanViens = () => axios.get(`${URL}/NhanViens`);
+export const fetchTaiKhoans = () => axios.get(`${URL}/TaiKhoans`);
 
 //GiaoDich
-export const fetchHoaDons = ()=> axios.get(`${URL}/HoaDons`);
-export const fetchTraHangs = () => axios.get(`${URL}/PhieuDoiTras`)
-export const fetchCTHDs = () => axios.get(`${URL}/CTHDs`)
-export const fetchCTPDTs = () => axios.get(`${URL}/CTPDTs`)
+export const fetchHoaDons = () => axios.get(`${URL}/HoaDons`);
+export const fetchTraHangs = () => axios.get(`${URL}/PhieuDoiTras`);
+export const fetchCTHDs = () => axios.get(`${URL}/CTHDs`);
+export const fetchCTPDTs = () => axios.get(`${URL}/CTPDTs`);
+export const createHoaDon = (payload) => axios.post(`${URL}/HoaDons`, payload);
+export const createCTHD = (payload) => axios.post(`${URL}/CTHDs`, payload);
 
 //TongQuan
 export const getHoaDonsToday = () => axios.get(`${URL}/TongQuans/HoaDonsToday`);
 export const getDoiTrasToday = () => axios.get(`${URL}/TongQuans/DoiTrasToday`);
 export const getRanking = () => axios.get(`${URL}/TongQuans/Ranking`);
 export const getHighestSanPhamList = () => axios.get(`${URL}/TongQuans/SanPhanList`);
+<<<<<<< HEAD
 
 //BaoCao
 export const getCuoiNgays = () => axios.get(`${URL}/CuoiNgays`);
 export const getBCBanHangs = () => axios.get(`${URL}/BCBanHangs`);
 export const getBCHangHoas = () => axios.get(`${URL}/BCHangHoas`);
+=======
+>>>>>>> add_hd_cthd_pdt_ctpdt

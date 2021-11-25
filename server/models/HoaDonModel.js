@@ -27,7 +27,7 @@ const schema = new Schema(
     },
     MaKM: {
       type: String,
-      required: true,
+      required: false,
     },
     idKH: {
       type: Schema.Types.ObjectId,
@@ -47,6 +47,10 @@ const schema = new Schema(
       required: true,
     },
     SoLuong: {
+      type: Number,
+      required: true,
+    },
+    GiaVon: {
       type: Number,
       required: true,
     },

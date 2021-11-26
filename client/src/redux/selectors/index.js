@@ -40,3 +40,7 @@ export const BCBanHangsState$ = (state) => state.BCBanHangs.data;
 export const BCHangHoasState$ = (state) => state.BCHangHoas.data;
 
 export const TaiKhoansState$ = (state)=>state.TaiKhoans.data;
+export const PhieuNhapsState$ = (state) => state.SanPhams.data;
+export const isloadingPhieuNhapsState$ = (state) => state.SanPhams.isLoading;
+export const TaoPhieuNhapModalState$ = (state) => state.TaoPhieuNhapModal;
+

@@ -16,7 +16,8 @@ import PhieuHenPage from "./pages/PhieuHenPage/PhieuHenPage";
 import NhanVienPage from "./pages/NhanVienPage/NhanVienPage";
 import HoaDonPage from "./pages/GiaoDichPage/HoaDonPage";
 import DoiTraPage from "./pages/GiaoDichPage/DoiTraPage";
-
+import NhapHangPage from "./pages/NhapHangPage/NhapHangPage";
+import ThemPhieuNhapPage from "./pages/ThemPhieuNhapPage/ThemPhieuNhapPage";
 
 function App() {
   const { Header, Content, Footer } = Layout;
@@ -35,21 +36,24 @@ function App() {
           </Header>
           {/* <Content style={{ padding: "50px 50px" }}>
             <div className="site-layout-content"> */}
-              <Switch>
-                <Route path ='/SanPhams' exact component={HangHoaPage}/>
-                <Route path ='/PhieuBaoHanhs' exact component={PhieuBaoHanhPage}/>
-                <Route path ='/PhieuHens' exact component={PhieuHenPage}/>
-                <Route path='/KhuyenMais' exact component={KhuyenMaiPage}/>
-                <Route path ='/HoaDons' exact component ={HoaDonPage}/>
-                <Route path = '/TraHangs' exact component ={DoiTraPage}/>
-                <Route path='/KhachHangs' exact component={KhachHangPage}/>
-                <Route path='/NhanViens' exact component={NhanVienPage}/>
-                <Route path='/TongQuans' exact component={DashboardPage}/>
-                <Route path='/CuoiNgays' exact component={BCCuoiNgayPage}/>
-                <Route path='/BCBanHangs' exact component={BCBanHangPage}/>    
-                <Route path='/BCHangHoas' exact component={BCHangHoaPage}/>
-              </Switch>
-            {/* </div>
+          <Switch>
+            <Route path="/SanPhams" exact component={HangHoaPage} />
+            <Route path="/PhieuBaoHanhs" exact component={PhieuBaoHanhPage} />
+            <Route path="/PhieuHens" exact component={PhieuHenPage} />
+            <Route path="/KhuyenMais" exact component={KhuyenMaiPage} />
+            <Route path="/HoaDons" exact component={HoaDonPage} />
+            <Route path="/TraHangs" exact component={DoiTraPage} />
+            <Route path="/KhachHangs" exact component={KhachHangPage} />
+            <Route path="/NhanViens" exact component={NhanVienPage} />
+            <Route path="/TongQuans" exact component={DashboardPage} />
+            <Route path="/CuoiNgays" exact component={BCCuoiNgayPage} />
+            <Route path="/BCBanHangs" exact component={BCBanHangPage} />
+            <Route path="/BCHangHoas" exact component={BCHangHoaPage} />
+            <Route path="/PhieuNhaps" exact component={NhapHangPage} />
+            <Route path="/ThemPhieuNhaps" exact component={ThemPhieuNhapPage} />
+
+          </Switch>
+          {/* </div>
           </Content> */}
           <Footer style={{ textAlign: "center" }}></Footer>
         </Layout>

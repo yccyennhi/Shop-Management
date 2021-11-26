@@ -30,17 +30,16 @@ const { Search } = Input;
 
 function HangHoatable({ trangthai, baohanh, currentId, setCurrentId }) {
   const dispatch = useDispatch();
-  const [PhieuNhaps, setPhieuNhaps] = useState(useSelector(PhieuNhapsState$));
-  const PN = useSelector(PhieuNhapsState$);
   const loadingPhieuNhaps = useSelector(isloadingPhieuNhapsState$);
   React.useEffect(() => {
     dispatch(actions.getPhieuNhaps.getPhieuNhapsRequest());
   }, [dispatch]);
-  React.useEffect(() => {
-    setPhieuNhaps(PN);
-  }, [PN]);
+  const PN = useSelector(PhieuNhapsState$);
+
+
   React.useEffect(() => {}, [trangthai, baohanh]);
-  const dataSource = PhieuNhaps;
+  const dataSource = PN;
+  console.log(PN);
   const columns = [
     {
       title: "Mã nhập hàng",

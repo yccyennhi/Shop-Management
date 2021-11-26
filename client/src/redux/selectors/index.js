@@ -18,7 +18,7 @@ export const CTPDTsState$ = (state) => state.CTPDTs.data;
 export const TongQuanStatistics$ =(state) => state.TongQuans.statistics;
 export const TongQuanRankingByDoanhThu$ = (state) => state.TongQuans.rankingByDoanhThu;
 export const TongQuanHighestSanPhamList$ =(state) =>state.TongQuans.highestSanPhamList;
-export const PhieuNhapsState$ = (state) => state.SanPhams.data;
+export const PhieuNhapsState$ = (state) => state.PhieuNhaps.data;
 export const isloadingPhieuNhapsState$ = (state) => state.SanPhams.isLoading;
 export const TaoPhieuNhapModalState$ = (state) => state.TaoPhieuNhapModal;
 

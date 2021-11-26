@@ -158,7 +158,7 @@ function ThemPhieuNhaptable({ MaSP, setData }) {
   return (
     <div>
       <Table
-        scroll={{ x: 1000, y: 500 }}
+        scroll={{ x: 1200, y: 500 }}
         columns={columns}
         dataSource={dataSource}
         searchableProps={{

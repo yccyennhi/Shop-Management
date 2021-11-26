@@ -283,6 +283,22 @@ function* createCTHDSaga(action) {
     yield put(actions.createCTHD.createCTHDFailure(error.response.data));
   }
 }
+function* createPhieuDoiTraSaga(action) {
+  try {
+    const PhieuDoiTra = yield call(api.createPhieuDoiTra, action.payload);
+    yield put(actions.createPhieuDoiTra.createPhieuDoiTraSuccess(PhieuDoiTra.data));
+  } catch (error) {
+    yield put(actions.createPhieuDoiTra.createPhieuDoiTraFailure(error.response.data));
+  }
+}
+function* createCTPDTSaga(action) {
+  try {
+    const CTPDT = yield call(api.createCTPDT, action.payload);
+    yield put(actions.createCTPDT.createCTPDTSuccess(CTPDT.data));
+  } catch (error) {
+    yield put(actions.createCTPDT.createCTPDTFailure(error.response.data));
+  }
+}
 
 function* updateSLKMSaga(action) {
   try {
@@ -464,7 +480,9 @@ function* mySaga() {
   yield takeLatest(actions.createHoaDon.createHoaDonRequest, createHoaDonSaga);
   yield takeLatest(actions.createCTHD.createCTHDRequest, createCTHDSaga);
   yield takeLatest(actions.updateSLKM.updateSLKMRequest, updateSLKMSaga);
-
+  yield takeLatest(actions.createPhieuDoiTra.createPhieuDoiTraRequest, createPhieuDoiTraSaga);
+  yield takeLatest(actions.createCTPDT.createCTPDTRequest, createCTPDTSaga);
+  
   /* #endregion */
   yield takeLatest(actions.getTongQuans.getDataRequest, getTongQuansSaga);
 }

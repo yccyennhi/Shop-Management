@@ -2,12 +2,11 @@ import mongoose from "mongoose";
 const Schema= mongoose.Schema
 const schema = new mongoose.Schema(
   {
-    idPDT: {
-      type:  Schema.Types.ObjectId,
-      ref: 'PhieuDoiTra',
+    MaPDT: {
+      type: String,
       required: true,
     },
-    MaPDT: {
+    MaHD: {
       type: String,
       required: true,
     },

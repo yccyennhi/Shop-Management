@@ -5,7 +5,6 @@ import {
   Input,
   InputNumber,
   DatePicker,
-  Descriptions,
   message,
   Col,
   Row,
@@ -16,16 +15,10 @@ import {
   TaoHoaDonModalState$,
   SanPhamsState$,
   KhuyenMaisState$,
-  HoaDonsState$,
   //KhachHangsState$
   //NhanViensState$
 } from "../../../redux/selectors/index.js";
-import {
-  hideTaoHoaDonModal,
-  updateSanPham,
-  createHoaDon,
-  createCTHD,
-} from "../../../redux/actions";
+import { hideTaoHoaDonModal } from "../../../redux/actions";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import * as actions from "../../../redux/actions";
 import SanPhamHoaDonTable from "../../table/HoaDonTable/SanPhamHoaDonTable.js";
@@ -35,26 +28,16 @@ export default function TaoHoaDonModal({ HoaDons }) {
   const dateNow = moment().toDate();
   const dispatch = useDispatch();
   const { isShow } = useSelector(TaoHoaDonModalState$);
-  const HDs = useSelector(HoaDonsState$);
   const SanPhams = useSelector(SanPhamsState$);
   //const KhachHangs = useSelector(KhachHangsState$);
   //const NhanViens = useSelector(NhanViensState$);
   const KhuyenMais = useSelector(KhuyenMaisState$);
   React.useEffect(() => {
     dispatch(actions.getSanPhams.getSanPhamsRequest());
-  }, [dispatch]);
-  React.useEffect(() => {
     dispatch(actions.getKhuyenMais.getKhuyenMaisRequest());
+    //   dispatch(actions.getNhanViens.getNhanViensRequest());
+    //   dispatch(actions.getKhachHangs.getKhachHangsRequest());
   }, [dispatch]);
-  React.useEffect(() => {
-    dispatch(actions.getHoaDons.getHoaDonsRequest());
-  }, [dispatch]);
-  // React.useEffect(() => {
-  //   dispatch(actions.getKhachHangs.getKhachHangsRequest());
-  // }, [dispatch]);
-  // React.useEffect(() => {
-  //   dispatch(actions.getNhanViens.getNhanViensRequest());
-  // }, [dispatch]);
   const layout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 50 },
@@ -69,7 +52,7 @@ export default function TaoHoaDonModal({ HoaDons }) {
     MaKM: "",
     idKM: "619f673906c0b162302fb7f2",
     SoLuong: 0,
-    ThoiGian: "",
+    ThoiGian: new Date(Date.now()),
     GiamGia: 0,
     PhanTram: 0,
     GiaVon: 0,
@@ -84,9 +67,8 @@ export default function TaoHoaDonModal({ HoaDons }) {
     SoLuong: 0,
   });
   const [SPsInfo, setSPsInfo] = React.useState([]);
-  const btnAddSP = useCallback(() => {
+  const btnAddSP = () => {
     const result = SanPhams.find((SanPham) => SanPham.MaSP === dataSP.MaSP);
-    console.log(result);
     if (!result) {
       message.error("Mã sản phẩm không tồn tại");
       return;
@@ -125,16 +107,21 @@ export default function TaoHoaDonModal({ HoaDons }) {
       dataHD.TongTienHang = 0;
       dataHD.GiaVon = 0;
       SPsInfo.forEach((SP) => {
-        dataHD.SoLuong += SP.SoLuong;
-        dataHD.TongTienHang += SP.ThanhTien;
-        dataHD.GiaVon += SP.GiaVon;
+        dataHD.SoLuong = dataHD.SoLuong + SP.SoLuong;
+        dataHD.TongTienHang = dataHD.TongTienHang + SP.ThanhTien;
+        dataHD.GiaVon = dataHD.GiaVon + SP.GiaVon;
       });
+
       dataHD.ThanhTien = dataHD.TongTienHang - dataHD.GiamGia;
     }
-  }, [dataSP, SPsInfo]);
+  };
 
   const btnAddMaKM = () => {
     const KM = KhuyenMais.find((e) => e.MaKM === dataHD.MaKM);
+    if (!KM) {
+      message.error("Mã khuyến mãi không tồn tại");
+      return;
+    }
     if (
       KM.SoLuong == 0 ||
       KM.TrangThai == false ||
@@ -142,7 +129,6 @@ export default function TaoHoaDonModal({ HoaDons }) {
       KM.GiaTri > dataHD.ThanhTien
     ) {
       message.error("Mã khuyến mãi không phù hợp");
-      dataHD.idKM = "";
       dataHD.GiamGia = 0;
       return;
     } else {
@@ -181,8 +167,7 @@ export default function TaoHoaDonModal({ HoaDons }) {
     setDataSP(ListSPtamp);
   };
 
-  const onCancel = React.useCallback(()=>
-  {
+  const onCancel = React.useCallback(() => {
     dispatch(hideTaoHoaDonModal());
     setDataHD({
       MaHD: "",
@@ -193,7 +178,7 @@ export default function TaoHoaDonModal({ HoaDons }) {
       MaKM: "",
       idKM: "619f673906c0b162302fb7f2",
       SoLuong: 0,
-      ThoiGian: "",
+      ThoiGian: dateNow,
       GiamGia: 0,
       PhanTram: 0,
       GiaVon: 0,
@@ -208,9 +193,14 @@ export default function TaoHoaDonModal({ HoaDons }) {
       SoLuong: 0,
     });
     setSPsInfo([]);
-  },[dispatch])
+    console.log(dataHD);
+  }, [dispatch]);
 
   const onFinish = React.useCallback(() => {
+    if (!dataHD.MaNV) {
+      message.warning("Vui lòng thêm nhân viên");
+      return;
+    }
     if (dataHD.MaKM) {
       if (dataHD.id == "619f673906c0b162302fb7f2") {
         message.warning("Mã khuyến mãi chưa được thêm thành công");
@@ -218,14 +208,6 @@ export default function TaoHoaDonModal({ HoaDons }) {
       }
     } else {
       dataHD.MaKM = "KM000";
-    }
-    if (!dataHD.MaNV) {
-      message.warning("Vui lòng thêm nhân viên");
-      return;
-    }
-    if (!dataHD.ThoiGian) {
-      message.warning("Xin thiết lập thời gian");
-      return;
     }
     if (!dataHD.SoLuong) {
       message.warning("Vui lòng thêm sản phẩm vào hóa đon");
@@ -240,8 +222,7 @@ export default function TaoHoaDonModal({ HoaDons }) {
     } else {
       dataHD.MaHD = "HD" + length;
     }
-    //dispatch(createHoaDon.createHoaDonRequest(dataHD));
-    //dispatch(actions.updateSLKM.updateSLKMRequest(dataHD));
+    dispatch(actions.createHoaDon.createHoaDonRequest(dataHD));
     const KhuyenMai = KhuyenMais.find((km) => km.MaKM === dataHD.MaKM);
     dispatch(
       actions.updateSLKM.updateSLKMRequest({
@@ -250,39 +231,39 @@ export default function TaoHoaDonModal({ HoaDons }) {
       })
     );
 
-    // SPsInfo.map((sp) => {
-    //   const SP = SanPhams.find((elm) => elm._id === sp.idSP);
-    //   dispatch(
-    //     actions.updateSanPham.updateSanPhamRequest({
-    //       ...SP,
-    //       TonKho: SP.TonKho - sp.SoLuong,
-    //     })
-    //   );
-    //   sp.MaHD = dataHD.MaHD;
-    //   const elm = { ...sp, MaHD: dataHD.MaHD };
-    //   console.log(elm);
-    //   dispatch(createCTHD.createCTHDRequest(sp));
-    // });
-
-    // if (dataHD.MaKH) {
-    //   const KH = KhachHangs.find((e) => e.MaKH === dataHD.MaKH);
-    //   if (KH) setDataHD({ ...dataHD, idKH: KH._id });
-    //   else {
-    //     message.error('Mã khách hàng không tồn tại');
-    //     return;
-    //   }
-    // }
-    // if (dataHD.MaNV) {
-    //   const NV = KhuyenMais.find((e) => e.MaNV === dataHD.MaNV);
-    //   if (NV) setDataHD({ ...dataHD, idKM: NV._id });
-    //   else {
-    //     message.error('Mã nhân viên không đúng');
-    //     return;
-    //   }
-    // }
-  
+    SPsInfo.map((sp) => {
+      const SP = SanPhams.find((elm) => elm._id === sp.idSP);
+      dispatch(
+        actions.updateSanPham.updateSanPhamRequest({
+          ...SP,
+          TonKho: SP.TonKho - sp.SoLuong,
+        })
+      );
+      sp.MaHD = dataHD.MaHD;
+      dispatch(actions.createCTHD.createCTHDRequest(sp));
+    });
+    {
+      /*
+    if (dataHD.MaKH) {
+      const KH = KhachHangs.find((e) => e.MaKH === dataHD.MaKH);
+      if (KH) setDataHD({ ...dataHD, idKH: KH._id });
+      else {
+        message.error('Mã khách hàng không tồn tại');
+        return;
+      }
+    }
+    if (dataHD.MaNV) {
+      const NV = KhuyenMais.find((e) => e.MaNV === dataHD.MaNV);
+      if (NV) setDataHD({ ...dataHD, idKM: NV._id });
+      else {
+        message.error('Mã nhân viên không đúng');
+        return;
+      }
+    }
+  */
+    }
     onCancel();
-  }, [dataHD, dispatch, SPsInfo]);
+  }, [dataHD, dispatch, SPsInfo, onCancel]);
 
   const body = (
     <>
@@ -356,14 +337,9 @@ export default function TaoHoaDonModal({ HoaDons }) {
         <Form.Item name="date-time-picker" label="Thời gian">
           <DatePicker
             showTime
-            required={true}
             format="YYYY-MM-DD HH:mm:ss"
-            value={dataHD.ThoiGian}
-            onChange={(e) => {
-              if (e) {
-                setDataHD({ ...dataHD, ThoiGian: e.toDate() });
-              }
-            }}
+            defaultValue={moment(dataHD.ThoiGian)}
+            disabled={true}
           />
         </Form.Item>
         <Form.Item label="Mã sản phẩm" style={{ marginBottom: 0 }}>

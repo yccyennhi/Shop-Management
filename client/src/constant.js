@@ -2,14 +2,26 @@ export const BACKEND_URL = "http://localhost:5000";
 export const FRONTEND_URL = "http://localhost:3000";
 
 export const INIT_STATE = {
+  //#region KhachHang
   KhachHangs: {
     isLoading: false,
     data: [],
   },
+  KhachHangModal: {
+    isShow: false,
+  },
+  //#endregion
+
+  //#region NhanVien
   NhanViens: {
     isLoading: false,
     data: [],
   },
+  NhanVienModal: {
+    isShow: false,
+  },
+  //#endregion
+  
   SanPhams: {
     isLoading: false,
     data: [],
@@ -77,10 +89,9 @@ export const INIT_STATE = {
       hoaDonTodayCount: 0,
       doanhThuToday: 0,
       doiTraCount: 0,
-      soLuongDT:0,
+      soLuongDT: 0,
     },
     rankingByDoanhThu: [],
     highestSanPhamList: [],
   },
-
 };

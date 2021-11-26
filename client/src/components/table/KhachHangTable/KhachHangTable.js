@@ -1,62 +1,21 @@
-import React, { useState } from "react";
-import { Button, Dropdown, Input, Menu, Row, Table } from "antd";
 import { DownOutlined, SearchOutlined } from "@ant-design/icons";
+import { Table } from "ant-table-extensions";
+import { Button, Dropdown, Input, Menu, Row } from "antd";
+import moment from "moment";
+import { useState } from "react";
+import ExpandedRowRender from "./ExpandedRowRender";
 
-export default function KhachHangTable() {
-  //Menu Item cho Dropdown Button Thao tác
+export default function KhachHangTable({ dataSource, setCurrentId }) {
+  //#region Dropdown menu
   const menu = (
     <Menu>
-      <Menu.Item key="1">1st menu item</Menu.Item>
-      <Menu.Item key="2">2st menu item</Menu.Item>
-      <Menu.Item key="3">3st menu item</Menu.Item>
+      <Menu.Item key="1">Ngừng hoạt động</Menu.Item>
+      <Menu.Item key="2">Hoạt động lại</Menu.Item>
     </Menu>
   );
+  //#endregion
 
-  // Mockup cho table
-  const dataSource = [
-    {
-      key: "1",
-      MaKH: "KH001",
-      TenKH: "Đinh Trần Văn Minh",
-      NgaySinh: "07/06/2001",
-      SDT: "0329092681",
-      Email: "19520715@gm.uit.edu.vn",
-      DiaChi: "",
-      DiemTichLuy: 50,
-    },
-    {
-      key: "2",
-      MaKH: "KH002",
-      TenKH: "Nguyễn Thị Phương Thảo",
-      NgaySinh: "29/09/2001",
-      SDT: "0358864014",
-      Email: "19520280@gm.uit.edu.vn",
-      DiaChi: "Kon Tum",
-      DiemTichLuy: 10,
-    },
-    {
-      key: "3",
-      MaKH: "KH003",
-      TenKH: "Nguyễn Yến Nhi",
-      NgaySinh: "18/10/2001",
-      SDT: "0585502434",
-      Email: "19520205@gm.uit.edu.vn",
-      DiaChi: "Phú Yên",
-      DiemTichLuy: 100,
-    },
-    {
-      key: "4",
-      MaKH: "KH004",
-      TenKH: "Đoàn Ngọc Lãm",
-      NgaySinh: "19/02/2001",
-      SDT: "0337651201",
-      Email: "19521737@gm.uit.edu.vn",
-      DiaChi: "Quảng Trị",
-      DiemTichLuy: 20,
-    },
-  ];
-
-  // Khởi tạo cột table
+  //#region Table column
   const columns = [
     {
       title: "Mã KH",
@@ -143,6 +102,9 @@ export default function KhachHangTable() {
     {
       title: "Ngày sinh",
       dataIndex: "NgaySinh",
+      render: (date) => {
+        return <p>{moment(date).format("DD/MM/YYYY")}</p>;
+      },
       sorter: (a, b) => a.NgaySinh - b.NgaySinh,
       filterDropdown: ({
         setSelectedKeys,
@@ -310,7 +272,27 @@ export default function KhachHangTable() {
       dataIndex: "DiemTichLuy",
       sorter: (a, b) => a.DiemTichLuy - b.DiemTichLuy,
     },
+    {
+      title: "Trạng thái",
+      dataIndex: "TrangThai",
+      render: (trangThai) => {
+        return <p>{trangThai == true ? "Còn hoạt động" : "Ngừng hoạt động"}</p>;
+      },
+      sorter: (a, b) => a.TrangThai - b.TrangThai,
+      filters: [
+        {
+          text: "Còn hoạt động",
+          value: true,
+        },
+        {
+          text: "Ngừng hoạt động",
+          value: false,
+        },
+      ],
+      onFilter: (value, record) => record.TrangThai == value,
+    },
   ];
+  //#endregion
 
   //State Selection
   const [selection, setSelectionState] = useState({
@@ -353,15 +335,25 @@ export default function KhachHangTable() {
           </div>
         </Row>
         <Table
+          tableLayout="auto"
+          searchable
+          searchableProps={{
+            inputProps: {
+              placeholder: "Nhập mã, tên khách hàng",
+              prefix: <SearchOutlined />,
+              width: 200,
+            },
+          }}
           columns={columns}
           dataSource={dataSource}
           expandable={{
             expandedRowRender: (record) => (
-              <p style={{ margin: 0 }}>{record.DiaChi}</p>
+              <ExpandedRowRender record={record} setCurrentId={setCurrentId} />
             ),
-            rowExpandable: (record) => record.DiaChi != "",
+            rowExpandable: (record) => true,
           }}
           pagination={true}
+          rowKey="_id"
           rowSelection={rowSelection}
           scroll={{ x: 1500, y: 500 }}
         ></Table>

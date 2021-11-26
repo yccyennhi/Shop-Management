@@ -10,17 +10,52 @@ export const getHoaDons = createActions({
   getHoaDonsFailure: (err) => err,
 });
 
+//#region KhachHang
 export const getKhachHangs = createActions({
   getKhachHangsRequest: undefined,
   getKhachHangsSuccess: (payload) => payload,
   getKhachHangsFailure: (err) => err,
 });
 
+export const createKhachHang = createActions({
+  createKhachHangRequest: (payload) => payload,
+  createKhachHangSuccess: (payload) => payload,
+  createKhachHangFailure: (err) => err,
+});
+
+export const updateKhachHang = createActions({
+  updateKhachHangRequest: (payload) => payload,
+  updateKhachHangSuccess: (payload) => payload,
+  updateKhachHangFailure: (err) => err,
+});
+
+export const showKhachHangModal = createAction("SHOW_KHACHHANG_MODAL");
+export const hideKhachHangModal = createAction("HIDE_KHACHHANG_MODAL");
+//#endregion
+
+//#region NhanVien
 export const getNhanViens = createActions({
   getNhanViensRequest: undefined,
   getNhanViensSuccess: (payload) => payload,
   getNhanViensFailure: (err) => err,
 });
+
+export const createNhanVien = createActions({
+  createNhanVienRequest: (payload) => payload,
+  createNhanVienSuccess: (payload) => payload,
+  createNhanVienFailure: (err) => err,
+});
+
+export const updateNhanVien = createActions({
+  updateNhanVienRequest: (payload) => payload,
+  updateNhanVienSuccess: (payload) => payload,
+  updateNhanVienFailure: (err) => err,
+});
+
+export const showNhanVienModal = createAction("SHOW_NHANVIEN_MODAL");
+export const hideNhanVienModal = createAction("HIDE_NHANVIEN_MODAL");
+//#endregion
+
 //San Pham
 export const getSanPhams = createActions({
   getSanPhamsRequest: undefined,
@@ -102,11 +137,25 @@ export const deletePhieuBaoHanh = createActions({
   deletePhieuBaoHanhFailure: (err) => err,
 });
 
+//#region TaiKhoan
 export const getTaiKhoans = createActions({
   getTaiKhoansRequest: undefined,
   getTaiKhoansSuccess: (payload) => payload,
   getTaiKhoansFailure: (err) => err,
 });
+
+export const createTaiKhoan = createActions({
+  createTaiKhoanRequest: (payload) => payload,
+  createTaiKhoanSuccess: (payload) => payload,
+  createTaiKhoanFailure: (err) => err,
+});
+
+export const updateTaiKhoan = createActions({
+  updateTaiKhoanRequest: (payload) => payload,
+  updateTaiKhoanSuccess: (payload) => payload,
+  updateTaiKhoanFailure: (err) => err,
+});
+//#endregion
 
 /* #region  KhuyenMaiFeature */
 export const getKhuyenMais = createActions({

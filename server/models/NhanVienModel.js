@@ -5,6 +5,7 @@ const schema = new mongoose.Schema(
     MaNV: {
       type: String,
       required: true,
+      unique: true,
     },
     TenNV: {
       type: String,
@@ -17,10 +18,12 @@ const schema = new mongoose.Schema(
     SDT: {
       type: String,
       required: true,
+      unique: true,
     },
     Email: {
       type: String,
       required: true,
+      unique: true,
     },
     DiaChi: {
       type: String,
@@ -31,8 +34,8 @@ const schema = new mongoose.Schema(
       default: new Date(),
     },
     TrangThai: {
-      type: String,
-      default: "Đang làm việc",
+      type: Boolean,
+      default: true,
     },
   },
   { timestamps: true }

@@ -1,4 +1,15 @@
+//#region KhachHang
+export const KhachHangsState$ = (state) => state.KhachHangs.data;
+export const KhachHangModalState$ = (state) => state.KhachHangModal;
+//#endregion
+
 export const KhuyenMaisState$ = (state) => state.KhuyenMais.data;
+
+//#region NhanVien
+export const NhanViensState$ = (state) => state.NhanViens.data;
+export const NhanVienModalState$ = (state) => state.NhanVienModal;
+//#endregion
+
 export const HoaDonsState$ = (state) => state.HoaDons.data;
 export const TaoHoaDonModalState$ = (state) => state.TaoHoaDonModal;
 export const TaoPhieuTraHangState$ = (state) => state.TaoPhieuTraHangModal;
@@ -18,3 +29,4 @@ export const CTPDTsState$ = (state) => state.CTPDTs.data;
 export const TongQuanStatistics$ =(state) => state.TongQuans.statistics;
 export const TongQuanRankingByDoanhThu$ = (state) => state.TongQuans.rankingByDoanhThu;
 export const TongQuanHighestSanPhamList$ =(state) =>state.TongQuans.highestSanPhamList;
+export const TaiKhoansState$ = (state)=>state.TaiKhoans.data;

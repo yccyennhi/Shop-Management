@@ -10,6 +10,6 @@ const router = express.Router();
 
 router.get("/", getTaiKhoan);
 router.post("/", createTaiKhoan);
-router.post("/update", updateTaiKhoan);
+router.patch("/:id", updateTaiKhoan);
 
 export default router;

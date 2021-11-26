@@ -1,7 +1,7 @@
 import express from "express";
 import {
-  getKhachHang,
   createKhachHang,
+  getKhachHang,
   updateKhachHang,
 } from "../controllers/KhachHang.js";
 
@@ -10,6 +10,6 @@ const router = express.Router();
 
 router.get("/", getKhachHang);
 router.post("/", createKhachHang);
-router.post("/update", updateKhachHang);
+router.patch("/:id", updateKhachHang);
 
 export default router;

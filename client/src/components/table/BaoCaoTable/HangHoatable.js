@@ -96,9 +96,9 @@ function HangHoatable({currentDataSource}) {
     
     {
       title: "Tồn đầu",
-      dataIndex: "TonDau",
-      key: "TonDau",
-      sorter: (a, b) => a.TonDau - b.TonDau,
+      dataIndex: "SLDau",
+      key: "SLDau",
+      sorter: (a, b) => a.SLDau - b.SLDau,
     },
 
     {
@@ -124,24 +124,24 @@ function HangHoatable({currentDataSource}) {
     },
 
     {
-      title: "Số lượng bán",
-      dataIndex: "SLBan",
-      key: "SLBan",
-      sorter: (a, b) => a.SLBan - b.SLBan,
+      title: "Số lượng xuất",
+      dataIndex: "SLXuat",
+      key: "SLXuat",
+      sorter: (a, b) => a.SLXuat - b.SLXuat,
     },
 
     {
-      title: "Giá trị bán",
-      dataIndex: "GTBan",
-      key: "GTBan",
-      sorter: (a, b) => a.GTBan - b.GTBan,
+      title: "Giá trị xuất",
+      dataIndex: "GTXuat",
+      key: "GTXuat",
+      sorter: (a, b) => a.GTXuat - b.GTXuat,
     },
     
     {
       title: "Tồn cuối",
-      dataIndex: "TonCuoi",
-      key: "TonCuoi",
-      sorter: (a, b) => a.TonCuoi - b.TonCuoi,
+      dataIndex: "SLCuoi",
+      key: "SLCuoi",
+      sorter: (a, b) => a.SLCuoi - b.SLCuoi,
     },
 
     {

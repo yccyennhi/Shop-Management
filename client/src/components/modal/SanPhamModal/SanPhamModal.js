@@ -42,18 +42,18 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
   const [form] = Form.useForm();
   const SP = useSelector(SanPhamsState$);
   const [data, setData] = useState({
-    MaSP: "",
-    TenSP: "",
-    MauSac: "",
-    LoaiHang: "",
-    Size: 0,
-    GiaVon: 0,
-    GiaBan: 0,
-    TonKho: 0,
-    TrangThai: "Hết hàng",
-    BaoHanh: "Có bảo hành",
-    HinhAnh: "",
-    MoTa: "",
+    // MaSP: "",
+    // TenSP: "",
+    // MauSac: "",
+    // LoaiHang: "",
+    // Size: 0,
+    // GiaVon: 0,
+    // GiaBan: 0,
+    // TonKho: 0,
+    // TrangThai: "Hết hàng",
+    // BaoHanh: "Có bảo hành",
+    // HinhAnh: "",
+    // MoTa: "",
   });
   const SanPhamValue = useSelector((state) =>
     state.SanPhams.data.find((SanPham) =>

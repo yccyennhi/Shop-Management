@@ -1,21 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ExportTableButton, Table } from "ant-table-extensions";
-import {
-  Input,
-  Row,
-  Button,
-  Dropdown,
-  message,
-  Menu,
-  Image,
-  Space,
-  Typography,
-  Avatar,
-  Popconfirm,
-  Form,
-  Modal,
-} from "antd";
+import { Input, Form, Modal, InputNumber } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import {
   PhieuNhapsState$,
@@ -28,28 +14,36 @@ import {
   messageSuccess,
   messageLoadingSuccess,
 } from "../../message";
+import { SearchOutlined, FileExcelOutlined } from "@ant-design/icons";
+
 const { Search } = Input;
 
-function ThemPhieuNhaptable({ MaSP, data, setData }) {
+function ThemPhieuNhaptable({ MaSP, setData }) {
   const SP = useSelector(SanPhamsState$);
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
   const [Editing, setEditing] = useState(false);
-  const [dataSource, setDataSource] = useState(data);
+  const [dataSource, setDataSource] = useState([]);
   React.useEffect(() => {
     dispatch(actions.getSanPhams.getSanPhamsRequest());
   }, [dispatch]);
 
   React.useEffect(() => {
+    console.log("dataSource", dataSource);
+    setData(dataSource);
+  }, [dataSource]);
+
+  React.useEffect(() => {
     let SanPham = SP.find(function (e) {
       return e.MaSP == MaSP;
     });
-    if (dataSource.length != 0) {
-      let IDData = dataSource.find(function (e) {
-        return e.MaSP == MaSP;
-      });
-      if (IDData == undefined) {
-        if (SanPham != undefined) {
+    if (SanPham != undefined) {
+      if (dataSource != null) {
+        let IDData = dataSource.find(function (e) {
+          return e.MaSP == MaSP;
+        });
+        console.log(IDData);
+        if (IDData == undefined) {
           const newData = {
             MaSP: SanPham.MaSP,
             TenSP: SanPham.TenSP,
@@ -61,36 +55,16 @@ function ThemPhieuNhaptable({ MaSP, data, setData }) {
             GiaNhap: 0,
             ThanhTien: 0,
           };
-          setDataSource((pre) => {
-            return [...pre, newData];
-          });
-          messageSuccess("Thêm sản phẩm vào danh sách nhập thành công!");
-
+          setDataSource([...dataSource, newData]);
           setData(dataSource);
-          console.log("data", dataSource);
+          messageSuccess("Thêm sản phẩm vào danh sách nhập thành công!");
+        } else {
+          messageError("Sản phẩm đã tồn tại trong danh sách nhập kho!");
         }
-      } else {
-        messageError("Sản phẩm đã tồn tại trong danh sách nhập kho!");
       }
     } else {
-      if (SanPham != undefined) {
-        const newData = {
-          MaSP: SanPham.MaSP,
-          TenSP: SanPham.TenSP,
-          MauSac: SanPham.MauSac,
-          Size: SanPham.Size,
-          LoaiHang: SanPham.LoaiHang,
-          SoLuong: 0,
-          GiamGia: 0,
-          GiaNhap: 0,
-          ThanhTien: 0,
-        };
-        setDataSource((pre) => {
-          return [...pre, newData];
-        });
-        setData(dataSource);
-        console.log("data", dataSource);
-        messageSuccess("Thêm sản phẩm vào danh sách nhập thành công!");
+      if (dataSource.length != 0) {
+        messageError("Sản phẩm không tồn tại, vui lòng thêm mới");
       }
     }
   }, [MaSP]);
@@ -187,6 +161,14 @@ function ThemPhieuNhaptable({ MaSP, data, setData }) {
         scroll={{ x: 1000, y: 500 }}
         columns={columns}
         dataSource={dataSource}
+        searchableProps={{
+          inputProps: {
+            placeholder: "Nhập nội dung cần tìm",
+            prefix: <SearchOutlined />,
+            width: 200,
+          },
+        }}
+        // rowKey="MaSP"
       ></Table>
       <Modal
         title="Chỉnh sửa sản phẩm nhập kho"
@@ -204,7 +186,7 @@ function ThemPhieuNhaptable({ MaSP, data, setData }) {
           } else {
             let list = dataSource.map((data) => {
               if (data.MaSP === Editing.MaSP) {
-                messageSuccess("Sửa thông tin thành công!")
+                messageSuccess("Sửa thông tin thành công!");
                 return Editing;
               } else {
                 return data;
@@ -217,7 +199,7 @@ function ThemPhieuNhaptable({ MaSP, data, setData }) {
       >
         <Form
           labelCol={{
-            span: 8,
+            span: 7,
           }}
           wrapperCol={{
             span: 16,
@@ -225,12 +207,13 @@ function ThemPhieuNhaptable({ MaSP, data, setData }) {
           layout="horizontal"
         >
           <Form.Item label="Số lượng" required>
-            <Input
+            <InputNumber
+              style={{ width: 270 }}
               placeholder="Nhập số lượng sản phẩm muốn nhập"
               value={Editing?.SoLuong}
               onChange={(e) => {
                 setEditing((pre) => {
-                  return { ...pre, SoLuong: e.target.value };
+                  return { ...pre, SoLuong: e };
                 });
                 if (
                   Editing?.SoLuong != null &&
@@ -244,15 +227,16 @@ function ThemPhieuNhaptable({ MaSP, data, setData }) {
                   });
                 }
               }}
-            ></Input>
+            ></InputNumber>
           </Form.Item>
           <Form.Item label="Giá nhập" required>
-            <Input
+            <InputNumber
+              style={{ width: 270 }}
               placeholder="Nhập giá nhập"
               value={Editing?.GiaNhap}
               onChange={(e) => {
                 setEditing((pre) => {
-                  return { ...pre, GiaNhap: e.target.value };
+                  return { ...pre, GiaNhap: e };
                 });
                 if (
                   Editing?.SoLuong != null &&
@@ -266,33 +250,37 @@ function ThemPhieuNhaptable({ MaSP, data, setData }) {
                   });
                 }
               }}
-            ></Input>
+            ></InputNumber>
           </Form.Item>
           <Form.Item label="Giảm giá" required>
-            <Input
+            <InputNumber
+              style={{ width: 270 }}
               placeholder="Nhập số tiền được giảm"
               value={Editing?.GiamGia}
               onChange={(e) => {
                 setEditing((pre) => {
-                  return { ...pre, GiamGia: e.target.value };
+                  return { ...pre, GiamGia: e };
                 });
                 if (
                   Editing?.SoLuong != null &&
                   Editing?.GiaNhap != null &&
                   Editing?.GiamGia != null
                 ) {
-                  const sum =
-                    Editing?.SoLuong * (Editing?.GiaNhap - e.target.value);
+                  const sum = Editing?.SoLuong * (Editing?.GiaNhap - e);
 
                   setEditing((pre) => {
                     return { ...pre, ThanhTien: sum };
                   });
                 }
               }}
-            ></Input>
+            ></InputNumber>
           </Form.Item>
           <Form.Item label="Thành tiền">
-            <Input value={Editing?.ThanhTien} disabled="true"></Input>
+            <InputNumber
+              style={{ width: 270 }}
+              value={Editing?.ThanhTien}
+              disabled="true"
+            ></InputNumber>
           </Form.Item>
         </Form>
       </Modal>

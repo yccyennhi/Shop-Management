@@ -13,19 +13,19 @@ const schema = new mongoose.Schema(
     },
     TenSP: {
       type: [String],
-      required: true,
+      required: false,
     },
     MauSac: {
       type: [String],
-      required: true,
+      required: false,
     },
     Size: {
       type: [Number],
-      required: true,
+      required: false,
     },
     LoaiHang: {
       type: [String],
-      required: true,
+      required: false,
     },
     NguoiNhap: {
       type: String,
@@ -43,7 +43,7 @@ const schema = new mongoose.Schema(
     },
     NgayCapNhat: {
       type: Date,
-      required: true,
+      required: false,
     },
     TenNCC: {
       type: String,
@@ -51,19 +51,27 @@ const schema = new mongoose.Schema(
     },
     SoLuong: {
       type: [Number],
-      required: true,
+      required: false,
+      default: 0,
     },
     GiaNhap: {
       type: [Number],
-      required: true,
+      required: false,
+      default: 0,
     },
     ThanhTien: {
       type: [Number],
-      required: true,
+      required: false,
+      default: 0,
     },
 
     GiamGia: {
       type: [Number],
+      required: false,
+      default: 0,
+    },
+    GiamGiaTongTien: {
+      type: Number,
       required: false,
       default: 0,
     },

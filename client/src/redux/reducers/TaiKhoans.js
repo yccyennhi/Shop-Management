@@ -1,5 +1,10 @@
 import { INIT_STATE } from "../../constant";
-import { getTaiKhoans, getType } from "../actions";
+import {
+  getTaiKhoans,
+  createTaiKhoan,
+  updateTaiKhoan,
+  getType,
+} from "../actions";
 
 export default function TaiKhoansReducer(state = INIT_STATE.TaiKhoans, action) {
   switch (action.type) {

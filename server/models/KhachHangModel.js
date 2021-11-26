@@ -5,6 +5,7 @@ const schema = new mongoose.Schema(
     MaKH: {
       type: String,
       required: true,
+      unique: true,
     },
     TenKH: {
       type: String,
@@ -29,6 +30,10 @@ const schema = new mongoose.Schema(
     DiemTichLuy: {
       type: Number,
       default: 0,
+    },
+    TrangThai: {
+      type: Boolean,
+      default: true,
     },
   },
   { timestamps: true }

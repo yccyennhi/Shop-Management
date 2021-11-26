@@ -36,7 +36,6 @@ export default function BCBanHangPage() {
     }
   }, [HoaDons, currentDate]);
 
-  console.log(currentDate, currentDataSource);
 
   const dateFormat = "DD/MM/YYYY";
   return (

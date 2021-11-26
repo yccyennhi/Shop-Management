@@ -462,6 +462,15 @@ function* getBCBanHangsSaga(action) {
     yield put(actions.getBCBanHangs.getBCBanHangsFailure(err));
   }
 }
+
+function* getBCHangHoasSaga(action) {
+  try {
+    const BCHangHoas = yield call(api.getBCHangHoas);
+    yield put(actions.getBCHangHoas.getBCHangHoasSuccess(BCHangHoas.data));
+  } catch (err) {
+    yield put(actions.getBCHangHoas.getBCHangHoasFailure(err));
+  }
+}
 /* #endregion */
 
 //#region TaiKhoan
@@ -650,6 +659,11 @@ function* mySaga() {
   yield takeLatest(
     actions.getBCBanHangs.getBCBanHangsRequest,
     getBCBanHangsSaga
+  );
+
+  yield takeLatest(
+    actions.getBCHangHoas.getBCHangHoasRequest,
+    getBCHangHoasSaga
   );
  /* #endregion */
 }

@@ -74,12 +74,15 @@ export const getBCHangHoas = async (req, res) => {
     // });
 
     await PhieuNhapModel.find().then((PhieuNhaps) => {
+
       if (PhieuNhaps.length) {
+
         Object.values(PhieuNhaps).forEach((PhieuNhap) => {
+
           PhieuNhap.MaSP.forEach((MaSP) => {
             //Vị trí của sản phẩm trong list PhieuNhap
             let index = PhieuNhap.MaSP.indexOf(MaSP);
-console.log(MaSP, index);
+
             if (!hangHoaList[MaSP]) {
               hangHoaList[MaSP] = {
                 //TenSP=TenSP + MauSac + Size
@@ -95,6 +98,7 @@ console.log(MaSP, index);
                 Xuat: [],
               };
             }
+
             if (!PhieuNhap.GiamGiaTongTien) {
               hangHoaList[MaSP]['Nhap'].push({
                 Ngay: PhieuNhap.NgayTao,
@@ -111,11 +115,30 @@ console.log(MaSP, index);
               });
               
             }
+          
           });
+
         });
+
       }
     });
-  console.log(hangHoaList);
+  await CTHDModel.find().then((CTHDs)=>{
+
+    if(CTHDs.length)
+    {
+
+      Object.values(CTHDs).forEach((CTHD) => {
+        const MaSP = CTHD.MaSP;
+        hangHoaList[MaSP]['Xuat'].push({
+          Ngay: CTHD.ThoiGian,
+          SoLuong: CTHD.SoLuong,
+          ThanhTien: CTHD.ThanhTien,
+        });
+
+      });
+
+    }
+  })
   res.status(200).json(hangHoaList);
   } catch (err) {
     res.status(500).json({ error: err });

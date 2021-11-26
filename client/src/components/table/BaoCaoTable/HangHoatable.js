@@ -8,13 +8,17 @@ const { Search } = Input;
 
 function HangHoatable({currentDataSource}) {
 
- const dataSource =[];
+ const dataSource = Object.keys(currentDataSource).map((key) => ({...currentDataSource[key], MaSP: key }));
 
   const columns = [
     {
       title: "Mã sản phẩm",
       dataIndex: "MaSP",
       key: "MaSP",
+      defaultSortOrder: "ascend",
+      sorter: (a, b) => {
+        return ('' + a.MaSP).localeCompare(b.MaSP);
+      },
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -174,7 +178,7 @@ function HangHoatable({currentDataSource}) {
         pagination={true}
         //  scroll={{ x: 1500, y: 500 }}
         columns={columns}
-        rowKey="_id"
+        rowKey="MaSP"
         dataSource={dataSource}
       ></Table>
     </div>

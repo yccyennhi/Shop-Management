@@ -16,12 +16,9 @@ import PhieuHenPage from "./pages/PhieuHenPage/PhieuHenPage";
 import NhanVienPage from "./pages/NhanVienPage/NhanVienPage";
 import HoaDonPage from "./pages/GiaoDichPage/HoaDonPage";
 import DoiTraPage from "./pages/GiaoDichPage/DoiTraPage";
-<<<<<<< HEAD
 import NhapHangPage from "./pages/NhapHangPage/NhapHangPage";
 import ThemPhieuNhapPage from "./pages/ThemPhieuNhapPage/ThemPhieuNhapPage";
-=======
 import SalePage from "./pages/SalePage/SalePage";
->>>>>>> UI_SalePage
 
 function App() {
   const { Header, Content, Footer } = Layout;

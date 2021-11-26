@@ -16,7 +16,7 @@ import PhieuHenPage from "./pages/PhieuHenPage/PhieuHenPage";
 import NhanVienPage from "./pages/NhanVienPage/NhanVienPage";
 import HoaDonPage from "./pages/GiaoDichPage/HoaDonPage";
 import DoiTraPage from "./pages/GiaoDichPage/DoiTraPage";
-
+import SalePage from "./pages/SalePage/SalePage";
 
 function App() {
   const { Header, Content, Footer } = Layout;
@@ -48,6 +48,7 @@ function App() {
                 <Route path='/CuoiNgays' exact component={BCCuoiNgayPage}/>
                 <Route path='/BCBanHangs' exact component={BCBanHangPage}/>    
                 <Route path='/BCHangHoas' exact component={BCHangHoaPage}/>
+                <Route path='/Sale' exact component={SalePage}/>
               </Switch>
             {/* </div>
           </Content> */}

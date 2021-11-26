@@ -96,6 +96,7 @@ export default function TaoHoaDonModal({ HoaDons }) {
         GiaVon: result.GiaVon,
         DonGia: result.GiaBan,
         BaoHanh: result.BaoHanh,
+        ThoiGian: dataHD.ThoiGian,
         ThanhTien: result.GiaBan * dataSP.SoLuong,
       };
       SPsInfo.push(SPInfo);

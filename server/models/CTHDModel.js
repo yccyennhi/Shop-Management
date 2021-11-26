@@ -44,6 +44,10 @@ const schema = new Schema(
       enum: ["Không bảo hành", "Có bảo hành"],
       default: "Không bảo hành",
     },
+    ThoiGian: {
+      type: Date,
+      required: true,
+    },
     ThanhTien: {
       type: Number,
       required: true,

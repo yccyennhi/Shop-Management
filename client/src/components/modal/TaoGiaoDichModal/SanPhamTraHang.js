@@ -28,10 +28,10 @@ export default function SanPhamTraHang({ setDataPDT, SP }) {
               {data.MaSP}
             </label>{" "}
           </Col>
-          <Col flex={10}>
+          <Col flex='220px'>
             <label style={{ float: "left" }}>{data.TenSP}</label>{" "}
           </Col>
-          <Col flex={1} disabled={data.SoLuong < 0}>
+          <Col flex='10px' disabled={data.SoLuong < 0}>
             <Button
               shape="circle"
               icon={<CaretLeftOutlined />}
@@ -52,7 +52,7 @@ export default function SanPhamTraHang({ setDataPDT, SP }) {
               }}
             />
           </Col>
-          <Col flex={1}>
+          <Col flex='40px'>
             <Input
               style={{
                 width: "50px",
@@ -86,7 +86,7 @@ export default function SanPhamTraHang({ setDataPDT, SP }) {
               }}
             />
           </Col>
-          <Col flex={1}>
+          <Col flex='10px'>
             <Button
               shape="circle"
               icon={<CaretRightOutlined />}
@@ -107,10 +107,10 @@ export default function SanPhamTraHang({ setDataPDT, SP }) {
               }}
             />
           </Col>
-          <Col flex={2}>
+          <Col flex='60px'>
             <label style={{ textAlign: "center" }}>{data.GiaBan}</label>
           </Col>
-          <Col flex="75px">
+          <Col flex="90px">
             <label style={{ textAlign: "center" }}>{data.ThanhTien}</label>
           </Col>
         </Row>

@@ -22,19 +22,61 @@ import {
   updatePhieuNhap,
   setIdThemPhieuNhapPage,
 } from "../../../redux/actions";
+import { SearchOutlined, FileExcelOutlined } from "@ant-design/icons";
 import moment from "moment";
 import ThemPhieuNhapPage from "../../../pages/ThemPhieuNhapPage/ThemPhieuNhapPage";
+import { PhieuNhapsState$ } from "../../../redux/selectors";
 
 export default function ExpandedRowRender({ record, currentId, setCurrentId }) {
   const dispatch = useDispatch();
   const [isShow, setIsShow] = useState(false);
   const [IsShowFinish, setIsShowFinish] = useState(false);
-
+  const PN = useSelector(PhieuNhapsState$);
+  const PhieuNhap = PN.find((data) => data.MaPN == record.MaPN);
+  const [dataSource, setDataSource] = useState([{
+    MaSP: "",
+    TenSP: "",
+    MauSac: "",
+    Size: "",
+    LoaiHang: "",
+    GiamGia: 0,
+    SoLuong: 0,
+    GiaNhap: 0,
+    ThanhTien: 0,
+  }]);
   const PhieuNhapValue = useSelector((state) =>
     state.PhieuNhaps.data.find((PhieuNhap) =>
       PhieuNhap._id === record._id ? PhieuNhap : null
     )
   );
+  React.useEffect(() => {
+    if (PhieuNhapValue != undefined) {
+      let arr = [];
+      for (let i = 0; i < PhieuNhapValue.MaSP.length; i++) {
+        let newData = {
+          MaSP: PhieuNhapValue.MaSP[i],
+          TenSP: PhieuNhapValue.TenSP[i],
+          MauSac: PhieuNhapValue.MauSac[i],
+          Size: PhieuNhapValue.Size[i],
+          LoaiHang: PhieuNhapValue.LoaiHang[i],
+          GiamGia: PhieuNhapValue.GiamGia[i],
+          SoLuong: PhieuNhapValue.SoLuong[i],
+          GiaNhap: PhieuNhapValue.GiaNhap[i],
+          ThanhTien: PhieuNhapValue.ThanhTien[i],
+        };
+        arr.push(newData);
+      }
+      console.log("1 lần");
+      setDataSource(arr);
+
+      console.log("dataSource arr", dataSource);
+    }
+  }, [dispatch]);
+  React.useEffect(() => {
+
+      console.log(dataSource);
+  }, [dataSource]);
+
   const [data, setData] = useState(PhieuNhapValue);
 
   function warning() {
@@ -73,6 +115,7 @@ export default function ExpandedRowRender({ record, currentId, setCurrentId }) {
     setIsShowFinish(false);
     // dispatch(deleteSanPham.deleteSanPhamRequest(record._id));
   }, [dispatch, IsShowFinish]);
+
   const handleDelete = React.useCallback(() => {
     setData({ ...data, TrangThai: "Đã hủy" });
     console.log("huy", data);
@@ -80,15 +123,65 @@ export default function ExpandedRowRender({ record, currentId, setCurrentId }) {
     setIsShow(false);
     // dispatch(deleteSanPham.deleteSanPhamRequest(record._id));
   }, [dispatch, isShow]);
+
   const history = useHistory();
   const handleNhapHang = () => {
     history.push("/ThemPhieuNhaps");
   };
+
   const openUpdatePhieuNhapModal = React.useCallback(() => {
     dispatch(setIdThemPhieuNhapPage(record.MaPN));
     handleNhapHang();
   }, [dispatch]);
+
   const date = moment(record.NgayTao).format("DD-MM-YYYY");
+  const columns = [
+    {
+      key: "MaSP",
+      title: "Mã sản phẩm",
+      dataIndex: "MaSP",
+    },
+    {
+      key: "TenSP",
+      title: "Tên sản phẩm",
+      dataIndex: "TenSP",
+    },
+    {
+      key: "MauSac",
+      title: "Màu sắc",
+      dataIndex: "MauSac",
+    },
+    {
+      key: "Size",
+      title: "Size",
+      dataIndex: "Size",
+    },
+    {
+      key: "LoaiHang",
+      title: "Loại hàng",
+      dataIndex: "LoaiHang",
+    },
+    {
+      key: "SoLuong",
+      title: "Số lượng",
+      dataIndex: "SoLuong",
+    },
+    {
+      key: "GiaNhap",
+      title: "Giá nhập",
+      dataIndex: "GiaNhap",
+    },
+    {
+      key: "GiamGia",
+      title: "Giảm giá",
+      dataIndex: "GiamGia",
+    },
+    {
+      key: "ThanhTien",
+      title: "Thành tiền",
+      dataIndex: "ThanhTien",
+    },
+  ];
   return (
     <>
       <PageHeader
@@ -145,6 +238,19 @@ export default function ExpandedRowRender({ record, currentId, setCurrentId }) {
             {record.TienTra}
           </Descriptions.Item>
         </Descriptions>
+        <Table
+          scroll={{ x: 1200, y: 500 }}
+          columns={columns}
+         dataSource={dataSource}
+          searchableProps={{
+            inputProps: {
+              placeholder: "Nhập nội dung cần tìm",
+              prefix: <SearchOutlined />,
+              width: 200,
+            },
+          }}
+          rowKey="MaSP"
+        ></Table>
       </PageHeader>
     </>
   );

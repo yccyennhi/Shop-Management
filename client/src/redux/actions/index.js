@@ -200,6 +200,9 @@ export const getTongQuans = createActions({
 export const showTaoSanPhamModal = createAction("SHOW_TAOSANPHAM_MODAL");
 export const hideTaoSanPhamModal = createAction("HIDE_TAOSANPHAM_MODAL");
 
+export const setIdThemPhieuNhapPage = createAction("SET_IDTHEMPHIEUNHAP_PAGE");
+
+
 export const showTaoPhieuBaoHanhModal = createAction("SHOW_TAOPHIEUBAOHANH_MODAL");
 export const hideTaoPhieuBaoHanhModal = createAction("HIDE_TAOPHIEUBAOHANH_MODAL");
 

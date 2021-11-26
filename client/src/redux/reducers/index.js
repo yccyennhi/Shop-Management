@@ -19,6 +19,8 @@ import CTPDTs from "./CTPDTs";
 import TongQuans from "./TongQuans";
 import PhieuNhaps from "./PhieuNhaps";
 import TaoPhieuNhapModal  from "./TaoPhieuNhapModal";
+import ThemPhieuNhapPage  from "./ThemPhieuNhapPage";
+
 
 
 export default combineReducers({
@@ -42,5 +44,5 @@ export default combineReducers({
   TongQuans,
   PhieuNhaps,
   TaoPhieuNhapModal,
-  
+  ThemPhieuNhapPage
 });

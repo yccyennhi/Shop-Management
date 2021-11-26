@@ -70,13 +70,13 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
           </Button>,
         ]}
         tags={[
-          <Tag color="red" visible={record.TrangThai == "Ngừng kinh doanh"}>
+          <Tag color="red" visible={record.TrangThai == "Đã hủy"}>
             {record.TrangThai}
           </Tag>,
-          <Tag color="yellow" visible={record.TrangThai == "Hết hàng"}>
+          <Tag color="yellow" visible={record.TrangThai == "Phiếu tạm"}>
             {record.TrangThai}
           </Tag>,
-          <Tag color="blue" visible={record.TrangThai == "Đang kinh doanh"}>
+          <Tag color="blue" visible={record.TrangThai == "Đã nhập hàng"}>
             {record.TrangThai}
           </Tag>,
           <Tag color="grey" visible={record.BaoHanh == "Không bảo hành"}>

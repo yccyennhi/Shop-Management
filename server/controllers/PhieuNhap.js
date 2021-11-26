@@ -25,6 +25,7 @@ export const createPhieuNhap = async (req, res) => {
 export const updatePhieuNhap = async (req, res) => {
   try {
     const updatePhieuNhap = req.body;
+    console.log("update", updatePhieuNhap);
     const PhieuNhap = await PhieuNhapModel.findOneAndUpdate(
       { _id: updatePhieuNhap._id },
       updatePhieuNhap,

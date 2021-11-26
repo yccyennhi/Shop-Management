@@ -7,6 +7,7 @@ import {
   PhieuNhapsState$,
   isloadingPhieuNhapsState$,
   SanPhamsState$,
+  ThemPhieuNhapPageState$,
 } from "../../../redux/selectors";
 import * as actions from "../../../redux/actions";
 import {
@@ -20,18 +21,51 @@ const { Search } = Input;
 
 function ThemPhieuNhaptable({ MaSP, setData }) {
   const SP = useSelector(SanPhamsState$);
+  const PN = useSelector(PhieuNhapsState$);
+  const testID = useSelector(ThemPhieuNhapPageState$);
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
   const [Editing, setEditing] = useState(false);
   const [dataSource, setDataSource] = useState([]);
+
+  const id = useSelector(ThemPhieuNhapPageState$);
+
   React.useEffect(() => {
+    dispatch(actions.getPhieuNhaps.getPhieuNhapsRequest());
     dispatch(actions.getSanPhams.getSanPhamsRequest());
   }, [dispatch]);
 
+  const PhieuNhapValue = useSelector((state) =>
+    state.PhieuNhaps.data.find((PhieuNhap) =>
+      PhieuNhap.MaPN === id.payload ? PhieuNhap : null
+    )
+  );
   React.useEffect(() => {
-    console.log("dataSource", dataSource);
+    console.log("datasource", dataSource);
     setData(dataSource);
   }, [dataSource]);
+
+  React.useEffect(() => {
+    if (PhieuNhapValue != undefined) {
+      let arr = [];
+      for (let i = 0; i < PhieuNhapValue.MaSP.length; i++) {
+        let newData = {
+          MaSP: PhieuNhapValue?.MaSP[i],
+          TenSP: PhieuNhapValue?.TenSP[i],
+          MauSac: PhieuNhapValue?.MauSac[i],
+          Size: PhieuNhapValue?.Size[i],
+          LoaiHang: PhieuNhapValue?.LoaiHang[i],
+          GiamGia: PhieuNhapValue?.GiamGia[i],
+          SoLuong: PhieuNhapValue?.SoLuong[i],
+          GiaNhap: PhieuNhapValue?.GiaNhap[i],
+          ThanhTien: PhieuNhapValue?.ThanhTien[i],
+        };
+        arr.push(newData);
+      }
+      console.log("1 lần")
+      setDataSource(arr);
+    }
+  }, [dispatch]);
 
   React.useEffect(() => {
     let SanPham = SP.find(function (e) {
@@ -178,9 +212,9 @@ function ThemPhieuNhaptable({ MaSP, setData }) {
         }}
         onOk={() => {
           if (
-            Editing.SoLuong == "" ||
-            Editing.GiaNhap == "" ||
-            Editing.GiamGia == ""
+            Editing.SoLuong <=0 ||
+            Editing.GiaNhap <0 ||
+            Editing.GiamGia <0 
           ) {
             messageError("Vui lòng nhập đầy đủ thông tin!");
           } else {

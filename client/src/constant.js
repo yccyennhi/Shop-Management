@@ -87,4 +87,8 @@ export const INIT_STATE = {
   TaoPhieuNhapModal: {
     isShow: false,
   },
+  
+  ThemPhieuNhapPage: {
+    ID: "",
+  },
 };

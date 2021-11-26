@@ -30,13 +30,14 @@ import {
   isloadingPhieuNhapsState$,
 } from "../../redux/selectors";
 import PhieuNhapModal from "../../components/modal/PhieuNhapModal/PhieuNhapModal";
+import ThemPhieuNhapPage from "../ThemPhieuNhapPage/ThemPhieuNhapPage";
 const { Text } = Typography;
 const { Content, Sider } = Layout;
-
 
 export default function PhieuNhapPage() {
   const history = useHistory();
   const handleNhapHang = () => {
+    dispatch(actions.setIdThemPhieuNhapPage(""));
     history.push("/ThemPhieuNhaps");
   };
   const [currentId, setCurrentId] = useState(null);
@@ -82,7 +83,7 @@ export default function PhieuNhapPage() {
               bordered={false}
               style={{ width: 250 }}
             >
-              <Radio.Group  defaultValue={0}>
+              <Radio.Group defaultValue={0}>
                 <Space direction="vertical">
                   <Radio
                     value={0}
@@ -137,7 +138,7 @@ export default function PhieuNhapPage() {
                   <Radio
                     value={2}
                     onClick={() => {
-                      setTrangthai(2);
+                      setTrangthai(3);
                     }}
                   >
                     Đã hủy
@@ -171,7 +172,7 @@ export default function PhieuNhapPage() {
                       <Text strong style={{ fontSize: "1.5rem" }}>
                         {SPCH.length}
                       </Text>
-                      <Text type="secondary">phiếu nhập tháng này</Text>
+                      <Text type="secondary">Phiếu nhập tháng này</Text>
                     </Space>
                   </Space>
                 </Col>
@@ -184,7 +185,7 @@ export default function PhieuNhapPage() {
                         <Text strong style={{ fontSize: "1.5rem" }}>
                           {SPHH.length}
                         </Text>
-                        <Text type="secondary">phiếu nhập hoàn thành</Text>
+                        <Text type="secondary">Phiếu nhập hoàn thành</Text>
                       </Space>
                     </Space>
                   </Space>
@@ -202,10 +203,6 @@ export default function PhieuNhapPage() {
                 trangthai={trangthai}
                 thoigian={thoigian}
                 thang={thang}
-                setCurrentId={setCurrentId}
-              />
-              <PhieuNhapModal
-                currentId={currentId}
                 setCurrentId={setCurrentId}
               />
             </div>

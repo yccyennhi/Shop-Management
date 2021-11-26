@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ExportTableButton, Table } from "ant-table-extensions";
+import { useHistory } from "react-router-dom";
 
 import {
   Input,
@@ -26,18 +27,16 @@ import {
   isloadingPhieuNhapsState$,
 } from "../../../redux/selectors";
 import * as actions from "../../../redux/actions";
+import ThemPhieuNhapPage from "../../../pages/ThemPhieuNhapPage/ThemPhieuNhapPage";
 const { Search } = Input;
 
-function HangHoatable({ trangthai, baohanh, currentId, setCurrentId }) {
+function PhieuNhaptable({ trangthai, baohanh, currentId, setCurrentId }) {
   const dispatch = useDispatch();
   const loadingPhieuNhaps = useSelector(isloadingPhieuNhapsState$);
   React.useEffect(() => {
     dispatch(actions.getPhieuNhaps.getPhieuNhapsRequest());
   }, [dispatch]);
   const PN = useSelector(PhieuNhapsState$);
-
-
-  React.useEffect(() => {}, [trangthai, baohanh]);
   const dataSource = PN;
   console.log(PN);
   const columns = [
@@ -211,7 +210,7 @@ function HangHoatable({ trangthai, baohanh, currentId, setCurrentId }) {
             btnProps={{ icon: <FileExcelOutlined /> }}
             showColumnPicker={true}
             showColumnPickerProps={{ id: "Thêm hàng hóa" }}
-            fileName="HangHoaCSV"
+            fileName="PhieuNhapCSV"
           >
             Tải file CSV
           </ExportTableButton>
@@ -230,7 +229,7 @@ function HangHoatable({ trangthai, baohanh, currentId, setCurrentId }) {
         }}
         loading={loadingPhieuNhaps}
         pagination={true}
-        scroll={{ x: 1500, y: 500 }}
+        scroll={{ x: 1000, y: 500 }}
         rowSelection={rowSelection}
         expandable={{
           expandedRowRender: (record) => (
@@ -246,4 +245,4 @@ function HangHoatable({ trangthai, baohanh, currentId, setCurrentId }) {
   );
 }
 
-export default HangHoatable;
+export default PhieuNhaptable;

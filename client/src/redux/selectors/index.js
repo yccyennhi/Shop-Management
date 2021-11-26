@@ -21,4 +21,5 @@ export const TongQuanHighestSanPhamList$ =(state) =>state.TongQuans.highestSanPh
 export const PhieuNhapsState$ = (state) => state.PhieuNhaps.data;
 export const isloadingPhieuNhapsState$ = (state) => state.SanPhams.isLoading;
 export const TaoPhieuNhapModalState$ = (state) => state.TaoPhieuNhapModal;
+export const ThemPhieuNhapPageState$ = (state) => state.ThemPhieuNhapPage.ID;
 

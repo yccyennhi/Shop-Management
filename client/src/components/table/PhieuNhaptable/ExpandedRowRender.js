@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+
 import {
   Table,
   Input,
@@ -18,98 +20,131 @@ import {
   deletePhieuNhap,
   showTaoPhieuNhapModal,
   updatePhieuNhap,
+  setIdThemPhieuNhapPage,
 } from "../../../redux/actions";
+import moment from "moment";
+import ThemPhieuNhapPage from "../../../pages/ThemPhieuNhapPage/ThemPhieuNhapPage";
 
-export default function ExpandedRowRender({ record, setCurrentId }) {
+export default function ExpandedRowRender({ record, currentId, setCurrentId }) {
   const dispatch = useDispatch();
   const [isShow, setIsShow] = useState(false);
-  function warning() {
-    setIsShow(true);
-    Modal.warning({
-      visible: isShow,
-      title: "Cảnh báo",
-      content:
-        "Việc xóa sản phẩm sẽ làm ảnh hưởng đến dữ liệu kiểm kho. Xác nhận đưa tồn kho sản phẩm về 0 để thay thế?",
-      onOk() {
-        handleDelete();
-      },
-      //  onCancel: {}
-    });
-  }
-  const openUpdatePhieuNhapModal = React.useCallback(() => {
-    setCurrentId(record._id);
-    dispatch(showTaoPhieuNhapModal());
-  }, [dispatch]);
+  const [IsShowFinish, setIsShowFinish] = useState(false);
+
   const PhieuNhapValue = useSelector((state) =>
     state.PhieuNhaps.data.find((PhieuNhap) =>
       PhieuNhap._id === record._id ? PhieuNhap : null
     )
   );
   const [data, setData] = useState(PhieuNhapValue);
-  console.log("SPVL", PhieuNhapValue);
+
+  function warning() {
+    setIsShow(true);
+    Modal.warning({
+      visible: isShow,
+      title: "Cảnh báo",
+      content: "Xác nhận hủy phiếu nhập?",
+      onOk() {
+        handleDelete();
+      },
+      onCancel() {
+        setIsShow(false);
+      },
+    });
+  }
+
+  function warningFinish() {
+    setIsShow(true);
+    Modal.confirm({
+      visible: IsShowFinish,
+      title: "Thông báo",
+      content: "Xác nhận hoàn thành nhập hàng?",
+      onOk() {
+        handleFinish();
+      },
+      onCancel() {
+        setIsShowFinish(false);
+      },
+    });
+  }
+  const handleFinish = React.useCallback(() => {
+    setData({ ...data, TrangThai: "Đã nhập hàng" });
+    console.log("nhap", data);
+    dispatch(updatePhieuNhap.updatePhieuNhapRequest(data));
+    setIsShowFinish(false);
+    // dispatch(deleteSanPham.deleteSanPhamRequest(record._id));
+  }, [dispatch, IsShowFinish]);
   const handleDelete = React.useCallback(() => {
-    console.log("record data", record);
-    setData({ ...data, TonKho: 0, TrangThai: "Hết hàng" });
+    setData({ ...data, TrangThai: "Đã hủy" });
+    console.log("huy", data);
     dispatch(updatePhieuNhap.updatePhieuNhapRequest(data));
     setIsShow(false);
-    // dispatch(deletePhieuNhap.deletePhieuNhapRequest(record._id));
-  }, [record, dispatch]);
-
+    // dispatch(deleteSanPham.deleteSanPhamRequest(record._id));
+  }, [dispatch, isShow]);
+  const history = useHistory();
+  const handleNhapHang = () => {
+    history.push("/ThemPhieuNhaps");
+  };
+  const openUpdatePhieuNhapModal = React.useCallback(() => {
+    dispatch(setIdThemPhieuNhapPage(record.MaPN));
+    handleNhapHang();
+  }, [dispatch]);
+  const date = moment(record.NgayTao).format("DD-MM-YYYY");
   return (
     <>
       <PageHeader
         className="site-page-header"
-        title={record.TenSP}
-        subTitle={record.MaSP}
+        title={record.MaPN}
+        subTitle={date}
         extra={[
           <Button key="1" type="primary" onClick={openUpdatePhieuNhapModal}>
             Sửa
           </Button>,
           <Button key="2" onClick={warning}>
-            Xóa
+            Hủy phiếu
+          </Button>,
+          <Button key="3" onClick={warningFinish}>
+            Hoàn thành
           </Button>,
         ]}
         tags={[
-          <Tag color="red" visible={record.TrangThai == "Ngừng kinh doanh"}>
+          <Tag color="red" visible={record.TrangThai == "Đã hủy"}>
             {record.TrangThai}
           </Tag>,
-          <Tag color="yellow" visible={record.TrangThai == "Hết hàng"}>
+          <Tag color="yellow" visible={record.TrangThai == "Phiếu tạm"}>
             {record.TrangThai}
           </Tag>,
-          <Tag color="blue" visible={record.TrangThai == "Đang kinh doanh"}>
+          <Tag color="blue" visible={record.TrangThai == "Đã nhập hàng"}>
             {record.TrangThai}
-          </Tag>,
-          <Tag color="grey" visible={record.BaoHanh == "Không bảo hành"}>
-            Không bảo hành
-          </Tag>,
-          <Tag color="green" visible={record.BaoHanh == "Có bảo hành"}>
-            Có bảo hành
           </Tag>,
         ]}
       >
-        <Row justify="start">
-          <Col flex={1}>
-              <Image width={300} src={record.HinhAnh || ""} />
-          </Col>
-          <Col flex={10}>
-            <Descriptions title="Thông tin chi tiết" size="default">
-              <Descriptions.Item label="Mô tả">{record.MoTa}</Descriptions.Item>
-              <Descriptions.Item label="Size">{record.Size}</Descriptions.Item>
-              <Descriptions.Item label="Loại hàng">
-                {record.LoaiHang}
-              </Descriptions.Item>
-              <Descriptions.Item label="Giá bán">
-                {record.GiaBan}
-              </Descriptions.Item>
-              <Descriptions.Item label="Giá vốn">
-                {record.GiaVon}
-              </Descriptions.Item>
-              <Descriptions.Item label="Tồn kho">
-                {record.TonKho}
-              </Descriptions.Item>
-            </Descriptions>
-          </Col>
-        </Row>
+        <Descriptions title="Thông tin chi tiết" size="default" column={2}>
+          <Descriptions.Item label="Người nhập">
+            {record.NguoiNhap}
+          </Descriptions.Item>
+          <Descriptions.Item label="Người tạo">
+            {record.NguoiTao}
+          </Descriptions.Item>
+          <Descriptions.Item label="Cập nhật lần cuối">
+            {moment(record.NgayCapNhat).format("DD-MM-YYYY")}
+          </Descriptions.Item>
+          <Descriptions.Item label="Tên NCC">{record.TenNCC}</Descriptions.Item>
+          <Descriptions.Item label="Tổng số lượng">
+            {record.TongSoLuong}
+          </Descriptions.Item>
+          <Descriptions.Item label="Tổng số tiền">
+            {record.TongTien}
+          </Descriptions.Item>
+          <Descriptions.Item label="Giảm giá trên tổng hóa đơn">
+            {record.GiamGiaTongTien}
+          </Descriptions.Item>
+          <Descriptions.Item label="Số tiền cần trả">
+            {record.TongTien - record.GiamGiaTongTien - record.TienTra}
+          </Descriptions.Item>
+          <Descriptions.Item label="Số tiền đã trả">
+            {record.TienTra}
+          </Descriptions.Item>
+        </Descriptions>
       </PageHeader>
     </>
   );

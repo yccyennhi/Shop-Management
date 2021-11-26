@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ExportTableButton, Table } from "ant-table-extensions";
+import { useHistory } from "react-router-dom";
 import {
   Layout,
   PageHeader,
@@ -37,6 +38,7 @@ import {
   PhieuNhapsState$,
   isloadingPhieuNhapsState$,
   SanPhamsState$,
+  ThemPhieuNhapPageState$,
 } from "../../redux/selectors";
 import SanPhamModal from "../../components/modal/SanPhamModal/SanPhamModal";
 
@@ -47,14 +49,31 @@ const { Content, Sider } = Layout;
 const { Search } = Input;
 
 const { OptGroup, Option } = AutoComplete;
-export default function ThemPhieuNhapPage() {
-  const dispatch = useDispatch();
+export default function ThemPhieuNhapPage({}) {
   const [currentId, setCurrentId] = useState(null);
   const [MaSP, setMaSP] = useState(null);
   const [CanTra, setCanTra] = useState(0);
   const dateNow = moment().toDate();
   const SP = useSelector(SanPhamsState$);
   const PN = useSelector(PhieuNhapsState$);
+  const id = useSelector(ThemPhieuNhapPageState$);
+  const history = useHistory();
+  const handleNhapHang = () => {
+    history.push("/PhieuNhaps");
+  };
+  const [dataSource, setDataSource] = useState([
+    {
+      MaSP: "",
+      TenSP: "",
+      MauSac: "",
+      Size: "",
+      LoaiHang: "",
+      SoLuong: 0,
+      GiamGia: 0,
+      GiaNhap: 0,
+      ThanhTien: 0,
+    },
+  ]);
 
   const [data, setData] = useState({
     MaPN: "",
@@ -75,19 +94,21 @@ export default function ThemPhieuNhapPage() {
     TrangThai: "Phiếu tạm",
     GhiChu: "",
   });
-  const [dataSource, setDataSource] = useState([
-    {
-      MaSP: "",
-      TenSP: "",
-      MauSac: "",
-      Size: "",
-      LoaiHang: "",
-      SoLuong: 0,
-      GiamGia: 0,
-      GiaNhap: 0,
-      ThanhTien: 0,
-    },
-  ]);
+  const PhieuNhapValue = useSelector((state) =>
+    state.PhieuNhaps.data.find((PhieuNhap) =>
+      PhieuNhap.MaPN === id.payload ? PhieuNhap : null
+    )
+  );
+  useEffect(() => {
+    if (PhieuNhapValue != undefined) {
+      setData(PhieuNhapValue);
+    }
+    console.log("pnv", data);
+  }, [ PhieuNhapValue]);
+  // React.useEffect(() => {
+  //   console.log("datâPge", data);
+  // }, [data]);
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
     dispatch(actions.getSanPhams.getSanPhamsRequest());
@@ -98,8 +119,6 @@ export default function ThemPhieuNhapPage() {
   }, [dispatch]);
 
   const onHoanThanh = React.useCallback(() => {
-    console.log("hoanthanh", data);
-
     if (
       data.MaPN == "" ||
       data.NguoiNhap == "" ||
@@ -112,15 +131,20 @@ export default function ThemPhieuNhapPage() {
       let PhieuNhap = PN.find(function (e) {
         return e.MaPN == data.MaPN;
       });
-      if (PhieuNhap != undefined) {
-        messageError("Mã phiếu nhập đã tồn tại!");
+      if (id.payload == "") {
+        if (PhieuNhap != undefined) {
+          messageError("Mã phiếu nhập đã tồn tại!");
+        } else {
+          dispatch(actions.createPhieuNhap.createPhieuNhapRequest(data));
+        }
       } else {
-        dispatch(actions.createPhieuNhap.createPhieuNhapRequest(data));
-        messageSuccess("Nhập hàng thành công!")
+        dispatch(actions.updatePhieuNhap.updatePhieuNhapRequest(data));
+        // messageSuccess("Cập nhật nhập hàng thành công!");
       }
     }
-    // dispatch(actions.createPhieuNhap.createPhieuNhapRequest(data));
   }, [data, dispatch]);
+  
+  useEffect(() => {}, [data]);
 
   React.useEffect(() => {
     const MaSanPham = dataSource.map((data) => data.MaSP);
@@ -141,6 +165,7 @@ export default function ThemPhieuNhapPage() {
     setCanTra(TongTien - data.GiamGiaTongTien);
     setData({
       ...data,
+      NgayCapNhat: dateNow,
       MaSP: MaSanPham,
       TenSP: TenSP,
       MauSac: MauSac,
@@ -155,9 +180,7 @@ export default function ThemPhieuNhapPage() {
     });
   }, [dataSource]);
 
-  React.useEffect(() => {
-    console.log("da ta", data);
-  }, [data]);
+  React.useEffect(() => {}, [data]);
 
   const onLuuTam = React.useCallback(() => {}, [dispatch]);
 
@@ -172,8 +195,6 @@ export default function ThemPhieuNhapPage() {
     selectedRowKeys: [],
     loading: false,
   });
-
-  console.log("selectedRowKeys", select);
 
   const { selectedRowKeys, loading } = select;
 
@@ -193,7 +214,7 @@ export default function ThemPhieuNhapPage() {
         <PageHeader
           onBack={() => window.history.back()}
           className="site-page-header"
-          title="Thêm phiếu nhập"
+          title={id.payload == "" ? "Thêm phiếu nhập" : "Cập nhật phiếu nhập"}
         />
       </Layout>
       <Layout>
@@ -240,7 +261,7 @@ export default function ThemPhieuNhapPage() {
                 </Tooltip>
               </Row>
               <Divider orientation="left"></Divider>
-              <ThemPhieuNhaptable MaSP={MaSP} setData={setDataSource} />
+              <ThemPhieuNhaptable MaSP={MaSP} id={id} setData={setDataSource} />
             </div>
             <SanPhamModal currentId={currentId} setCurrentId={setCurrentId} />
           </Layout>
@@ -287,6 +308,7 @@ export default function ThemPhieuNhapPage() {
                   value={data.MaPN}
                   onChange={(e) => setData({ ...data, MaPN: e.target.value })}
                   defaultValue={data.MaPN}
+                  disabled={id.payload == "" ? false : true}
                 />
               </Form.Item>
               <Form.Item label="Người tạo phiếu" required>
@@ -328,10 +350,13 @@ export default function ThemPhieuNhapPage() {
               <Form.Item tooltip="Trạng thái phiếu nhập" label="Trạng thái">
                 <Select
                   placeholder="Trạng thái"
+                  disabled={true}
                   value={data.TrangThai}
                   defaultValue={data.TrangThai}
-                  disabled="true"
-                ></Select>
+                >
+                  <Option value="Phiếu tạm">Phiếu tạm</Option>
+                  <Option value="Đã nhập hàng">Đã nhập hàng</Option>
+                </Select>
               </Form.Item>
               <Form.Item label="Ghi chú">
                 <Input
@@ -397,6 +422,8 @@ export default function ThemPhieuNhapPage() {
                   type="primary"
                   htmlType="submit"
                   onClick={() => {
+                    setData({ ...data, TrangThai: "Đã nhập hàng" });
+                    
                     onHoanThanh();
                   }}
                 >

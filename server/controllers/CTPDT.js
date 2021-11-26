@@ -15,6 +15,7 @@ export const createCTPDT = async (req, res) => {
     const newCTPDT = req.body;
 
     const CTPDT = new CTPDTModel(newCTPDT);
+    console.log(newCTPDT);
     await CTPDT.save();
 
     res.status(200).json(CTPDT);

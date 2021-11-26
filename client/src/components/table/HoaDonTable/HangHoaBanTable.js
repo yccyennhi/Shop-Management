@@ -27,11 +27,15 @@ function HangHoaBanTable({ dataCTHDs }) {
     {
       title: "Đơn giá",
       dataIndex: "GiaVon",
+      render: (value) =>
+        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
       key: "GiaVon",
     },
     {
       title: "Giá bán",
-      dataIndex: "GiaBan",
+      dataIndex: "DonGia",
+      render: (value) =>
+        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
       key: "GiaBan",
     },
     {
@@ -44,6 +48,8 @@ function HangHoaBanTable({ dataCTHDs }) {
     {
       title: "Thành tiền",
       dataIndex: "ThanhTien",
+      render: (value) =>
+        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
       key: "ThanhTien",
     },
   ];

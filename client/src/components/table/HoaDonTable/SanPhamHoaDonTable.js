@@ -6,8 +6,7 @@ export default function SanPhamHoaDonTable({ SPsInfo, onListSPclick }) {
   const [data, setData] = useState([]);
 
   React.useEffect(() => {
-    if (SPsInfo.length)
-    setData(SPsInfo);
+    if (SPsInfo.length) setData(SPsInfo);
   }, [SPsInfo]);
   const columns = [
     {
@@ -53,25 +52,20 @@ export default function SanPhamHoaDonTable({ SPsInfo, onListSPclick }) {
       key: "ThanhTien",
     },
   ];
-  const [select, setSelect] = useState({
-    selectedRowKeys: [],
-    pagination: {
-      current: 1,
-      pageSize: 5,
-    },
-    loading: false,
-  });
   const body = (
     <>
       <Table
         tableLayout={"auto"}
-        pagination={true}
+        pagination={{
+          current: 1,
+          pageSize: 5,
+        }}
         loading={false}
         size={"small"}
         columns={columns}
         onRow={(record, index) => {
           return {
-            onDoubleClick: (event) => {
+            onDoubleClick: () => {
               onListSPclick(record, index);
             },
           };

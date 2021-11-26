@@ -1,5 +1,6 @@
 import { HoaDonModel } from "../models/HoaDonModel.js";
-import moment from 'moment';
+import { KhuyenMaiModel } from "../models/KhuyenMaiModel.js";
+import moment from "moment";
 
 export const getHoaDons = async (req, res) => {
   try {
@@ -39,11 +40,11 @@ export const createHoaDon = async (req, res) => {
     const HoaDon = new HoaDonModel(newHoaDon);
     await HoaDon.save();
 
-    res.status(200).json(HoaDon);    
+    res.status(200).json(HoaDon);
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: err });
-    }
+  }
 };
 
 export const updateHoaDon = async (req, res) => {
@@ -57,5 +58,20 @@ export const updateHoaDon = async (req, res) => {
     res.status(200).json(hoadon);
   } catch (err) {
     res.status(500).json({ error: err });
+  }
+};
+
+export const updateSLKM = async (req, res) => {
+  try {
+    const KM = req.body;
+    console.log(KM);
+    const KhuyenMai = await KhuyenMaiModel.findOneAndUpdate(
+      { _id: KM._id },
+      KM,
+      { new: true }
+    );
+    res.status(200).json(KhuyenMai);
+  } catch (err) {
+    res.status(400).json({ error: err });
   }
 };

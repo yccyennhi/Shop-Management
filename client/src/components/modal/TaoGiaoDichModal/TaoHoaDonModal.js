@@ -5,7 +5,6 @@ import {
   Input,
   InputNumber,
   DatePicker,
-  Descriptions,
   message,
   Col,
   Row,
@@ -16,16 +15,10 @@ import {
   TaoHoaDonModalState$,
   SanPhamsState$,
   KhuyenMaisState$,
-  HoaDonsState$,
   //KhachHangsState$
   //NhanViensState$
 } from "../../../redux/selectors/index.js";
-import {
-  hideTaoHoaDonModal,
-  updateSanPham,
-  createHoaDon,
-  createCTHD,
-} from "../../../redux/actions";
+import { hideTaoHoaDonModal } from "../../../redux/actions";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import * as actions from "../../../redux/actions";
 import SanPhamHoaDonTable from "../../table/HoaDonTable/SanPhamHoaDonTable.js";
@@ -35,29 +28,16 @@ export default function TaoHoaDonModal({ HoaDons }) {
   const dateNow = moment().toDate();
   const dispatch = useDispatch();
   const { isShow } = useSelector(TaoHoaDonModalState$);
-  const onCloseHoaDonModal = React.useCallback(() => {
-    dispatch(hideTaoHoaDonModal());
-  }, [dispatch]);
-  const HDs = useSelector(HoaDonsState$);
   const SanPhams = useSelector(SanPhamsState$);
   //const KhachHangs = useSelector(KhachHangsState$);
   //const NhanViens = useSelector(NhanViensState$);
   const KhuyenMais = useSelector(KhuyenMaisState$);
   React.useEffect(() => {
     dispatch(actions.getSanPhams.getSanPhamsRequest());
-  }, [dispatch]);
-  React.useEffect(() => {
     dispatch(actions.getKhuyenMais.getKhuyenMaisRequest());
+    //   dispatch(actions.getNhanViens.getNhanViensRequest());
+    //   dispatch(actions.getKhachHangs.getKhachHangsRequest());
   }, [dispatch]);
-  React.useEffect(() => {
-    dispatch(actions.getHoaDons.getHoaDonsRequest());
-  }, [dispatch]);
-  // React.useEffect(() => {
-  //   dispatch(actions.getKhachHangs.getKhachHangsRequest());
-  // }, [dispatch]);
-  // React.useEffect(() => {
-  //   dispatch(actions.getNhanViens.getNhanViensRequest());
-  // }, [dispatch]);
   const layout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 50 },
@@ -67,12 +47,12 @@ export default function TaoHoaDonModal({ HoaDons }) {
     MaHD: "",
     MaNV: "",
     idNV: "61957eace198c2fe3f3f5402",
-    MaKH: "Không",
+    MaKH: "",
     idKH: "61957aa9e198c2fe3f3f53f6",
     MaKM: "",
     idKM: "619f673906c0b162302fb7f2",
     SoLuong: 0,
-    ThoiGian: new Date(),
+    ThoiGian: new Date(Date.now()),
     GiamGia: 0,
     PhanTram: 0,
     GiaVon: 0,
@@ -87,20 +67,37 @@ export default function TaoHoaDonModal({ HoaDons }) {
     SoLuong: 0,
   });
   const [SPsInfo, setSPsInfo] = React.useState([]);
-  const btnAddSP = useCallback(() => {
+  const btnAddSP = () => {
     const result = SanPhams.find((SanPham) => SanPham.MaSP === dataSP.MaSP);
-    if (result) {
+    if (!result) {
+      message.error("Mã sản phẩm không tồn tại");
+      return;
+    }
+    if (result.TrangThai === "Ngừng kinh doanh") {
+      message.error("Sản phẩm đã ngừng kinh doanh");
+      return;
+    }
+    if (result.TrangThai === "Hết hàng") {
+      message.error("Sản phẩm đã hết hàng");
+      return;
+    }
+    if (result.SoLuong < dataHD.SoLuong) {
+      message.error("Số lượng sản phẩm không đủ");
+      return;
+    } else {
       const SPInfo = {
+        MaHD: "",
         idSP: result._id,
         MaSP: result.MaSP,
         TenSP: result.TenSP,
+        SoLuong: dataSP.SoLuong,
         MauSac: result.MauSac,
         Size: result.Size,
         GiaVon: result.GiaVon,
-        SoLuong: dataSP.SoLuong,
-        ThanhTien: result.GiaBan * dataSP.SoLuong,
         DonGia: result.GiaBan,
         BaoHanh: result.BaoHanh,
+        ThoiGian: dataHD.ThoiGian,
+        ThanhTien: result.GiaBan * dataSP.SoLuong,
       };
       SPsInfo.push(SPInfo);
       setDataSP({
@@ -111,19 +108,21 @@ export default function TaoHoaDonModal({ HoaDons }) {
       dataHD.TongTienHang = 0;
       dataHD.GiaVon = 0;
       SPsInfo.forEach((SP) => {
-        dataHD.SoLuong += SP.SoLuong;
-        dataHD.TongTienHang += SP.ThanhTien;
-        dataHD.GiaVon += SP.GiaVon;
+        dataHD.SoLuong = dataHD.SoLuong + SP.SoLuong;
+        dataHD.TongTienHang = dataHD.TongTienHang + SP.ThanhTien;
+        dataHD.GiaVon = dataHD.GiaVon + SP.GiaVon;
       });
+
       dataHD.ThanhTien = dataHD.TongTienHang - dataHD.GiamGia;
-    } else {
-      message.error("Mã sản phẩm không tồn tại");
     }
-  }, [dataSP, SPsInfo]);
+  };
 
   const btnAddMaKM = () => {
     const KM = KhuyenMais.find((e) => e.MaKM === dataHD.MaKM);
-    console.log(KM);
+    if (!KM) {
+      message.error("Mã khuyến mãi không tồn tại");
+      return;
+    }
     if (
       KM.SoLuong == 0 ||
       KM.TrangThai == false ||
@@ -131,7 +130,6 @@ export default function TaoHoaDonModal({ HoaDons }) {
       KM.GiaTri > dataHD.ThanhTien
     ) {
       message.error("Mã khuyến mãi không phù hợp");
-      dataHD.idKM = "";
       dataHD.GiamGia = 0;
       return;
     } else {
@@ -170,22 +168,47 @@ export default function TaoHoaDonModal({ HoaDons }) {
     setDataSP(ListSPtamp);
   };
 
+  const onCancel = React.useCallback(() => {
+    dispatch(hideTaoHoaDonModal());
+    setDataHD({
+      MaHD: "",
+      MaNV: "",
+      idNV: "61957eace198c2fe3f3f5402",
+      MaKH: "",
+      idKH: "61957aa9e198c2fe3f3f53f6",
+      MaKM: "",
+      idKM: "619f673906c0b162302fb7f2",
+      SoLuong: 0,
+      ThoiGian: dateNow,
+      GiamGia: 0,
+      PhanTram: 0,
+      GiaVon: 0,
+      DiemTru: 0,
+      TongTienHang: 0,
+      ThanhTien: 0,
+      TienKhachTra: 0,
+      TienTraKhach: 0,
+    });
+    setDataSP({
+      MaSP: "",
+      SoLuong: 0,
+    });
+    setSPsInfo([]);
+    console.log(dataHD);
+  }, [dispatch]);
+
   const onFinish = React.useCallback(() => {
+    if (!dataHD.MaNV) {
+      message.warning("Vui lòng thêm nhân viên");
+      return;
+    }
     if (dataHD.MaKM) {
       if (dataHD.id == "619f673906c0b162302fb7f2") {
         message.warning("Mã khuyến mãi chưa được thêm thành công");
         return;
       }
     } else {
-      dataHD.MaKM = "Không";
-    }
-    if (!dataHD.MaNV) {
-      message.warning("Vui lòng thêm nhân viên");
-      return;
-    }
-    if (!dataHD.ThoiGian) {
-      message.warning("Xin thiết lập thời gian");
-      return;
+      dataHD.MaKM = "KM000";
     }
     if (!dataHD.SoLuong) {
       message.warning("Vui lòng thêm sản phẩm vào hóa đon");
@@ -200,47 +223,48 @@ export default function TaoHoaDonModal({ HoaDons }) {
     } else {
       dataHD.MaHD = "HD" + length;
     }
-    // dispatch(createHoaDon.createHoaDonRequest(dataHD));
-    // console.log(HDs);
-    // const KhuyenMai = KhuyenMais.find((km) => km.MaKM === dataHD.MaKM);
-    // dispatch(
-    //   actions.updateKhuyenMai.updateKhuyenMaiRequest({
-    //     ...KhuyenMai,
-    //     SoLuong: KhuyenMai.SoLuong - 1,
-    //   })
-    // );
+    dispatch(actions.createHoaDon.createHoaDonRequest(dataHD));
+    const KhuyenMai = KhuyenMais.find((km) => km.MaKM === dataHD.MaKM);
+    dispatch(
+      actions.updateSLKM.updateSLKMRequest({
+        ...KhuyenMai,
+        SoLuong: KhuyenMai.SoLuong - 1,
+      })
+    );
 
     SPsInfo.map((sp) => {
-      // const SP = SanPhams.find((elm) => elm._id === sp.idSP);
-      // dispatch(
-      //   actions.updateSanPham.updateSanPhamRequest({
-      //     ...SP,
-      //     TonKho: SP.TonKho - sp.SoLuong,
-      //   })
-      // );
+      const SP = SanPhams.find((elm) => elm._id === sp.idSP);
+      dispatch(
+        actions.updateSanPham.updateSanPhamRequest({
+          ...SP,
+          TonKho: SP.TonKho - sp.SoLuong,
+        })
+      );
       sp.MaHD = dataHD.MaHD;
-      const elm = {...sp,MaHD: dataHD.MaHD};
-      console.log(elm);
-      dispatch(createCTHD.createCTHDRequest(elm));
+      dispatch(actions.createCTHD.createCTHDRequest(sp));
     });
-
-    // if (dataHD.MaKH) {
-    //   const KH = KhachHangs.find((e) => e.MaKH === dataHD.MaKH);
-    //   if (KH) setDataHD({ ...dataHD, idKH: KH._id });
-    //   else {
-    //     message.error('Mã khách hàng không tồn tại');
-    //     return;
-    //   }
-    // }
-    // if (dataHD.MaNV) {
-    //   const NV = KhuyenMais.find((e) => e.MaNV === dataHD.MaNV);
-    //   if (NV) setDataHD({ ...dataHD, idKM: NV._id });
-    //   else {
-    //     message.error('Mã nhân viên không đúng');
-    //     return;
-    //   }
-    // }
-  }, [dataHD, dispatch, SPsInfo]);
+    {
+      /*
+    if (dataHD.MaKH) {
+      const KH = KhachHangs.find((e) => e.MaKH === dataHD.MaKH);
+      if (KH) setDataHD({ ...dataHD, idKH: KH._id });
+      else {
+        message.error('Mã khách hàng không tồn tại');
+        return;
+      }
+    }
+    if (dataHD.MaNV) {
+      const NV = KhuyenMais.find((e) => e.MaNV === dataHD.MaNV);
+      if (NV) setDataHD({ ...dataHD, idKM: NV._id });
+      else {
+        message.error('Mã nhân viên không đúng');
+        return;
+      }
+    }
+  */
+    }
+    onCancel();
+  }, [dataHD, dispatch, SPsInfo, onCancel]);
 
   const body = (
     <>
@@ -311,16 +335,12 @@ export default function TaoHoaDonModal({ HoaDons }) {
             onClick={btnCancelKM}
           />
         </Form.Item>
-        <Form.Item name="date-time-picker" label="Thời gian" required={true}>
+        <Form.Item name="date-time-picker" label="Thời gian">
           <DatePicker
             showTime
             format="YYYY-MM-DD HH:mm:ss"
-            value={dataHD.ThoiGian}
-            onChange={(e) => {
-              if (e) {
-                setDataHD({ ...dataHD, ThoiGian: e.toDate() });
-              }
-            }}
+            defaultValue={moment(dataHD.ThoiGian)}
+            disabled={true}
           />
         </Form.Item>
         <Form.Item label="Mã sản phẩm" style={{ marginBottom: 0 }}>
@@ -481,11 +501,11 @@ export default function TaoHoaDonModal({ HoaDons }) {
         width={1000}
         visible={isShow}
         onOk={onFinish}
+        onCancel={onCancel}
         okText="Thêm"
         okButtonProps={{
           disabled: !(dataHD.TienTraKhach >= 0 && dataHD.TienKhachTra),
         }}
-        onCancel={onCloseHoaDonModal}
       >
         {body}
       </Modal>

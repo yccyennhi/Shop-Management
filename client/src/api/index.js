@@ -2,9 +2,19 @@ import axios from "axios";
 
 const URL = "http://localhost:5000";
 
+//#region Khach hang
 export const fetchKhachHangs = () => axios.get(`${URL}/KhachHangs`);
-export const fetchKhuyenMais = () => axios.get(`${URL}/KhuyenMais`);
+
+export const createKhachHang = (payload) =>
+  axios.post(`${URL}/KhachHangs`, payload);
+
+export const updateKhachHang = (payload) =>
+  axios.patch(`${URL}/KhachHangs/${payload._id}`, payload);
+//#endregion
+
 //Khuyen mai
+export const fetchKhuyenMais = () => axios.get(`${URL}/KhuyenMais`);
+
 export const createKhuyenMai = (payload) =>
   axios.post(`${URL}/KhuyenMais`, payload);
 
@@ -12,7 +22,17 @@ export const updateKhuyenMai = (payload) =>
   axios.patch(`${URL}/KhuyenMais/${payload._id}`, payload);
 
 export const deleteKhuyenMai = (id) => axios.delete(`${URL}/KhuyenMais/${id}`);
-//
+
+//#region Nhan vien
+export const fetchNhanViens = () => axios.get(`${URL}/NhanViens`);
+
+export const createNhanVien = (payload) =>
+  axios.post(`${URL}/NhanViens`, payload);
+
+export const updateNhanVien = (payload) =>
+  axios.patch(`${URL}/NhanViens/${payload._id}`, payload);
+//#endregion
+
 //Phieu Hen
 export const fetchPhieuHens = () => axios.get(`${URL}/PhieuHens`);
 
@@ -47,8 +67,6 @@ export const updateSanPham = (payload) =>
   axios.patch(`${URL}/SanPhams/${payload._id}`, payload);
 
 export const deleteSanPham = (id) => axios.delete(`${URL}/SanPhams/${id}`);
-export const fetchNhanViens = () => axios.get(`${URL}/NhanViens`);
-export const fetchTaiKhoans = () => axios.get(`${URL}/TaiKhoans`);
 
 //GiaoDich
 export const fetchHoaDons = () => axios.get(`${URL}/HoaDons`);
@@ -61,8 +79,25 @@ export const updateSLKM = (payload) =>   axios.patch(`${URL}/HoaDons/${payload._
 export const createPhieuDoiTra = (payload) => axios.post(`${URL}/PhieuDoiTras`, payload);
 export const createCTPDT = (payload) => axios.post(`${URL}/CTPDTs`, payload);
 
+
 //TongQuan
 export const getHoaDonsToday = () => axios.get(`${URL}/TongQuans/HoaDonsToday`);
 export const getDoiTrasToday = () => axios.get(`${URL}/TongQuans/DoiTrasToday`);
 export const getRanking = () => axios.get(`${URL}/TongQuans/Ranking`);
 export const getHighestSanPhamList = () => axios.get(`${URL}/TongQuans/SanPhanList`);
+
+//BaoCao
+export const getCuoiNgays = () => axios.get(`${URL}/CuoiNgays`);
+export const getBCBanHangs = () => axios.get(`${URL}/BCBanHangs`);
+export const getBCHangHoas = () => axios.get(`${URL}/BCHangHoas`);
+
+
+//#region Tai khoan
+export const fetchTaiKhoans = () => axios.get(`${URL}/TaiKhoans`);
+
+export const createTaiKhoan = (payload) =>
+  axios.post(`${URL}/TaiKhoans`, payload);
+
+export const updateTaiKhoan = (payload) =>
+  axios.patch(`${URL}/TaiKhoans/${payload._id}`, payload);
+//#endregion

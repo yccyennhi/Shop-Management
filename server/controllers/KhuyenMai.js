@@ -85,7 +85,7 @@ export const deleteKhuyenMai = async (req, res, next) => {
   try {
    
     const { id } = req.params;
-    const check = await isNotExistHoaDon(id); console.log('id xóa', id);
+    const check = await isNotExistHoaDon(id); 
     if (check) {
       const KhuyenMai = await KhuyenMaiModel.findByIdAndRemove(id);
       res.status(200).json(KhuyenMai);

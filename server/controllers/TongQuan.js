@@ -5,7 +5,6 @@ import { CTHDModel } from './../models/CTHDModel.js';
 
 export const getHoaDonsToday = async (req, res, next) => {
   try {
-    console.log("Vào getHoaDonsToday trong server");
     var today = moment().startOf("day");
     var tomorrow = moment(today).endOf("day");
     const HoaDonsToday = await HoaDonModel.find({
@@ -59,7 +58,6 @@ const rankingByDoanhThu = {};
         if (HoaDonsOfDay.length) {
 
           Object.values(HoaDonsOfDay).forEach((HoaDon) => {
-            console.log(HoaDon);
             rankingByDoanhThu[day]+= HoaDon.ThanhTien;
          });
 

@@ -1,64 +1,18 @@
-import React, { useState } from "react";
-import { Button, Dropdown, Input, Menu, Row, Table } from "antd";
 import { DownOutlined, SearchOutlined } from "@ant-design/icons";
+import { Table } from "ant-table-extensions";
+import { Button, Dropdown, Input, Menu, Row } from "antd";
+import moment from "moment";
+import { useState } from "react";
+import ExpandedRowRender from "./ExpandedRowRender";
 
-export default function NhanVienTable() {
+export default function NhanVienTable({ dataSource, setCurrentId }) {
   //Menu Item cho Dropdown Button Thao tác
   const menu = (
     <Menu>
-      <Menu.Item key="1">1st menu item</Menu.Item>
-      <Menu.Item key="2">2st menu item</Menu.Item>
-      <Menu.Item key="3">3st menu item</Menu.Item>
+      <Menu.Item key="1">Nghỉ việc</Menu.Item>
+      <Menu.Item key="2">Làm lại</Menu.Item>
     </Menu>
   );
-
-  // Mockup cho table
-  const dataSource = [
-    {
-      key: "1",
-      MaNV: "NV001",
-      TenNV: "Đinh Trần Văn Minh",
-      NgaySinh: "07/06/2001",
-      SDT: "0329092681",
-      Email: "19520715@gm.uit.edu.vn",
-      DiaChi: "",
-      NgayVaoLam: "07/11/2021",
-      TrangThai: 0,
-    },
-    {
-      key: "2",
-      MaNV: "NV002",
-      TenNV: "Nguyễn Thị Phương Thảo",
-      NgaySinh: "29/09/2001",
-      SDT: "0358864014",
-      Email: "19520280@gm.uit.edu.vn",
-      DiaChi: "Kon Tum",
-      NgayVaoLam: "12/11/2021",
-      TrangThai: 1,
-    },
-    {
-      key: "3",
-      MaNV: "NV003",
-      TenNV: "Nguyễn Yến Nhi",
-      NgaySinh: "18/10/2001",
-      SDT: "0585502434",
-      Email: "19520205@gm.uit.edu.vn",
-      DiaChi: "Phú Yên",
-      NgayVaoLam: "14/11/2021",
-      TrangThai: 1,
-    },
-    {
-      key: "4",
-      MaNV: "NV004",
-      TenNV: "Đoàn Ngọc Lãm",
-      NgaySinh: "19/02/2001",
-      SDT: "0337651201",
-      Email: "19521737@gm.uit.edu.vn",
-      DiaChi: "Quảng Trị",
-      NgayVaoLam: "12/11/2021",
-      TrangThai: 1,
-    },
-  ];
 
   // NVởi tạo cột table
   const columns = [
@@ -147,6 +101,9 @@ export default function NhanVienTable() {
     {
       title: "Ngày sinh",
       dataIndex: "NgaySinh",
+      render: (date) => {
+        return <p>{moment(date).format("DD/MM/YYYY")}</p>;
+      },
       sorter: (a, b) => a.NgaySinh - b.NgaySinh,
       filterDropdown: ({
         setSelectedKeys,
@@ -312,6 +269,9 @@ export default function NhanVienTable() {
     {
       title: "Ngày vào làm",
       dataIndex: "NgayVaoLam",
+      render: (date) => {
+        return <p>{moment(date).format("DD/MM/YYYY")}</p>;
+      },
       sorter: (a, b) => a.NgayVaoLam - b.NgayVaoLam,
       filterDropdown: ({
         setSelectedKeys,
@@ -355,16 +315,16 @@ export default function NhanVienTable() {
       title: "Trạng thái",
       dataIndex: "TrangThai",
       render: (trangThai) => {
-        return <p>{trangThai == 0 ? "Đã nghỉ làm" : "Đang làm việc"}</p>;
+        return <p>{trangThai == true ? "Đang làm việc" : "Đã nghỉ"}</p>;
       },
       sorter: (a, b) => a.TrangThai - b.TrangThai,
       filters: [
         {
-          text: "Đã nghỉ làm",
+          text: "Đang làm việc",
           value: 0,
         },
         {
-          text: "Đang làm việc",
+          text: "Đang nghỉ",
           value: 1,
         },
       ],
@@ -413,17 +373,27 @@ export default function NhanVienTable() {
           </div>
         </Row>
         <Table
+          tableLayout="auto"
+          searchable
+          searchableProps={{
+            inputProps: {
+              placeholder: "Nhập mã, tên khách hàng",
+              prefix: <SearchOutlined />,
+              width: 200,
+            },
+          }}
           columns={columns}
           dataSource={dataSource}
           expandable={{
             expandedRowRender: (record) => (
-              <p style={{ margin: 0 }}>{record.DiaChi}</p>
+              <ExpandedRowRender record={record} setCurrentId={setCurrentId} />
             ),
-            rowExpandable: (record) => record.DiaChi != "",
+            rowExpandable: (record) => true,
           }}
           pagination={true}
+          rowKey="_id"
           rowSelection={rowSelection}
-          scroll={{ x: 1500, y: 500 }}
+          scroll={{ x: 1300, y: 500 }}
         ></Table>
       </div>
     </>

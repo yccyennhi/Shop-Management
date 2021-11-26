@@ -5,11 +5,13 @@ import HangHoatable from '../../components/table/BaoCaoTable/HangHoatable';
 
 
 import COLOR from "../../color.js";
+const { RangePicker } = DatePicker;
 
 const { Content, Sider } = Layout;
 
 export default function BCHangHoaPage() {
 
+  const dateFormat = 'DD/MM/YYYY';
   return (
     <Layout>
     <Layout>
@@ -30,7 +32,8 @@ export default function BCHangHoaPage() {
               bordered={false}
               style={{ width: 250, color: COLOR.darkblue }}
             >
-              <DatePicker defaultValue={moment()} format="DD/MM/YYYY" />
+               <RangePicker defaultValue={[moment('2015/01/01', dateFormat), moment('2015/01/01', dateFormat)]}
+        format={dateFormat} />
             </Card>
           </Space>
         </div>

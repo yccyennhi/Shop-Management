@@ -5,21 +5,22 @@ import moment from "moment";
 export const getHoaDons = async (req, res) => {
   try {
     // const newHoaDon = new HoaDonModel({
-    //   MaHD: "HD015",
+    //   MaHD: "HD002",
     //   ThoiGian: moment(),
-    //   idNV: "61957eace198c2fe3f3f5402",
-    //   idKM:"618f5168430731ecab82f463",
-    //   idKH: "61957aa9e198c2fe3f3f53f6",
-    //   MaKH: "KH001",
-    //   MaKM: "KM001",
+    //   idNV: "618f87add7f3f02b3fe340d5",
     //   MaNV: "NV001",
-    //   GiamGia: 0,
-    //   TienKhachTra: 500000,
-    //   SoLuong: 2,
-    //   TienTraKhach: 200000,
+    //   idKM:"619b0199e5bdcf1b7b54ce5c",
+    //   MaKM: "KM001",
+    //   idKH: "61957aa9e198c2fe3f3f53f6",
+    //   MaKH: "KH005",
     //   DiemTru: 5,
-    //   TongTienHang: 150000,
-    //   ThanhTien: 350000,
+    //   GiamGia: 0,
+    //   SoLuong: 6,
+    //   GiaVon: 500000,
+    //   TongTienHang: 1000000,
+    //   ThanhTien: 1000000,
+    //   TienKhachTra: 1000000,
+    //   TienTraKhach: 0,       
     // });
 
     // await newHoaDon.save();

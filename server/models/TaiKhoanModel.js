@@ -5,14 +5,17 @@ const schema = new mongoose.Schema(
     MaTK: {
       type: String,
       required: true,
+      unique: true,
     },
     MaNV: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "KhachHangs",
       required: true,
     },
     TenTK: {
       type: String,
       required: true,
+      unique: true,
     },
     MatKhau: {
       type: String,

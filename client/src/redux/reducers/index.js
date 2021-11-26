@@ -1,26 +1,32 @@
 import { combineReducers } from "redux";
-import KhachHangs from "./KhachHangs";
-import NhanViens from "./NhanViens";
-import SanPhams from "./SanPhams";
-import TaiKhoans from "./TaiKhoans";
-import HoaDons from "./HoaDons";
-import KhuyenMais from './KhuyenMais'
-import Modal from './Modal';
-import TaoSanPhamModal from "./TaoSanPhamModal";
-import PhieuBaoHanhs from "./PhieuBaoHanhs.js";
-import PhieuHens from "./PhieuHens";
-import PhieuDoiTras  from "./PhieuDoiTras";
-import TaoHoaDonModal from "./TaoHoaDonModal";
-import TaoPhieuTraHangModal  from "./TaoPhieuTraHangModal";
-import TaoPhieuBaoHanhModal  from "./TaoPhieuBaoHanhModal";
-import TaoPhieuHenModal  from "./TaoPhieuHenModal";
 import CTHDs from "./CTHDs";
 import CTPDTs from "./CTPDTs";
+import HoaDons from "./HoaDons";
+import KhachHangModal from "./KhachHangModal";
+import KhachHangs from "./KhachHangs";
+import KhuyenMais from "./KhuyenMais";
+import Modal from "./Modal";
+import NhanVienModal from "./NhanVienModal";
+import NhanViens from "./NhanViens";
+import PhieuBaoHanhs from "./PhieuBaoHanhs.js";
+import PhieuDoiTras from "./PhieuDoiTras";
+import PhieuHens from "./PhieuHens";
+import SanPhams from "./SanPhams";
+import TaiKhoans from "./TaiKhoans";
+import TaoHoaDonModal from "./TaoHoaDonModal";
+import TaoPhieuBaoHanhModal from "./TaoPhieuBaoHanhModal";
+import TaoPhieuHenModal from "./TaoPhieuHenModal";
+import TaoPhieuTraHangModal from "./TaoPhieuTraHangModal";
+import TaoSanPhamModal from "./TaoSanPhamModal";
 import TongQuans from "./TongQuans";
+import CuoiNgays from "./CuoiNgays";
+import BCBanHangs from "./BCBanHangs";
 
 export default combineReducers({
   KhachHangs,
+  KhachHangModal,
   NhanViens,
+  NhanVienModal,
   SanPhams,
   TaiKhoans,
   KhuyenMais,
@@ -37,4 +43,6 @@ export default combineReducers({
   CTHDs,
   CTPDTs,
   TongQuans,
+  CuoiNgays,
+  BCBanHangs,
 });

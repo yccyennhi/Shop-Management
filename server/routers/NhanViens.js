@@ -10,6 +10,6 @@ const router = express.Router();
 
 router.get("/", getNhanVien);
 router.post("/", createNhanVien);
-router.post("/update", updateNhanVien);
+router.patch("/:id", updateNhanVien);
 
 export default router;

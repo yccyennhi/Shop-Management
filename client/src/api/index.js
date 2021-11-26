@@ -80,10 +80,6 @@ export const updatePhieuNhap = (payload) =>
 
 export const deletePhieuNhap = (id) => axios.delete(`${URL}/PhieuNhaps/${id}`);
 
-//
-
-export const fetchNhanViens = () => axios.get(`${URL}/NhanViens`);
-export const fetchTaiKhoans = () => axios.get(`${URL}/TaiKhoans`);
 
 //GiaoDich
 export const fetchHoaDons = () => axios.get(`${URL}/HoaDons`);
@@ -115,5 +111,3 @@ export const createTaiKhoan = (payload) =>
 export const updateTaiKhoan = (payload) =>
   axios.patch(`${URL}/TaiKhoans/${payload._id}`, payload);
 //#endregion
-export const getHighestSanPhamList = () =>
-  axios.get(`${URL}/TongQuans/SanPhanList`);

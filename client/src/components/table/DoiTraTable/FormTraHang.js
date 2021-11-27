@@ -1,7 +1,7 @@
 import { Tabs } from "antd";
 import React from "react";
 import "./FormTraHang.css";
-import ChiTietTraHangTable from "../../components/table/HoaDonTable/ChiTietTraHangTable";
+import ChiTietTraHangTable from "./ChiTietTraHangTable";
 
 const { TabPane } = Tabs;
 

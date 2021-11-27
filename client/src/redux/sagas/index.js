@@ -337,17 +337,7 @@ function* createCTPDTSaga(action) {
   }
 }
 
-function* updateSLKMSaga(action) {
-  try {
-    const SLKM = yield call(api.updateSLKM, action.payload);
-    yield put(
-      actions.updateSLKM.updateSLKMSuccess(SLKM.data)
-    );
-  } catch (err) {
-    console.err(err);
-    yield put(actions.updateSLKM.updateSLKMFailure(err));
-  }
-}
+
 /* #endregion */
 
 /* #region  getTongQuansSaga */
@@ -578,7 +568,6 @@ function* mySaga() {
   yield takeLatest(actions.getCTPDTs.getCTPDTsRequest, fetchCTPDTsSaga);
   yield takeLatest(actions.createHoaDon.createHoaDonRequest, createHoaDonSaga);
   yield takeLatest(actions.createCTHD.createCTHDRequest, createCTHDSaga);
-  yield takeLatest(actions.updateSLKM.updateSLKMRequest, updateSLKMSaga);
   yield takeLatest(actions.createPhieuDoiTra.createPhieuDoiTraRequest, createPhieuDoiTraSaga);
   yield takeLatest(actions.createCTPDT.createCTPDTRequest, createCTPDTSaga);
   

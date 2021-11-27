@@ -209,11 +209,6 @@ export const createCTHD = createActions({
   createCTHDFailure: (err) => err,
 })
 
-export const updateSLKM = createActions({
-  updateSLKMRequest: (payload) => payload,
-  updateSLKMSuccess: (payload) => payload,
-  updateSLKMFailure: (err) => err,
-});
 
 export const createPhieuDoiTra = createActions({
   createPhieuDoiTraRequest: (payload) => payload,

@@ -1,5 +1,5 @@
 import { CTHDModel } from "../models/CTHDModel.js";
-
+import { SanPhamModel } from "../models/SanPhamModel.js";
 export const getCTHDs = async (req, res) => {
   try {
     const CTHDs = await CTHDModel.find();
@@ -16,6 +16,16 @@ export const createCTHD = async (req, res) => {
     await CTHD.save();
 
     res.status(200).json(CTHD);
+
+    const SP = await SanPhamModel.findOne({_id: CTHD.idSP});
+    SP.TonKho = SP.TonKho - CTHD.SoLuong;
+    if (SP.SoLuong === 0 && SP.TrangThai === 'Đang kinh doanh') SP.TrangThai = 'Hết hàng';
+    const SanPham = await SanPhamModel.findOneAndUpdate(
+      { _id: SP._id },
+      SP,
+      { new: true }
+    );
+    res.status(200).json(SanPham); 
   } catch (err) {
     res.status(500).json({ error: err });
   }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Table, Input, Row } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import FormHoaDon from "../../../pages/GiaoDichPage/FormHoaDon";
+import FormHoaDon from "./FormHoaDon";
 
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../../redux/actions";

@@ -14,8 +14,8 @@ import {
   DownloadOutlined,
   RestOutlined,
 } from "@ant-design/icons";
-import TraHangTable from "../../components/table/HoaDonTable/TraHangTable";
-import TaoPhieuTraHangModal from "../../components/modal/TaoGiaoDichModal/TaoPhieuDoiTraModal";
+import TraHangTable from "../../components/table/DoiTraTable/TraHangTable";
+import TaoPhieuTraHangModal from "../../components/modal/DoiTraModal/TaoPhieuDoiTraModal";
 import { showTaoPhieuTraHangModal } from "../../redux/actions";
 import { useDispatch } from "react-redux";
 import { Content } from "antd/lib/layout/layout";

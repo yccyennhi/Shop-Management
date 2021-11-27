@@ -14,8 +14,8 @@ import BCHangHoaPage from "./pages/BaoCaoPage/BCHangHoaPage";
 import PhieuBaoHanhPage from "./pages/PhieuBaoHanhPage/PhieuBaoHanhPage";
 import PhieuHenPage from "./pages/PhieuHenPage/PhieuHenPage";
 import NhanVienPage from "./pages/NhanVienPage/NhanVienPage";
-import HoaDonPage from "./pages/GiaoDichPage/HoaDonPage";
-import DoiTraPage from "./pages/GiaoDichPage/DoiTraPage";
+import HoaDonPage from "./pages/HoaDonPage/HoaDonPage";
+import DoiTraPage from "./pages/DoiTraPage/DoiTraPage";
 import SalePage from "./pages/SalePage/SalePage";
 
 function App() {

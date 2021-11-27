@@ -1,7 +1,7 @@
 import { Tabs } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import "./FormHoaDon.css";
-import HangHoaBanTable from "../../components/table/HoaDonTable/HangHoaBanTable";
+import HangHoaBanTable from "./HangHoaBanTable";
 
 const { TabPane } = Tabs;
 

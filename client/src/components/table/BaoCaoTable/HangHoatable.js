@@ -105,6 +105,9 @@ function HangHoatable({currentDataSource}) {
       title: "Giá trị đầu",
       dataIndex: "GTDau",
       key: "GTDau",
+      render: (value) => {
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      },
       sorter: (a, b) => a.GTDau - b.GTDau,
     },
   
@@ -120,6 +123,9 @@ function HangHoatable({currentDataSource}) {
       title: "Giá trị nhập",
       dataIndex: "GTNhap",
       key: "GTNhap",
+      render: (value) => {
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      },
       sorter: (a, b) => a.GTNhap - b.GTNhap,
     },
 
@@ -134,6 +140,9 @@ function HangHoatable({currentDataSource}) {
       title: "Giá trị xuất",
       dataIndex: "GTXuat",
       key: "GTXuat",
+      render: (value) => {
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      },
       sorter: (a, b) => a.GTXuat - b.GTXuat,
     },
     
@@ -148,6 +157,9 @@ function HangHoatable({currentDataSource}) {
       title: "Giá trị cuối",
       dataIndex: "GTCuoi",
       key: "GTCuoi",
+      render: (value) => {
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      },
       sorter: (a, b) => a.GTCuoi - b.GTCuoi,
     },
   

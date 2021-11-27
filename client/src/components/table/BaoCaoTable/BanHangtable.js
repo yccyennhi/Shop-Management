@@ -1,15 +1,19 @@
 import React, { useState } from "react";
-import { Table, Input, Row } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { Input, Row, Space } from "antd";
+import { ExportTableButton, Table } from "ant-table-extensions";
+
+import { SearchOutlined, FileExcelOutlined } from "@ant-design/icons";
 import moment from "moment";
 
 const { Search } = Input;
 
 function BanHangtable({ currentDataSource }) {
-  const dataSource = currentDataSource?Array.from(currentDataSource, (HoaDon) => ({
-    ...HoaDon[1],
-    ThoiGian: HoaDon[0]
-  })) : null;
+  const dataSource = currentDataSource
+    ? Array.from(currentDataSource, (HoaDon) => ({
+        ...HoaDon[1],
+        ThoiGian: HoaDon[0],
+      }))
+    : null;
 
   const columns = [
     {
@@ -17,7 +21,7 @@ function BanHangtable({ currentDataSource }) {
       dataIndex: "ThoiGian",
       key: "ThoiGian",
       render: (date) => {
-        return <p>{moment(date).format("DD/MM/YYYY")}</p>;
+        return moment(date).format("DD/MM/YYYY");
       },
       sorter: (a, b) => a.ThoiGian - b.ThoiGian,
       filterDropdown: ({
@@ -110,15 +114,37 @@ function BanHangtable({ currentDataSource }) {
 
   return (
     <div>
+      <Space direction='vertical' style={{ width: "100%" }}>
+
+      <ExportTableButton
+        dataSource={dataSource}
+        columns={columns}
+        btnProps={{ icon: <FileExcelOutlined /> }}
+        showColumnPicker={true}
+        showColumnPickerProps={{ id: "Thêm hàng hóa" }}
+        fileName="HangHoaCSV"
+      >
+        Tải file CSV
+      </ExportTableButton>
+
       <Table
         tableLayout={"auto"}
         loading={false}
         pagination={true}
+        searchable
+        searchableProps={{
+          inputProps: {
+            placeholder: "Nhập mã, tên khuyến mãi",
+            prefix: <SearchOutlined />,
+            width: '500' 
+          },
+        }}
         //  scroll={{ x: 1500, y: 500 }}
         columns={columns}
         rowKey="ThoiGian"
         dataSource={dataSource}
       ></Table>
+      </Space>
     </div>
   );
 }

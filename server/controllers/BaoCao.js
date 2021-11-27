@@ -79,7 +79,7 @@ export const getBCHangHoas = async (req, res) => {
 
         Object.values(PhieuNhaps).forEach((PhieuNhap) => {
 
-          PhieuNhap.MaSP.forEach((MaSP) => {
+            if(PhieuNhap.TrangThai = "Đã nhập hàng") {     PhieuNhap.MaSP.forEach((MaSP) => {
             //Vị trí của sản phẩm trong list PhieuNhap
             let index = PhieuNhap.MaSP.indexOf(MaSP);
 
@@ -116,7 +116,8 @@ export const getBCHangHoas = async (req, res) => {
               
             }
           
-          });
+          });}
+     
 
         });
 
@@ -132,7 +133,7 @@ export const getBCHangHoas = async (req, res) => {
         hangHoaList[MaSP]['Xuat'].push({
           Ngay: CTHD.ThoiGian,
           SoLuong: CTHD.SoLuong,
-          ThanhTien: CTHD.ThanhTien,
+          ThanhTien: CTHD.GiaVon * CTHD.SoLuong,
         });
 
       });

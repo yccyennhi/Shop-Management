@@ -101,7 +101,7 @@ function CuoiNgaytable({ currentDataSource }) {
       dataIndex: "ThoiGian",
       key: "ThoiGian",
       render: (date) => {
-        return <p>{moment(date).format("HH:MM:SS")}</p>;
+        return moment(date).format("HH:MM:SS");
       },
       sorter: (a, b) => a.ThoiGian - b.ThoiGian,
     },
@@ -117,6 +117,9 @@ function CuoiNgaytable({ currentDataSource }) {
       title: "Tổng tiền hàng",
       dataIndex: "TongTienHang",
       key: "TongTienHang",
+      render: (value) => {
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      },
       sorter: (a, b) => a.TongTienHang - b.TongTienHang,
     },
 
@@ -124,6 +127,9 @@ function CuoiNgaytable({ currentDataSource }) {
       title: "Giảm giá",
       dataIndex: "GiamGia",
       key: "GiamGia",
+      render: (value) => {
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      },
       sorter: (a, b) => a.GiamGia - b.GiamGia,
     },
 
@@ -131,12 +137,18 @@ function CuoiNgaytable({ currentDataSource }) {
       title: "Thành tiền",
       dataIndex: "ThanhTien",
       key: "ThanhTien",
+      render: (value) => {
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      },
       sorter: (a, b) => a.ThanhTien - b.ThanhTien,
     },
     {
       title: "Lợi nhuận",
       dataIndex: "LoiNhuan",
       key: "LoiNhuan",
+      render: (value) => {
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      },
       sorter: (a, b) => a.LoiNhuan - b.LoiNhuan,
     },
   ];

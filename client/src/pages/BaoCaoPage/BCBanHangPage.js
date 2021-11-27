@@ -51,7 +51,7 @@ export default function BCBanHangPage() {
     <Layout>
       <Layout>
         <Content>
-          <PageHeader className="site-page-header" title="Báo cáo hàng hóa" />
+          <PageHeader className="site-page-header" title="Báo cáo bán hàng" />
         </Content>
       </Layout>
       <Layout>

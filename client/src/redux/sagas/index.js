@@ -405,25 +405,23 @@ function* getTongQuansSaga(action) {
     const HoaDonsToday = yield call(api.getHoaDonsToday);
     const DoiTrasToday = yield call(api.getDoiTrasToday);
 
-    var tongDoanhThu = 0;
     var tongSoLuongDT = 0;
 
-    Object.values(HoaDonsToday.data).forEach((HoaDon) => {
-      Object.entries(HoaDon).forEach(([key, value]) => {
-        if (key === "ThanhTien") tongDoanhThu += value;
-      });
-    });
     Object.values(DoiTrasToday.data).forEach((DoiTra) => {
       Object.entries(DoiTra).forEach(([key, value]) => {
         if (key === "SoLuong") tongSoLuongDT += value;
       });
     });
 
+    const {today, lastToday} = HoaDonsToday.data;
+    const compareLastMonth = Math.round((today['DoanhThu'] - lastToday['DoanhThu'])/today['DoanhThu'])*100;
+
     const statistics = {
-      hoaDonTodayCount: HoaDonsToday.data.length,
-      doanhThuToday: tongDoanhThu,
+      hoaDonTodayCount: today['SoLuong'],
+      doanhThuToday: today['DoanhThu'],
       doiTraCount: DoiTrasToday.data.length,
       soLuongDT: tongSoLuongDT,
+      percent:compareLastMonth,
     };
 
     yield put(actions.getTongQuans.getStatistics(statistics));

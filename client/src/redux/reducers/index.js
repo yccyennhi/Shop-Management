@@ -21,6 +21,10 @@ import TaoSanPhamModal from "./TaoSanPhamModal";
 import TongQuans from "./TongQuans";
 import CuoiNgays from "./CuoiNgays";
 import BCBanHangs from "./BCBanHangs";
+import PhieuNhaps from "./PhieuNhaps";
+import TaoPhieuNhapModal  from "./TaoPhieuNhapModal";
+import ThemPhieuNhapPage  from "./ThemPhieuNhapPage";
+
 
 export default combineReducers({
   KhachHangs,
@@ -45,4 +49,7 @@ export default combineReducers({
   TongQuans,
   CuoiNgays,
   BCBanHangs,
+  PhieuNhaps,
+  TaoPhieuNhapModal,
+  ThemPhieuNhapPage
 });

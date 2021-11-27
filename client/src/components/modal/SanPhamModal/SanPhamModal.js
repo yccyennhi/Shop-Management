@@ -42,20 +42,19 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
   const [form] = Form.useForm();
   const SP = useSelector(SanPhamsState$);
   const [data, setData] = useState({
-    MaSP: "",
-    TenSP: "",
-    MauSac: "",
-    LoaiHang: "",
-    Size: 0,
-    GiaVon: 0,
-    GiaBan: 0,
-    TonKho: 0,
-    TrangThai: "Hết hàng",
-    BaoHanh: "Có bảo hành",
-    HinhAnh: "",
-    MoTa: "",
+    // MaSP: "",
+    // TenSP: "",
+    // MauSac: "",
+    // LoaiHang: "",
+    // Size: 0,
+    // GiaVon: 0,
+    // GiaBan: 0,
+    // TonKho: 0,
+    // TrangThai: "Hết hàng",
+    // BaoHanh: "Có bảo hành",
+    // HinhAnh: "",
+    // MoTa: "",
   });
-  console.log(currentId);
   const SanPhamValue = useSelector((state) =>
     state.SanPhams.data.find((SanPham) =>
       SanPham._id === currentId ? SanPham : null
@@ -78,10 +77,8 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
       MoTa: "",
     });
     if (SanPhamValue) setData(SanPhamValue);
-    console.log("SanPham", data);
     if (data.TonKho > 0) setTrangthai(true);
   }, [SanPhamValue]);
-  console.log("SanPham", data);
   const dispatch = useDispatch();
 
   const handleCancel = React.useCallback(() => {
@@ -91,7 +88,10 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
     // } else {
     form.resetFields();
     // }
-    setCurrentId(null);
+
+    if (currentId) {
+      setCurrentId(null);
+    }
     setData({
       MaSP: "",
       TenSP: "",
@@ -229,7 +229,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
           required
         >
           <Input
-            // value={data.MauSac}
+            value={data.MauSac}
             defaultValue={data.MauSac}
             onChange={(e) => setData({ ...data, MauSac: e.target.value })}
             placeholder="Nhập màu"

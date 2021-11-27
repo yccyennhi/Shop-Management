@@ -48,10 +48,6 @@ export const INIT_STATE = {
   TaoSanPhamModal: {
     isShow: false,
   },
-
-  UpdateSanPhamModal: {
-    isShow: false,
-  },
   HoaDons: {
     isLoading: false,
     data: [],
@@ -99,7 +95,6 @@ export const INIT_STATE = {
     rankingByDoanhThu: [],
     highestSanPhamList: [],
   },
-
   CuoiNgays: {
     isLoading: false,
     data: [],
@@ -113,5 +108,17 @@ export const INIT_STATE = {
   BCHangHoas: {
     isLoading: false,
     data: [],
+  },
+  PhieuNhaps: {
+    isLoading: false,
+    data: [],
+  },
+
+  TaoPhieuNhapModal: {
+    isShow: false,
+  },
+  
+  ThemPhieuNhapPage: {
+    ID: "",
   },
 };

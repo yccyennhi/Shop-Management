@@ -18,6 +18,7 @@ import HoaDonPage from "./pages/GiaoDichPage/HoaDonPage";
 import DoiTraPage from "./pages/GiaoDichPage/DoiTraPage";
 import NhapHangPage from "./pages/NhapHangPage/NhapHangPage";
 import ThemPhieuNhapPage from "./pages/ThemPhieuNhapPage/ThemPhieuNhapPage";
+import SalePage from "./pages/SalePage/SalePage";
 
 function App() {
   const { Header, Content, Footer } = Layout;

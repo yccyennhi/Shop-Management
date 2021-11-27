@@ -1,8 +1,6 @@
 import { INIT_STATE } from "../../constant";
 import { getTongQuans, getType } from "../actions";
 
-import { messageSuccess, messageError } from "../../components/message";
-
 export default function KhuyenMaisReducer(
   state = INIT_STATE.TongQuans,
   action

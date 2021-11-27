@@ -6,6 +6,8 @@ import FormHoaDon from "../../../pages/GiaoDichPage/FormHoaDon";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../../redux/actions";
 import { HoaDonsState$, CTHDsState$ } from "../../../redux/selectors";
+import moment from "moment";
+
 const { Search } = Input;
 
 export default function HoaDontable() {
@@ -15,25 +17,11 @@ export default function HoaDontable() {
 
   React.useEffect(() => {
     dispatch(actions.getHoaDons.getHoaDonsRequest());
-  }, [dispatch]);
-  React.useEffect(() => {
     dispatch(actions.getCTHDs.getCTHDsRequest());
   }, [dispatch]);
 
   const dataSource = HoaDons;
-  // const [dataSource, setDataSource] = useState([
-  //   {
-  //     key: 1,
-  //     MaHD: "HD0001",
-  //     ThoiGian: "10/11/2021 11:00",
-  //     MaNV: "NV001",
-  //     MaKM: "KM001",
-  //     MaKH: "YN",
-  //     TongTienHang: 0,
-  //     GiamGia: 0,
-  //     ThanhTien: 0,
-  //   },
-  // ]);
+
   const columns = [
     {
       title: "Mã hóa đơn",
@@ -79,6 +67,9 @@ export default function HoaDontable() {
       title: "Thời gian",
       dataIndex: "ThoiGian",
       key: "ThoiGian",
+      render: (date) => {
+        return <p>{moment(date).format("DD/MM/YYYY  HH:mm:ss")}</p>;
+      },
       sorter: (a, b) => a.ThoiGian - b.ThoiGian,
     },
     {
@@ -190,18 +181,24 @@ export default function HoaDontable() {
       title: "Tổng tiền hàng",
       dataIndex: "TongTienHang",
       key: "TongTienHang",
+      render: (value) =>
+        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
       sorter: (a, b) => a.TongTienHang - b.TongTienHang,
     },
     {
       title: "Giảm giá",
       dataIndex: "GiamGia",
       key: "GiamGia",
+      render: (value) =>
+        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
       sorter: (a, b) => a.GiamGia - b.GiamGia,
     },
     {
       title: "ThanhTien ",
       dataIndex: "ThanhTien",
       key: "ThanhTien",
+      render: (value) =>
+        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
       sorter: (a, b) => a.ThanhTien - b.ThanhTien,
     },
   ];

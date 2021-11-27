@@ -12,8 +12,7 @@ export const getCTHDs = async (req, res) => {
 export const createCTHD = async (req, res) => {
   try {
     const newCTHD = req.body;
-
-    const CTHD = new HoaDonModel(newCTHD);
+    const CTHD = new CTHDModel(newCTHD);
     await CTHD.save();
 
     res.status(200).json(CTHD);

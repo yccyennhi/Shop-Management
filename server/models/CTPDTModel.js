@@ -2,18 +2,17 @@ import mongoose from "mongoose";
 const Schema= mongoose.Schema
 const schema = new mongoose.Schema(
   {
-    idPDT: {
-      type:  Schema.Types.ObjectId,
-      ref: 'PhieuDoiTras',
+    MaPDT: {
+      type: String,
       required: true,
     },
-    MaPDT: {
+    MaHD: {
       type: String,
       required: true,
     },
     idSP: {
       type:  Schema.Types.ObjectId,
-      ref: 'SanPhams',
+      ref: 'SanPham',
       required: true,
     },
     MaSP: {
@@ -39,4 +38,4 @@ const schema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-export const CTPDTModel = mongoose.model("CTPDTs", schema);
+export const CTPDTModel = mongoose.model("CTPDT", schema);

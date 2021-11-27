@@ -108,7 +108,6 @@ export const deletePhieuHen = createActions({
 });
 
 
-
 //PhieuBaoHanhFeature
 
 export const getPhieuBaoHanhs = createActions({
@@ -154,7 +153,6 @@ export const updateTaiKhoan = createActions({
   updateTaiKhoanFailure: (err) => err,
 });
 //#endregion
-
 
 //PhieuNhapFeature
 
@@ -233,11 +231,32 @@ export const createHoaDon = createActions({
   createHoaDonSuccess: (payload) => payload,
   createHoaDonFailure: (err) => err,
 })
+
 export const createCTHD = createActions({
   createCTHDRequest: (payload) => payload,
   createCTHDSuccess: (payload) => payload,
   createCTHDFailure: (err) => err,
 })
+
+export const updateSLKM = createActions({
+  updateSLKMRequest: (payload) => payload,
+  updateSLKMSuccess: (payload) => payload,
+  updateSLKMFailure: (err) => err,
+});
+
+export const createPhieuDoiTra = createActions({
+  createPhieuDoiTraRequest: (payload) => payload,
+  createPhieuDoiTraSuccess: (payload) => payload,
+  createPhieuDoiTraFailure: (err) => err,
+})
+
+export const createCTPDT = createActions({
+  createCTPDTRequest: (payload) => payload,
+  createCTPDTSuccess: (payload) => payload,
+  createCTPDTFailure: (err) => err,
+})
+
+ /* Tổng quan*/
 export const getTongQuans = createActions({
   getDataRequest: undefined,
   getDataSuccess: (payload) => payload,

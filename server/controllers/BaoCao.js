@@ -2,7 +2,8 @@ import moment from "moment";
 import { HoaDonModel } from "../models/HoaDonModel.js";
 import { PhieuDoiTraModel } from "./../models/PhieuDoiTraModel.js";
 import { CTHDModel } from "./../models/CTHDModel.js";
-import { NhanVienModel } from './../models/NhanVienModel.js';
+import { NhanVienModel } from "./../models/NhanVienModel.js";
+import { PhieuNhapModel } from "./../models/PhieuNhapModel.js";
 
 export const getCuoiNgays = async (req, res) => {
   try {
@@ -12,11 +13,12 @@ export const getCuoiNgays = async (req, res) => {
     //   // find in today
     //   ThoiGian: { $gte: today, $lte: tomorrow },
     // });
-    await HoaDonModel.find().populate('idNV','TenNV').exec(function (err, HoaDonsCuoiNgay){
-      if(err)
-        console.log(err);
-      res.status(200).json(HoaDonsCuoiNgay);
-    });
+    await HoaDonModel.find()
+      .populate("idNV", "TenNV")
+      .exec(function (err, HoaDonsCuoiNgay) {
+        if (err) console.log(err);
+        res.status(200).json(HoaDonsCuoiNgay);
+      });
   } catch (err) {
     res.status(500).json({ error: err });
   }
@@ -34,8 +36,7 @@ export const getBCBanHangs = async (req, res) => {
 
     await HoaDonModel.find().then((HoaDonsList) => {
       if (HoaDonsList.length) {
-
-       Object.values(HoaDonsList).forEach((HoaDon) => {
+        Object.values(HoaDonsList).forEach((HoaDon) => {
           let date = moment(HoaDon.ThoiGian).startOf("day");
 
           if (!totalHoaDonByDay[date])
@@ -46,18 +47,99 @@ export const getBCBanHangs = async (req, res) => {
               ThanhTien: 0,
               LoiNhuan: 0,
             };
-        
-        totalHoaDonByDay[date]['SoLuong']+=1;
-        totalHoaDonByDay[date]['TongTienHang']+=HoaDon.TongTienHang;
-        totalHoaDonByDay[date]['GiamGia']+=HoaDon.GiamGia;
-        totalHoaDonByDay[date]['ThanhTien']+=HoaDon.ThanhTien;
-        totalHoaDonByDay[date]['LoiNhuan']+=HoaDon.TongTienHang - HoaDon.GiaVon;
-            
+
+          totalHoaDonByDay[date]["SoLuong"] += 1;
+          totalHoaDonByDay[date]["TongTienHang"] += HoaDon.TongTienHang;
+          totalHoaDonByDay[date]["GiamGia"] += HoaDon.GiamGia;
+          totalHoaDonByDay[date]["ThanhTien"] += HoaDon.ThanhTien;
+          totalHoaDonByDay[date]["LoiNhuan"] +=
+            HoaDon.TongTienHang - HoaDon.GiaVon;
+        });
+      }
+    });
+    res.status(200).json(totalHoaDonByDay);
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
+};
+
+export const getBCHangHoas = async (req, res) => {
+  const hangHoaList = {};
+  try {
+    // var today = moment().startOf("day");
+    // var tomorrow = moment(today).endOf("day");
+    // const HoaDonsToday = await HoaDonModel.find({
+    //   // find in today
+    //   ThoiGian: { $gte: today, $lte: tomorrow },
+    // });
+
+    await PhieuNhapModel.find().then((PhieuNhaps) => {
+
+      if (PhieuNhaps.length) {
+
+        Object.values(PhieuNhaps).forEach((PhieuNhap) => {
+
+          PhieuNhap.MaSP.forEach((MaSP) => {
+            //Vị trí của sản phẩm trong list PhieuNhap
+            let index = PhieuNhap.MaSP.indexOf(MaSP);
+
+            if (!hangHoaList[MaSP]) {
+              hangHoaList[MaSP] = {
+                //TenSP=TenSP + MauSac + Size
+                TenSP: PhieuNhap.TenSP[index].concat(
+                  " (",
+                  PhieuNhap.MauSac[index],
+                  ") - ",
+                  PhieuNhap.Size[index]
+                ),
+
+                Nhap: [],
+
+                Xuat: [],
+              };
+            }
+
+            if (!PhieuNhap.GiamGiaTongTien) {
+              hangHoaList[MaSP]['Nhap'].push({
+                Ngay: PhieuNhap.NgayTao,
+                SoLuong: PhieuNhap.SoLuong[index],
+                ThanhTien: PhieuNhap.ThanhTien[index],
+              });
+            } else {
+              const giamGiaTrenSanPham =
+                PhieuNhap.GiamGiaTongTien / PhieuNhap.TongSoLuong;
+              hangHoaList[MaSP]['Nhap'].push({
+                Ngay: PhieuNhap.NgayTao,
+                SoLuong: PhieuNhap.SoLuong[index],
+                ThanhTien: Math.round(PhieuNhap.ThanhTien[index] - giamGiaTrenSanPham*PhieuNhap.SoLuong[index]),
+              });
+              
+            }
+          
+          });
+
         });
 
       }
     });
-    res.status(200).json(totalHoaDonByDay);
+  await CTHDModel.find().then((CTHDs)=>{
+
+    if(CTHDs.length)
+    {
+
+      Object.values(CTHDs).forEach((CTHD) => {
+        const MaSP = CTHD.MaSP;
+        hangHoaList[MaSP]['Xuat'].push({
+          Ngay: CTHD.ThoiGian,
+          SoLuong: CTHD.SoLuong,
+          ThanhTien: CTHD.ThanhTien,
+        });
+
+      });
+
+    }
+  })
+  res.status(200).json(hangHoaList);
   } catch (err) {
     res.status(500).json({ error: err });
   }

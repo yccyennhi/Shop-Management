@@ -1,18 +1,29 @@
 import React from "react";
 
-import { useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 import { TongQuanStatistics$ } from "../../redux/selectors";
 import { Card, Space, Typography } from "antd";
-import { DollarTwoTone } from "@ant-design/icons";
+import {
+  DollarTwoTone,
+  ToolTwoTone,
+  UpCircleTwoTone,
+  DownCircleTwoTone,
+} from "@ant-design/icons";
 
 const { Text } = Typography;
 
 export default function TodayReportOverall() {
-
   const statisics = useSelector(TongQuanStatistics$);
 
-  const { hoaDonTodayCount, doanhThuToday, doiTraCount, soLuongDT } = statisics;
+  const { hoaDonTodayCount, doanhThuToday, doiTraCount, soLuongDT, percent } =
+    statisics;
 
+  const iconUporDown =
+    percent > 0 ? (
+      <UpCircleTwoTone style={{ fontSize: "40px" }} twoToneColor="#52c41a" />
+    ) : (
+      <DownCircleTwoTone style={{ fontSize: "40px" }} twoToneColor="#faad14" />
+    );
 
   return (
     <div>
@@ -22,7 +33,7 @@ export default function TodayReportOverall() {
             <DollarTwoTone style={{ fontSize: "40px" }} />
             <Space direction="vertical" size={0}>
               <Text strong> {hoaDonTodayCount} Hóa đơn</Text>
-              <Text strong style={{ fontSize: "1.5rem" }}>
+              <Text strong style={{ fontSize: "1.5rem", color: "#1890ff" }}>
                 {doanhThuToday}
               </Text>
               <Text type="secondary">Doanh thu</Text>
@@ -30,10 +41,10 @@ export default function TodayReportOverall() {
           </Space>
 
           <Space align="center" size={20}>
-            <DollarTwoTone style={{ fontSize: "40px" }} />
+            <ToolTwoTone style={{ fontSize: "40px" }} twoToneColor="#fa8c16" />
             <Space direction="vertical" size={0}>
               <Text strong>{doiTraCount} Phiếu</Text>
-              <Text strong style={{ fontSize: "1.5rem" }}>
+              <Text strong style={{ fontSize: "1.5rem", color: "#fa8c16" }}>
                 {soLuongDT}
               </Text>
               <Text type="secondary">Trả hàng</Text>
@@ -41,10 +52,16 @@ export default function TodayReportOverall() {
           </Space>
 
           <Space align="center">
-            <DollarTwoTone style={{ fontSize: "40px" }} />
+            {iconUporDown}
             <Space direction="vertical" size={0}>
-              <Text strong style={{ fontSize: "1.5rem" }}>
-                -15%
+              <Text
+                strong
+                style={{
+                  fontSize: "1.5rem",
+                  color: percent > 0 ? "#52c41a" : "#faad14",
+                }}
+              >
+                {percent} %
               </Text>
               <Text type="secondary">So với cùng kì tháng trước</Text>
             </Space>

@@ -21,7 +21,7 @@ export const INIT_STATE = {
     isShow: false,
   },
   //#endregion
-  
+
   SanPhams: {
     isLoading: false,
     data: [],
@@ -91,24 +91,30 @@ export const INIT_STATE = {
       doanhThuToday: 0,
       doiTraCount: 0,
       soLuongDT: 0,
+      percent:0,
     },
     rankingByDoanhThu: [],
     highestSanPhamList: [],
   },
+  /* #region  BaoCao */
+
   CuoiNgays: {
     isLoading: false,
     data: [],
   },
-  
+
   BCBanHangs: {
     isLoading: false,
     data: [],
   },
-  
+
   BCHangHoas: {
     isLoading: false,
     data: [],
   },
+
+  /* #endregion */
+  
   PhieuNhaps: {
     isLoading: false,
     data: [],
@@ -120,5 +126,9 @@ export const INIT_STATE = {
   
   ThemPhieuNhapPage: {
     ID: "",
+  },
+
+  TaoPhieuNhapModal: {
+    isShow: false,
   },
 };

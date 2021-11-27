@@ -9,7 +9,7 @@ const schema = new Schema(
     },
     idHD: {
       type: Schema.Types.ObjectId,
-      ref: 'HoaDons',
+      ref: 'HoaDon',
       required: true,
     },
     MaHD: {
@@ -18,7 +18,7 @@ const schema = new Schema(
     },
     idNV: {
       type:  Schema.Types.ObjectId,
-      ref: 'NhanViens',
+      ref: 'NhanVien',
       required: true,
     },
     MaNV: {
@@ -40,4 +40,4 @@ const schema = new Schema(
   },
   { timestamps: true }
 );
-export const PhieuDoiTraModel = mongoose.model("PhieuDoiTras", schema);
+export const PhieuDoiTraModel = mongoose.model("PhieuDoiTra", schema);

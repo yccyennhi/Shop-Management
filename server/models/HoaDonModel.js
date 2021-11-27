@@ -73,4 +73,4 @@ const schema = new Schema(
   },
   { timestamps: true }
 );
-export const HoaDonModel = mongoose.model("HoaDons", schema);
+export const HoaDonModel = mongoose.model("HoaDon", schema);

@@ -68,7 +68,6 @@ export const updateSanPham = (payload) =>
 
 export const deleteSanPham = (id) => axios.delete(`${URL}/SanPhams/${id}`);
 
-
 //Phieu nhap
 
 export const fetchPhieuNhaps = () => axios.get(`${URL}/PhieuNhaps`);
@@ -91,6 +90,9 @@ export const fetchCTHDs = () => axios.get(`${URL}/CTHDs`);
 export const fetchCTPDTs = () => axios.get(`${URL}/CTPDTs`);
 export const createHoaDon = (payload) => axios.post(`${URL}/HoaDons`, payload);
 export const createCTHD = (payload) => axios.post(`${URL}/CTHDs`, payload);
+export const updateSLKM = (payload) =>   axios.patch(`${URL}/HoaDons/${payload._id}`, payload);
+export const createPhieuDoiTra = (payload) => axios.post(`${URL}/PhieuDoiTras`, payload);
+export const createCTPDT = (payload) => axios.post(`${URL}/CTPDTs`, payload);
 
 
 //TongQuan
@@ -114,4 +116,3 @@ export const createTaiKhoan = (payload) =>
 export const updateTaiKhoan = (payload) =>
   axios.patch(`${URL}/TaiKhoans/${payload._id}`, payload);
 //#endregion
-

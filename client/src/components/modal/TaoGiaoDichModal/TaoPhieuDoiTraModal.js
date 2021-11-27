@@ -1,17 +1,28 @@
-import { Modal, Form, Input, DatePicker } from "antd";
+import { Modal, Form, Input, DatePicker, Button, message } from "antd";
 import React, { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import * as actions from "../../../redux/actions";
 import { hideTaoPhieuTraHangModal } from "../../../redux/actions";
-import { TaoPhieuTraHangState$, CTHDsState$ } from "../../../redux/selectors";
+import { TaoPhieuTraHangState$, CTHDsState$, PhieuDoiTrasState$, HoaDonsState$ } from "../../../redux/selectors";
 import { useDispatch } from "react-redux";
 import moment from "moment";
 import ListSPs from "./ListSPTraHangs";
+import {SearchOutlined, DeleteOutlined} from "@ant-design/icons"
+import SanPhamTraHang from "./SanPhamTraHang";
+//import ListSPs from "./ListSPTraHangs";
 const { Search } = Input;
 
 export default function TaoPhieuTraHang() {
   const dispatch = useDispatch();
   const CTHDs = useSelector(CTHDsState$);
+  const PDTs = useSelector(PhieuDoiTrasState$);
+  const HoaDons = useSelector(HoaDonsState$);
+  //const NVs = useSelector(NhanVienState$);
+  React.useEffect(() => {
+    dispatch(actions.getCTHDs.getCTHDsRequest());
+    dispatch(actions.getPhieuDoiTras.getPhieuDoiTrasRequest());
+    dispatch(actions.getHoaDons.getHoaDonsRequest());
+  }, [dispatch]);
   const [ListSPTraHangs, setListSP] = useState([]);
   const { isShow } = useSelector(TaoPhieuTraHangState$);
   const onClosePhieuTraHang = React.useCallback(() => {
@@ -19,61 +30,129 @@ export default function TaoPhieuTraHang() {
   }, [dispatch]);
 
   const [data, setData] = React.useState({
-    MaHD: "",
+    MaPDT: '',
+    MaHD: '',
+    MaNV: '',
+    idNV: '61957eace198c2fe3f3f5402',
+    idHD: '',
     ThoiGian: new Date(Date.now()),
     SoLuong: 0,
     TongTien: 0,
   });
-  const [textInpMaSP, setDataTextMaSP] = React.useState("");
-  React.useEffect(() => {
-    dispatch(actions.getCTHDs.getCTHDsRequest());
-  }, [dispatch]);
-
-  const onSearch = () => {
-    CTHDs.forEach((e) => {
-      if (e.MaHD === textInpMaSP) {
-        data.MaHD = textInpMaSP;
-        setDataTextMaSP("");
+  const [textInpMaHD, setDataTextMaHD] = React.useState("");
+  
+  const onSearch = useCallback(() => {
+    if (!textInpMaHD) return;
+    CTHDs.map((e) => {
+      if (e.MaHD === textInpMaHD) {
+        console.log(e);
+        data.MaHD = textInpMaHD;
+        const cthd = {
+          id: ListSPTraHangs.length,
+          MaPDT: "",
+          MaHD: e.MaHD,
+          MaSP: e.MaSP,
+          TenSP: e.TenSP,
+          idSP: e.idSP,
+          GiaBan: e.DonGia,
+          SoLuong: e.SoLuong,
+          SLmax: e.SoLuong,
+          ThanhTien: Number(e.ThanhTien),
+        };
+        ListSPTraHangs.push(cthd);
+        data.SoLuong += e.SoLuong;
+        data.TongTien += e.ThanhTien;
+        setDataTextMaHD("");
         return;
       }
     });
-  };
+    if (!data.MaHD)  message.error("Không tồn tại hóa đơn: #" +textInpMaHD);
+    console.log(ListSPTraHangs);
+  });
 
-  const setDataPDT = useCallback((SL, T_Tien) => {
+  const onCancel = () => {
+    setListSP([]);
+    setDataTextMaHD(data.MaHD);
     setData({
-      ...data,
-      SoLuong: data.SoLuong + SL,
-      TongTien: data.TongTien + T_Tien,
-    });
-  }, []);
+      MaHD: "",
+      ThoiGian: new Date(Date.now()),
+      SoLuong: 0,
+      TongTien: 0,
+    })
+  };
+  const setDataPDT = (SP) => {
+    data.SoLuong = data.SoLuong - ListSPTraHangs[SP.id].SoLuong + SP.SoLuong;
+    data.TongTien =
+      data.TongTien - ListSPTraHangs[SP.id].ThanhTien + SP.ThanhTien;
+    const newList = [...ListSPTraHangs];
+    newList[SP.id].SoLuong = SP.SoLuong;
+    newList[SP.id].ThanhTien = SP.ThanhTien;
+    setListSP(newList);
+  };
   const body = (
     <>
       <Form
         labelCol={{
-          span: 4,
+          span: 5,
         }}
         wrapperCol={{
           span: 50,
         }}
         layout="horizontal"
       >
-        <Form.Item label="Mã hóa đơn:">
-          <Search
-            placeholder="Nhập mã hóa đơn"
-            allowClear
-            value={textInpMaSP}
-            enterButton="Search"
-            onPressEnter={onSearch}
-            onChange={(e) => setDataTextMaSP(e.target.value)}
-            size="large"
-            onSearch={onSearch}
+        <Form.Item
+          label="Mã nhân viên"
+          name="MaNV"
+          rules={[{ required: true }]}
+        >
+          <Input
+            value={data.MaNV}
+            placeholder="Nhập mã nhân viên"
+            style={{ width: "calc(95%)" }}
+            onChange={(e) => setData({ ...data, MaNV: e.target.value })}
           />
         </Form.Item>
+        <Form.Item label="Mã hóa đơn:">
+          <Input
+            value={textInpMaHD}
+            disabled={data.MaHD}
+            defaultValue = {data.MaHD}
+            placeholder="Nhập mã khuyến mãi"
+            onPressEnter={onSearch}
+            style={{ width: "calc(60%)" }}
+            onChange={(e) => setDataTextMaHD(e.target.value)}
+          />
+          <Button
+            disabled={data.MaHD}
+            type="primary"
+            style={{ marginLeft: "10px" }}
+            onClick={onSearch}
+            icon={<SearchOutlined />}
+          >
+            Search
+          </Button>
+           <Button
+            danger
+            disabled={!data.MaHD}
+            icon={<DeleteOutlined />}
+            style={{ marginLeft: "15px" }}
+            onClick={onCancel}
+          /> 
+        </Form.Item>
         <Form.Item label="Ngày lập:">
-          <DatePicker defaultValue={moment(data.ThoiGian)} disabled={true} />
+          <DatePicker
+            showTime
+            format="YYYY-MM-DD HH:mm:ss"
+            defaultValue={moment(data.ThoiGian)}
+            disabled={true}
+          />
         </Form.Item>
         <Form.Item>
-          <ListSPs data={data} setDatas={setDataPDT} CTHDs={CTHDs} />
+          <h4>Danh sách sản phẩm hóa đơn: {data.MaHD} </h4>
+          <ListSPs setDataPDT={setDataPDT} CTHDs={ListSPTraHangs} />
+          {/* {ListSPTraHangs.map((SP) => (
+            <SanPhamTraHang key={SP.id} setDataPDT={setDataPDT} SP={SP} />
+          ))} */}
         </Form.Item>
         <Form.Item>
           <section
@@ -92,12 +171,40 @@ export default function TaoPhieuTraHang() {
       </Form>
     </>
   );
+
+  const onSubmit = ()=>{
+    if (!data.MaNV) {
+      message.warning("Vui lòng thêm nhân viên");
+      return;
+    }
+    const length = PDTs.length + 1;
+    if (length < 10) {
+      data.MaPDT = "PDT00" + length;
+    } else if (length < 100) {
+      data.MaPDT = "PDT0" + length;
+    } else {
+      data.MaPDT = "HD" + length;
+    }
+    const HD = HoaDons.find(hd => hd.MaHD === data.MaHD);
+    data.idHD = HD._id
+    dispatch(actions.createPhieuDoiTra.createPhieuDoiTraRequest(data));
+    ListSPTraHangs.map((sp) => {
+      sp.MaPDT = data.MaPDT;
+      if (sp.SoLuong)
+        dispatch(actions.createCTPDT.createCTPDTRequest(sp));
+    });
+  }
   return (
     <div>
       <Modal
         title="Thêm phiếu trả hàng"
         visible={isShow}
         width={600}
+        onOk = {onSubmit}
+        okButtonProps={{
+          disabled: !(data.MaHD),
+        }}
+        okText="Thêm"
         onCancel={onClosePhieuTraHang}
       >
         {body}

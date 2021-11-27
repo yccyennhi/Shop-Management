@@ -7,18 +7,17 @@ const { TabPane } = Tabs;
 
 export default function FormHoaDon({ record, dataCTHDs }) {
   const CTHDs = [];
-  dataCTHDs.forEach(CTHD => {
-    if (CTHD.idHD === record._id) {
+  dataCTHDs.map((CTHD) => {
+    if (CTHD.MaHD === record.MaHD) {
       CTHDs.push(CTHD);
     }
   });
 
-  
   return (
     <div className="card-container">
       <Tabs type="card">
         <TabPane tab="Thông tin" key="1">
-          <HangHoaBanTable  dataCTHDs={CTHDs} />
+          <HangHoaBanTable dataCTHDs={CTHDs} />
           <section className="info_bill">
             <label className="tittle">
               Tổng số lượng: <br />
@@ -29,7 +28,10 @@ export default function FormHoaDon({ record, dataCTHDs }) {
               Tiền trả khách:
             </label>
             <label>
-              {record.SoLuong} <br /> {record.TongTienHang} <br /> {record.GiamGia} <br /> {record.ThanhTien} <br /> {record.TienKhachTra} <br /> {record.TienTraKhach} <br />
+              {record.SoLuong} <br />
+              {record.TongTienHang}
+              <br /> {record.GiamGia} <br /> {record.ThanhTien} <br />{" "}
+              {record.TienKhachTra} <br /> {record.TienTraKhach} <br />
             </label>
           </section>
         </TabPane>

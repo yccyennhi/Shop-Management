@@ -68,6 +68,21 @@ export const updateSanPham = (payload) =>
 
 export const deleteSanPham = (id) => axios.delete(`${URL}/SanPhams/${id}`);
 
+//Phieu nhap
+
+export const fetchPhieuNhaps = () => axios.get(`${URL}/PhieuNhaps`);
+
+export const createPhieuNhap = (payload) =>
+  axios.post(`${URL}/PhieuNhaps`, payload);
+
+export const updatePhieuNhap = (payload) =>
+  axios.patch(`${URL}/PhieuNhaps/${payload._id}`, payload);
+
+export const deletePhieuNhap = (id) => axios.delete(`${URL}/PhieuNhaps/${id}`);
+
+//
+
+
 //GiaoDich
 export const fetchHoaDons = () => axios.get(`${URL}/HoaDons`);
 export const fetchTraHangs = () => axios.get(`${URL}/PhieuDoiTras`);

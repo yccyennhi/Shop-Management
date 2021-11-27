@@ -3,13 +3,13 @@ import React from "react";
 import { Layout, Space, PageHeader } from "antd";
 import TodayReportOverall from "../../components/Dashboard/TodayReportOverall"
 import DemoColumn from "../../components/chart/DashboardColumnReport";
-import DemoBar from "../../components/chart/DashboardBarReport";
 import { Content } from "antd/lib/layout/layout";
 
 
 import { useDispatch } from "react-redux";
 
 import * as actions from "../../redux/actions";
+import { HighestSanPhamList } from "../../components/Dashboard/highestSanPhamList";
 
 export default function KhuyenMaiPage() {
     
@@ -27,7 +27,7 @@ export default function KhuyenMaiPage() {
           <Space direction="vertical" size="large" style={{ width: "100%" }}>
             <TodayReportOverall />
             <DemoColumn />
-            <DemoBar />
+            <HighestSanPhamList/>
           </Space>
         </div>
       </Content>

@@ -2,18 +2,6 @@ import { takeLatest, call, put } from "redux-saga/effects";
 import * as actions from "../actions";
 import * as api from "../../api";
 
-function* fetchSanPhamsSaga(action) {
-  try {
-    const SanPhams = yield call(api.fetchSanPhams);
-    console.log("[NhanViens]", SanPhams);
-
-    yield put(actions.getSanPhams.getSanPhamsSuccess(SanPhams.data));
-  } catch (err) {
-    console.err(err);
-    yield put(actions.getSanPhams.getSanPhamsFailure(err));
-  }
-}
-
 function* fetchPhieuBaoHanhsSaga(action) {
   try {
     const PhieuBaoHanhs = yield call(api.fetchPhieuBaoHanhs);
@@ -35,6 +23,20 @@ function* fetchPhieuHensSaga(action) {
     yield put(actions.getPhieuHens.getPhieuHensFailure(err));
   }
 }
+
+//#region KhachHang
+function* fetchPhieuNhapsSaga(action) {
+  try {
+    const PhieuNhaps = yield call(api.fetchPhieuNhaps);
+    console.log("[NhanViens]", PhieuNhaps);
+
+    yield put(actions.getPhieuNhaps.getPhieuNhapsSuccess(PhieuNhaps.data));
+  } catch (err) {
+    console.err(err);
+    yield put(actions.getPhieuNhaps.getPhieuNhapsFailure(err));
+  }
+}
+
 
 //#region KhachHang
 function* fetchKhachHangsSaga(action) {
@@ -154,6 +156,18 @@ function* updateNhanVienSaga(action) {
 
 /* #region  SanPham */
 
+function* fetchSanPhamsSaga(action) {
+  try {
+    const SanPhams = yield call(api.fetchSanPhams);
+    console.log("[SanPhams]", SanPhams);
+
+    yield put(actions.getSanPhams.getSanPhamsSuccess(SanPhams.data));
+  } catch (err) {
+    console.err(err);
+    yield put(actions.getSanPhams.getSanPhamsFailure(err));
+  }
+}
+
 function* createSanPhamSaga(action) {
   try {
     const SanPham = yield call(api.createSanPham, action.payload);
@@ -262,6 +276,44 @@ function* deletePhieuBaoHanhSaga(action) {
 }
 /* #endregion */
 
+/* #region  PhieuNhap */
+
+function* createPhieuNhapSaga(action) {
+  try {
+    const PhieuNhap = yield call(api.createPhieuNhap, action.payload);
+    console.log("createPhieuNhapSaga", PhieuNhap);
+    yield put(actions.createPhieuNhap.createPhieuNhapSuccess(PhieuNhap.data));
+  } catch (err) {
+    console.err(err);
+    yield put(actions.createPhieuNhap.createPhieuNhapFailure(err));
+  }
+}
+function* updatePhieuNhapSaga(action) {
+  try {
+    const PhieuNhap = yield call(api.updatePhieuNhap, action.payload);
+    console.log("updatePhieuNhapSaga", PhieuNhap.data);
+    yield put(actions.updatePhieuNhap.updatePhieuNhapSuccess(PhieuNhap.data));
+  } catch (err) {
+    console.err(err);
+    yield put(actions.updatePhieuNhap.updatePhieuNhapFailure(err));
+  }
+}
+
+function* deletePhieuNhapSaga(action) {
+  try {
+    const PhieuNhap = yield call(api.deletePhieuNhap, action.payload);
+    yield put(
+      actions.deletePhieuNhap.deletePhieuNhapSuccess(PhieuNhap.data._id)
+    );
+  } catch (err) {
+    console.err(err);
+    yield put(
+      actions.deletePhieuNhap.deletePhieuNhapFailure(err.response.data)
+    );
+  }
+}
+/* #endregion */
+
 /* #region Giao dich */
 
 function* fetchHoaDonsSaga(action) {
@@ -340,31 +392,29 @@ function* createCTPDTSaga(action) {
 
 /* #endregion */
 
-/* #region  getTongQuansSaga */
+/* #region  TongQuan */
 function* getTongQuansSaga(action) {
   try {
     const HoaDonsToday = yield call(api.getHoaDonsToday);
     const DoiTrasToday = yield call(api.getDoiTrasToday);
 
-    var tongDoanhThu = 0;
     var tongSoLuongDT = 0;
 
-    Object.values(HoaDonsToday.data).forEach((HoaDon) => {
-      Object.entries(HoaDon).forEach(([key, value]) => {
-        if (key === "ThanhTien") tongDoanhThu += value;
-      });
-    });
     Object.values(DoiTrasToday.data).forEach((DoiTra) => {
       Object.entries(DoiTra).forEach(([key, value]) => {
         if (key === "SoLuong") tongSoLuongDT += value;
       });
     });
 
+    const {today, lastToday} = HoaDonsToday.data;
+    const compareLastMonth = Math.round((today['DoanhThu'] - lastToday['DoanhThu'])/today['DoanhThu'])*100;
+
     const statistics = {
-      hoaDonTodayCount: HoaDonsToday.data.length,
-      doanhThuToday: tongDoanhThu,
+      hoaDonTodayCount: today['SoLuong'],
+      doanhThuToday: today['DoanhThu'],
       doiTraCount: DoiTrasToday.data.length,
       soLuongDT: tongSoLuongDT,
+      percent:compareLastMonth,
     };
 
     yield put(actions.getTongQuans.getStatistics(statistics));
@@ -381,12 +431,10 @@ function* getTongQuansSaga(action) {
       actions.getTongQuans.getHighestSanPhamList(highestSanPhamList.data)
     );
     yield put(actions.getTongQuans.getDataSuccess());
-
   } catch (error) {
     console.log(error);
   }
 }
-
 
 function* getCuoiNgaysSaga(action) {
   try {
@@ -397,7 +445,6 @@ function* getCuoiNgaysSaga(action) {
   }
 }
 
-
 function* getBCBanHangsSaga(action) {
   try {
     const BCBanHangs = yield call(api.getBCBanHangs);
@@ -406,9 +453,16 @@ function* getBCBanHangsSaga(action) {
     yield put(actions.getBCBanHangs.getBCBanHangsFailure(err));
   }
 }
+
+function* getBCHangHoasSaga(action) {
+  try {
+    const BCHangHoas = yield call(api.getBCHangHoas);
+    yield put(actions.getBCHangHoas.getBCHangHoasSuccess(BCHangHoas.data));
+  } catch (err) {
+    yield put(actions.getBCHangHoas.getBCHangHoasFailure(err));
+  }
+}
 /* #endregion */
-
-
 
 //#region TaiKhoan
 function* fetchTaiKhoansSaga(action) {
@@ -528,15 +582,27 @@ function* mySaga() {
   );
   /* #endregion */
 
+  /* #region  PhieuNhap */
+
   yield takeLatest(
-    actions.getTaiKhoans.getTaiKhoansRequest,
-    fetchTaiKhoansSaga
+    actions.getPhieuNhaps.getPhieuNhapsRequest,
+    fetchPhieuNhapsSaga
   );
-  yield takeLatest(actions.getHoaDons.getHoaDonsRequest, fetchHoaDonsSaga);
+
   yield takeLatest(
-    actions.getPhieuDoiTras.getPhieuDoiTrasRequest,
-    fetchPhieuDoiTrasSaga
+    actions.createPhieuNhap.createPhieuNhapRequest,
+    createPhieuNhapSaga
   );
+
+  yield takeLatest(
+    actions.updatePhieuNhap.updatePhieuNhapRequest,
+    updatePhieuNhapSaga
+  );
+  yield takeLatest(
+    actions.deletePhieuNhap.deletePhieuNhapRequest,
+    deletePhieuNhapSaga
+  );
+  /* #endregion */
 
   /* #region  KhuyenMai */
   yield takeLatest(
@@ -572,19 +638,24 @@ function* mySaga() {
   yield takeLatest(actions.createCTPDT.createCTPDTRequest, createCTPDTSaga);
   
   /* #endregion */
- 
- 
-  yield takeLatest(actions.getTongQuans.getDataRequest, getTongQuansSaga);
 
-  yield takeLatest(
-    actions.getCuoiNgays.getCuoiNgaysRequest,
-    getCuoiNgaysSaga
-  );
+  /* #region  TongQuan */
+  yield takeLatest(actions.getTongQuans.getDataRequest, getTongQuansSaga);
+  /* #endregion */
+
+ /* #region  BaoCao */
+  yield takeLatest(actions.getCuoiNgays.getCuoiNgaysRequest, getCuoiNgaysSaga);
 
   yield takeLatest(
     actions.getBCBanHangs.getBCBanHangsRequest,
     getBCBanHangsSaga
   );
+
+  yield takeLatest(
+    actions.getBCHangHoas.getBCHangHoasRequest,
+    getBCHangHoasSaga
+  );
+ /* #endregion */
 }
 
 export default mySaga;

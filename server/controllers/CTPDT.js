@@ -18,7 +18,6 @@ export const createCTPDT = async (req, res) => {
     const CTPDT = new CTPDTModel(newCTPDT);
     console.log(newCTPDT);
     await CTPDT.save();
-    res.status(200).json(CTPDT);
     const SP = await SanPhamModel.findOne({_id: CTPDT.idSP});
     SP.TonKho = SP.TonKho + CTPDT.SoLuong;
     if (SP.TrangThai === 'Hết hàng') SP.TrangThai = 'Đang kinh doanh';
@@ -27,7 +26,7 @@ export const createCTPDT = async (req, res) => {
       SP,
       { new: true }
     );
-    res.status(200).json(SanPham);    
+    res.status(200).json(CTPDT);    
   } catch (err) {
     res.status(500).json({ error: err });
   }

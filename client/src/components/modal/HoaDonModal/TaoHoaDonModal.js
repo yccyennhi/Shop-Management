@@ -326,7 +326,7 @@ export default function TaoHoaDonModal({ HoaDons }) {
           <DatePicker
             showTime
             format="YYYY-MM-DD HH:mm:ss"
-            defaultValue={moment(dataHD.ThoiGian)}
+            Value={moment(dataHD.ThoiGian)}
             disabled={true}
           />
         </Form.Item>

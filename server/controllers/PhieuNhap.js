@@ -17,8 +17,6 @@ export const createPhieuNhap = async (req, res) => {
     const { MaSP, SoLuong } = req.body;
     const PhieuNhap = new PhieuNhapModel(newPhieuNhap);
     await PhieuNhap.save();
-
-
     res.status(200).json(PhieuNhap);
   } catch (err) {
     res.status(500).json({ error: err });

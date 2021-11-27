@@ -1,54 +1,37 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ExportTableButton, Table } from "ant-table-extensions";
 import { useHistory } from "react-router-dom";
 import {
   Layout,
   PageHeader,
-  Card,
   DatePicker,
-  Space,
   Select,
   InputNumber,
-  Radio,
   Button,
   Input,
   Form,
-  Typography,
-  Image,
   Divider,
   Row,
-  Col,
   AutoComplete,
   Tooltip,
 } from "antd";
 import "./styles.css";
 import moment from "moment";
 import "../../App.css";
-import {
-  SafetyCertificateTwoTone,
-  PlusOutlined,
-  CheckCircleTwoTone,
-  CloseCircleTwoTone,
-  SearchOutlined,
-} from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import * as actions from "../../redux/actions";
-import PhieuNhaptable from "../../components/table/PhieuNhaptable/PhieuNhaptable";
 import {
   PhieuNhapsState$,
-  isloadingPhieuNhapsState$,
   SanPhamsState$,
   ThemPhieuNhapPageState$,
 } from "../../redux/selectors";
 import SanPhamModal from "../../components/modal/SanPhamModal/SanPhamModal";
 
 import ThemPhieuNhaptable from "../../components/table/ThemPhieuNhaptable/ThemPhieuNhaptable";
-import { messageError, messageSuccess } from "../../components/message";
-const { Text } = Typography;
+import { messageError } from "../../components/message";
 const { Content, Sider } = Layout;
-const { Search } = Input;
 
-const { OptGroup, Option } = AutoComplete;
+const { Option } = AutoComplete;
 export default function ThemPhieuNhapPage({}) {
   const [currentId, setCurrentId] = useState(null);
   const [MaSP, setMaSP] = useState(null);
@@ -101,22 +84,10 @@ export default function ThemPhieuNhapPage({}) {
   );
   useEffect(() => {
     if (PhieuNhapValue != undefined) {
-      // const MaSanPham = dataSource.map((data) => data.MaSP);
-      // for (let i = 0; i <= MaSanPham.length; i++) {
-      //   let SanPham = SP.find((data) => data.MaSP == MaSanPham[i]);
-      //   if (SanPham != undefined ) {
-      //     SanPham.TonKho = SanPham.TonKho - data.SoLuong[i];
-      //     console.log("Sản phẩm thứ", i, SanPham);
-      //     dispatch(actions.updateSanPham.updateSanPhamRequest(SanPham));
-      //   }
-      // }
       setData(PhieuNhapValue);
     }
-    console.log("pnv", data);
   }, [PhieuNhapValue]);
-  // React.useEffect(() => {
-  //   console.log("datâPge", data);
-  // }, [data]);
+
   const dispatch = useDispatch();
 
   React.useEffect(() => {
@@ -149,7 +120,6 @@ export default function ThemPhieuNhapPage({}) {
             let SanPham = SP.find((data) => data.MaSP == MaSanPham[i]);
             if (SanPham != undefined && data.TrangThai == "Đã nhập hàng") {
               SanPham.TonKho = SanPham.TonKho + data.SoLuong[i];
-              console.log("Sản phẩm thứ", i, SanPham);
               dispatch(actions.updateSanPham.updateSanPhamRequest(SanPham));
             }
           }
@@ -161,12 +131,10 @@ export default function ThemPhieuNhapPage({}) {
           let SanPham = SP.find((data) => data.MaSP == MaSanPham[i]);
           if (SanPham != undefined && data.TrangThai == "Đã nhập hàng") {
             SanPham.TonKho = SanPham.TonKho + data.SoLuong[i];
-            console.log("Sản phẩm thứ", i, SanPham);
             dispatch(actions.updateSanPham.updateSanPhamRequest(SanPham));
           }
         }
         dispatch(actions.updatePhieuNhap.updatePhieuNhapRequest(data));
-        // messageSuccess("Cập nhật nhập hàng thành công!");
       }
     }
   }, [data, dispatch]);
@@ -370,7 +338,7 @@ export default function ThemPhieuNhapPage({}) {
               </Form.Item>
               <Form.Item tooltip="Trạng thái phiếu nhập" label="Trạng thái">
                 <Select
-                  disabled={PhieuNhapValue.TrangThai=="Đã nhập hàng"}
+                  disabled={PhieuNhapValue.TrangThai == "Đã nhập hàng"}
                   placeholder="Chọn trạng thái"
                   value={data.TrangThai}
                   onChange={(e) => setData({ ...data, TrangThai: e })}
@@ -445,9 +413,10 @@ export default function ThemPhieuNhapPage({}) {
                   htmlType="submit"
                   onClick={() => {
                     onHoanThanh();
+                    handleNhapHang();
                   }}
                 >
-                  Hoàn thành
+                  OK
                 </Button>
               </Form.Item>
             </Form>

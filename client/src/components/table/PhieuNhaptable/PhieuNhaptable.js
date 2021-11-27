@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { ExportTableButton, Table } from "ant-table-extensions";
-import { useHistory } from "react-router-dom";
 
 import {
   Input,
@@ -9,10 +8,7 @@ import {
   Dropdown,
   message,
   Menu,
-  Image,
   Space,
-  Typography,
-  Avatar,
 } from "antd";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,7 +23,6 @@ import {
   isloadingPhieuNhapsState$,
 } from "../../../redux/selectors";
 import * as actions from "../../../redux/actions";
-import ThemPhieuNhapPage from "../../../pages/ThemPhieuNhapPage/ThemPhieuNhapPage";
 const { Search } = Input;
 
 function PhieuNhaptable({ trangthai, baohanh, currentId, setCurrentId }) {

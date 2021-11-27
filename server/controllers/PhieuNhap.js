@@ -1,7 +1,6 @@
 import { PhieuNhapModel } from "../models/PhieuNhapModel.js";
 import { SanPhamModel } from "../models/SanPhamModel.js";
 
-
 export const getPhieuNhaps = async (req, res) => {
   try {
     const PhieuNhaps = await PhieuNhapModel.find();
@@ -15,8 +14,11 @@ export const getPhieuNhaps = async (req, res) => {
 export const createPhieuNhap = async (req, res) => {
   try {
     const newPhieuNhap = req.body;
+    const { MaSP, SoLuong } = req.body;
     const PhieuNhap = new PhieuNhapModel(newPhieuNhap);
     await PhieuNhap.save();
+
+
     res.status(200).json(PhieuNhap);
   } catch (err) {
     res.status(500).json({ error: err });
@@ -37,10 +39,9 @@ export const updatePhieuNhap = async (req, res) => {
   }
 };
 
-
 export const deletePhieuNhap = async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const PhieuNhap = await PhieuNhapModel.findByIdAndRemove(id);
     res.status(200).json(PhieuNhap);

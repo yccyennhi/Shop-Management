@@ -37,6 +37,7 @@ function PhieuNhaptable({ trangthai, baohanh, currentId, setCurrentId }) {
     dispatch(actions.getPhieuNhaps.getPhieuNhapsRequest());
   }, [dispatch]);
   const PN = useSelector(PhieuNhapsState$);
+
   const dataSource = PN;
   console.log(PN);
   const columns = [
@@ -196,7 +197,7 @@ function PhieuNhaptable({ trangthai, baohanh, currentId, setCurrentId }) {
         >
           <span style={{ marginRight: 8 }}>
             {hasSelected
-              ? `Có ${selectedRowKeys.length} hàng hóa được chọn`
+              ? `Có ${selectedRowKeys.length} phiếu nhập được chọn`
               : ""}
           </span>
           <Dropdown overlay={menu} disabled={!hasSelected}>

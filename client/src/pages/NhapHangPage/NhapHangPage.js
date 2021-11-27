@@ -136,7 +136,7 @@ export default function PhieuNhapPage() {
                     Đã hoàn thành
                   </Radio>
                   <Radio
-                    value={2}
+                    value={3}
                     onClick={() => {
                       setTrangthai(3);
                     }}

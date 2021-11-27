@@ -3,52 +3,50 @@ import { useHistory } from "react-router-dom";
 
 import {
   Table,
-  Input,
-  Badge,
-  Col,
-  Row,
-  Image,
   PageHeader,
   Descriptions,
   Tag,
   Button,
-  Space,
   Modal,
 } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  deletePhieuNhap,
-  showTaoPhieuNhapModal,
   updatePhieuNhap,
   setIdThemPhieuNhapPage,
 } from "../../../redux/actions";
-import { SearchOutlined, FileExcelOutlined } from "@ant-design/icons";
+import { SearchOutlined } from "@ant-design/icons";
 import moment from "moment";
-import ThemPhieuNhapPage from "../../../pages/ThemPhieuNhapPage/ThemPhieuNhapPage";
 import { PhieuNhapsState$ } from "../../../redux/selectors";
 
-export default function ExpandedRowRender({ record, currentId, setCurrentId }) {
+export default function ExpandedRowRender({ record }) {
   const dispatch = useDispatch();
   const [isShow, setIsShow] = useState(false);
   const [IsShowFinish, setIsShowFinish] = useState(false);
   const PN = useSelector(PhieuNhapsState$);
-  const PhieuNhap = PN.find((data) => data.MaPN == record.MaPN);
-  const [dataSource, setDataSource] = useState([{
-    MaSP: "",
-    TenSP: "",
-    MauSac: "",
-    Size: "",
-    LoaiHang: "",
-    GiamGia: 0,
-    SoLuong: 0,
-    GiaNhap: 0,
-    ThanhTien: 0,
-  }]);
+  const [dataSource, setDataSource] = useState([
+    {
+      MaSP: "",
+      TenSP: "",
+      MauSac: "",
+      Size: "",
+      LoaiHang: "",
+      GiamGia: 0,
+      SoLuong: 0,
+      GiaNhap: 0,
+      ThanhTien: 0,
+    },
+  ]);
   const PhieuNhapValue = useSelector((state) =>
     state.PhieuNhaps.data.find((PhieuNhap) =>
       PhieuNhap._id === record._id ? PhieuNhap : null
     )
   );
+  const [data, setData] = useState(PhieuNhapValue);
+
+  React.useEffect(() => {
+    dispatch(updatePhieuNhap.updatePhieuNhapRequest(data));
+  }, [data]);
+
   React.useEffect(() => {
     if (PhieuNhapValue != undefined) {
       let arr = [];
@@ -66,27 +64,19 @@ export default function ExpandedRowRender({ record, currentId, setCurrentId }) {
         };
         arr.push(newData);
       }
-      console.log("1 lần");
       setDataSource(arr);
-
-      console.log("dataSource arr", dataSource);
     }
   }, [dispatch]);
-  React.useEffect(() => {
-
-      console.log(dataSource);
-  }, [dataSource]);
-
-  const [data, setData] = useState(PhieuNhapValue);
 
   function warning() {
     setIsShow(true);
-    Modal.warning({
+    Modal.confirm({
       visible: isShow,
       title: "Cảnh báo",
       content: "Xác nhận hủy phiếu nhập?",
       onOk() {
         handleDelete();
+        setIsShow(false);
       },
       onCancel() {
         setIsShow(false);
@@ -99,9 +89,15 @@ export default function ExpandedRowRender({ record, currentId, setCurrentId }) {
     Modal.confirm({
       visible: IsShowFinish,
       title: "Thông báo",
-      content: "Xác nhận hoàn thành nhập hàng?",
+      content:
+        data.TrangThai == "Đã hủy"
+          ? "Phiếu đã hủy không thể hoàn thành nhập hàng!"
+          : "Xác nhận hoàn thành nhập hàng?",
       onOk() {
-        handleFinish();
+        if (data.TrangThai !== "Đã hủy") {
+          handleFinish();
+        }
+        setIsShowFinish(false);
       },
       onCancel() {
         setIsShowFinish(false);
@@ -110,19 +106,11 @@ export default function ExpandedRowRender({ record, currentId, setCurrentId }) {
   }
   const handleFinish = React.useCallback(() => {
     setData({ ...data, TrangThai: "Đã nhập hàng" });
-    console.log("nhap", data);
-    dispatch(updatePhieuNhap.updatePhieuNhapRequest(data));
-    setIsShowFinish(false);
-    // dispatch(deleteSanPham.deleteSanPhamRequest(record._id));
-  }, [dispatch, IsShowFinish]);
+  }, [dispatch]);
 
   const handleDelete = React.useCallback(() => {
     setData({ ...data, TrangThai: "Đã hủy" });
-    console.log("huy", data);
-    dispatch(updatePhieuNhap.updatePhieuNhapRequest(data));
-    setIsShow(false);
-    // dispatch(deleteSanPham.deleteSanPhamRequest(record._id));
-  }, [dispatch, isShow]);
+  }, [dispatch]);
 
   const history = useHistory();
   const handleNhapHang = () => {
@@ -130,11 +118,11 @@ export default function ExpandedRowRender({ record, currentId, setCurrentId }) {
   };
 
   const openUpdatePhieuNhapModal = React.useCallback(() => {
-    dispatch(setIdThemPhieuNhapPage(record.MaPN));
+    dispatch(setIdThemPhieuNhapPage(data.MaPN));
     handleNhapHang();
   }, [dispatch]);
 
-  const date = moment(record.NgayTao).format("DD-MM-YYYY");
+  const date = moment(data.NgayTao).format("DD-MM-YYYY");
   const columns = [
     {
       key: "MaSP",
@@ -186,62 +174,81 @@ export default function ExpandedRowRender({ record, currentId, setCurrentId }) {
     <>
       <PageHeader
         className="site-page-header"
-        title={record.MaPN}
+        title={data.MaPN}
         subTitle={date}
         extra={[
-          <Button key="1" type="primary" onClick={openUpdatePhieuNhapModal}>
+          <Button
+            key="1"
+            type="primary"
+            onClick={openUpdatePhieuNhapModal}
+            disabled={
+              data.TrangThai == "Đã hủy" || data.TrangThai == "Đã nhập hàng"
+            }
+          >
             Sửa
           </Button>,
-          <Button key="2" onClick={warning}>
+          <Button
+            key="2"
+            onClick={warning}
+            disabled={
+              data.TrangThai == "Đã hủy" || data.TrangThai == "Đã nhập hàng"
+            }
+          >
             Hủy phiếu
           </Button>,
-          <Button key="3" onClick={warningFinish}>
+          <Button
+            key="3"
+            onClick={warningFinish}
+            disabled={
+              data.TrangThai == "Đã hủy" || data.TrangThai == "Đã nhập hàng"
+            }
+          >
             Hoàn thành
           </Button>,
         ]}
         tags={[
-          <Tag color="red" visible={record.TrangThai == "Đã hủy"}>
-            {record.TrangThai}
+          <Tag color="red" visible={data.TrangThai == "Đã hủy"}>
+            {data.TrangThai}
           </Tag>,
-          <Tag color="yellow" visible={record.TrangThai == "Phiếu tạm"}>
-            {record.TrangThai}
+          <Tag color="yellow" visible={data.TrangThai == "Phiếu tạm"}>
+            {data.TrangThai}
           </Tag>,
-          <Tag color="blue" visible={record.TrangThai == "Đã nhập hàng"}>
-            {record.TrangThai}
+          <Tag color="blue" visible={data.TrangThai == "Đã nhập hàng"}>
+            {data.TrangThai}
           </Tag>,
         ]}
       >
         <Descriptions title="Thông tin chi tiết" size="default" column={2}>
           <Descriptions.Item label="Người nhập">
-            {record.NguoiNhap}
+            {data.NguoiNhap}
           </Descriptions.Item>
           <Descriptions.Item label="Người tạo">
-            {record.NguoiTao}
+            {data.NguoiTao}
           </Descriptions.Item>
           <Descriptions.Item label="Cập nhật lần cuối">
-            {moment(record.NgayCapNhat).format("DD-MM-YYYY")}
+            {moment(data.NgayCapNhat).format("DD-MM-YYYY")}
           </Descriptions.Item>
-          <Descriptions.Item label="Tên NCC">{record.TenNCC}</Descriptions.Item>
+          <Descriptions.Item label="Tên NCC">{data.TenNCC}</Descriptions.Item>
           <Descriptions.Item label="Tổng số lượng">
-            {record.TongSoLuong}
+            {data.TongSoLuong}
           </Descriptions.Item>
           <Descriptions.Item label="Tổng số tiền">
-            {record.TongTien}
+            {data.TongTien}
           </Descriptions.Item>
           <Descriptions.Item label="Giảm giá trên tổng hóa đơn">
-            {record.GiamGiaTongTien}
+            {data.GiamGiaTongTien}
           </Descriptions.Item>
           <Descriptions.Item label="Số tiền cần trả">
-            {record.TongTien - record.GiamGiaTongTien - record.TienTra}
+            {data.TongTien - data.GiamGiaTongTien - data.TienTra}
           </Descriptions.Item>
           <Descriptions.Item label="Số tiền đã trả">
-            {record.TienTra}
+            {data.TienTra}
           </Descriptions.Item>
         </Descriptions>
         <Table
           scroll={{ x: 1200, y: 500 }}
           columns={columns}
-         dataSource={dataSource}
+          dataSource={dataSource}
           searchableProps={{
             inputProps: {
               placeholder: "Nhập nội dung cần tìm",

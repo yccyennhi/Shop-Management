@@ -101,10 +101,19 @@ export default function ThemPhieuNhapPage({}) {
   );
   useEffect(() => {
     if (PhieuNhapValue != undefined) {
+      // const MaSanPham = dataSource.map((data) => data.MaSP);
+      // for (let i = 0; i <= MaSanPham.length; i++) {
+      //   let SanPham = SP.find((data) => data.MaSP == MaSanPham[i]);
+      //   if (SanPham != undefined ) {
+      //     SanPham.TonKho = SanPham.TonKho - data.SoLuong[i];
+      //     console.log("Sản phẩm thứ", i, SanPham);
+      //     dispatch(actions.updateSanPham.updateSanPhamRequest(SanPham));
+      //   }
+      // }
       setData(PhieuNhapValue);
     }
     console.log("pnv", data);
-  }, [ PhieuNhapValue]);
+  }, [PhieuNhapValue]);
   // React.useEffect(() => {
   //   console.log("datâPge", data);
   // }, [data]);
@@ -135,16 +144,32 @@ export default function ThemPhieuNhapPage({}) {
         if (PhieuNhap != undefined) {
           messageError("Mã phiếu nhập đã tồn tại!");
         } else {
+          const MaSanPham = dataSource.map((data) => data.MaSP);
+          for (let i = 0; i <= MaSanPham.length; i++) {
+            let SanPham = SP.find((data) => data.MaSP == MaSanPham[i]);
+            if (SanPham != undefined && data.TrangThai == "Đã nhập hàng") {
+              SanPham.TonKho = SanPham.TonKho + data.SoLuong[i];
+              console.log("Sản phẩm thứ", i, SanPham);
+              dispatch(actions.updateSanPham.updateSanPhamRequest(SanPham));
+            }
+          }
           dispatch(actions.createPhieuNhap.createPhieuNhapRequest(data));
         }
       } else {
+        const MaSanPham = dataSource.map((data) => data.MaSP);
+        for (let i = 0; i <= MaSanPham.length; i++) {
+          let SanPham = SP.find((data) => data.MaSP == MaSanPham[i]);
+          if (SanPham != undefined && data.TrangThai == "Đã nhập hàng") {
+            SanPham.TonKho = SanPham.TonKho + data.SoLuong[i];
+            console.log("Sản phẩm thứ", i, SanPham);
+            dispatch(actions.updateSanPham.updateSanPhamRequest(SanPham));
+          }
+        }
         dispatch(actions.updatePhieuNhap.updatePhieuNhapRequest(data));
         // messageSuccess("Cập nhật nhập hàng thành công!");
       }
     }
   }, [data, dispatch]);
-  
-  useEffect(() => {}, [data]);
 
   React.useEffect(() => {
     const MaSanPham = dataSource.map((data) => data.MaSP);
@@ -179,10 +204,6 @@ export default function ThemPhieuNhapPage({}) {
       TongTien: TongTien,
     });
   }, [dataSource]);
-
-  React.useEffect(() => {}, [data]);
-
-  const onLuuTam = React.useCallback(() => {}, [dispatch]);
 
   const options = SP.map((data) => {
     var o = Object.assign({});
@@ -349,9 +370,10 @@ export default function ThemPhieuNhapPage({}) {
               </Form.Item>
               <Form.Item tooltip="Trạng thái phiếu nhập" label="Trạng thái">
                 <Select
-                  placeholder="Trạng thái"
-                  disabled={true}
+                  disabled={PhieuNhapValue.TrangThai=="Đã nhập hàng"}
+                  placeholder="Chọn trạng thái"
                   value={data.TrangThai}
+                  onChange={(e) => setData({ ...data, TrangThai: e })}
                   defaultValue={data.TrangThai}
                 >
                   <Option value="Phiếu tạm">Phiếu tạm</Option>
@@ -422,14 +444,11 @@ export default function ThemPhieuNhapPage({}) {
                   type="primary"
                   htmlType="submit"
                   onClick={() => {
-                    setData({ ...data, TrangThai: "Đã nhập hàng" });
-                    
                     onHoanThanh();
                   }}
                 >
                   Hoàn thành
                 </Button>
-                <Button htmlType="button">Lưu tạm</Button>
               </Form.Item>
             </Form>
           </div>

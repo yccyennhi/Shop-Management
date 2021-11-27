@@ -56,15 +56,10 @@ export const updateHoaDon = async (req, res) => {
       { new: true }
     );
     res.status(200).json(hoadon);
-  } catch (err) {
-    res.status(500).json({ error: err });
-  }
-};
 
-export const updateSLKM = async (req, res) => {
-  try {
-    const KM = req.body;
-    console.log(KM);
+    const KM = await KhuyenMaiModel.findOne({_id: HoaDon.idKM});
+    KM.SoLuong -= 1;
+    if (KM.SoLuong === 0) KM.TrangThai = false;
     const KhuyenMai = await KhuyenMaiModel.findOneAndUpdate(
       { _id: KM._id },
       KM,
@@ -72,6 +67,6 @@ export const updateSLKM = async (req, res) => {
     );
     res.status(200).json(KhuyenMai);
   } catch (err) {
-    res.status(400).json({ error: err });
+    res.status(500).json({ error: err });
   }
 };

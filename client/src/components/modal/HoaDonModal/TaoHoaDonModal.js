@@ -224,22 +224,9 @@ export default function TaoHoaDonModal({ HoaDons }) {
       dataHD.MaHD = "HD" + length;
     }
     dispatch(actions.createHoaDon.createHoaDonRequest(dataHD));
-    const KhuyenMai = KhuyenMais.find((km) => km.MaKM === dataHD.MaKM);
-    dispatch(
-      actions.updateSLKM.updateSLKMRequest({
-        ...KhuyenMai,
-        SoLuong: KhuyenMai.SoLuong - 1,
-      })
-    );
+    
 
     SPsInfo.map((sp) => {
-      const SP = SanPhams.find((elm) => elm._id === sp.idSP);
-      dispatch(
-        actions.updateSanPham.updateSanPhamRequest({
-          ...SP,
-          TonKho: SP.TonKho - sp.SoLuong,
-        })
-      );
       sp.MaHD = dataHD.MaHD;
       dispatch(actions.createCTHD.createCTHDRequest(sp));
     });

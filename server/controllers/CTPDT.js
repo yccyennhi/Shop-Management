@@ -1,4 +1,5 @@
 import { CTPDTModel } from "../models/CTPDTModel.js";
+import {SanPhamModel} from "../models/SanPhamModel.js";
 
 export const getCTPDTs = async (req, res) => {
   try {
@@ -17,8 +18,16 @@ export const createCTPDT = async (req, res) => {
     const CTPDT = new CTPDTModel(newCTPDT);
     console.log(newCTPDT);
     await CTPDT.save();
-
     res.status(200).json(CTPDT);
+    const SP = await SanPhamModel.findOne({_id: CTPDT.idSP});
+    SP.TonKho = SP.TonKho + CTPDT.SoLuong;
+    if (SP.TrangThai === 'Hết hàng') SP.TrangThai = 'Đang kinh doanh';
+    const SanPham = await SanPhamModel.findOneAndUpdate(
+      { _id: SP._id },
+      SP,
+      { new: true }
+    );
+    res.status(200).json(SanPham);    
   } catch (err) {
     res.status(500).json({ error: err });
   }

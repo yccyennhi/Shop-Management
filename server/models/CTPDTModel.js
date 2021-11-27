@@ -31,6 +31,10 @@ const schema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    ThoiGian: {
+      type: Date,
+      required: true,
+    },
     ThanhTien: {
       type: Number,
       required: true,

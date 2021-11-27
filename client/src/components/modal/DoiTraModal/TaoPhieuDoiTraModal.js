@@ -56,6 +56,7 @@ export default function TaoPhieuTraHang() {
           idSP: e.idSP,
           GiaBan: e.DonGia,
           SoLuong: e.SoLuong,
+          ThoiGian: data.ThoiGian,
           SLmax: e.SoLuong,
           ThanhTien: Number(e.ThanhTien),
         };
@@ -193,6 +194,7 @@ export default function TaoPhieuTraHang() {
       if (sp.SoLuong)
         dispatch(actions.createCTPDT.createCTPDTRequest(sp));
     });
+    onCancel();
   }
   return (
     <div>

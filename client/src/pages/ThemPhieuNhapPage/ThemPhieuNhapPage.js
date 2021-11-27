@@ -28,7 +28,7 @@ import {
 import SanPhamModal from "../../components/modal/SanPhamModal/SanPhamModal";
 
 import ThemPhieuNhaptable from "../../components/table/ThemPhieuNhaptable/ThemPhieuNhaptable";
-import { messageError } from "../../components/message";
+import { messageError, messageSuccess } from "../../components/message";
 const { Content, Sider } = Layout;
 
 const { Option } = AutoComplete;
@@ -121,6 +121,7 @@ export default function ThemPhieuNhapPage({}) {
             if (SanPham != undefined && data.TrangThai == "Đã nhập hàng") {
               SanPham.TonKho = SanPham.TonKho + data.SoLuong[i];
               dispatch(actions.updateSanPham.updateSanPhamRequest(SanPham));
+              messageSuccess("Thêm phiếu nhập thành công)");
             }
           }
           dispatch(actions.createPhieuNhap.createPhieuNhapRequest(data));
@@ -132,6 +133,7 @@ export default function ThemPhieuNhapPage({}) {
           if (SanPham != undefined && data.TrangThai == "Đã nhập hàng") {
             SanPham.TonKho = SanPham.TonKho + data.SoLuong[i];
             dispatch(actions.updateSanPham.updateSanPhamRequest(SanPham));
+            messageSuccess("Thêm phiếu nhập thành công)");
           }
         }
         dispatch(actions.updatePhieuNhap.updatePhieuNhapRequest(data));

@@ -1,6 +1,9 @@
 import React, { useState } from "react";
-import { Table, Input, Row } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { Input, Space } from "antd";
+import { ExportTableButton, Table } from "ant-table-extensions";
+
+import { SearchOutlined, FileExcelOutlined } from "@ant-design/icons";
+
 import moment from "moment";
 
 const { Search } = Input;
@@ -172,15 +175,34 @@ function CuoiNgaytable({ currentDataSource }) {
 
   return (
     <div>
-      <Table
-        tableLayout={"auto"}
-        loading={false}
-        pagination={true}
-        //  scroll={{ x: 1500, y: 500 }}
-        columns={columns}
-        rowKey="MaHD"
-        dataSource={dataSource}
-      ></Table>
+      <Space direction="vertical" style={{ width: "100%" }}>
+        <Space direction="vertical" align="end" style={{ width: "100%" }}>
+          <ExportTableButton
+            dataSource={dataSource}
+            columns={columns}
+            btnProps={{ icon: <FileExcelOutlined /> }}
+            showColumnPicker={true}
+            showColumnPickerProps={{ id: "Thêm hàng hóa" }}
+            fileName="HangHoaCSV"
+          >
+            Tải file CSV
+          </ExportTableButton>
+        </Space>
+        <Table
+          tableLayout={"auto"}
+          loading={false}
+          pagination={true}
+          searchableProps={{
+            inputProps: {
+              placeholder: "Nhập mã, tên khuyến mãi",
+              prefix: <SearchOutlined />,
+            },
+          }}
+          columns={columns}
+          rowKey="MaHD"
+          dataSource={dataSource}
+        ></Table>
+      </Space>
     </div>
   );
 }

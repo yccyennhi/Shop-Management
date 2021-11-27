@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Input, Row, Space } from "antd";
+import { Input, Space } from "antd";
 import { ExportTableButton, Table } from "ant-table-extensions";
 
 import { SearchOutlined, FileExcelOutlined } from "@ant-design/icons";
@@ -114,36 +114,35 @@ function BanHangtable({ currentDataSource }) {
 
   return (
     <div>
-      <Space direction='vertical' style={{ width: "100%" }}>
-
-      <ExportTableButton
-        dataSource={dataSource}
-        columns={columns}
-        btnProps={{ icon: <FileExcelOutlined /> }}
-        showColumnPicker={true}
-        showColumnPickerProps={{ id: "Thêm hàng hóa" }}
-        fileName="HangHoaCSV"
-      >
-        Tải file CSV
-      </ExportTableButton>
-
-      <Table
-        tableLayout={"auto"}
-        loading={false}
-        pagination={true}
-        searchable
-        searchableProps={{
-          inputProps: {
-            placeholder: "Nhập mã, tên khuyến mãi",
-            prefix: <SearchOutlined />,
-            width: '500' 
-          },
-        }}
-        //  scroll={{ x: 1500, y: 500 }}
-        columns={columns}
-        rowKey="ThoiGian"
-        dataSource={dataSource}
-      ></Table>
+      <Space direction="vertical" style={{ width: "100%" }}>
+        <Space direction="vertical" align="end" style={{ width: "100%" }}>
+          <ExportTableButton
+            dataSource={dataSource}
+            columns={columns}
+            btnProps={{ icon: <FileExcelOutlined /> }}
+            showColumnPicker={true}
+            showColumnPickerProps={{ id: "Thêm hàng hóa" }}
+            fileName="HangHoaCSV"
+          >
+            Tải file CSV
+          </ExportTableButton>
+        </Space>
+        <Table
+          tableLayout={"auto"}
+          loading={false}
+          pagination={true}
+          searchable
+          searchableProps={{
+            inputProps: {
+              placeholder: "Nhập mã, tên khuyến mãi",
+              prefix: <SearchOutlined />,
+            },
+          }}
+          //  scroll={{ x: 1500, y: 500 }}
+          columns={columns}
+          rowKey="ThoiGian"
+          dataSource={dataSource}
+        ></Table>
       </Space>
     </div>
   );

@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import { Table, Input, Row} from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { Input, Space } from "antd";
+import { ExportTableButton, Table } from "ant-table-extensions";
+
+import { SearchOutlined, FileExcelOutlined } from "@ant-design/icons";
 import moment from "moment";
-
-
 const { Search } = Input;
 
-function HangHoatable({currentDataSource}) {
-
- const dataSource = Object.keys(currentDataSource).map((key) => ({...currentDataSource[key], MaSP: key }));
+function HangHoatable({ currentDataSource }) {
+  const dataSource = Object.keys(currentDataSource).map((key) => ({
+    ...currentDataSource[key],
+    MaSP: key,
+  }));
 
   const columns = [
     {
@@ -17,7 +19,7 @@ function HangHoatable({currentDataSource}) {
       key: "MaSP",
       defaultSortOrder: "ascend",
       sorter: (a, b) => {
-        return ('' + a.MaSP).localeCompare(b.MaSP);
+        return ("" + a.MaSP).localeCompare(b.MaSP);
       },
       filterDropdown: ({
         setSelectedKeys,
@@ -93,7 +95,7 @@ function HangHoatable({currentDataSource}) {
         return record.MaKM.toLowerCase().includes(value.toLowerCase());
       },
     },
-    
+
     {
       title: "Tồn đầu",
       dataIndex: "SLDau",
@@ -110,7 +112,6 @@ function HangHoatable({currentDataSource}) {
       },
       sorter: (a, b) => a.GTDau - b.GTDau,
     },
-  
 
     {
       title: "Số lượng nhập",
@@ -145,7 +146,7 @@ function HangHoatable({currentDataSource}) {
       },
       sorter: (a, b) => a.GTXuat - b.GTXuat,
     },
-    
+
     {
       title: "Tồn cuối",
       dataIndex: "SLCuoi",
@@ -162,7 +163,6 @@ function HangHoatable({currentDataSource}) {
       },
       sorter: (a, b) => a.GTCuoi - b.GTCuoi,
     },
-  
   ];
 
   const [select, setSelect] = useState({
@@ -184,15 +184,36 @@ function HangHoatable({currentDataSource}) {
 
   return (
     <div>
-      <Table
-        tableLayout={"auto"}
-        loading={false}
-        pagination={true}
-        //  scroll={{ x: 1500, y: 500 }}
-        columns={columns}
-        rowKey="MaSP"
-        dataSource={dataSource}
-      ></Table>
+      {" "}
+      <Space direction="vertical" style={{ width: "100%" }}>
+        <Space direction="vertical" align="end" style={{ width: "100%" }}>
+          <ExportTableButton
+            dataSource={dataSource}
+            columns={columns}
+            btnProps={{ icon: <FileExcelOutlined /> }}
+            showColumnPicker={true}
+            showColumnPickerProps={{ id: "Thêm hàng hóa" }}
+            fileName="HangHoaCSV"
+          >
+            Tải file CSV
+          </ExportTableButton>
+        </Space>
+        <Table
+          tableLayout={"auto"}
+          loading={false}
+          pagination={true}
+          searchable
+          searchableProps={{
+            inputProps: {
+              placeholder: "Nhập mã, tên khuyến mãi",
+              prefix: <SearchOutlined />,
+            },
+          }}
+          columns={columns}
+          rowKey="MaSP"
+          dataSource={dataSource}
+        ></Table>{" "}
+      </Space>
     </div>
   );
 }

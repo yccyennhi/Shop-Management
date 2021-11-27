@@ -33,7 +33,6 @@ export default function PhieuNhapsReducer(state = INIT_STATE.PhieuNhaps, action)
         data: [...state.data, action.payload],
       };
     case getType(updatePhieuNhap.updatePhieuNhapSuccess):
-      messageSuccess("Chỉnh sửa thành công");
       return {
         ...state,
         data: state.data.map((PhieuNhap) =>

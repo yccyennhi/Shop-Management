@@ -4,6 +4,7 @@ import { PhieuDoiTraModel } from "./../models/PhieuDoiTraModel.js";
 import { CTHDModel } from "./../models/CTHDModel.js";
 import { NhanVienModel } from "./../models/NhanVienModel.js";
 import { PhieuNhapModel } from "./../models/PhieuNhapModel.js";
+import { CTPDTModel } from "./../models/CTPDTModel.js";
 
 export const getCuoiNgays = async (req, res) => {
   try {
@@ -22,13 +23,14 @@ export const getCuoiNgays = async (req, res) => {
 
     //Tìm đổi trả theo ngày
     await PhieuDoiTraModel.find()
-    .populate("idNV", "TenNV")
-    .exec()
-    .then((DoiTrasCuoiNgay) => (cuoiNgays["DoiTras"] = DoiTrasCuoiNgay));
+      .populate("idNV", "TenNV")
+      .exec()
+      .then((DoiTrasCuoiNgay) => (cuoiNgays["DoiTras"] = DoiTrasCuoiNgay));
 
     //Tìm đơn nhập hàng
-    await PhieuNhapModel.find()
-    .then((PhieuNhapsCuoiNgay) => (cuoiNgays["NhapHangs"] = PhieuNhapsCuoiNgay));
+    await PhieuNhapModel.find().then(
+      (PhieuNhapsCuoiNgay) => (cuoiNgays["NhapHangs"] = PhieuNhapsCuoiNgay)
+    );
 
     console.log(cuoiNgays);
     res.status(200).json(cuoiNgays);
@@ -70,6 +72,29 @@ export const getBCBanHangs = async (req, res) => {
         });
       }
     });
+
+    await PhieuDoiTraModel.find().then((DoiTrasList) => {
+      if (DoiTrasList.length) {
+        Object.values(DoiTrasList).forEach((DoiTra) => {
+          let date = moment(DoiTra.ThoiGian).startOf("day");
+          if (!totalHoaDonByDay[date])
+            totalHoaDonByDay[date] = {
+              SoLuong: 0,
+              TongTienHang: 0,
+              GiamGia: 0,
+              ThanhTien: 0,
+              LoiNhuan: 0,
+            };
+          totalHoaDonByDay[date]["SoLuong"] += 1;
+          totalHoaDonByDay[date]["TongTienHang"] -= DoiTra.TongTienHang;
+          totalHoaDonByDay[date]["GiamGia"] -= DoiTra.GiamGia;
+          totalHoaDonByDay[date]["ThanhTien"] -= DoiTra.ThanhTien;
+          totalHoaDonByDay[date]["LoiNhuan"] -=
+            DoiTra.TongTienHang - DoiTra.GiaVon;
+        });
+      }
+    });
+
     res.status(200).json(totalHoaDonByDay);
   } catch (err) {
     res.status(500).json({ error: err });
@@ -133,6 +158,7 @@ export const getBCHangHoas = async (req, res) => {
         });
       }
     });
+
     await CTHDModel.find().then((CTHDs) => {
       if (CTHDs.length) {
         Object.values(CTHDs).forEach((CTHD) => {
@@ -145,6 +171,20 @@ export const getBCHangHoas = async (req, res) => {
         });
       }
     });
+
+    await CTPDTModel.find().then((CTDTs) => {
+      if (CTDTs.length) {
+        Object.values(CTDTs).forEach((CTDT) => {
+          const MaSP = CTDT.MaSP;
+          hangHoaList[MaSP]["Xuat"].push({
+            Ngay: CTDT.ThoiGian,
+            SoLuong: -CTDT.SoLuong,
+            ThanhTien: -(CTDT.GiaVon * CTDT.SoLuong),
+          });
+        });
+      }
+    });
+
     res.status(200).json(hangHoaList);
   } catch (err) {
     res.status(500).json({ error: err });

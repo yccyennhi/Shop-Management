@@ -11,6 +11,8 @@ import COLOR from "../../color.js";
 const { Content, Sider } = Layout;
 
 export default function BCCuoiNgayPage() {
+  const today = moment().startOf("day");
+
   /* #region  lấy data từ server */
   const dispatch = useDispatch();
   React.useEffect(() => {
@@ -101,9 +103,11 @@ export default function BCCuoiNgayPage() {
                 style={{ width: 250, color: COLOR.darkblue }}
               >
                 <DatePicker
-                  defaultValue={moment()}
+                  defaultValue={today}
                   format="DD/MM/YYYY"
-                  onChange={(e) => setCurrentDate(e.startOf("day"))}
+                  onChange={(e) =>
+                    e ? setCurrentDate(e) : setCurrentDate(today)
+                  }
                 />
               </Card>
             </Space>

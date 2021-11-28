@@ -36,7 +36,7 @@ export default function BCHangHoaPage() {
     <Layout>
       <Layout>
         <Content>
-          <PageHeader className="site-page-header" title="Báo cáohàng hóa" />
+          <PageHeader className="site-page-header" title="Báo cáo hàng hóa" />
         </Content>
       </Layout>
       <Layout>
@@ -54,7 +54,9 @@ export default function BCHangHoaPage() {
               >
                 <RangePicker
                   defaultValue={today}
-                  onChange={(e) => setCurrentDate(e)}
+                  onChange={(e) =>
+                    e ? setCurrentDate(e) : setCurrentDate(today)
+                  }
                   format={dateFormat}
                 />
               </Card>
@@ -63,7 +65,7 @@ export default function BCHangHoaPage() {
         </Sider>
         <Content style={{ padding: "17px 24px 24px" }}>
           <div className="site-layout-content">
-            <HangHoatable currentDataSource ={currentDataSource} />
+            <HangHoatable currentDataSource={currentDataSource} />
           </div>
         </Content>
       </Layout>

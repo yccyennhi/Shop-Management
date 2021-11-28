@@ -7,6 +7,16 @@ import moment from "moment";
 
 const { Search } = Input;
 
+const columnMoneySample = (title, index) => ({
+  title:  title ,
+  dataIndex:  index ,
+  key:  index ,
+  render: (value) => {
+    return `${(value<0?'-':'')} ${(Math.abs(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))}`;
+  },
+  sorter: (a, b) => a.index - b.index,
+});
+
 function BanHangtable({ currentDataSource }) {
   const dataSource = currentDataSource
     ? Array.from(currentDataSource, (HoaDon) => ({
@@ -67,50 +77,20 @@ function BanHangtable({ currentDataSource }) {
       sorter: (a, b) => a.SoLuong - b.SoLuong,
     },
 
-    {
-      title: "Tổng tiền hàng",
-      dataIndex: "TongTienHang",
-      key: "TongTienHang",
-      sorter: (a, b) => a.TongTienHang - b.TongTienHang,
-    },
+   
+    columnMoneySample("Tổng tiền hàng", "TongTienHang"),
 
-    {
-      title: "Giảm giá",
-      dataIndex: "GiamGia",
-      key: "GiamGia",
-      sorter: (a, b) => a.GiamGia - b.GiamGia,
-    },
+    columnMoneySample("Giảm giá", "GiamGia"),
 
-    {
-      title: "Thành tiền",
-      dataIndex: "ThanhTien",
-      key: "ThanhTien",
-      sorter: (a, b) => a.ThanhTien - b.ThanhTien,
-    },
-    {
-      title: "Lợi nhuận",
-      dataIndex: "LoiNhuan",
-      key: "LoiNhuan",
-      sorter: (a, b) => a.LoiNhuan - b.LoiNhuan,
-    },
+    columnMoneySample("Thành tiền", "ThanhTien"),
+
+    columnMoneySample("Lợi nhuận", "LoiNhuan")
   ];
 
   const [select, setSelect] = useState({
     selectedRowKeys: [],
     loading: false,
   });
-
-  const { selectedRowKeys, loading } = select;
-
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: (selectedRowKeys) => {
-      setSelect({
-        ...select,
-        selectedRowKeys: selectedRowKeys,
-      });
-    },
-  };
 
   return (
     <div>
@@ -120,8 +100,6 @@ function BanHangtable({ currentDataSource }) {
             dataSource={dataSource}
             columns={columns}
             btnProps={{ icon: <FileExcelOutlined /> }}
-            showColumnPicker={true}
-            showColumnPickerProps={{ id: "Thêm hàng hóa" }}
             fileName="HangHoaCSV"
           >
             Tải file CSV
@@ -134,11 +112,10 @@ function BanHangtable({ currentDataSource }) {
           searchable
           searchableProps={{
             inputProps: {
-              placeholder: "Nhập mã, tên khuyến mãi",
+              placeholder: "Nhập thông tin cần tìm",
               prefix: <SearchOutlined />,
             },
           }}
-          //  scroll={{ x: 1500, y: 500 }}
           columns={columns}
           rowKey="ThoiGian"
           dataSource={dataSource}

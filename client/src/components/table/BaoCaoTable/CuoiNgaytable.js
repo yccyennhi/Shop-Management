@@ -12,23 +12,30 @@ import moment from "moment";
 
 const { Search } = Input;
 
+const columnMoneySample = (title, index) => ({
+  title:  title ,
+  dataIndex:  index ,
+  key:  index ,
+  render: (value) => {
+    return `${(value<0?'-':'')} ${(Math.abs(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))}`;
+  },
+  sorter: (a, b) => a.index - b.index,
+});
+
 function CuoiNgaytable(currentDataSource, type) {
   const dataSource = Array.from(currentDataSource, (HoaDon) =>
     type === 1
       ? {
           ...HoaDon,
           TenNV: HoaDon.idNV.TenNV,
-          LoiNhuan: HoaDon.TongTienHang - HoaDon.GiaVon,
+          LoiNhuan: HoaDon.ThanhTien - HoaDon.GiaVon,
         }
       : type === 2
       ? {
           ...HoaDon,
           MaHD: HoaDon.MaPDT,
           TenNV: HoaDon.idNV.TenNV,
-          GiamGia: 0,
-          TongTienHang: 0,
-          ThanhTien: HoaDon.TongTien,
-          LoiNhuan: -HoaDon.TongTien,
+          LoiNhuan: -(HoaDon.ThanhTien - HoaDon.GiaVon),
         }
       : {
           ...HoaDon,
@@ -37,13 +44,10 @@ function CuoiNgaytable(currentDataSource, type) {
           ThoiGian: HoaDon.NgayTao,
           SoLuong: HoaDon.TongSoLuong,
           TongTienHang: HoaDon.TongTien,
-          GiamGia: HoaDon.GiamGiaTongTien ? HoaDon.GiamGiaTongTien : 0,
-          LoiNhuan:  HoaDon.TongTien - HoaDon.TienTra,
-          ThanhTien: HoaDon.TienTra
+          GiamGia: HoaDon.GiamGiaTongTien,
+          ThanhTien: HoaDon.TongTien - HoaDon.GiamGiaTongTien,
         }
   );
-  console.log("type", type, dataSource);
-
   const columns = [
     {
       title: "Mã chứng từ",
@@ -136,64 +140,18 @@ function CuoiNgaytable(currentDataSource, type) {
       sorter: (a, b) => a.SoLuong - b.SoLuong,
     },
 
-    {
-      title: "Tổng tiền hàng",
-      dataIndex: "TongTienHang",
-      key: "TongTienHang",
-      render: (value) => {
-        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      },
-      sorter: (a, b) => a.TongTienHang - b.TongTienHang,
-    },
+   
+    columnMoneySample("Tổng tiền hàng", "TongTienHang"),
 
-    {
-      title: "Giảm giá",
-      dataIndex: "GiamGia",
-      key: "GiamGia",
-      render: (value) => {
-        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      },
-      sorter: (a, b) => a.GiamGia - b.GiamGia,
-    },
+    columnMoneySample("Giảm giá", "GiamGia"),
 
-    {
-      title: type == 3 ? "Tiền trả" : "Thành tiền",
-      dataIndex: "ThanhTien",
-      key: "ThanhTien",
-      render: (value) => {
-        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      },
-      sorter: (a, b) => a.ThanhTien - b.ThanhTien,
-    },
-    {
-      title: "Lợi nhuận",
-      dataIndex: "LoiNhuan",
-      key: "LoiNhuan",
-      render: (value) => {
-        return `${value > 0 ? "" : "-"} ${Math.abs(value)
-          .toString()
-          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
-      },
-      sorter: (a, b) => a.LoiNhuan - b.LoiNhuan,
-    },
+    columnMoneySample("Thành tiền", "ThanhTien"),
+
+    type != 3
+      ? columnMoneySample("Lợi nhuận", "LoiNhuan")
+      : columnMoneySample("Trả NCC", "TienTra"),
+    ,
   ];
-
-  const [select, setSelect] = useState({
-    selectedRowKeys: [],
-    loading: false,
-  });
-
-  const { selectedRowKeys, loading } = select;
-
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: (selectedRowKeys) => {
-      setSelect({
-        ...select,
-        selectedRowKeys: selectedRowKeys,
-      });
-    },
-  };
 
   return (
     <div>
@@ -212,9 +170,10 @@ function CuoiNgaytable(currentDataSource, type) {
           tableLayout={"auto"}
           loading={false}
           pagination={true}
+          title={() => type===1?"Báo cáo bán hàng":type===2?"Báo cáo đổi trả":"Báo cáo nhập hàng"}
           searchableProps={{
             inputProps: {
-              placeholder: "Nhập mã, tên khuyến mãi",
+              placeholder: "Nhập thông tin cần tìm",
               prefix: <SearchOutlined />,
             },
           }}

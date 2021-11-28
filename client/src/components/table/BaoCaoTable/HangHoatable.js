@@ -191,8 +191,6 @@ function HangHoatable({ currentDataSource }) {
             dataSource={dataSource}
             columns={columns}
             btnProps={{ icon: <FileExcelOutlined /> }}
-            showColumnPicker={true}
-            showColumnPickerProps={{ id: "Thêm hàng hóa" }}
             fileName="HangHoaCSV"
           >
             Tải file CSV
@@ -205,7 +203,7 @@ function HangHoatable({ currentDataSource }) {
           searchable
           searchableProps={{
             inputProps: {
-              placeholder: "Nhập mã, tên khuyến mãi",
+              placeholder: "Nhập thông tin cần tìm",
               prefix: <SearchOutlined />,
             },
           }}

@@ -87,7 +87,9 @@ export default function BCBanHangPage() {
               >
                 <RangePicker
                   defaultValue={today}
-                  onChange={(e) => setCurrentDate(e)}
+                  onChange={(e) =>
+                    e ? setCurrentDate(e) : setCurrentDate(today)
+                  }
                   format={dateFormat}
                 />
               </Card>

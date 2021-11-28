@@ -414,7 +414,7 @@ function* getTongQuansSaga(action) {
       doanhThuToday: today['DoanhThu'],
       doiTraCount: DoiTrasToday.data.length,
       soLuongDT: tongSoLuongDT,
-      percent:compareLastMonth,
+      percent:compareLastMonth?compareLastMonth:0,
     };
 
     yield put(actions.getTongQuans.getStatistics(statistics));

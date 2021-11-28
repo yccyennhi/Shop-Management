@@ -1,29 +1,52 @@
 import React, { useState } from "react";
-import { Table, Input, Row } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { Input, Space } from "antd";
+import { ExportTableButton, Table } from "ant-table-extensions";
+
+import {
+  SearchOutlined,
+  FileExcelOutlined,
+  HeatMapOutlined,
+} from "@ant-design/icons";
+
 import moment from "moment";
 
 const { Search } = Input;
 
-function CuoiNgaytable({ currentDataSource }) {
-  // const dataSource = Array.from(currentDataSource, (HoaDon) => ({
-  //   MaHD: HoaDon.MaHD,
-  //   TenNV: HoaDon.idNV.TenNV,
-  //   ThoiGian: HoaDon.ThoiGian,
-  //   SoLuong: HoaDon.SoLuong,
-  //   TongTienHang: HoaDon.TongTienHang,
-  //   GiamGia: HoaDon.GiamGia,
-  //   ThanhTien: HoaDon.ThanhTien,
-  //   LoiNhuan: HoaDon.TongTienHang - HoaDon.GiaVon,
-  // }));
-  const dataSource = Array.from(currentDataSource, (HoaDon) => ({
-    ...HoaDon,
-    TenNV: HoaDon.idNV.TenNV,
-    LoiNhuan: HoaDon.TongTienHang - HoaDon.GiaVon,
-  }));
+function CuoiNgaytable(currentDataSource, type) {
+  const dataSource = Array.from(currentDataSource, (HoaDon) =>
+    type === 1
+      ? {
+          ...HoaDon,
+          TenNV: HoaDon.idNV.TenNV,
+          LoiNhuan: HoaDon.TongTienHang - HoaDon.GiaVon,
+        }
+      : type === 2
+      ? {
+          ...HoaDon,
+          MaHD: HoaDon.MaPDT,
+          TenNV: HoaDon.idNV.TenNV,
+          GiamGia: 0,
+          TongTienHang: 0,
+          ThanhTien: HoaDon.TongTien,
+          LoiNhuan: -HoaDon.TongTien,
+        }
+      : {
+          ...HoaDon,
+          MaHD: HoaDon.MaPN,
+          TenNV: HoaDon.NguoiTao,
+          ThoiGian: HoaDon.NgayTao,
+          SoLuong: HoaDon.TongSoLuong,
+          TongTienHang: HoaDon.TongTien,
+          GiamGia: HoaDon.GiamGiaTongTien ? HoaDon.GiamGiaTongTien : 0,
+          LoiNhuan:  HoaDon.TongTien - HoaDon.TienTra,
+          ThanhTien: HoaDon.TienTra
+        }
+  );
+  console.log("type", type, dataSource);
+
   const columns = [
     {
-      title: "Mã hóa đơn",
+      title: "Mã chứng từ",
       dataIndex: "MaHD",
       key: "MaHD",
       filterDropdown: ({
@@ -101,7 +124,7 @@ function CuoiNgaytable({ currentDataSource }) {
       dataIndex: "ThoiGian",
       key: "ThoiGian",
       render: (date) => {
-        return <p>{moment(date).format("HH:MM:SS")}</p>;
+        return moment(date).format("HH:MM:SS");
       },
       sorter: (a, b) => a.ThoiGian - b.ThoiGian,
     },
@@ -117,6 +140,9 @@ function CuoiNgaytable({ currentDataSource }) {
       title: "Tổng tiền hàng",
       dataIndex: "TongTienHang",
       key: "TongTienHang",
+      render: (value) => {
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      },
       sorter: (a, b) => a.TongTienHang - b.TongTienHang,
     },
 
@@ -124,19 +150,30 @@ function CuoiNgaytable({ currentDataSource }) {
       title: "Giảm giá",
       dataIndex: "GiamGia",
       key: "GiamGia",
+      render: (value) => {
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      },
       sorter: (a, b) => a.GiamGia - b.GiamGia,
     },
 
     {
-      title: "Thành tiền",
+      title: type == 3 ? "Tiền trả" : "Thành tiền",
       dataIndex: "ThanhTien",
       key: "ThanhTien",
+      render: (value) => {
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      },
       sorter: (a, b) => a.ThanhTien - b.ThanhTien,
     },
     {
       title: "Lợi nhuận",
       dataIndex: "LoiNhuan",
       key: "LoiNhuan",
+      render: (value) => {
+        return `${value > 0 ? "" : "-"} ${Math.abs(value)
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+      },
       sorter: (a, b) => a.LoiNhuan - b.LoiNhuan,
     },
   ];
@@ -160,15 +197,32 @@ function CuoiNgaytable({ currentDataSource }) {
 
   return (
     <div>
-      <Table
-        tableLayout={"auto"}
-        loading={false}
-        pagination={true}
-        //  scroll={{ x: 1500, y: 500 }}
-        columns={columns}
-        rowKey="MaHD"
-        dataSource={dataSource}
-      ></Table>
+      <Space direction="vertical" style={{ width: "100%" }}>
+        <Space direction="vertical" align="end" style={{ width: "100%" }}>
+          <ExportTableButton
+            dataSource={dataSource}
+            columns={columns}
+            btnProps={{ icon: <FileExcelOutlined /> }}
+            fileName="BaoCaoCuoiNgay"
+          >
+            Tải file CSV
+          </ExportTableButton>
+        </Space>
+        <Table
+          tableLayout={"auto"}
+          loading={false}
+          pagination={true}
+          searchableProps={{
+            inputProps: {
+              placeholder: "Nhập mã, tên khuyến mãi",
+              prefix: <SearchOutlined />,
+            },
+          }}
+          columns={columns}
+          rowKey="MaHD"
+          dataSource={dataSource}
+        ></Table>
+      </Space>
     </div>
   );
 }

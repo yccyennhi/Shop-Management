@@ -36,7 +36,7 @@ export default function BCHangHoaPage() {
     <Layout>
       <Layout>
         <Content>
-          <PageHeader className="site-page-header" title="Báo cáo bán hàng" />
+          <PageHeader className="site-page-header" title="Báo cáohàng hóa" />
         </Content>
       </Layout>
       <Layout>

@@ -2,31 +2,49 @@ import React, { useState } from "react";
 import { Input, Space } from "antd";
 import { ExportTableButton, Table } from "ant-table-extensions";
 
-import { SearchOutlined, FileExcelOutlined } from "@ant-design/icons";
+import {
+  SearchOutlined,
+  FileExcelOutlined,
+  HeatMapOutlined,
+} from "@ant-design/icons";
 
 import moment from "moment";
 
 const { Search } = Input;
 
-function CuoiNgaytable({ currentDataSource }) {
-  // const dataSource = Array.from(currentDataSource, (HoaDon) => ({
-  //   MaHD: HoaDon.MaHD,
-  //   TenNV: HoaDon.idNV.TenNV,
-  //   ThoiGian: HoaDon.ThoiGian,
-  //   SoLuong: HoaDon.SoLuong,
-  //   TongTienHang: HoaDon.TongTienHang,
-  //   GiamGia: HoaDon.GiamGia,
-  //   ThanhTien: HoaDon.ThanhTien,
-  //   LoiNhuan: HoaDon.TongTienHang - HoaDon.GiaVon,
-  // }));
-  const dataSource = Array.from(currentDataSource, (HoaDon) => ({
-    ...HoaDon,
-    TenNV: HoaDon.idNV.TenNV,
-    LoiNhuan: HoaDon.TongTienHang - HoaDon.GiaVon,
-  }));
+function CuoiNgaytable(currentDataSource, type) {
+  console.log('CuoiNgaysTable', currentDataSource, type)
+  const dataSource = Array.from(currentDataSource, (HoaDon) =>
+    type === 1
+      ? {
+          ...HoaDon,
+          TenNV: HoaDon.idNV.TenNV,
+          LoiNhuan: HoaDon.TongTienHang - HoaDon.GiaVon,
+        }
+      : type === 2
+      ? {
+          ...HoaDon,
+          MaHD: HoaDon.MaPDT,
+          TenNV: HoaDon.idNV.TenNV,
+          GiamGia: 0,
+          ThanhTien: -HoaDon.TongTien,
+          LoiNhuan: -HoaDon.TongTien,
+        }
+      : {
+          ...HoaDon,
+          MaHD: HoaDon.MaPN,
+          TenNV: HoaDon.NguoiTao,
+          ThoiGian: HoaDon.NgayTao,
+          SoLuong: HoaDon.TongSoLuong,
+          TongTienHang: HoaDon.TongTien,
+          GiamGia: HoaDon.GiamGiaTongTien ? HoaDon.GiamGiaTongTien : 0,
+          LoiNhuan: -HoaDon.TienTra,
+        }
+  );
+
   const columns = [
     {
-      title: "Mã hóa đơn",
+      title: "Mã chứng từ",
       dataIndex: "MaHD",
       key: "MaHD",
       filterDropdown: ({
@@ -121,7 +139,7 @@ function CuoiNgaytable({ currentDataSource }) {
       dataIndex: "TongTienHang",
       key: "TongTienHang",
       render: (value) => {
-        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return Math.abs(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       },
       sorter: (a, b) => a.TongTienHang - b.TongTienHang,
     },
@@ -131,17 +149,17 @@ function CuoiNgaytable({ currentDataSource }) {
       dataIndex: "GiamGia",
       key: "GiamGia",
       render: (value) => {
-        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return  Math.abs(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       },
       sorter: (a, b) => a.GiamGia - b.GiamGia,
     },
 
     {
-      title: "Thành tiền",
-      dataIndex: "ThanhTien",
+      title: type == 3 ? "Tiền trả" : "Thành tiền",
+      dataIndex: type == 3 ? "TienTra" : "ThanhTien",
       key: "ThanhTien",
       render: (value) => {
-        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return  Math.abs(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       },
       sorter: (a, b) => a.ThanhTien - b.ThanhTien,
     },
@@ -150,7 +168,7 @@ function CuoiNgaytable({ currentDataSource }) {
       dataIndex: "LoiNhuan",
       key: "LoiNhuan",
       render: (value) => {
-        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return  Math.abs(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       },
       sorter: (a, b) => a.LoiNhuan - b.LoiNhuan,
     },
@@ -181,9 +199,7 @@ function CuoiNgaytable({ currentDataSource }) {
             dataSource={dataSource}
             columns={columns}
             btnProps={{ icon: <FileExcelOutlined /> }}
-            showColumnPicker={true}
-            showColumnPickerProps={{ id: "Thêm hàng hóa" }}
-            fileName="HangHoaCSV"
+            fileName="BaoCaoCuoiNgay"
           >
             Tải file CSV
           </ExportTableButton>

@@ -26,7 +26,7 @@ export default function BCBanHangPage() {
   const HoaDons = useSelector(BCBanHangsState$);
   /* #endregion */
 
-  /* #region  Lấy data theo ngày */
+  /* #region  set data theo ngày */
   const [currentDataSource, setCurrentDataSource] = useState();
 
   React.useEffect(() => {
@@ -39,6 +39,7 @@ export default function BCBanHangPage() {
   }, [HoaDons, currentDate]);
   /* #endregion */
 
+  /* #region  set kiểu hiển thị */
   const [activeType, setActiveType] = useState("baoCao");
 
   const typeShow = {
@@ -46,6 +47,7 @@ export default function BCBanHangPage() {
     bieuDo: <BanHangColumnReport currentDataSource={currentDataSource} />,
   };
 
+  /* #endregion */
   const dateFormat = "DD/MM/YYYY";
   return (
     <Layout>

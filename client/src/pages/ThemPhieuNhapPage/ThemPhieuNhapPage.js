@@ -340,7 +340,7 @@ export default function ThemPhieuNhapPage({}) {
               </Form.Item>
               <Form.Item tooltip="Trạng thái phiếu nhập" label="Trạng thái">
                 <Select
-                  disabled={PhieuNhapValue.TrangThai == "Đã nhập hàng"}
+                  disabled={PhieuNhapValue?.TrangThai == "Đã nhập hàng"}
                   placeholder="Chọn trạng thái"
                   value={data.TrangThai}
                   onChange={(e) => setData({ ...data, TrangThai: e })}

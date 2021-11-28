@@ -14,7 +14,7 @@ import {
 } from "@ant-design/icons";
 import DataTableHoaDon from "../../components/table/HoaDonTable/HoaDonTable.js";
 import { useDispatch, useSelector } from "react-redux";
-import TaoHoaDonModal from "../../components/modal/TaoGiaoDichModal/TaoHoaDonModal";
+import TaoHoaDonModal from "../../components/modal/HoaDonModal/TaoHoaDonModal";
 import { showTaoHoaDonModal, getHoaDons } from "../../redux/actions";
 import { Content } from "antd/lib/layout/layout";
 import { HoaDonsState$ } from "../../redux/selectors";

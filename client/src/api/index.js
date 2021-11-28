@@ -90,7 +90,6 @@ export const fetchCTHDs = () => axios.get(`${URL}/CTHDs`);
 export const fetchCTPDTs = () => axios.get(`${URL}/CTPDTs`);
 export const createHoaDon = (payload) => axios.post(`${URL}/HoaDons`, payload);
 export const createCTHD = (payload) => axios.post(`${URL}/CTHDs`, payload);
-export const updateSLKM = (payload) =>   axios.patch(`${URL}/HoaDons/${payload._id}`, payload);
 export const createPhieuDoiTra = (payload) => axios.post(`${URL}/PhieuDoiTras`, payload);
 export const createCTPDT = (payload) => axios.post(`${URL}/CTPDTs`, payload);
 

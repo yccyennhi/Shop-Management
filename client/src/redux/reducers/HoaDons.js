@@ -1,5 +1,5 @@
 import { INIT_STATE } from "../../constant";
-import { getHoaDons, getType, createHoaDon, updateSLKM } from "../actions";
+import { getHoaDons, getType, createHoaDon} from "../actions";
 import { messageSuccess, messageError } from "../../components/message";
 
 export default function HoaDonsReducer(state = INIT_STATE.HoaDons, action) {
@@ -33,21 +33,6 @@ export default function HoaDonsReducer(state = INIT_STATE.HoaDons, action) {
         isLoading: true,
         data: [...state.data],
       };
-      case getType(updateSLKM.updateSLKMSuccess):    
-      messageSuccess("Chỉnh sửa thành công");
-      return {
-        ...state,
-        data: state.data.map((KhuyenMai) =>
-          KhuyenMai._id === action.payload._id ? action.payload : KhuyenMai
-        ),
-      };
-    case getType(updateSLKM.updateSLKMFailure):
-      messageError(action.payload);
-      return {
-        ...state,
-        isLoading: true,
-        data: [...state.data],
-      };  
     default:
       return state;
   }

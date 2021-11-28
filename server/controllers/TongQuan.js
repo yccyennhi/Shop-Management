@@ -23,7 +23,7 @@ export const getHoaDonsByDay = async (day) => {
 export const getHoaDonsToday = async (req, res, next) => {
   try {
     const thongKeHoaDons = {};
-    var today = moment().subtract(1,'day');
+    var today = moment();
     var todayLast = moment(today).subtract(1, "month");
 
     thongKeHoaDons["today"] = await getHoaDonsByDay(today);

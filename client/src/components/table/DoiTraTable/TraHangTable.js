@@ -13,7 +13,7 @@ import {
   Space,
 } from "antd";
 import { SearchOutlined, DownOutlined } from "@ant-design/icons";
-import FormTraHang from "../../../pages/GiaoDichPage/FormTraHang";
+import FormTraHang from "./FormTraHang";
 
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../../redux/actions";

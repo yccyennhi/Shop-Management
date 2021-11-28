@@ -389,17 +389,7 @@ function* createCTPDTSaga(action) {
   }
 }
 
-function* updateSLKMSaga(action) {
-  try {
-    const SLKM = yield call(api.updateSLKM, action.payload);
-    yield put(
-      actions.updateSLKM.updateSLKMSuccess(SLKM.data)
-    );
-  } catch (err) {
-    console.err(err);
-    yield put(actions.updateSLKM.updateSLKMFailure(err));
-  }
-}
+
 /* #endregion */
 
 /* #region  TongQuan */
@@ -424,7 +414,7 @@ function* getTongQuansSaga(action) {
       doanhThuToday: today['DoanhThu'],
       doiTraCount: DoiTrasToday.data.length,
       soLuongDT: tongSoLuongDT,
-      percent:compareLastMonth,
+      percent:compareLastMonth?compareLastMonth:0,
     };
 
     yield put(actions.getTongQuans.getStatistics(statistics));
@@ -644,7 +634,6 @@ function* mySaga() {
   yield takeLatest(actions.getCTPDTs.getCTPDTsRequest, fetchCTPDTsSaga);
   yield takeLatest(actions.createHoaDon.createHoaDonRequest, createHoaDonSaga);
   yield takeLatest(actions.createCTHD.createCTHDRequest, createCTHDSaga);
-  yield takeLatest(actions.updateSLKM.updateSLKMRequest, updateSLKMSaga);
   yield takeLatest(actions.createPhieuDoiTra.createPhieuDoiTraRequest, createPhieuDoiTraSaga);
   yield takeLatest(actions.createCTPDT.createCTPDTRequest, createCTPDTSaga);
   

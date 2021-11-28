@@ -14,8 +14,8 @@ import BCHangHoaPage from "./pages/BaoCaoPage/BCHangHoaPage";
 import PhieuBaoHanhPage from "./pages/PhieuBaoHanhPage/PhieuBaoHanhPage";
 import PhieuHenPage from "./pages/PhieuHenPage/PhieuHenPage";
 import NhanVienPage from "./pages/NhanVienPage/NhanVienPage";
-import HoaDonPage from "./pages/GiaoDichPage/HoaDonPage";
-import DoiTraPage from "./pages/GiaoDichPage/DoiTraPage";
+import HoaDonPage from "./pages/HoaDonPage/HoaDonPage";
+import DoiTraPage from "./pages/DoiTraPage/DoiTraPage";
 import NhapHangPage from "./pages/NhapHangPage/NhapHangPage";
 import ThemPhieuNhapPage from "./pages/ThemPhieuNhapPage/ThemPhieuNhapPage";
 import SalePage from "./pages/SalePage/SalePage";
@@ -52,7 +52,7 @@ function App() {
             <Route path="/BCHangHoas" exact component={BCHangHoaPage} />
             <Route path="/PhieuNhaps" exact component={NhapHangPage} />
             <Route path="/ThemPhieuNhaps" exact component={ThemPhieuNhapPage} />
-
+            <Route path="/Sales" exact component={SalePage} />
           </Switch>
           {/* </div>
           </Content> */}

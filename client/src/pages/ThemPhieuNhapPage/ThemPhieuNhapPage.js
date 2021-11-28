@@ -122,9 +122,13 @@ export default function ThemPhieuNhapPage({}) {
               SanPham.TonKho = SanPham.TonKho + data.SoLuong[i];
               dispatch(actions.updateSanPham.updateSanPhamRequest(SanPham));
               messageSuccess("Thêm phiếu nhập thành công)");
+              handleNhapHang();
+
             }
           }
           dispatch(actions.createPhieuNhap.createPhieuNhapRequest(data));
+          handleNhapHang();
+
         }
       } else {
         const MaSanPham = dataSource.map((data) => data.MaSP);
@@ -134,9 +138,12 @@ export default function ThemPhieuNhapPage({}) {
             SanPham.TonKho = SanPham.TonKho + data.SoLuong[i];
             dispatch(actions.updateSanPham.updateSanPhamRequest(SanPham));
             messageSuccess("Thêm phiếu nhập thành công)");
+            handleNhapHang();
+
           }
         }
         dispatch(actions.updatePhieuNhap.updatePhieuNhapRequest(data));
+        handleNhapHang();
       }
     }
   }, [data, dispatch]);
@@ -415,7 +422,6 @@ export default function ThemPhieuNhapPage({}) {
                   htmlType="submit"
                   onClick={() => {
                     onHoanThanh();
-                    handleNhapHang();
                   }}
                 >
                   OK

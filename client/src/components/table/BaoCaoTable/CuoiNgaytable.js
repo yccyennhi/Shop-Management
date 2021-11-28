@@ -13,7 +13,6 @@ import moment from "moment";
 const { Search } = Input;
 
 function CuoiNgaytable(currentDataSource, type) {
-  console.log('CuoiNgaysTable', currentDataSource, type)
   const dataSource = Array.from(currentDataSource, (HoaDon) =>
     type === 1
       ? {
@@ -27,7 +26,8 @@ function CuoiNgaytable(currentDataSource, type) {
           MaHD: HoaDon.MaPDT,
           TenNV: HoaDon.idNV.TenNV,
           GiamGia: 0,
-          ThanhTien: -HoaDon.TongTien,
+          TongTienHang: 0,
+          ThanhTien: HoaDon.TongTien,
           LoiNhuan: -HoaDon.TongTien,
         }
       : {
@@ -38,9 +38,11 @@ function CuoiNgaytable(currentDataSource, type) {
           SoLuong: HoaDon.TongSoLuong,
           TongTienHang: HoaDon.TongTien,
           GiamGia: HoaDon.GiamGiaTongTien ? HoaDon.GiamGiaTongTien : 0,
-          LoiNhuan: -HoaDon.TienTra,
+          LoiNhuan:  HoaDon.TongTien - HoaDon.TienTra,
+          ThanhTien: HoaDon.TienTra
         }
   );
+  console.log("type", type, dataSource);
 
   const columns = [
     {
@@ -139,7 +141,7 @@ function CuoiNgaytable(currentDataSource, type) {
       dataIndex: "TongTienHang",
       key: "TongTienHang",
       render: (value) => {
-        return Math.abs(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       },
       sorter: (a, b) => a.TongTienHang - b.TongTienHang,
     },
@@ -149,17 +151,17 @@ function CuoiNgaytable(currentDataSource, type) {
       dataIndex: "GiamGia",
       key: "GiamGia",
       render: (value) => {
-        return  Math.abs(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       },
       sorter: (a, b) => a.GiamGia - b.GiamGia,
     },
 
     {
       title: type == 3 ? "Tiền trả" : "Thành tiền",
-      dataIndex: type == 3 ? "TienTra" : "ThanhTien",
+      dataIndex: "ThanhTien",
       key: "ThanhTien",
       render: (value) => {
-        return  Math.abs(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       },
       sorter: (a, b) => a.ThanhTien - b.ThanhTien,
     },
@@ -168,7 +170,9 @@ function CuoiNgaytable(currentDataSource, type) {
       dataIndex: "LoiNhuan",
       key: "LoiNhuan",
       render: (value) => {
-        return  Math.abs(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return `${value > 0 ? "" : "-"} ${Math.abs(value)
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
       },
       sorter: (a, b) => a.LoiNhuan - b.LoiNhuan,
     },

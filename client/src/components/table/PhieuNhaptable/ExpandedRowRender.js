@@ -1,27 +1,24 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
-import {
-  Table,
-  PageHeader,
-  Descriptions,
-  Tag,
-  Button,
-  Modal,
-} from "antd";
+import { Table, PageHeader, Descriptions, Tag, Button, Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updatePhieuNhap,
   setIdThemPhieuNhapPage,
+  updateSanPham,
+  deletePhieuNhap,
 } from "../../../redux/actions";
 import { SearchOutlined } from "@ant-design/icons";
 import moment from "moment";
 import { PhieuNhapsState$, SanPhamsState$ } from "../../../redux/selectors";
+import { messageError, messageSuccess } from "../../message";
 
 export default function ExpandedRowRender({ record }) {
   const dispatch = useDispatch();
   const [isShow, setIsShow] = useState(false);
   const [IsShowFinish, setIsShowFinish] = useState(false);
+  const [IsShowDelete, setIsShowDelete] = useState(false);
   const PN = useSelector(PhieuNhapsState$);
   const SP = useSelector(SanPhamsState$);
   const [dataSource, setDataSource] = useState([
@@ -37,6 +34,7 @@ export default function ExpandedRowRender({ record }) {
       ThanhTien: 0,
     },
   ]);
+
   const PhieuNhapValue = useSelector((state) =>
     state.PhieuNhaps.data.find((PhieuNhap) =>
       PhieuNhap._id === record._id ? PhieuNhap : null
@@ -74,9 +72,9 @@ export default function ExpandedRowRender({ record }) {
     Modal.confirm({
       visible: isShow,
       title: "Cảnh báo",
-      content: "Xác nhận hủy phiếu nhập?",
+      content: "Phiếu hủy sẽ không thể khôi phục. Xác nhận hủy phiếu nhập?",
       onOk() {
-        handleDelete();
+        handleCancle();
         setIsShow(false);
       },
       onCancel() {
@@ -86,14 +84,14 @@ export default function ExpandedRowRender({ record }) {
   }
 
   function warningFinish() {
-    setIsShow(true);
+    setIsShowFinish(true);
     Modal.confirm({
       visible: IsShowFinish,
       title: "Thông báo",
       content:
         data.TrangThai == "Đã hủy"
           ? "Phiếu đã hủy không thể hoàn thành nhập hàng!"
-          : "Xác nhận hoàn thành nhập hàng?",
+          : "Sau khi xác nhận không thể hủy phiếu. Xác nhận hoàn thành nhập hàng?",
       onOk() {
         if (data.TrangThai !== "Đã hủy") {
           handleFinish();
@@ -105,14 +103,71 @@ export default function ExpandedRowRender({ record }) {
       },
     });
   }
+
+  function warningDelete() {
+    setIsShowDelete(true);
+    Modal.confirm({
+      visible: IsShowDelete,
+      title: "Cảnh báo",
+      content: "Xác nhận xóa phiếu nhập?",
+      onOk() {
+        handleDelete();
+        setIsShowDelete(false);
+      },
+      onCancel() {
+        setIsShowDelete(false);
+      },
+    });
+  }
+
   const handleFinish = React.useCallback(() => {
-    
-    setData({ ...data, TrangThai: "Đã nhập hàng" });
+    for (let i = 0; i < data.MaSP.length; i++) {
+      let SanPham = SP.find((e) => e.MaSP == data.MaSP[i]);
+      if (SanPham != undefined) {
+        let arrGiaNhap = [];
+        let arrSoLuong = [];
+        for (let j = 0; j < PN?.length; j++) {
+          for (let k = 0; k < PN[j]?.MaSP?.length; k++) {
+            if (
+              PN[j].MaSP[k] == SanPham.MaSP &&
+              PN[j].TrangThai == "Đã nhập hàng"
+            ) {
+              arrGiaNhap.push(PN[j].GiaNhap[k]);
+              arrSoLuong.push(PN[j].SoLuong[k]);
+            }
+          }
+        }
+
+        let GiaNhap = arrGiaNhap.reduce((sum, data) => {
+          return (sum += data);
+        }, 0);
+        let SoLuong = arrSoLuong.reduce((sum, data) => {
+          return (sum += data);
+        }, 0);
+
+        console.log(data.GiaNhap, data.SoLuong);
+
+        SanPham.GiaVon = Math.round(
+          (GiaNhap + data.GiaNhap[i]) / (SoLuong + data.SoLuong[i])
+        );
+        SanPham.TonKho = SanPham.TonKho + data.SoLuong[i];
+        dispatch(updateSanPham.updateSanPhamRequest(SanPham));
+        setData({ ...data, TrangThai: "Đã nhập hàng" });
+        messageSuccess("Nhập hàng thành công");
+      } else {
+        messageError("Trong danh sách có sản phẩm không tồn tại!");
+        break;
+      }
+    }
+  }, [dispatch]);
+
+  const handleCancle = React.useCallback(() => {
+    setData({ ...data, TrangThai: "Đã hủy" });
   }, [dispatch]);
 
   const handleDelete = React.useCallback(() => {
-    setData({ ...data, TrangThai: "Đã hủy" });
-  }, [dispatch]);
+    dispatch(deletePhieuNhap.deletePhieuNhapRequest(record._id));
+  }, [record, dispatch]);
 
   const history = useHistory();
   const handleNhapHang = () => {
@@ -206,6 +261,13 @@ export default function ExpandedRowRender({ record }) {
             }
           >
             Hoàn thành
+          </Button>,
+          <Button
+            key="4"
+            onClick={warningDelete}
+            disabled={data.TrangThai !== "Đã hủy"}
+          >
+            Xóa
           </Button>,
         ]}
         tags={[

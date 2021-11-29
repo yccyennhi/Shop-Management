@@ -17,15 +17,6 @@ const { Search } = Input;
 function PhieuHentable({ trangthai, thoigian, ngayBD, ngayKT, setCurrentId }) {
   const dispatch = useDispatch();
   const PH = useSelector(PhieuHensState$);
-  const dateNow = moment().toDate();
-
-  const SPCH = PH.filter(function (e) {
-    return moment(e.NgayHen) <= dateNow;
-  });
-
-  const SPHH = PH.filter(function (e) {
-    return moment(e.NgayHen) > dateNow;
-  });
 
   const SPHHT = PH.filter(function (e) {
     return e.TrangThai == "Hoàn thành";

@@ -116,14 +116,14 @@ export default function ThemPhieuNhapPage({}) {
           messageError("Mã phiếu nhập đã tồn tại!");
         } else {
           const MaSanPham = dataSource.map((data) => data.MaSP);
-          
-          for (let i = 0; i <= MaSanPham.length; i++) {
+
+          for (let i = 0; i < MaSanPham.length; i++) {
             let SanPham = SP.find((data) => data.MaSP == MaSanPham[i]);
             if (SanPham != undefined && data.TrangThai == "Đã nhập hàng") {
               let arrGiaNhap = [];
               let arrSoLuong = [];
-              for (let j = 0; j <= PN?.length; j++) {
-                for (let k = 0; k <= PN[j]?.MaSP?.length; k++) {
+              for (let j = 0; j < PN?.length; j++) {
+                for (let k = 0; k < PN[j]?.MaSP?.length; k++) {
                   if (
                     PN[j].MaSP[k] == SanPham.MaSP &&
                     PN[j].TrangThai == "Đã nhập hàng"
@@ -142,12 +142,16 @@ export default function ThemPhieuNhapPage({}) {
               }, 0);
 
               console.log(data.GiaNhap, data.SoLuong);
-              
-              SanPham.GiaVon = Math.round((GiaNhap+data.GiaNhap[i]) / (SoLuong+data.SoLuong[i]));
+
+              SanPham.GiaVon = Math.round(
+                (GiaNhap + data.GiaNhap[i]) / (SoLuong + data.SoLuong[i])
+              );
               SanPham.TonKho = SanPham.TonKho + data.SoLuong[i];
               dispatch(actions.updateSanPham.updateSanPhamRequest(SanPham));
               messageSuccess("Thêm phiếu nhập thành công");
               handleNhapHang();
+            } else {
+              messageError("Trong danh sách có sản phẩm không tồn tại!");
             }
           }
           dispatch(actions.createPhieuNhap.createPhieuNhapRequest(data));
@@ -155,7 +159,7 @@ export default function ThemPhieuNhapPage({}) {
         }
       } else {
         const MaSanPham = dataSource.map((data) => data.MaSP);
-        for (let i = 0; i <= MaSanPham.length; i++) {
+        for (let i = 0; i < MaSanPham.length; i++) {
           let SanPham = SP.find((data) => data.MaSP == MaSanPham[i]);
           if (SanPham != undefined && data.TrangThai == "Đã nhập hàng") {
             SanPham.TonKho = SanPham.TonKho + data.SoLuong[i];

@@ -245,12 +245,12 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
         </Form.Item>
         <Form.Item
           label="Giá vốn"
-          tooltip="Giá vốn được cập nhật tự động khi nhập hàng"
+          tooltip="Giá vốn để tính lợi nhuận cho sản phẩm, sẽ được cập nhật tự động khi nhập hàng"
+          required
         >
           <InputNumber
             value={data.GiaVon}
             defaultValue={data.GiaVon}
-            disabled={true}
             onChange={(e) => setData({ ...data, GiaVon: e })}
             style={{ width: 120 }}
             placeholder="VNĐ"
@@ -268,6 +268,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
         <Form.Item
           label="Tồn kho"
           tooltip="Số lượng tồn kho của sản phẩm"
+          required
         >
           <InputNumber
             value={data.TonKho}

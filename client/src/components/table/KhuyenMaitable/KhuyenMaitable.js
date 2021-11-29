@@ -106,7 +106,7 @@ function KhuyenMaitable({ dataSource, setCurrentId }) {
       render: (date) => {
         return moment(date).format("DD/MM/YYYY");
       },
-      sorter: (a, b) => a.NgayBD - b.NgayBD,
+      sorter: (a, b) => moment(a.NgayBD) - moment(b.NgayBD),
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
         return (
           <Search

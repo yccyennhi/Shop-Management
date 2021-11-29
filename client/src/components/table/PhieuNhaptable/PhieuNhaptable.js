@@ -34,7 +34,6 @@ function PhieuNhaptable({ trangthai, baohanh, currentId, setCurrentId }) {
   const PN = useSelector(PhieuNhapsState$);
 
   const dataSource = PN;
-  console.log(PN);
   const columns = [
     {
       title: "Mã nhập hàng",
@@ -155,7 +154,6 @@ function PhieuNhaptable({ trangthai, baohanh, currentId, setCurrentId }) {
     loading: false,
   });
 
-  console.log("selectedRowKeys", select);
 
   const { selectedRowKeys, loading } = select;
 

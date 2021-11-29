@@ -16,13 +16,14 @@ import {
 } from "../../../redux/actions";
 import { SearchOutlined } from "@ant-design/icons";
 import moment from "moment";
-import { PhieuNhapsState$ } from "../../../redux/selectors";
+import { PhieuNhapsState$, SanPhamsState$ } from "../../../redux/selectors";
 
 export default function ExpandedRowRender({ record }) {
   const dispatch = useDispatch();
   const [isShow, setIsShow] = useState(false);
   const [IsShowFinish, setIsShowFinish] = useState(false);
   const PN = useSelector(PhieuNhapsState$);
+  const SP = useSelector(SanPhamsState$);
   const [dataSource, setDataSource] = useState([
     {
       MaSP: "",
@@ -105,6 +106,7 @@ export default function ExpandedRowRender({ record }) {
     });
   }
   const handleFinish = React.useCallback(() => {
+    
     setData({ ...data, TrangThai: "Đã nhập hàng" });
   }, [dispatch]);
 

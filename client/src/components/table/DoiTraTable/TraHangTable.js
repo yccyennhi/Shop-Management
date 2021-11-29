@@ -3,33 +3,13 @@ import {
   Table,
   Input,
   Row,
-  Button,
-  Dropdown,
-  message,
-  Menu,
-  Switch,
-  Radio,
-  Form,
-  Space,
 } from "antd";
-import { SearchOutlined, DownOutlined } from "@ant-design/icons";
+import { SearchOutlined } from "@ant-design/icons";
 import FormTraHang from "./FormTraHang";
-
-import { useDispatch, useSelector } from "react-redux";
-import * as actions from "../../../redux/actions";
-import { PhieuDoiTrasState$, CTPDTsState$ } from "../../../redux/selectors";
 const { Search } = Input;
 
-export default function TraHangTable() {
-  const dispatch = useDispatch();
-  const PhieuDoiTras = useSelector(PhieuDoiTrasState$);
-  const CTPDTs = useSelector(CTPDTsState$);
-  React.useEffect(() => {
-    dispatch(actions.getPhieuDoiTras.getPhieuDoiTrasRequest());
-  }, [dispatch]);
-  React.useEffect(() => {
-    dispatch(actions.getCTPDTs.getCTPDTsRequest());
-  }, [dispatch]);
+export default function TraHangTable({PhieuDoiTras, CTPDTs}) {
+
   const dataSource = PhieuDoiTras;
 
   const columns = [

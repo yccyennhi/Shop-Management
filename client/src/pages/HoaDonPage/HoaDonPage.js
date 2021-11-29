@@ -47,7 +47,7 @@ export default function HoaDonPage() {
             </Space>
           </Row>
           <TaoHoaDonModal HoaDons = {HoaDons}/>
-          <DataTableHoaDon />
+          <DataTableHoaDon HoaDons = {HoaDons}/>
         </div>
       </Content>
     </Layout>

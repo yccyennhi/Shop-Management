@@ -8,7 +8,7 @@ const { TabPane } = Tabs;
 export default function app({ record, dataCTPDTs }) {
   const CTPDTs = [];
   dataCTPDTs.forEach((CTPDT) => {
-    if (CTPDT.idPDT === record._id) {
+    if (CTPDT.MaPDT === record.MaPDT) {
       CTPDTs.push(CTPDT);
     }
   });

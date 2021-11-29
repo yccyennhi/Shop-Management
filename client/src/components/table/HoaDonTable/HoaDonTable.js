@@ -5,18 +5,16 @@ import FormHoaDon from "./FormHoaDon";
 
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../../redux/actions";
-import { HoaDonsState$, CTHDsState$ } from "../../../redux/selectors";
+import { CTHDsState$ } from "../../../redux/selectors";
 import moment from "moment";
 
 const { Search } = Input;
 
-export default function HoaDontable() {
+export default function HoaDontable({HoaDons}) {
   const dispatch = useDispatch();
-  const HoaDons = useSelector(HoaDonsState$);
   const CTHDs = useSelector(CTHDsState$);
 
   React.useEffect(() => {
-    dispatch(actions.getHoaDons.getHoaDonsRequest());
     dispatch(actions.getCTHDs.getCTHDsRequest());
   }, [dispatch]);
 

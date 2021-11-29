@@ -8,6 +8,7 @@ import {
   message,
   Col,
   Row,
+  Cascader,
 } from "antd";
 import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,11 +16,15 @@ import {
   TaoHoaDonModalState$,
   SanPhamsState$,
   KhuyenMaisState$,
-  //KhachHangsState$
-  //NhanViensState$
+  NhanViensState$,
+  KhachHangsState$,
 } from "../../../redux/selectors/index.js";
 import { hideTaoHoaDonModal } from "../../../redux/actions";
-import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  NodeExpandOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import * as actions from "../../../redux/actions";
 import SanPhamHoaDonTable from "../../table/HoaDonTable/SanPhamHoaDonTable.js";
 import moment from "moment";
@@ -29,14 +34,14 @@ export default function TaoHoaDonModal({ HoaDons }) {
   const dispatch = useDispatch();
   const { isShow } = useSelector(TaoHoaDonModalState$);
   const SanPhams = useSelector(SanPhamsState$);
-  //const KhachHangs = useSelector(KhachHangsState$);
-  //const NhanViens = useSelector(NhanViensState$);
+  const NhanViens = useSelector(NhanViensState$);
+  const KhachHangs = useSelector(KhachHangsState$);
   const KhuyenMais = useSelector(KhuyenMaisState$);
   React.useEffect(() => {
     dispatch(actions.getSanPhams.getSanPhamsRequest());
     dispatch(actions.getKhuyenMais.getKhuyenMaisRequest());
-    //   dispatch(actions.getNhanViens.getNhanViensRequest());
-    //   dispatch(actions.getKhachHangs.getKhachHangsRequest());
+    dispatch(actions.getNhanViens.getNhanViensRequest());
+    dispatch(actions.getKhachHangs.getKhachHangsRequest());
   }, [dispatch]);
   const layout = {
     labelCol: { span: 4 },
@@ -46,7 +51,7 @@ export default function TaoHoaDonModal({ HoaDons }) {
   const [dataHD, setDataHD] = React.useState({
     MaHD: "",
     MaNV: "",
-    idNV: "61957eace198c2fe3f3f5402",
+    idNV: "",
     MaKH: "",
     idKH: "61957aa9e198c2fe3f3f53f6",
     MaKM: "",
@@ -173,7 +178,7 @@ export default function TaoHoaDonModal({ HoaDons }) {
     setDataHD({
       MaHD: "",
       MaNV: "",
-      idNV: "61957eace198c2fe3f3f5402",
+      idNV: "",
       MaKH: "",
       idKH: "61957aa9e198c2fe3f3f53f6",
       MaKM: "",
@@ -214,7 +219,6 @@ export default function TaoHoaDonModal({ HoaDons }) {
       message.warning("Vui lòng thêm sản phẩm vào hóa đon");
       return;
     }
-    if (!dataHD.MaKH) dataHD.MaKH = "Không";
     const length = HoaDons.length + 1;
     if (length < 10) {
       dataHD.MaHD = "HD00" + length;
@@ -223,36 +227,49 @@ export default function TaoHoaDonModal({ HoaDons }) {
     } else {
       dataHD.MaHD = "HD" + length;
     }
+    const nv = NhanViens.find((NV) => NV.MaNV === dataHD.MaNV);
+    dataHD.idNV = nv._id;
+    if (dataHD.MaKH === "") {
+      dataHD.idKH = "61957aa9e198c2fe3f3f53f6";
+    } else {
+      const kh = KhachHangs.find((KH) => KH.MaKH === dataHD.MaKH);
+      dataHD.idKH = kh._id;
+    }
     dispatch(actions.createHoaDon.createHoaDonRequest(dataHD));
-    
-
     SPsInfo.map((sp) => {
       sp.MaHD = dataHD.MaHD;
       dispatch(actions.createCTHD.createCTHDRequest(sp));
     });
-    {
-      /*
-    if (dataHD.MaKH) {
-      const KH = KhachHangs.find((e) => e.MaKH === dataHD.MaKH);
-      if (KH) setDataHD({ ...dataHD, idKH: KH._id });
-      else {
-        message.error('Mã khách hàng không tồn tại');
-        return;
-      }
-    }
-    if (dataHD.MaNV) {
-      const NV = KhuyenMais.find((e) => e.MaNV === dataHD.MaNV);
-      if (NV) setDataHD({ ...dataHD, idKM: NV._id });
-      else {
-        message.error('Mã nhân viên không đúng');
-        return;
-      }
-    }
-  */
-    }
     onCancel();
   }, [dataHD, dispatch, SPsInfo, onCancel]);
 
+  const optionNV = React.useMemo(() => {
+    return NhanViens.map((NV) => ({
+      value: NV.MaNV,
+      label: NV.MaNV + ' ' + NV.TenNV,
+    }));
+  }, [NhanViens]);
+
+  const filter = (inputValue, path) => {
+    return path.some(
+      (option) =>
+        option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
+    );
+  };
+
+  const optionKH = React.useMemo(() => {
+    return KhachHangs.map((KH) => ({
+      value: KH.MaKH,
+      label: KH.MaKH + ' ' + KH.TenKH,
+    }));
+  }, [KhachHangs]);
+
+  const optionKM = React.useMemo(()=>{
+    return KhuyenMais.map(km => ({
+      value: km.MaKM,
+      label: km.MaKM + ' ' + km.TenKM
+    }));
+  })
   const body = (
     <>
       <Form
@@ -269,11 +286,13 @@ export default function TaoHoaDonModal({ HoaDons }) {
             marginBottom: 3,
           }}
         >
-          <Input
-            value={dataHD.MaNV}
+          <Cascader
+            options={optionNV}
             placeholder="Nhập mã nhân viên"
+            allowClear
+            showSearch={filter}
             size="small"
-            onChange={(e) => setDataHD({ ...dataHD, MaNV: e.target.value })}
+            onChange={(e) => setDataHD({ ...dataHD, MaNV: e[0] })}
           />
         </Form.Item>
         <Form.Item
@@ -284,11 +303,12 @@ export default function TaoHoaDonModal({ HoaDons }) {
             marginBottom: 3,
           }}
         >
-          <Input
-            value={dataHD.MaKH}
+          <Cascader
+            options={optionKH}
             placeholder="Nhập mã khách hàng"
             size="small"
-            onChange={(e) => setDataHD({ ...dataHD, MaKH: e.target.value })}
+            showSearch={filter}
+            onChange={(e) => setDataHD({ ...dataHD, MaKH: e[0] })}
           />
         </Form.Item>
         <Form.Item
@@ -297,13 +317,13 @@ export default function TaoHoaDonModal({ HoaDons }) {
             marginBottom: 0,
           }}
         >
-          <Input
-            value={dataHD.MaKM}
+          <Cascader
+            options = {optionKM}
             disabled={status}
             placeholder="Nhập mã khuyến mãi"
             size="small"
             style={{ width: "calc(30%)" }}
-            onChange={(e) => setDataHD({ ...dataHD, MaKM: e.target.value })}
+            onChange={(e) => setDataHD({ ...dataHD, MaKM: e[0] })}
           />
           <Button
             disabled={!dataHD.MaKM}
@@ -480,7 +500,6 @@ export default function TaoHoaDonModal({ HoaDons }) {
       ,
     </>
   );
-
   return (
     <div>
       <Modal

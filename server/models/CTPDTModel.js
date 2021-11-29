@@ -27,6 +27,10 @@ const schema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    GiaVon: {
+      type: Number,
+      default: 0,
+    },
     SoLuong: {
       type: Number,
       required: true,

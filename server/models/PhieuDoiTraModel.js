@@ -33,10 +33,22 @@ const schema = new Schema(
       type: Date,
       required: true,
     },
-    TongTien: {
+    TongTienHang: {
       type: Number,
       required: true,
     },
+    GiaVon: {
+      type: Number,
+      default: 0,
+    },
+    GiamGia: {
+      type: Number,
+      default: 0,
+    },
+    ThanhTien: {
+      type: Number,
+      default: 0,
+    }
   },
   { timestamps: true }
 );

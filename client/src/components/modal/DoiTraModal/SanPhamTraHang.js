@@ -43,7 +43,6 @@ export default function SanPhamTraHang({ setDataPDT, SP }) {
                   SoLuong: data.SoLuong - 1,
                   ThanhTien: data.ThanhTien - data.GiaBan,
                 });
-                console.log(data);
                 setDataPDT({
                   ...data,
                   SoLuong: data.SoLuong - 1,
@@ -98,7 +97,6 @@ export default function SanPhamTraHang({ setDataPDT, SP }) {
                   SoLuong: data.SoLuong + 1,
                   ThanhTien: data.ThanhTien + data.GiaBan,
                 });
-                console.log(data);
                 setDataPDT({
                   ...data,
                   SoLuong: data.SoLuong + 1,

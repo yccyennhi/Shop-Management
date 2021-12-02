@@ -14,16 +14,14 @@ import {
 } from "@ant-design/icons";
 import DataTableHoaDon from "../../components/table/HoaDonTable/HoaDonTable.js";
 import { useDispatch, useSelector } from "react-redux";
-import TaoHoaDonModal from "../../components/modal/HoaDonModal/TaoHoaDonModal";
-import { showTaoHoaDonModal, getHoaDons } from "../../redux/actions";
+import { getHoaDons } from "../../redux/actions";
 import { Content } from "antd/lib/layout/layout";
 import { HoaDonsState$ } from "../../redux/selectors";
+import { useHistory } from "react-router-dom";
 
 export default function HoaDonPage() {
   const dispatch = useDispatch();
-  const openTaoSanPhamModal = useCallback(() => {
-    dispatch(showTaoHoaDonModal());
-  }, [dispatch]);
+  const history = useHistory();
   const HoaDons = useSelector(HoaDonsState$);
   React.useEffect(() => {
     dispatch(getHoaDons.getHoaDonsRequest());
@@ -35,7 +33,7 @@ export default function HoaDonPage() {
         <div className="site-layout-content">
           <Row justify="end">
             <Space>
-              <Button type="primary" icon={<PlusOutlined /> } onClick={openTaoSanPhamModal}>
+              <Button type="primary" icon={<PlusOutlined /> } onClick={()=> history.push("/Sales")}>
                 Thêm hóa đơn
               </Button>
               <Button type="primary" icon={<ImportOutlined />}>
@@ -46,7 +44,6 @@ export default function HoaDonPage() {
               </Button>
             </Space>
           </Row>
-          <TaoHoaDonModal HoaDons = {HoaDons}/>
           <DataTableHoaDon HoaDons = {HoaDons}/>
         </div>
       </Content>

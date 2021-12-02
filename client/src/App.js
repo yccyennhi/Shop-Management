@@ -19,6 +19,7 @@ import DoiTraPage from "./pages/DoiTraPage/DoiTraPage";
 import NhapHangPage from "./pages/NhapHangPage/NhapHangPage";
 import ThemPhieuNhapPage from "./pages/ThemPhieuNhapPage/ThemPhieuNhapPage";
 import SalePage from "./pages/SalePage/SalePage";
+import PrintHD from "./pages/SalePage/PrintHD";
 
 function App() {
   const { Header, Content, Footer } = Layout;
@@ -53,6 +54,7 @@ function App() {
             <Route path="/PhieuNhaps" exact component={NhapHangPage} />
             <Route path="/ThemPhieuNhaps" exact component={ThemPhieuNhapPage} />
             <Route path="/Sales" exact component={SalePage} />
+            <Route path="/PrintHD" exact component={PrintHD} />
           </Switch>
           {/* </div>
           </Content> */}

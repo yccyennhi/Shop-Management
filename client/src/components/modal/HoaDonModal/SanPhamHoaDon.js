@@ -12,12 +12,6 @@ export default function SanPhamHoaDon() {
     GiaBan: 0,
     ThanhTien: 0,
   });
-  //   data.SoLuong =
-  //     data.SoLuong >= SP.SoLuong
-  //       ? SP.SoLuong
-  //       : data.SoLuong <= 0
-  //       ? 0
-  //       : data.SoLuong;
   data.ThanhTien = data.SoLuong * data.GiaBan;
   const { Option } = Select;
 

@@ -269,7 +269,7 @@ export default function TaoHoaDonModal({ HoaDons }) {
       value: km.MaKM,
       label: km.MaKM + ' ' + km.TenKM
     }));
-  })
+  }, [KhuyenMais])
   const body = (
     <>
       <Form

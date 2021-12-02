@@ -160,6 +160,7 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
         bordered = {true}
         columns={columns}
         style={{ marginRight: 20, marginLeft: 20 }}
+        footer = {()=>HoaDon.GhiChu}
         rowKey="MaSP"
       />
       {footer()}

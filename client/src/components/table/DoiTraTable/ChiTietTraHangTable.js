@@ -22,11 +22,15 @@ export default function ChiTietTraHangTable({ dataCTPDTs }) {
     {
       title: "Giá nhập",
       dataIndex: "GiaBan",
+      render: (value) =>
+        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
       key: "GiaBan",
     },
     {
       title: "Thành tiền",
       dataIndex: "ThanhTien",
+      render: (value) =>
+        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
       key: "ThanhTien",
     },
   ];

@@ -5,19 +5,13 @@ import HangHoaBanTable from "./HangHoaBanTable";
 
 const { TabPane } = Tabs;
 
-export default function FormHoaDon({ record, dataCTHDs }) {
-  const CTHDs = [];
-  dataCTHDs.map((CTHD) => {
-    if (CTHD.MaHD === record.MaHD) {
-      CTHDs.push(CTHD);
-    }
-  });
+export default function FormHoaDon({ record }) {
 
   return (
     <div className="card-container">
       <Tabs type="card">
         <TabPane tab="Thông tin" key="1">
-          <HangHoaBanTable dataCTHDs={CTHDs} />
+          <HangHoaBanTable dataCTHDs={record} />
           <section className="info_bill">
             <label className="tittle">
               Tổng số lượng: <br />
@@ -27,11 +21,11 @@ export default function FormHoaDon({ record, dataCTHDs }) {
               Tiền khách trả: <br />
               Tiền trả khách:
             </label>
-            <label>
-              {record.SoLuong} <br />
-              {record.TongTienHang}
-              <br /> {record.GiamGia} <br /> {record.ThanhTien} <br />{" "}
-              {record.TienKhachTra} <br /> {record.TienTraKhach} <br />
+            <label style ={{textAlign: 'right'}}>
+              {record.SoLuong}<br />
+              {`${record.TongTienHang}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              <br /> {`${record.GiamGia}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")} <br /> {`${record.ThanhTien}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")} <br />{" "}
+              {`${record.TienKhachTra}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")} <br /> {`${record.TienTraKhach} `.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}<br />
             </label>
           </section>
         </TabPane>

@@ -8,7 +8,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import FormTraHang from "./FormTraHang";
 const { Search } = Input;
 
-export default function TraHangTable({PhieuDoiTras, CTPDTs}) {
+export default function TraHangTable({PhieuDoiTras}) {
 
   const dataSource = PhieuDoiTras;
 
@@ -172,7 +172,7 @@ export default function TraHangTable({PhieuDoiTras, CTPDTs}) {
         scroll={{ y: 600 }}
         rowSelection={rowSelection}
         expandable={{
-          expandedRowRender: (record) => <FormTraHang record = {record} dataCTPDTs = {CTPDTs}/>,
+          expandedRowRender: (record) => <FormTraHang record = {record}/>,
           rowExpandable: (record) => record.MaPDT !== "Not Expandable",
         }}
         dataSource={dataSource}

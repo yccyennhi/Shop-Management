@@ -5,13 +5,8 @@ import ChiTietTraHangTable from "./ChiTietTraHangTable";
 
 const { TabPane } = Tabs;
 
-export default function app({ record, dataCTPDTs }) {
-  const CTPDTs = [];
-  dataCTPDTs.forEach((CTPDT) => {
-    if (CTPDT.MaPDT === record.MaPDT) {
-      CTPDTs.push(CTPDT);
-    }
-  });
+export default function app({ record}) {
+  const CTPDTs = record.CTPDT;
   return (
     <div className="card-container">
       <Tabs type="card">
@@ -23,7 +18,7 @@ export default function app({ record, dataCTPDTs }) {
               Tổng tiền hàng trả: <br />
             </label>
             <label>
-              {record.SoLuong} <br /> {record.TongTien}
+              {record.SoLuong} <br /> {`${record.ThanhTien}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
             </label>
           </section>
         </TabPane>

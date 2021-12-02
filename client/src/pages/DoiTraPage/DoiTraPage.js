@@ -8,7 +8,6 @@ import {
 } from "antd";
 import "./styles.css";
 import {
-  UserOutlined,
   PlusOutlined,
   ImportOutlined,
   DownloadOutlined,
@@ -16,7 +15,7 @@ import {
 import TraHangTable from "../../components/table/DoiTraTable/TraHangTable";
 import TaoPhieuTraHangModal from "../../components/modal/DoiTraModal/TaoPhieuDoiTraModal";
 import { showTaoPhieuTraHangModal } from "../../redux/actions";
-import {PhieuDoiTrasState$, CTPDTsState$} from "../../redux/selectors"
+import {PhieuDoiTrasState$} from "../../redux/selectors"
 import * as actions from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { Content } from "antd/lib/layout/layout";
@@ -24,10 +23,8 @@ import { Content } from "antd/lib/layout/layout";
 export default function DoiTraPage() {
   const dispatch = useDispatch();
   const PhieuDoiTras = useSelector(PhieuDoiTrasState$);
-  const CTPDTs = useSelector(CTPDTsState$);
   React.useEffect(() => {
     dispatch(actions.getPhieuDoiTras.getPhieuDoiTrasRequest());
-    dispatch(actions.getCTPDTs.getCTPDTsRequest());
   }, [dispatch]);
   const openTaoPhieuTraHangModal = React.useCallback(() => {
     dispatch(showTaoPhieuTraHangModal());
@@ -50,8 +47,8 @@ export default function DoiTraPage() {
             </Button>
           </Space>
         </Row>
-        <TaoPhieuTraHangModal PhieuDoiTras = {PhieuDoiTras} CTPDTs = {CTPDTs}/>
-        <TraHangTable PhieuDoiTras = {PhieuDoiTras} CTPDTs = {CTPDTs}/>
+        <TaoPhieuTraHangModal PhieuDoiTras = {PhieuDoiTras}/>
+        <TraHangTable PhieuDoiTras = {PhieuDoiTras} />
       </div>
       </Content>
     </Layout>

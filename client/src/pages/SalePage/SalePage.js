@@ -13,6 +13,8 @@ import {
   Tooltip,
   Form,
   message,
+  Divider,
+  Popover,
 } from "antd";
 import {
   UserOutlined,
@@ -36,7 +38,6 @@ import SanPhamHoaDonPanel from "../../components/ControlPanel/SanPhamHoaDonPanel
 import { showKhachHangModal } from "../../redux/actions";
 import KhachHangModal from "../../components/modal/KhachHangModal/KhachHangModal";
 import { useHistory } from "react-router-dom";
-
 const { Content, Sider } = Layout;
 
 export default function SalePage() {
@@ -84,6 +85,8 @@ export default function SalePage() {
     ThanhTien: 0,
     TienKhachTra: 0,
     TienTraKhach: 0,
+    GhiChu: '',
+    CTHD:[]
   });
 
   const [textInputKH, setTextInputKH] = useState();
@@ -117,7 +120,7 @@ export default function SalePage() {
   };
 
   const ObjectSP = (sp) => (
-    <Tooltip title={sp.TenSP + " (" + sp.TrangThai + ")"}>
+    <Tooltip title={sp.TenSP + " (" + sp.MoTa + ")"}>
       <Button style={{ height: "130px", width: "110px", margin: "1px" }}>
         <Row>
           <Image width={90} height={90} src={sp.HinhAnh} />
@@ -137,7 +140,6 @@ export default function SalePage() {
   const SPPanelClick = (result) => {
     const SPInfo = {
       STT: SPsInfo.length + 1,
-      MaHD: "",
       idSP: result._id,
       MaSP: result.MaSP,
       TenSP: result.TenSP,
@@ -148,7 +150,6 @@ export default function SalePage() {
       GiaVon: result.GiaVon,
       DonGia: result.GiaBan,
       BaoHanh: result.BaoHanh,
-      ThoiGian: "",
       ThanhTien: result.GiaBan,
     };
     const index = SPsInfo.findIndex((sp) => sp.MaSP === result.MaSP);
@@ -248,20 +249,18 @@ export default function SalePage() {
     if (textInputKH) {
       const kh = KhachHangs.find((KH) => KH.MaKH === dataHD.MaKH);
       dataHD.idKH = kh._id;
-      localStorage.setItem('KH',JSON.stringify(kh));
+      localStorage.setItem("KH", JSON.stringify(kh));
     } else {
       dataHD.MaKH = "KH000";
       dataHD.idKH = "61957aa9e198c2fe3f3f53f6";
     }
-    //dispatch(actions.createHoaDon.createHoaDonRequest(dataHD));
-    SPsInfo.map((sp) => {
-      sp.MaHD = dataHD.MaHD;
-      sp.ThoiGian = dataHD.ThoiGian;
-      //dispatch(actions.createCTHD.createCTHDRequest(sp));
-    });
-    localStorage.setItem('HoaDon',JSON.stringify(dataHD));
-    localStorage.setItem('CTHDs',JSON.stringify(SPsInfo));
-    localStorage.setItem('NV',JSON.stringify(nv));
+    dataHD.CTHD = SPsInfo;
+    dispatch(actions.createHoaDon.createHoaDonRequest(dataHD));
+    
+    localStorage.setItem("HoaDon", JSON.stringify(dataHD));
+    localStorage.setItem("CTHDs", JSON.stringify(SPsInfo));
+    localStorage.setItem("NV", JSON.stringify(nv));
+    history.push("/PrintHD");
     setDataHD({
       MaHD: "",
       MaNV: "",
@@ -280,37 +279,54 @@ export default function SalePage() {
       ThanhTien: 0,
       TienKhachTra: 0,
       TienTraKhach: 0,
+      GhiChu: '',
+      CTHD: []
     });
     setSPsInfo([]);
   }, [dispatch, dataHD, SPsInfo]);
 
   const headerTable = (
-    <Row style={{ textAlign: "center", color: "blue", marginRight: 20, marginLeft:20 }}>
-      <Col flex="5%">
+    <Row
+      style={{
+        textAlign: "center",
+        marginRight: 20,
+        marginLeft: 20,
+        fontWeight: 800,
+        marginTop: 5,
+        marginBottom: 10,
+      }}
+    >
+      <Col flex="4%">
         <label style={{ textAlign: "center", fontWeight: "500" }}>STT</label>
       </Col>
-      <Col flex="10%">
+      <Divider type="vertical" />
+      <Col flex="8%">
         <label style={{ textAlign: "center", fontWeight: "500" }}>Mã SP</label>
       </Col>
-      <Col flex="48%">
+      <Divider type="vertical" />
+      <Col flex="44%">
         <label style={{ float: "left", marginLeft: "10%", fontWeight: "500" }}>
           Tên sản phẩm
         </label>
       </Col>
+      <Divider type="vertical" />
       <Col flex="10%" style={{ marginRight: "2%" }}>
         <label style={{ float: "center", fontWeight: "500" }}>Số lượng</label>
       </Col>
-      <Col flex="10%">
+      <Divider type="vertical" />
+      <Col flex="8%">
         <label style={{ textAlign: "center", fontWeight: "500" }}>
           Đơn giá
         </label>
       </Col>
-      <Col flex="10%">
+      <Divider type="vertical" />
+      <Col flex="8%">
         <label style={{ textAlign: "right", fontWeight: "500" }}>
           Thành tiền
         </label>
       </Col>
-      <Col flex="5%">
+      <Divider type="vertical" />
+      <Col flex="4%">
         <label style={{ textAlign: "right", fontWeight: "500" }}>Xóa</label>
       </Col>
     </Row>
@@ -324,6 +340,37 @@ export default function SalePage() {
     );
     setSPSearch(list);
   };
+
+  const contentPopOver = (
+    <>
+    <label style = {{fontWeight: 600}}>{'Nhập số tiền: '}</label>
+      <InputNumber
+        placeholder="Tiền khách trả"
+        min={0}
+        bordered={false}
+        value={dataHD.TienKhachTra}
+        size="small"
+        formatter={(value) =>
+          `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        }
+        onChange={(e) =>
+          setDataHD({
+            ...dataHD,
+            TienKhachTra: e,
+            TienTraKhach: e - dataHD.ThanhTien,
+          })
+        }
+        style={{
+          float: "right",
+          width: "100px",
+          textAlign: "right",
+          borderBottomStyle: "solid",
+          borderColor: "lightgray",
+          borderBottomWidth: 1,
+        }}
+      />
+    </>
+  )
 
   return (
     <Layout
@@ -376,14 +423,6 @@ export default function SalePage() {
               </List.Item>
             )}
           />
-          {/* {SPsInfo.map((sp) => (
-            <SanPhamHoaDonPanel
-              key={sp.MaSP}
-              sp={sp}
-              SPPanelChange={SPPanelChange}
-              SPPanelRemove={SPPanelRemove}
-            />
-          ))} */}
         </Content>
         <Collapse bordered={false} collapsible="header">
           <Collapse.Panel
@@ -393,7 +432,7 @@ export default function SalePage() {
                 onClick={() => {
                   setonCollap(!onCollap);
                   setpagesize(!onCollap ? 3 : 7);
-                  setSPSearch(SanPhams)
+                  setSPSearch(SanPhams.filter(sp => sp.TrangThai === 'Đang kinh doanh'));
                 }}
               >
                 Danh sách sản phẩm
@@ -401,8 +440,7 @@ export default function SalePage() {
             }
           >
             <Input.Search
-              size="small"
-              style={{ width: 200, marginLeft: 600 }}
+              style={{ width: 330, marginLeft: 570 }}
               enterButton
               placeholder="Tìm kiếm sản phẩm"
               onSearch={(e) => SearchSP(e)}
@@ -458,6 +496,9 @@ export default function SalePage() {
           form={form}
           layout="horizontal"
         >
+          <Form.Item labelCol={{ span: 50 }} style={{ margin: 0 }}>
+            <h1 style={{ fontSize: 20 }}>Thông tin hóa đơn</h1>
+          </Form.Item>
           <Form.Item style={{ margin: 0 }} wrapperCol={{ span: 30 }}>
             <DatePicker
               format="YYYY-MM-DD HH:mm:ss"
@@ -474,7 +515,7 @@ export default function SalePage() {
             />
           </Form.Item>
           <Form.Item
-            style={{ margin: 0 }}
+            style={{ marginBottom: 5 }}
             wrapperCol={30}
             rules={[{ required: true }]}
           >
@@ -482,6 +523,7 @@ export default function SalePage() {
               icon={<UserOutlined />}
               shape="circle"
               size="small"
+              type="link"
               style={{ float: "left", marginRight: "5px" }}
             />
             <Cascader
@@ -495,8 +537,8 @@ export default function SalePage() {
               }}
             />
           </Form.Item>
-          <Form.Item style={{ marginBottom: 15 }} wrapperCol={30}>
-            <Button size="small" icon={<SearchOutlined />} type="link" onClick = {()=>history.push("/PrintHD")}/>
+          <Form.Item style={{ marginBottom: 5 }} wrapperCol={30}>
+            <Button size="small" icon={<SearchOutlined />} type="link" />
             <Cascader
               options={optionKH}
               bordered={false}
@@ -543,7 +585,6 @@ export default function SalePage() {
           >
             <Cascader
               options={optionKM}
-              size="small"
               style={{ width: 150, float: "right" }}
               suffixIcon={<SearchOutlined />}
               placeholder="Nhập mã KM"
@@ -574,24 +615,28 @@ export default function SalePage() {
             label="Tiền khách trả"
             labelAlign="left"
           >
-            <InputNumber
-              placeholder="Tiền khách trả"
-              min={0}
-              bordered={false}
-              value={dataHD.TienKhachTra}
-              size="small"
-              formatter={(value) =>
-                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-              }
-              onChange={(e) =>
-                setDataHD({
-                  ...dataHD,
-                  TienKhachTra: e,
-                  TienTraKhach: e - dataHD.ThanhTien,
-                })
-              }
-              style={{ float: "right", width: "100px", textAlign: "right" }}
-            />
+            <Popover
+              content = {contentPopOver}
+              placement="leftBottom"
+              //title= 'Nhập số tiền'
+              //title = {contentPopOver}
+              trigger="click"
+            >
+              <span
+                style={{
+                  float: "right",
+                  width: 70,
+                  textAlign: "right",
+                  marginRight: 10,
+                  borderBottomStyle: "solid",
+                  borderBottomWidth: 1,
+                  borderBottomColor: 'lightgray'
+                }}
+                type="text"
+              >
+                {`${dataHD.TienKhachTra}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              </span>
+            </Popover>
           </Form.Item>
           <Form.Item
             style={{ margin: 0 }}
@@ -602,20 +647,24 @@ export default function SalePage() {
               {`${dataHD.TienTraKhach}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
             </label>
           </Form.Item>
-          <Form.Item style={{ marginTop: 30, height: 100 }} wrapperCol={30}>
+          <Form.Item style={{ margin: 0, height: 30 }} wrapperCol={30}>
             <Input.TextArea
+              maxLength={150}
+              showCount ={true}
               prefix={<EditOutlined />}
               bordered={false}
               autoSize={true}
+              value = {dataHD.GhiChu}
               placeholder="Ghi chú"
               style={{
                 borderBottomStyle: "solid",
                 borderColor: "lightgrey",
                 borderWidth: "2px",
               }}
+              onChange = {(e) => setDataHD({...dataHD, GhiChu: e.target.value})}
             />
           </Form.Item>
-          <Form.Item wrapperCol={30}>
+          <Form.Item wrapperCol={30} style = {{marginTop: 70}}>
             <Button
               type="primary"
               block

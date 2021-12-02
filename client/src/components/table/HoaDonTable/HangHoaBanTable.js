@@ -2,7 +2,6 @@ import React from "react";
 import { Table } from "antd";
 function HangHoaBanTable({ dataCTHDs }) {
 
-  const dataSource = dataCTHDs;
   const columns = [
     {
       title: "Mã hàng",
@@ -58,9 +57,10 @@ function HangHoaBanTable({ dataCTHDs }) {
     <Table
       tableLayout={"auto"}
       pagination={false}
-      dataSource={dataSource}
+      dataSource={dataCTHDs.CTHD}
       columns={columns}
       rowKey='_id'
+      footer = {()=>dataCTHDs.GhiChu}
     />
   );
 }

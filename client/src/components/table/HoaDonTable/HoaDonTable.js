@@ -2,22 +2,11 @@ import React, { useState } from "react";
 import { Table, Input, Row } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import FormHoaDon from "./FormHoaDon";
-
-import { useDispatch, useSelector } from "react-redux";
-import * as actions from "../../../redux/actions";
-import { CTHDsState$ } from "../../../redux/selectors";
 import moment from "moment";
 
 const { Search } = Input;
 
 export default function HoaDontable({HoaDons}) {
-  const dispatch = useDispatch();
-  const CTHDs = useSelector(CTHDsState$);
-
-  React.useEffect(() => {
-    dispatch(actions.getCTHDs.getCTHDsRequest());
-  }, [dispatch]);
-
   const dataSource = HoaDons;
 
   const columns = [
@@ -220,7 +209,7 @@ export default function HoaDontable({HoaDons}) {
         columns={columns}
         expandable={{
           expandedRowRender: (record) => (
-            <FormHoaDon record={record} dataCTHDs={CTHDs} />
+            <FormHoaDon record={record} />
           ),
           rowExpandable: (record) => record.MaHD !== "Not Expandable",
         }}

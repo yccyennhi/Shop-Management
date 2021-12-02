@@ -1,29 +1,56 @@
 import React, { useState } from "react";
-import { Table, Input, Row } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { Input, Space } from "antd";
+import { ExportTableButton, Table } from "ant-table-extensions";
+
+import {
+  SearchOutlined,
+  FileExcelOutlined,
+  HeatMapOutlined,
+} from "@ant-design/icons";
+
 import moment from "moment";
 
 const { Search } = Input;
 
-function CuoiNgaytable({ currentDataSource }) {
-  // const dataSource = Array.from(currentDataSource, (HoaDon) => ({
-  //   MaHD: HoaDon.MaHD,
-  //   TenNV: HoaDon.idNV.TenNV,
-  //   ThoiGian: HoaDon.ThoiGian,
-  //   SoLuong: HoaDon.SoLuong,
-  //   TongTienHang: HoaDon.TongTienHang,
-  //   GiamGia: HoaDon.GiamGia,
-  //   ThanhTien: HoaDon.ThanhTien,
-  //   LoiNhuan: HoaDon.TongTienHang - HoaDon.GiaVon,
-  // }));
-  const dataSource = Array.from(currentDataSource, (HoaDon) => ({
-    ...HoaDon,
-    TenNV: HoaDon.idNV.TenNV,
-    LoiNhuan: HoaDon.TongTienHang - HoaDon.GiaVon,
-  }));
+const columnMoneySample = (title, index) => ({
+  title:  title ,
+  dataIndex:  index ,
+  key:  index ,
+  render: (value) => {
+    return `${(value<0?'-':'')} ${(Math.abs(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))}`;
+  },
+  sorter: (a, b) => a.index - b.index,
+});
+
+function CuoiNgaytable(currentDataSource, type) {
+  const dataSource = Array.from(currentDataSource, (HoaDon) =>
+    type === 1
+      ? {
+          ...HoaDon,
+          TenNV: HoaDon.idNV.TenNV,
+          LoiNhuan: HoaDon.ThanhTien - HoaDon.GiaVon,
+        }
+      : type === 2
+      ? {
+          ...HoaDon,
+          MaHD: HoaDon.MaPDT,
+          TenNV: HoaDon.idNV.TenNV,
+          LoiNhuan: -(HoaDon.ThanhTien - HoaDon.GiaVon),
+        }
+      : {
+          ...HoaDon,
+          MaHD: HoaDon.MaPN,
+          TenNV: HoaDon.NguoiTao,
+          ThoiGian: HoaDon.NgayTao,
+          SoLuong: HoaDon.TongSoLuong,
+          TongTienHang: HoaDon.TongTien,
+          GiamGia: HoaDon.GiamGiaTongTien,
+          ThanhTien: HoaDon.TongTien - HoaDon.GiamGiaTongTien,
+        }
+  );
   const columns = [
     {
-      title: "Mã hóa đơn",
+      title: "Mã chứng từ",
       dataIndex: "MaHD",
       key: "MaHD",
       filterDropdown: ({
@@ -101,7 +128,7 @@ function CuoiNgaytable({ currentDataSource }) {
       dataIndex: "ThoiGian",
       key: "ThoiGian",
       render: (date) => {
-        return <p>{moment(date).format("HH:MM:SS")}</p>;
+        return moment(date).format("HH:MM:SS");
       },
       sorter: (a, b) => a.ThoiGian - b.ThoiGian,
     },
@@ -113,62 +140,48 @@ function CuoiNgaytable({ currentDataSource }) {
       sorter: (a, b) => a.SoLuong - b.SoLuong,
     },
 
-    {
-      title: "Tổng tiền hàng",
-      dataIndex: "TongTienHang",
-      key: "TongTienHang",
-      sorter: (a, b) => a.TongTienHang - b.TongTienHang,
-    },
+   
+    columnMoneySample("Tổng tiền hàng", "TongTienHang"),
 
-    {
-      title: "Giảm giá",
-      dataIndex: "GiamGia",
-      key: "GiamGia",
-      sorter: (a, b) => a.GiamGia - b.GiamGia,
-    },
+    columnMoneySample("Giảm giá", "GiamGia"),
 
-    {
-      title: "Thành tiền",
-      dataIndex: "ThanhTien",
-      key: "ThanhTien",
-      sorter: (a, b) => a.ThanhTien - b.ThanhTien,
-    },
-    {
-      title: "Lợi nhuận",
-      dataIndex: "LoiNhuan",
-      key: "LoiNhuan",
-      sorter: (a, b) => a.LoiNhuan - b.LoiNhuan,
-    },
+    columnMoneySample("Thành tiền", "ThanhTien"),
+
+    type != 3
+      ? columnMoneySample("Lợi nhuận", "LoiNhuan")
+      : columnMoneySample("Trả NCC", "TienTra"),
+    ,
   ];
-
-  const [select, setSelect] = useState({
-    selectedRowKeys: [],
-    loading: false,
-  });
-
-  const { selectedRowKeys, loading } = select;
-
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: (selectedRowKeys) => {
-      setSelect({
-        ...select,
-        selectedRowKeys: selectedRowKeys,
-      });
-    },
-  };
 
   return (
     <div>
-      <Table
-        tableLayout={"auto"}
-        loading={false}
-        pagination={true}
-        //  scroll={{ x: 1500, y: 500 }}
-        columns={columns}
-        rowKey="MaHD"
-        dataSource={dataSource}
-      ></Table>
+      <Space direction="vertical" style={{ width: "100%" }}>
+        <Space direction="vertical" align="end" style={{ width: "100%" }}>
+          <ExportTableButton
+            dataSource={dataSource}
+            columns={columns}
+            btnProps={{ icon: <FileExcelOutlined /> }}
+            fileName="BaoCaoCuoiNgay"
+          >
+            Tải file CSV
+          </ExportTableButton>
+        </Space>
+        <Table
+          tableLayout={"auto"}
+          loading={false}
+          pagination={true}
+          title={() => type===1?"Báo cáo bán hàng":type===2?"Báo cáo đổi trả":"Báo cáo nhập hàng"}
+          searchableProps={{
+            inputProps: {
+              placeholder: "Nhập thông tin cần tìm",
+              prefix: <SearchOutlined />,
+            },
+          }}
+          columns={columns}
+          rowKey="MaHD"
+          dataSource={dataSource}
+        ></Table>
+      </Space>
     </div>
   );
 }

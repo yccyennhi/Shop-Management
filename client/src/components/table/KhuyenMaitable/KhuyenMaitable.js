@@ -104,9 +104,9 @@ function KhuyenMaitable({ dataSource, setCurrentId }) {
       dataIndex: "NgayBD",
       key: "NgayBD",
       render: (date) => {
-        return <p>{moment(date).format("DD/MM/YYYY")}</p>;
+        return moment(date).format("DD/MM/YYYY");
       },
-      sorter: (a, b) => a.NgayBD - b.NgayBD,
+      sorter: (a, b) => moment(a.NgayBD) - moment(b.NgayBD),
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
         return (
           <Search
@@ -143,7 +143,7 @@ function KhuyenMaitable({ dataSource, setCurrentId }) {
       dataIndex: "NgayKT",
       key: "NgayKT",
       render: (date) => {
-        return <p>{moment(date).format("DD/MM/YYYY")}</p>;
+        return moment(date).format("DD/MM/YYYY");
       },
       sorter: (a, b) => a.NgayKT - b.NgayKT,
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {

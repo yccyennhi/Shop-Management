@@ -1,15 +1,29 @@
 import React, { useState } from "react";
-import { Table, Input, Row } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { Input, Space } from "antd";
+import { ExportTableButton, Table } from "ant-table-extensions";
+
+import { SearchOutlined, FileExcelOutlined } from "@ant-design/icons";
 import moment from "moment";
 
 const { Search } = Input;
 
+const columnMoneySample = (title, index) => ({
+  title:  title ,
+  dataIndex:  index ,
+  key:  index ,
+  render: (value) => {
+    return `${(value<0?'-':'')} ${(Math.abs(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))}`;
+  },
+  sorter: (a, b) => a.index - b.index,
+});
+
 function BanHangtable({ currentDataSource }) {
-  const dataSource = currentDataSource?Array.from(currentDataSource, (HoaDon) => ({
-    ...HoaDon[1],
-    ThoiGian: HoaDon[0]
-  })) : null;
+  const dataSource = currentDataSource
+    ? Array.from(currentDataSource, (HoaDon) => ({
+        ...HoaDon[1],
+        ThoiGian: HoaDon[0],
+      }))
+    : null;
 
   const columns = [
     {
@@ -17,7 +31,7 @@ function BanHangtable({ currentDataSource }) {
       dataIndex: "ThoiGian",
       key: "ThoiGian",
       render: (date) => {
-        return <p>{moment(date).format("DD/MM/YYYY")}</p>;
+        return moment(date).format("DD/MM/YYYY");
       },
       sorter: (a, b) => a.ThoiGian - b.ThoiGian,
       filterDropdown: ({
@@ -63,32 +77,14 @@ function BanHangtable({ currentDataSource }) {
       sorter: (a, b) => a.SoLuong - b.SoLuong,
     },
 
-    {
-      title: "Tổng tiền hàng",
-      dataIndex: "TongTienHang",
-      key: "TongTienHang",
-      sorter: (a, b) => a.TongTienHang - b.TongTienHang,
-    },
+   
+    columnMoneySample("Tổng tiền hàng", "TongTienHang"),
 
-    {
-      title: "Giảm giá",
-      dataIndex: "GiamGia",
-      key: "GiamGia",
-      sorter: (a, b) => a.GiamGia - b.GiamGia,
-    },
+    columnMoneySample("Giảm giá", "GiamGia"),
 
-    {
-      title: "Thành tiền",
-      dataIndex: "ThanhTien",
-      key: "ThanhTien",
-      sorter: (a, b) => a.ThanhTien - b.ThanhTien,
-    },
-    {
-      title: "Lợi nhuận",
-      dataIndex: "LoiNhuan",
-      key: "LoiNhuan",
-      sorter: (a, b) => a.LoiNhuan - b.LoiNhuan,
-    },
+    columnMoneySample("Thành tiền", "ThanhTien"),
+
+    columnMoneySample("Lợi nhuận", "LoiNhuan")
   ];
 
   const [select, setSelect] = useState({
@@ -96,29 +92,35 @@ function BanHangtable({ currentDataSource }) {
     loading: false,
   });
 
-  const { selectedRowKeys, loading } = select;
-
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: (selectedRowKeys) => {
-      setSelect({
-        ...select,
-        selectedRowKeys: selectedRowKeys,
-      });
-    },
-  };
-
   return (
     <div>
-      <Table
-        tableLayout={"auto"}
-        loading={false}
-        pagination={true}
-        //  scroll={{ x: 1500, y: 500 }}
-        columns={columns}
-        rowKey="ThoiGian"
-        dataSource={dataSource}
-      ></Table>
+      <Space direction="vertical" style={{ width: "100%" }}>
+        <Space direction="vertical" align="end" style={{ width: "100%" }}>
+          <ExportTableButton
+            dataSource={dataSource}
+            columns={columns}
+            btnProps={{ icon: <FileExcelOutlined /> }}
+            fileName="HangHoaCSV"
+          >
+            Tải file CSV
+          </ExportTableButton>
+        </Space>
+        <Table
+          tableLayout={"auto"}
+          loading={false}
+          pagination={true}
+          searchable
+          searchableProps={{
+            inputProps: {
+              placeholder: "Nhập thông tin cần tìm",
+              prefix: <SearchOutlined />,
+            },
+          }}
+          columns={columns}
+          rowKey="ThoiGian"
+          dataSource={dataSource}
+        ></Table>
+      </Space>
     </div>
   );
 }

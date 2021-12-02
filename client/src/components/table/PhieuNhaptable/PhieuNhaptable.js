@@ -1,15 +1,7 @@
 import React, { useState } from "react";
 import { ExportTableButton, Table } from "ant-table-extensions";
 
-import {
-  Input,
-  Row,
-  Button,
-  Dropdown,
-  message,
-  Menu,
-  Space,
-} from "antd";
+import { Input, Row, Button, Dropdown, message, Menu, Space } from "antd";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import ExpandedRowRender from "./ExpandedRowRender";
@@ -25,16 +17,75 @@ import {
 import * as actions from "../../../redux/actions";
 const { Search } = Input;
 
-function PhieuNhaptable({ trangthai, baohanh, currentId, setCurrentId }) {
+function PhieuNhaptable({
+  trangthai,
+  thoigian,
+  thang,
+  currentId,
+  setCurrentId,
+}) {
   const dispatch = useDispatch();
   const loadingPhieuNhaps = useSelector(isloadingPhieuNhapsState$);
   React.useEffect(() => {
     dispatch(actions.getPhieuNhaps.getPhieuNhapsRequest());
   }, [dispatch]);
   const PN = useSelector(PhieuNhapsState$);
+  const [PhieuNhaps, setPhieuNhaps] = useState(useSelector(PhieuNhapsState$));
 
-  const dataSource = PN;
-  console.log(PN);
+  React.useEffect(() => {
+    setPhieuNhaps(PN);
+  }, [PN]);
+
+  React.useEffect(() => {
+    if (trangthai == 0 && thoigian == 0) {
+      setPhieuNhaps(PN);
+    }
+    if (trangthai == 1 && thoigian == 0) {
+      let listPN = PN.filter((data) => data.TrangThai == "Phiếu tạm");
+      setPhieuNhaps(listPN);
+    }
+    if (trangthai == 2 && thoigian == 0) {
+      let listPN = PN.filter((data) => data.TrangThai == "Đã nhập hàng");
+      console.log(listPN);
+      setPhieuNhaps(listPN);
+    }
+    if (trangthai == 3 && thoigian == 0) {
+      let listPN = PN.filter((data) => data.TrangThai == "Đã hủy");
+      setPhieuNhaps(listPN);
+    }
+    if (trangthai == 0 && thoigian == 1) {
+      let listPN = PN.filter(
+        (data) =>
+          moment(data.NgayTao).format("M") == thang
+      );
+      setPhieuNhaps(listPN);
+    }
+    if (trangthai == 1 && thoigian == 1) {
+      let listPN = PN.filter(
+        (data) =>
+          data.TrangThai == "Phiếu tạm" &&
+          moment(data.NgayTao).format("M") == thang
+      );
+      setPhieuNhaps(listPN);
+    }
+    if (trangthai == 2 && thoigian == 1) {
+      let listPN = PN.filter(
+        (data) =>
+          data.TrangThai == "Đã nhập hàng" &&
+          moment(data.NgayTao).format("M") == thang
+      );
+      setPhieuNhaps(listPN);
+    }
+    if (trangthai == 3 && thoigian == 1) {
+      let listPN = PN.filter(
+        (data) =>
+          data.TrangThai == "Đã hủy" &&
+          moment(data.NgayTao).format("M") == thang
+      );
+      setPhieuNhaps(listPN);
+    }
+  }, [thoigian, trangthai]);
+  const dataSource = PhieuNhaps;
   const columns = [
     {
       title: "Mã nhập hàng",
@@ -81,6 +132,7 @@ function PhieuNhaptable({ trangthai, baohanh, currentId, setCurrentId }) {
       dataIndex: "NgayTao",
       key: "NgayTao",
       render: (NgayTao) => moment(NgayTao).format("DD-MM-YYYY"),
+      sorter: (a, b) => moment(a.NgayTao) - moment(b.NgayTao),
     },
     {
       title: "Nhà cung cấp",
@@ -154,8 +206,6 @@ function PhieuNhaptable({ trangthai, baohanh, currentId, setCurrentId }) {
     selectedRowKeys: [],
     loading: false,
   });
-
-  console.log("selectedRowKeys", select);
 
   const { selectedRowKeys, loading } = select;
 

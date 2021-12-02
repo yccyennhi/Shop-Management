@@ -27,10 +27,7 @@ import * as actions from "../../redux/actions";
 import PhieuNhaptable from "../../components/table/PhieuNhaptable/PhieuNhaptable";
 import {
   PhieuNhapsState$,
-  isloadingPhieuNhapsState$,
 } from "../../redux/selectors";
-import PhieuNhapModal from "../../components/modal/PhieuNhapModal/PhieuNhapModal";
-import ThemPhieuNhapPage from "../ThemPhieuNhapPage/ThemPhieuNhapPage";
 const { Text } = Typography;
 const { Content, Sider } = Layout;
 
@@ -45,25 +42,20 @@ export default function PhieuNhapPage() {
   const [thang, setThang] = useState(null);
   const [trangthai, setTrangthai] = useState(0);
   const dispatch = useDispatch();
-  const isShow = useSelector(isloadingPhieuNhapsState$);
   const PhieuNhaps = useSelector(PhieuNhapsState$);
   const dateNow = moment().toDate();
-  const SPCH = PhieuNhaps.filter(function (e) {
-    return moment(e.NgayKT) >= dateNow;
+  const PNTN = PhieuNhaps.filter(function (e) {
+    return moment(e.NgayTao).format("M") == moment(dateNow).format("M");
   });
 
-  const SPHH = PhieuNhaps.filter(function (e) {
-    return moment(e.NgayKT) < dateNow;
+  const PNHT = PhieuNhaps.filter(function (e) {
+    return (
+      e.TrangThai == "Đã nhập hàng" &&
+      moment(e.NgayTao).format("M") == moment(dateNow).format("M")
+    );
   });
-
-  const openCreatePhieuNhapModal = React.useCallback(() => {
-    dispatch(actions.showTaoPhieuNhapModal());
-    console.log("isshow", isShow);
-  }, [dispatch]);
 
   function onChange(date, dateString) {
-    console.log(date, "datétring", dateString);
-    console.log(moment(date).format("M"));
     setThang(moment(date).format("M"));
   }
   return (
@@ -79,7 +71,7 @@ export default function PhieuNhapPage() {
         >
           <Space direction="vertical">
             <Card
-              title="Thời gian mua hàng"
+              title="Thời gian nhập hàng"
               bordered={false}
               style={{ width: 250 }}
             >
@@ -133,7 +125,7 @@ export default function PhieuNhapPage() {
                       setTrangthai(2);
                     }}
                   >
-                    Đã hoàn thành
+                    Đã nhập hàng
                   </Radio>
                   <Radio
                     value={3}
@@ -168,9 +160,9 @@ export default function PhieuNhapPage() {
                   <Space align="center" size={20}>
                     <CheckCircleTwoTone style={{ fontSize: "40px" }} />
                     <Space direction="vertical" size={0}>
-                      <Text strong>{SPCH.length} phiếu nhập</Text>
+                      <Text strong>{PNTN.length} phiếu nhập</Text>
                       <Text strong style={{ fontSize: "1.5rem" }}>
-                        {SPCH.length}
+                        {PNTN.length}
                       </Text>
                       <Text type="secondary">Phiếu nhập tháng này</Text>
                     </Space>
@@ -181,11 +173,11 @@ export default function PhieuNhapPage() {
                     <Space align="center" size={20}>
                       <CloseCircleTwoTone style={{ fontSize: "40px" }} />
                       <Space direction="vertical" size={0}>
-                        <Text strong>{SPHH.length} phiếu nhập</Text>
+                        <Text strong>{PNHT.length} phiếu nhập</Text>
                         <Text strong style={{ fontSize: "1.5rem" }}>
-                          {SPHH.length}
+                          {PNHT.length}
                         </Text>
-                        <Text type="secondary">Phiếu nhập hoàn thành</Text>
+                        <Text type="secondary">Phiếu nhập hoàn thành trong tháng</Text>
                       </Space>
                     </Space>
                   </Space>

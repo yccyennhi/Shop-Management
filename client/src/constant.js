@@ -100,7 +100,7 @@ export const INIT_STATE = {
 
   CuoiNgays: {
     isLoading: false,
-    data: [],
+    data: null
   },
 
   BCBanHangs: {

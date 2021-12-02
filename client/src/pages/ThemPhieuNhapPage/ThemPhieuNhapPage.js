@@ -116,27 +116,60 @@ export default function ThemPhieuNhapPage({}) {
           messageError("Mã phiếu nhập đã tồn tại!");
         } else {
           const MaSanPham = dataSource.map((data) => data.MaSP);
-          for (let i = 0; i <= MaSanPham.length; i++) {
+
+          for (let i = 0; i < MaSanPham.length; i++) {
             let SanPham = SP.find((data) => data.MaSP == MaSanPham[i]);
             if (SanPham != undefined && data.TrangThai == "Đã nhập hàng") {
+              let arrGiaNhap = [];
+              let arrSoLuong = [];
+              for (let j = 0; j < PN?.length; j++) {
+                for (let k = 0; k < PN[j]?.MaSP?.length; k++) {
+                  if (
+                    PN[j].MaSP[k] == SanPham.MaSP &&
+                    PN[j].TrangThai == "Đã nhập hàng"
+                  ) {
+                    arrGiaNhap.push(PN[j].GiaNhap[k]);
+                    arrSoLuong.push(PN[j].SoLuong[k]);
+                  }
+                }
+              }
+
+              let GiaNhap = arrGiaNhap.reduce((sum, data) => {
+                return (sum += data);
+              }, 0);
+              let SoLuong = arrSoLuong.reduce((sum, data) => {
+                return (sum += data);
+              }, 0);
+
+              console.log(data.GiaNhap, data.SoLuong);
+
+              SanPham.GiaVon = Math.round(
+                (GiaNhap + data.GiaNhap[i]) / (SoLuong + data.SoLuong[i])
+              );
               SanPham.TonKho = SanPham.TonKho + data.SoLuong[i];
               dispatch(actions.updateSanPham.updateSanPhamRequest(SanPham));
-              messageSuccess("Thêm phiếu nhập thành công)");
+              messageSuccess("Thêm phiếu nhập thành công");
+              handleNhapHang();
+            } else {
+              messageError("Trong danh sách có sản phẩm không tồn tại!");
             }
           }
           dispatch(actions.createPhieuNhap.createPhieuNhapRequest(data));
+          handleNhapHang();
         }
       } else {
         const MaSanPham = dataSource.map((data) => data.MaSP);
-        for (let i = 0; i <= MaSanPham.length; i++) {
+        for (let i = 0; i < MaSanPham.length; i++) {
           let SanPham = SP.find((data) => data.MaSP == MaSanPham[i]);
           if (SanPham != undefined && data.TrangThai == "Đã nhập hàng") {
             SanPham.TonKho = SanPham.TonKho + data.SoLuong[i];
             dispatch(actions.updateSanPham.updateSanPhamRequest(SanPham));
             messageSuccess("Thêm phiếu nhập thành công)");
+            handleNhapHang();
           }
         }
         dispatch(actions.updatePhieuNhap.updatePhieuNhapRequest(data));
+        handleNhapHang();
       }
     }
   }, [data, dispatch]);
@@ -340,7 +373,7 @@ export default function ThemPhieuNhapPage({}) {
               </Form.Item>
               <Form.Item tooltip="Trạng thái phiếu nhập" label="Trạng thái">
                 <Select
-                  disabled={PhieuNhapValue.TrangThai == "Đã nhập hàng"}
+                  disabled={PhieuNhapValue?.TrangThai == "Đã nhập hàng"}
                   placeholder="Chọn trạng thái"
                   value={data.TrangThai}
                   onChange={(e) => setData({ ...data, TrangThai: e })}
@@ -415,7 +448,6 @@ export default function ThemPhieuNhapPage({}) {
                   htmlType="submit"
                   onClick={() => {
                     onHoanThanh();
-                    handleNhapHang();
                   }}
                 >
                   OK

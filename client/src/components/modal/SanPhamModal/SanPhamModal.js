@@ -245,7 +245,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
         </Form.Item>
         <Form.Item
           label="Giá vốn"
-          tooltip="Giá vốn để tính lợi nhuận cho sản phẩm"
+          tooltip="Giá vốn để tính lợi nhuận cho sản phẩm, sẽ được cập nhật tự động khi nhập hàng"
           required
         >
           <InputNumber

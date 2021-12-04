@@ -170,7 +170,7 @@ function CuoiNgaytable(currentDataSource, type) {
           tableLayout={"auto"}
           loading={false}
           pagination={true}
-          title={() => type===1?"Báo cáo bán hàng":type===2?"Báo cáo đổi trả":"Báo cáo nhập hàng"}
+          scroll={{x:200}}
           searchableProps={{
             inputProps: {
               placeholder: "Nhập thông tin cần tìm",

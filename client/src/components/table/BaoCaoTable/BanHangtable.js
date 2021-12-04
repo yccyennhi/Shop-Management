@@ -116,6 +116,7 @@ function BanHangtable({ currentDataSource }) {
               prefix: <SearchOutlined />,
             },
           }}
+          scroll={{x:200}}
           columns={columns}
           rowKey="ThoiGian"
           dataSource={dataSource}

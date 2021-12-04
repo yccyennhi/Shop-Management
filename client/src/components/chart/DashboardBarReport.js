@@ -8,7 +8,7 @@ const BarReport = (highestSanPhamObj, type) => {
     sales: type == 0 ? value.SoLuong : value.ThanhTien,
   }));
 
-  const data = dataSource.length
+  let data = dataSource.length
     ? dataSource
         .slice()
         .sort((a, b) => {
@@ -16,6 +16,9 @@ const BarReport = (highestSanPhamObj, type) => {
         })
         .slice(0, 10)
     : [{ type: "", sales: 0 }];
+
+  //Filter sales < 0
+  data = data.filter((dt) => dt.sales > 0);
 
   var config = {
     data: data,

@@ -29,8 +29,9 @@ import {
   isloadingPhieuHensState$,
 } from "../../redux/selectors";
 import PhieuHenModal from "../../components/modal/PhieuHenModal/PhieuHenModal";
+import Menubar from "../../components/header/Menubar/Menubar";
 const { Text } = Typography;
-const { Content, Sider } = Layout;
+const { Content, Sider, Header } = Layout;
 const { RangePicker } = DatePicker;
 
 export default function PhieuHenPage() {
@@ -48,7 +49,7 @@ export default function PhieuHenPage() {
   });
 
   const SPHH = PhieuHens.filter(function (e) {
-    return e.TrangThai=="Chưa hoàn thành";
+    return e.TrangThai == "Chưa hoàn thành";
   });
 
   const openCreatePhieuHenModal = React.useCallback(() => {
@@ -66,6 +67,9 @@ export default function PhieuHenPage() {
   }
   return (
     <Layout>
+      <Header>
+        <Menubar />
+      </Header>
       <Layout>
         <PageHeader className="site-page-header" title="Phiếu hẹn" />
       </Layout>

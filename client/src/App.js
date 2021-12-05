@@ -33,9 +33,9 @@ function App() {
           </Header>
         </Layout>
         <Layout className="layout">
-          <Header>
+          {/* <Header>
             <Menubar />
-          </Header>
+          </Header> */}
           {/* <Content style={{ padding: "50px 50px" }}>
             <div className="site-layout-content"> */}
           <Switch>

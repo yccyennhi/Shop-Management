@@ -3,13 +3,14 @@ import { Button, Card, Layout, PageHeader, Radio, Row, Space } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import COLOR from "../../color.js";
+import Menubar from "../../components/header/Menubar/Menubar.js";
 import KhachHangModal from "../../components/modal/KhachHangModal/KhachHangModal";
 import KhachHangTable from "../../components/table/KhachHangTable/KhachHangTable";
 import * as actions from "../../redux/actions";
 import { showKhachHangModal } from "../../redux/actions";
 import { KhachHangsState$ } from "../../redux/selectors/index.js";
 
-const { Content, Sider } = Layout;
+const { Content, Sider, Header } = Layout;
 
 export default function KhachHangPage() {
   const dispatch = useDispatch();
@@ -38,6 +39,9 @@ export default function KhachHangPage() {
 
   return (
     <Layout>
+      <Header>
+        <Menubar />
+      </Header>
       <PageHeader className="site-page-header" title="Khách hàng" />
       <Layout>
         <Sider

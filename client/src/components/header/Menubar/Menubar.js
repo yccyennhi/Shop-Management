@@ -114,19 +114,10 @@ function Menubar() {
           onTitleClick={handleHangHoa}
         >
           <Menu.Item key="DanhMuc" onClick={handleHangHoa}>
-            Danh mục
-          </Menu.Item>
-          <Menu.Item key="ThietLapGia" onClick={handleThietLapGia}>
-            Thiết lập giá
+            Danh mục sản phẩm
           </Menu.Item>
           <Menu.Item key="PhieuBaoHanh" onClick={handlePhieuBaoHanh}>
             Phiếu bảo hành
-          </Menu.Item>
-          <Menu.Item key="PhieuHen" onClick={handlePhieuHen}>
-            Phiếu hẹn
-          </Menu.Item>
-          <Menu.Item key="KiemKho" onClick={handleKiemKho}>
-            Kiểm kho
           </Menu.Item>
         </SubMenu>
 
@@ -142,14 +133,11 @@ function Menubar() {
           <Menu.Item key="TraHang" onClick={handleTraHang}>
             Trả hàng
           </Menu.Item>
-          <Menu.Item key="YeuCauSuaChua" onClick={handleYeuCauSuaChua}>
+          <Menu.Item key="PhieuHen" onClick={handlePhieuHen}>
             Yêu cầu sửa chữa
           </Menu.Item>
           <Menu.Item key="NhapHang" onClick={handleNhapHang}>
             Nhập hàng
-          </Menu.Item>
-          <Menu.Item key="TraHangNhap" onClick={handleTraHangNhap}>
-            Trả hàng nhập
           </Menu.Item>
         </SubMenu>
 
@@ -170,12 +158,6 @@ function Menubar() {
           icon={<TeamOutlined />}
           title="Nhân viên"
           onTitleClick={handleNhanVien}
-        ></SubMenu>
-        <SubMenu
-          key="SoQuy"
-          icon={<DollarOutlined />}
-          title="Sổ quỹ"
-          onTitleClick={handleSoQuy}
         ></SubMenu>
         <SubMenu
           key="BaoCao"

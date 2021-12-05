@@ -135,4 +135,8 @@ export const INIT_STATE = {
   PhieuBaoHanhBanHangModal: {
     isShow: false,
   },
+
+  PhieuHenBanHangModal: {
+    isShow: false,
+  },
 };

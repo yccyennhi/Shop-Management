@@ -51,8 +51,6 @@ export default function PhieuBaoHanh({ currentId, setCurrentId }) {
     if (PhieuBaoHanhValue) setData(PhieuBaoHanhValue);
   }, [PhieuBaoHanhValue]);
 
-  console.log("PhieuBaoHanh", data);
-
   const dispatch = useDispatch();
 
   React.useEffect(() => {
@@ -203,7 +201,7 @@ export default function PhieuBaoHanh({ currentId, setCurrentId }) {
             style={{ display: "inline-block", width: "calc(30% - 12px)" }}
           >
             <DatePicker
-            disabled={currentId}
+              disabled={currentId}
               value={moment(data.NgayBD)}
               defaultValue={moment(data.NgayBD)}
               onChange={(e) => {
@@ -229,9 +227,7 @@ export default function PhieuBaoHanh({ currentId, setCurrentId }) {
               min
               disabled={currentId}
               value={moment(data.NgayKT)}
-              defaultValue={
-                (moment(data.NgayKT), console.log(moment(data.NgayKT)))
-              }
+              defaultValue={moment(data.NgayKT)}
               onChange={(e) => {
                 if (e) setData({ ...data, NgayKT: e.toDate() });
               }}

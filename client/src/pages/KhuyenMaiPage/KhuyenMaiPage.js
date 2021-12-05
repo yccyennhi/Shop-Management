@@ -1,20 +1,35 @@
 import React, { useState } from "react";
-
+import * as actions from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
-import { PageHeader, Row, Button, Space, Layout, Card, Radio } from "antd";
+import { showModal } from "../../redux/actions";
+import { KhuyenMaisState$ } from "../../redux/selectors";
 
-import { PlusOutlined } from "@ant-design/icons";
+import {
+  PageHeader,
+  Row,
+  Button,
+  Space,
+  Layout,
+  Card,
+  Radio,
+  Typography,
+  Col,
+  Divider
+} from "antd";
+import {
+  DatabaseTwoTone,
+  StopTwoTone,
+  ClockCircleTwoTone,
+  PlusOutlined,
+} from "@ant-design/icons";
+import COLOR from "../../color.js";
 
 import KhuyenMaitable from "../../components/table/KhuyenMaitable/KhuyenMaitable";
-import { showModal } from "../../redux/actions";
 import KhuyenMaiModal from "../../components/modal/KhuyenMaiModal/KhuyenMaiModal";
-
-import COLOR from "../../color.js";
-import * as actions from "../../redux/actions";
-import { KhuyenMaisState$ } from "../../redux/selectors";
 import Menubar from "../../components/header/Menubar/Menubar";
 
 const { Content, Sider, Header } = Layout;
+const { Text } = Typography;
 
 export default function KhuyenMaiPage() {
   const [currentId, setCurrentId] = useState(null);
@@ -33,9 +48,14 @@ export default function KhuyenMaiPage() {
 
   const KhuyenMais = useSelector(KhuyenMaisState$);
   const [dataSoure, setdataSoure] = useState(KhuyenMais);
+
   React.useEffect(() => {
     if (KhuyenMais) setdataSoure(KhuyenMais);
   }, [KhuyenMais]);
+
+  const SLKMDangApDung = KhuyenMais.filter(
+    (KhuyenMai) => KhuyenMai.TrangThai === true
+  ).length;
 
   return (
     <Layout>
@@ -101,6 +121,45 @@ export default function KhuyenMaiPage() {
         </Sider>
         <Content style={{ padding: "17px 24px 24px" }}>
           <div className="site-layout-content">
+            <Row justify="start">
+              <Col span={8}>
+                <Space align="center" size={20}>
+                  <DatabaseTwoTone style={{ fontSize: "40px" }} />
+                  <Space direction="vertical" size={0}>
+                    <Text strong>{KhuyenMais.length} khuyến mãi</Text>
+                    <Text strong style={{ fontSize: "1.5rem" }}>
+                      {KhuyenMais.length}
+                    </Text>
+                    <Text type="secondary">Tổng số lượng khuyến mãi</Text>
+                  </Space>
+                </Space>
+              </Col>
+              <Col span={8}>
+                <Space align="center" size={20}>
+                  <ClockCircleTwoTone style={{ fontSize: "40px" }} />
+                  <Space direction="vertical" size={0}>
+                    <Text strong>{SLKMDangApDung} khuyến mãi</Text>
+                    <Text strong style={{ fontSize: "1.5rem" }}>
+                      {SLKMDangApDung}
+                    </Text>
+                    <Text type="secondary">Số khuyến mãi đang áp dụng</Text>
+                  </Space>
+                </Space>
+              </Col>
+            <Col span={8}>
+                <Space align="center" size={20}>
+                  <StopTwoTone style={{ fontSize: "40px" }} />
+                  <Space direction="vertical" size={0}>
+                    <Text strong>{KhuyenMais.length - SLKMDangApDung} khuyến mãi</Text>
+                    <Text strong style={{ fontSize: "1.5rem" }}>
+                    {KhuyenMais.length - SLKMDangApDung}
+                    </Text>
+                    <Text type="secondary">Số khuyến mãi không còn áp dụng</Text>
+                  </Space>
+                </Space>
+              </Col>
+            </Row>
+            <Divider orientation="left"></Divider>
             <Row justify="end">
               <Space>
                 <Button

@@ -14,7 +14,7 @@ import {
 } from "@ant-design/icons";
 import PhieuHenModal from "../../../components/modal/PhieuHenModal/PhieuHenModal";
 import PhieuBaoHanhBanHangModal from "../../../components/modal/PhieuBaoHanhModal/PhieuBaoHanhBanHangModal";
-
+import PhieuHenBanHangModal from "../../../components/modal/PhieuHenModal/PhieuHenBanHangModal";
 import * as actions from "../../../redux/actions";
 import MenuItem from "antd/lib/menu/MenuItem";
 const { SubMenu } = Menu;
@@ -43,6 +43,11 @@ function Menubar() {
   const openPhieuBaoHanhBanHangModal = React.useCallback(() => {
     dispatch(actions.showPhieuBaoHanhBanHangModal());
   }, [dispatch]);
+
+  
+  const openPhieuHenBanHangModal = React.useCallback(() => {
+    dispatch(actions.showPhieuHenBanHangModal());
+  }, [dispatch]);
   return (
     <div>
       <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["1000"]}>
@@ -70,14 +75,15 @@ function Menubar() {
           title="Yêu cầu sửa chữa"
           onTitleClick={openCreatePhieuHenModal}
         >
-           <Menu.Item key="BCCuoiNgay" onClick={openCreatePhieuHenModal}>
+           <Menu.Item key="TaoPhieuHen" onClick={openCreatePhieuHenModal}>
             Tạo phiếu hẹn
           </Menu.Item>
-          <Menu.Item key="BCBanHang" onClick={openCreatePhieuHenModal}>
+          <Menu.Item key="CapNhatPhieuHen" onClick={openPhieuHenBanHangModal}>
             Cập nhật phiếu hẹn
           </Menu.Item>
         </SubMenu>
       </Menu>
+      <PhieuHenBanHangModal/>
       <PhieuBaoHanhBanHangModal/>
       <PhieuHenModal currentId={currentId} setCurrentId={setCurrentId} />
     </div>

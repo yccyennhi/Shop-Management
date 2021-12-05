@@ -30,10 +30,8 @@ const validateMessages = {
 export default function PhieuHen({ currentId, setCurrentId }) {
   const { isShow } = useSelector(TaoPhieuHenModalState$);
   const [form] = Form.useForm();
-  const SP = useSelector(SanPhamsState$);
   const PH = useSelector(PhieuHensState$);
   const PBH = useSelector(PhieuBaoHanhsState$);
-  console.log("PBH", PBH);
   const dateNow = moment().toDate();
   const [data, setData] = useState({
     MaPH: "",
@@ -52,8 +50,6 @@ export default function PhieuHen({ currentId, setCurrentId }) {
   useEffect(() => {
     if (PhieuHenValue) setData(PhieuHenValue);
   }, [PhieuHenValue]);
-
-  console.log("PhieuHen", data);
 
   const dispatch = useDispatch();
 
@@ -76,27 +72,20 @@ export default function PhieuHen({ currentId, setCurrentId }) {
   }, [dispatch]);
 
   const onSubmit = React.useCallback(() => {
-    console.log("data", data);
     if (data.MaPBH !== "" || data.MaSP !== "" || data.MaPH !== "") {
       let listPH = PH.find(function (e) {
         return e.MaPH === data.MaPH;
       });
-      console.log("listPH", listPH);
 
       let listPBH = PBH.find(function (e) {
         return e.MaPBH === data.MaPBH;
       });
-      console.log("dataPBH", data.MaPBH);
 
-      console.log("listPBH", listPBH);
-
-      console.log(listPBH);
       if (listPBH == undefined) {
         messageError("Mã phiếu bảo hành không tồn tại");
       } else if (listPBH.MaSP != data.MaSP) {
         messageError("Mã sản phẩm không tồn tại");
       } else if (moment(data.NgayHen) < moment(dateNow)) {
-        console.log(moment().toDate());
         messageError("Ngày hẹn phải lớn hơn hôm nay");
       } else if (currentId) {
         if (moment(listPBH.NgayKT) > moment(dateNow)) {

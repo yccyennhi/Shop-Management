@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../redux/actions";
 import moment from "moment";
-import { PageHeader, Space, Card, DatePicker, Layout } from "antd";
+import { PageHeader, Space, Card, DatePicker, Layout, Radio } from "antd";
 import HangHoatable from "../../components/table/BaoCaoTable/HangHoatable";
+import HangHoaBarReport from "../../components/chart/HangHoaBarReport";
 
 import { BCHangHoasState$ } from "../../redux/selectors";
 
@@ -32,6 +33,16 @@ export default function BCHangHoaPage() {
     }
   }, [HangHoas, currentDate]);
 
+  /* #region  set kiểu hiển thị */
+  const [activeType, setActiveType] = useState("baoCao");
+
+  const typeShow = {
+    baoCao: <HangHoatable currentDataSource={currentDataSource} />,
+    bieuDo: <HangHoaBarReport highestSanPhamObj={getHighestSanPhamObj(currentDataSource)} /> ,
+  };
+
+  /* #endregion */
+
   const dateFormat = "DD/MM/YYYY";
   return (
     <Layout>
@@ -56,6 +67,23 @@ export default function BCHangHoaPage() {
           <div className="site-card-border-less-wrapper">
             <Space direction="vertical">
               <Card
+                title="Kiểu hiển thị"
+                bordered={false}
+                style={{ width: 250, color: COLOR.darkblue }}
+              >
+                <Radio.Group defaultValue={1}>
+                  <Space direction="vertical">
+                    <Radio value={1} onClick={() => setActiveType("baoCao")}>
+                      Báo cáo
+                    </Radio>
+                    <Radio value={2} onClick={() => setActiveType("bieuDo")}>
+                      Biểu đồ
+                    </Radio>
+                  </Space>
+                </Radio.Group>
+              </Card>
+
+              <Card
                 title="Thời gian áp dụng"
                 bordered={false}
                 style={{ width: 250, color: COLOR.darkblue }}
@@ -72,9 +100,7 @@ export default function BCHangHoaPage() {
           </div>
         </Sider>
         <Content style={{ padding: "17px 24px 24px" }}>
-          <div className="site-layout-content">
-            <HangHoatable currentDataSource={currentDataSource} />
-          </div>
+          <div className="site-layout-content">{typeShow[activeType]}</div>
         </Content>
       </Layout>
     </Layout>
@@ -161,4 +187,19 @@ export const thongKeHangHoa = (HangHoas, currentDate) => {
   );
   console.log(thongKe);
   return thongKe;
+};
+
+export const getHighestSanPhamObj = (currentDataSource) => {
+  const highestSanPhamObj = {};
+
+  Object.values(currentDataSource).forEach((SanPhamValue) => {
+    console.log('SanPhamValue',SanPhamValue)
+    const TenSP = SanPhamValue.TenSP;
+    highestSanPhamObj[TenSP] = {
+      SoLuong: SanPhamValue.SLXuat,
+      ThanhTien: SanPhamValue.GTXuat,
+    };
+  });
+  console.log(highestSanPhamObj);
+  return highestSanPhamObj;
 };

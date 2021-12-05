@@ -42,7 +42,11 @@ export default function KhachHangPage() {
       <Header>
         <Menubar />
       </Header>
-      <PageHeader className="site-page-header" title="Khách hàng" />
+      <PageHeader
+        onBack={() => window.history.back()}
+        className="site-page-header"
+        title="Khách hàng"
+      />
       <Layout>
         <Sider
           width={300}

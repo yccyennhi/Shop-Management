@@ -44,7 +44,11 @@ export default function KhuyenMaiPage() {
       </Header>
       <Layout>
         <Content>
-          <PageHeader className="site-page-header" title="Khuyến mãi" />
+          <PageHeader
+            onBack={() => window.history.back()}
+            className="site-page-header"
+            title="Khuyến mãi"
+          />
         </Content>
       </Layout>
       <Layout>

@@ -22,7 +22,11 @@ export default function KhuyenMaiPage() {
       <Header>
         <Menubar />
       </Header>
-      <PageHeader className="site-page-header" title="Tổng quan" />
+      <PageHeader
+        onBack={() => window.history.back()}
+        className="site-page-header"
+        title="Tổng quan"
+      />
       <Content style={{ padding: "0px 50px" }}>
         <div className="site-layout-content">
           <Space direction="vertical" size="large" style={{ width: "100%" }}>

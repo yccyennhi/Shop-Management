@@ -70,7 +70,11 @@ export default function BCCuoiNgayPage() {
       </Header>
       <Layout>
         <Content>
-          <PageHeader className="site-page-header" title="Báo cáo cuối ngày" />
+          <PageHeader
+            onBack={() => window.history.back()}
+            className="site-page-header"
+            title="Báo cáo cuối ngày"
+          />
         </Content>
       </Layout>
       <Layout>

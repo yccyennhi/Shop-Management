@@ -29,7 +29,11 @@ export default function DoiTraPage() {
       <Header>
         <Menubar />
       </Header>
-      <PageHeader className="site-page-header" title="Trả hàng" />
+      <PageHeader
+        onBack={() => window.history.back()}
+        className="site-page-header"
+        title="Trả hàng"
+      />
       <Content style={{ padding: "0px 50px" }}>
         <div className="site-layout-content">
           <Row justify="end">

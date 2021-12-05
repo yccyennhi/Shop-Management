@@ -71,7 +71,11 @@ export default function PhieuHenPage() {
         <Menubar />
       </Header>
       <Layout>
-        <PageHeader className="site-page-header" title="Phiếu hẹn" />
+        <PageHeader
+          onBack={() => window.history.back()}
+          className="site-page-header"
+          title="Phiếu hẹn"
+        />
       </Layout>
       <Layout>
         <Sider

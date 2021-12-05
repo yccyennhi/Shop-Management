@@ -57,7 +57,11 @@ export default function BCBanHangPage() {
       </Header>
       <Layout>
         <Content>
-          <PageHeader className="site-page-header" title="Báo cáo bán hàng" />
+          <PageHeader
+            onBack={() => window.history.back()}
+            className="site-page-header"
+            title="Báo cáo bán hàng"
+          />
         </Content>
       </Layout>
       <Layout>

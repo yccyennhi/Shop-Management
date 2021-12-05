@@ -42,7 +42,11 @@ export default function NhanVienPage() {
       <Header>
         <Menubar />
       </Header>
-      <PageHeader className="site-page-header" title="Nhân viên" />
+      <PageHeader
+        onBack={() => window.history.back()}
+        className="site-page-header"
+        title="Nhân viên"
+      />
       <Layout>
         <Sider
           width={300}

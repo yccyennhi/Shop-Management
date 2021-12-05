@@ -40,7 +40,11 @@ export default function BCHangHoaPage() {
       </Header>
       <Layout>
         <Content>
-          <PageHeader className="site-page-header" title="Báo cáo hàng hóa" />
+          <PageHeader
+            onBack={() => window.history.back()}
+            className="site-page-header"
+            title="Báo cáo hàng hóa"
+          />
         </Content>
       </Layout>
       <Layout>

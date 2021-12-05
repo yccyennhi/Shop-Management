@@ -26,7 +26,11 @@ export default function HoaDonPage() {
       <Header>
         <Menubar />
       </Header>
-      <PageHeader className="site-page-header" title="Hóa Đơn" />
+      <PageHeader
+        onBack={() => window.history.back()}
+        className="site-page-header"
+        title="Hóa Đơn"
+      />
       <Content style={{ padding: "0px 50px" }}>
         <div className="site-layout-content">
           <Row justify="end">

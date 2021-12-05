@@ -63,7 +63,11 @@ export default function PhieuNhapPage() {
         <Menubar />
       </Header>
       <Layout>
-        <PageHeader className="site-page-header" title="Nhập hàng" />
+        <PageHeader
+          onBack={() => window.history.back()}
+          className="site-page-header"
+          title="Nhập hàng"
+        />
       </Layout>
       <Layout>
         <Sider

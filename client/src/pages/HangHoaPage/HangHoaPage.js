@@ -56,7 +56,11 @@ export default function HangHoaPage() {
       </Header>
       <Layout>
         <Content>
-          <PageHeader className="site-page-header" title="Danh mục hàng hóa" />
+          <PageHeader
+            onBack={() => window.history.back()}
+            className="site-page-header"
+            title="Danh mục hàng hóa"
+          />
         </Content>
       </Layout>
       <Layout>

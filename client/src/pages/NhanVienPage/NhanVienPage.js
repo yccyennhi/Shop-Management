@@ -3,13 +3,14 @@ import { Button, Card, Layout, PageHeader, Radio, Row, Space } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import COLOR from "../../color";
+import Menubar from "../../components/header/Menubar/Menubar";
 import NhanVienModal from "../../components/modal/NhanVienModal/NhanVienModal";
 import NhanVienTable from "../../components/table/NhanVienTable/NhanVienTable";
 import * as actions from "../../redux/actions";
 import { showNhanVienModal } from "../../redux/actions";
 import { NhanViensState$ } from "../../redux/selectors";
 
-const { Content, Sider } = Layout;
+const { Content, Sider, Header } = Layout;
 
 export default function NhanVienPage() {
   const dispatch = useDispatch();
@@ -38,7 +39,14 @@ export default function NhanVienPage() {
 
   return (
     <Layout>
-      <PageHeader className="site-page-header" title="Nhân viên" />
+      <Header>
+        <Menubar />
+      </Header>
+      <PageHeader
+        onBack={() => window.history.back()}
+        className="site-page-header"
+        title="Nhân viên"
+      />
       <Layout>
         <Sider
           width={300}

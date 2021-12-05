@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import Logo from "../../../assets/Logo.png";
 import { Menu, Col, Row } from "antd";
 import { UserOutlined } from "@ant-design/icons";
@@ -6,12 +7,16 @@ import "./styles.css";
 const { SubMenu } = Menu;
 
 function Headerbar() {
-  return (
+  const history = useHistory();
+  const handleTongQuans = () => {
+    history.push("/TongQuans");
+  };
+    return (
     <div>
       <Row>
         <Col span={6}>
           <div className="logo">
-            <img src={Logo} alt="Website Logo"></img>
+            <img src={Logo} alt="Website Logo" onClick={handleTongQuans}></img>
           </div>
         </Col>
         <Col span={6} offset={12}>

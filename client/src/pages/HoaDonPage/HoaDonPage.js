@@ -1,11 +1,5 @@
 import React, { useCallback, useState } from "react";
-import {
-  PageHeader,
-  Row,
-  Button,
-  Space,
-  Layout
-} from "antd";
+import { PageHeader, Row, Button, Space, Layout } from "antd";
 import "./styles.css";
 import {
   PlusOutlined,
@@ -18,7 +12,8 @@ import { getHoaDons } from "../../redux/actions";
 import { Content } from "antd/lib/layout/layout";
 import { HoaDonsState$ } from "../../redux/selectors";
 import { useHistory } from "react-router-dom";
-
+import Menubar from "../../components/header/Menubar/Menubar";
+const { Header } = Layout;
 export default function HoaDonPage() {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -28,12 +23,23 @@ export default function HoaDonPage() {
   }, [dispatch]);
   return (
     <Layout>
-      <PageHeader className="site-page-header" title="Hóa Đơn" />
+      <Header>
+        <Menubar />
+      </Header>
+      <PageHeader
+        onBack={() => window.history.back()}
+        className="site-page-header"
+        title="Hóa Đơn"
+      />
       <Content style={{ padding: "0px 50px" }}>
         <div className="site-layout-content">
           <Row justify="end">
             <Space>
-              <Button type="primary" icon={<PlusOutlined /> } onClick={()=> history.push("/Sales")}>
+              <Button
+                type="primary"
+                icon={<PlusOutlined />}
+                onClick={() => history.push("/Sales")}
+              >
                 Thêm hóa đơn
               </Button>
               <Button type="primary" icon={<ImportOutlined />}>
@@ -44,10 +50,9 @@ export default function HoaDonPage() {
               </Button>
             </Space>
           </Row>
-          <DataTableHoaDon HoaDons = {HoaDons}/>
+          <DataTableHoaDon HoaDons={HoaDons} />
         </div>
       </Content>
     </Layout>
-    
   );
 }

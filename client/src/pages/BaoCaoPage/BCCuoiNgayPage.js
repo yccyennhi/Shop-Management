@@ -7,8 +7,9 @@ import CuoiNgaytable from "../../components/table/BaoCaoTable/CuoiNgaytable";
 
 import { CuoiNgaysState$ } from "../../redux/selectors";
 import COLOR from "../../color.js";
+import Menubar from "../../components/header/Menubar/Menubar";
 
-const { Content, Sider } = Layout;
+const { Content, Sider, Header } = Layout;
 
 export default function BCCuoiNgayPage() {
   const today = moment().startOf("day");
@@ -64,9 +65,16 @@ export default function BCCuoiNgayPage() {
 
   return (
     <Layout>
+      <Header>
+        <Menubar />
+      </Header>
       <Layout>
         <Content>
-          <PageHeader className="site-page-header" title="Báo cáo cuối ngày" />
+          <PageHeader
+            onBack={() => window.history.back()}
+            className="site-page-header"
+            title="Báo cáo cuối ngày"
+          />
         </Content>
       </Layout>
       <Layout>

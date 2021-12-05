@@ -12,8 +12,9 @@ import KhuyenMaiModal from "../../components/modal/KhuyenMaiModal/KhuyenMaiModal
 import COLOR from "../../color.js";
 import * as actions from "../../redux/actions";
 import { KhuyenMaisState$ } from "../../redux/selectors";
+import Menubar from "../../components/header/Menubar/Menubar";
 
-const { Content, Sider } = Layout;
+const { Content, Sider, Header } = Layout;
 
 export default function KhuyenMaiPage() {
   const [currentId, setCurrentId] = useState(null);
@@ -33,14 +34,21 @@ export default function KhuyenMaiPage() {
   const KhuyenMais = useSelector(KhuyenMaisState$);
   const [dataSoure, setdataSoure] = useState(KhuyenMais);
   React.useEffect(() => {
-    if(KhuyenMais) setdataSoure(KhuyenMais);
+    if (KhuyenMais) setdataSoure(KhuyenMais);
   }, [KhuyenMais]);
 
   return (
     <Layout>
+      <Header>
+        <Menubar />
+      </Header>
       <Layout>
         <Content>
-          <PageHeader className="site-page-header" title="Khuyến mãi" />
+          <PageHeader
+            onBack={() => window.history.back()}
+            className="site-page-header"
+            title="Khuyến mãi"
+          />
         </Content>
       </Layout>
       <Layout>

@@ -8,8 +8,9 @@ import BanHangColumnReport from "../../components/chart/BanHangColoumnReport";
 
 import { BCBanHangsState$ } from "../../redux/selectors";
 import COLOR from "../../color.js";
+import Menubar from "../../components/header/Menubar/Menubar";
 
-const { Content, Sider } = Layout;
+const { Content, Sider, Header } = Layout;
 const { RangePicker } = DatePicker;
 
 export default function BCBanHangPage() {
@@ -51,9 +52,16 @@ export default function BCBanHangPage() {
   const dateFormat = "DD/MM/YYYY";
   return (
     <Layout>
+      <Header>
+        <Menubar />
+      </Header>
       <Layout>
         <Content>
-          <PageHeader className="site-page-header" title="Báo cáo bán hàng" />
+          <PageHeader
+            onBack={() => window.history.back()}
+            className="site-page-header"
+            title="Báo cáo bán hàng"
+          />
         </Content>
       </Layout>
       <Layout>

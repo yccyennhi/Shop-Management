@@ -29,7 +29,8 @@ import SanPhamModal from "../../components/modal/SanPhamModal/SanPhamModal";
 
 import ThemPhieuNhaptable from "../../components/table/ThemPhieuNhaptable/ThemPhieuNhaptable";
 import { messageError, messageSuccess } from "../../components/message";
-const { Content, Sider } = Layout;
+import Menubar from "../../components/header/Menubar/Menubar";
+const { Content, Sider, Header } = Layout;
 
 const { Option } = AutoComplete;
 export default function ThemPhieuNhapPage({}) {
@@ -234,6 +235,9 @@ export default function ThemPhieuNhapPage({}) {
 
   return (
     <Layout>
+      <Header>
+        <Menubar />
+      </Header>
       <Layout>
         <PageHeader
           onBack={() => window.history.back()}

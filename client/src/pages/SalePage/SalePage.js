@@ -13,6 +13,7 @@ import {
   Tooltip,
   Form,
   message,
+  PageHeader,
   Divider,
   Popover,
 } from "antd";
@@ -320,8 +321,10 @@ export default function SalePage() {
         </label>
       </Col>
       <Divider type="vertical" />
-      <Col flex="80" >
-        <label style={{ textAlign: "center", fontWeight: "500" }}>Số lượng</label>
+      <Col flex="80">
+        <label style={{ textAlign: "center", fontWeight: "500" }}>
+          Số lượng
+        </label>
       </Col>
       <Divider type="vertical" />
       <Col flex="70">
@@ -353,7 +356,7 @@ export default function SalePage() {
   console.log(KH);
 
   const contentPopOver = (
-    <Col flex= '400'>
+    <Col flex="400">
       <Divider orientation="left">
         <label style={{ fontWeight: 500, fontSize: 14 }}>
           {"Nhập số tiền mặt: "}
@@ -394,7 +397,11 @@ export default function SalePage() {
           placeholder="Điểm tích lũy"
           min={0}
           //max={KH ? Math.min(dataHD.ThanhTien, KH.DiemTichLuy): 0}
-          max={KH ? Math.min(dataHD.TongTienHang - dataHD.GiamGia, KH.DiemTichLuy) : 0}
+          max={
+            KH
+              ? Math.min(dataHD.TongTienHang - dataHD.GiamGia, KH.DiemTichLuy)
+              : 0
+          }
           bordered={false}
           size="small"
           value={dataHD.DiemTru}
@@ -423,11 +430,17 @@ export default function SalePage() {
         position: "fixed",
       }}
     >
+      <PageHeader
+        onBack={() => window.history.back()}
+        className="site-page-header"
+        title="Báo cáo hàng hóa"
+      />
+
       <KhachHangModal currentId={currentId} setCurrentId={setCurrentId} />
       <Layout
         className="content"
         style={{
-          padding: '0 24',
+          padding: "0 24",
           overflow: "auto",
           width: 925,
           height: 570,

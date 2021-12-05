@@ -26,30 +26,6 @@ export const HighestSanPhamList = () => {
   doanhThu: BarReport (highestSanPhamObj, 1) ,
 };
 
-  // let dataBySoLuong = [];
-  // let dataByDoanhThu = [];
-
-  // useEffect(() => {
-  //   if (highestSanPhamObj) {
-  //     const arrBySoLuong = Object.entries(highestSanPhamObj).map(
-  //       ([key, value]) => ({
-  //         type: key,
-  //         sales: value.SoLuong,
-  //       })
-  //     );
-  //     dataBySoLuong = arrBySoLuong;
-
-  //     const arrByDoanhThu = Object.entries(highestSanPhamObj).map(
-  //       ([key, value]) => ({
-  //         type: key,
-  //         sales: value.ThanhTien,
-  //       })
-  //     );
-
-  //     dataByDoanhThu = arrByDoanhThu;
-      
-  //   }
-  // }, [highestSanPhamObj, dataBySoLuong, dataByDoanhThu]);
 
   const [activeTabKey, setActiveTabKey] = useState("soLuong");
 

@@ -27,7 +27,8 @@ import {
 import HangHoatable from "../../components/table/HangHoatable/HangHoatable.js";
 import { SanPhamsState$ } from "../../redux/selectors";
 import * as actions from "../../redux/actions";
-const { Content, Sider } = Layout;
+import Menubar from "../../components/header/Menubar/Menubar";
+const { Content, Sider, Header } = Layout;
 const { Text } = Typography;
 
 export default function HangHoaPage() {
@@ -50,9 +51,16 @@ export default function HangHoaPage() {
   });
   return (
     <Layout>
+      <Header>
+        <Menubar />
+      </Header>
       <Layout>
         <Content>
-          <PageHeader className="site-page-header" title="Danh mục hàng hóa" />
+          <PageHeader
+            onBack={() => window.history.back()}
+            className="site-page-header"
+            title="Danh mục hàng hóa"
+          />
         </Content>
       </Layout>
       <Layout>

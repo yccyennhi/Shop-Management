@@ -85,24 +85,55 @@ export const getRankingByDoanhThu = async (req, res) => {
 
 export const getHighestSanPhamList = async (req, res) => {
   const highestSanPhamList = {};
+  var startMonth = moment().startOf("month");
+  var endMonth = moment().endOf("month");
 
   try {
-    await CTHDModel.find().then((CTHDs) => {
-      if (CTHDs.length) {
-        Object.values(CTHDs).forEach((CTHD) => {
-          let types = CTHD.TenSP.concat(" (", CTHD.MauSac, ")");
-          if (!highestSanPhamList[types]) {
-            highestSanPhamList[types] = {
-              SoLuong: 0,
-              ThanhTien: 0,
-            };
-          }
-          highestSanPhamList[types]["SoLuong"] += CTHD.SoLuong;
-          highestSanPhamList[types]["ThanhTien"] += CTHD.ThanhTien;
+    await HoaDonModel.find({
+      // find in month
+      ThoiGian: { $gte: startMonth, $lte: endMonth },
+    }).then((HoaDons) => {
+      if (HoaDons.length) {
+        Object.values(HoaDons).forEach((HoaDon) => {
+          const CTHDs = HoaDon["CTHD"];
+          Object.values(CTHDs).forEach((CTHD) => {
+            let types = CTHD.TenSP.concat(" (", CTHD.MauSac, ")");
+            if (!highestSanPhamList[types]) {
+              highestSanPhamList[types] = {
+                SoLuong: 0,
+                ThanhTien: 0,
+              };
+            }
+            highestSanPhamList[types]["SoLuong"] += CTHD.SoLuong;
+            highestSanPhamList[types]["ThanhTien"] += CTHD.ThanhTien;
+          });
         });
       }
     });
-    console.log(highestSanPhamList);
+
+    await PhieuDoiTraModel.find({
+      // find in month
+      ThoiGian: { $gte: startMonth, $lte: endMonth },
+    }).then((DoiTras) => {
+      if (DoiTras.length) {
+        Object.values(DoiTras).forEach((DoiTra) => {
+          const CTPDTs = DoiTra["CTPDT"];
+          Object.values(CTPDTs).forEach((CTPDT) => {
+            let types = CTPDT.TenSP.concat(" (", CTPDT.MauSac, ")");
+            if (!highestSanPhamList[types]) {
+              highestSanPhamList[types] = {
+                SoLuong: 0,
+                ThanhTien: 0,
+              };
+            }
+            highestSanPhamList[types]["SoLuong"] -= CTPDT.SoLuong;
+            highestSanPhamList[types]["ThanhTien"] -= CTPDT.ThanhTien;
+          });
+        });
+      }
+    });
+
+    console.log("highestSanPhamList", highestSanPhamList);
     res.status(200).json(highestSanPhamList);
   } catch (err) {
     res.status(500).json({ error: err });

@@ -8,9 +8,10 @@ import HangHoatable from "../../components/table/BaoCaoTable/HangHoatable";
 import { BCHangHoasState$ } from "../../redux/selectors";
 
 import COLOR from "../../color.js";
+import Menubar from "../../components/header/Menubar/Menubar";
 const { RangePicker } = DatePicker;
 
-const { Content, Sider } = Layout;
+const { Content, Sider, Header } = Layout;
 
 export default function BCHangHoaPage() {
   const today = [moment().subtract(7, "day").startOf("day"), moment()];
@@ -34,9 +35,16 @@ export default function BCHangHoaPage() {
   const dateFormat = "DD/MM/YYYY";
   return (
     <Layout>
+      <Header>
+        <Menubar />
+      </Header>
       <Layout>
         <Content>
-          <PageHeader className="site-page-header" title="Báo cáo hàng hóa" />
+          <PageHeader
+            onBack={() => window.history.back()}
+            className="site-page-header"
+            title="Báo cáo hàng hóa"
+          />
         </Content>
       </Layout>
       <Layout>

@@ -42,13 +42,6 @@ export const getCuoiNgays = async (req, res) => {
 export const getBCBanHangs = async (req, res) => {
   const totalHoaDonByDay = {};
   try {
-    // var today = moment().startOf("day");
-    // var tomorrow = moment(today).endOf("day");
-    // const HoaDonsToday = await HoaDonModel.find({
-    //   // find in today
-    //   ThoiGian: { $gte: today, $lte: tomorrow },
-    // });
-
     await HoaDonModel.find().then((HoaDonsList) => {
       if (HoaDonsList.length) {
         Object.values(HoaDonsList).forEach((HoaDon) => {
@@ -159,32 +152,39 @@ export const getBCHangHoas = async (req, res) => {
       }
     });
 
-    await CTHDModel.find().then((CTHDs) => {
-      if (CTHDs.length) {
-        Object.values(CTHDs).forEach((CTHD) => {
-          const MaSP = CTHD.MaSP;
-          hangHoaList[MaSP]["Xuat"].push({
-            Ngay: CTHD.ThoiGian,
-            SoLuong: CTHD.SoLuong,
-            ThanhTien: CTHD.GiaVon * CTHD.SoLuong,
+    
+    await HoaDonModel.find().then((HoaDons) => {
+      if (HoaDons.length) {
+        Object.values(HoaDons).forEach((HoaDon) => {
+          const CTHDs = HoaDon["CTHD"];
+          Object.values(CTHDs).forEach((CTHD) => {
+            const MaSP = CTHD.MaSP;
+            hangHoaList[MaSP]["Xuat"].push({
+              Ngay: HoaDon.ThoiGian,
+              SoLuong: CTHD.SoLuong,
+              ThanhTien: CTHD.GiaVon * CTHD.SoLuong,
+            });
           });
         });
       }
     });
 
-    await CTPDTModel.find().then((CTDTs) => {
-      if (CTDTs.length) {
-        Object.values(CTDTs).forEach((CTDT) => {
-          const MaSP = CTDT.MaSP;
-          hangHoaList[MaSP]["Xuat"].push({
-            Ngay: CTDT.ThoiGian,
-            SoLuong: -CTDT.SoLuong,
-            ThanhTien: -(CTDT.GiaVon * CTDT.SoLuong),
+    await PhieuDoiTraModel.find().then((DoiTras) => {
+      if (DoiTras.length) {
+        Object.values(DoiTras).forEach((DoiTra) => {
+          const CTPDTs = DoiTra["CTPDT"];
+          Object.values(CTPDTs).forEach((CTDT) => {
+            const MaSP = CTDT.MaSP;
+            hangHoaList[MaSP]["Xuat"].push({
+              Ngay: DoiTra.ThoiGian,
+              SoLuong: -CTDT.SoLuong,
+              ThanhTien: -(CTDT.GiaVon * CTDT.SoLuong),
+            });
           });
         });
       }
     });
-
+    console.log('hangHoaList',hangHoaList);
     res.status(200).json(hangHoaList);
   } catch (err) {
     res.status(500).json({ error: err });

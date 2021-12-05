@@ -33,9 +33,9 @@ function App() {
           </Header>
         </Layout>
         <Layout className="layout">
-          <Header>
+          {/* <Header>
             <Menubar />
-          </Header>
+          </Header> */}
           {/* <Content style={{ padding: "50px 50px" }}>
             <div className="site-layout-content"> */}
           <Switch>
@@ -48,6 +48,7 @@ function App() {
             <Route path="/KhachHangs" exact component={KhachHangPage} />
             <Route path="/NhanViens" exact component={NhanVienPage} />
             <Route path="/TongQuans" exact component={DashboardPage} />
+            <Route path="/" exact component={DashboardPage} />
             <Route path="/CuoiNgays" exact component={BCCuoiNgayPage} />
             <Route path="/BCBanHangs" exact component={BCBanHangPage} />
             <Route path="/BCHangHoas" exact component={BCHangHoaPage} />

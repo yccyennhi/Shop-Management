@@ -25,11 +25,10 @@ import {
 } from "@ant-design/icons";
 import * as actions from "../../redux/actions";
 import PhieuNhaptable from "../../components/table/PhieuNhaptable/PhieuNhaptable";
-import {
-  PhieuNhapsState$,
-} from "../../redux/selectors";
+import { PhieuNhapsState$ } from "../../redux/selectors";
+import Menubar from "../../components/header/Menubar/Menubar";
 const { Text } = Typography;
-const { Content, Sider } = Layout;
+const { Content, Sider, Header } = Layout;
 
 export default function PhieuNhapPage() {
   const history = useHistory();
@@ -60,8 +59,15 @@ export default function PhieuNhapPage() {
   }
   return (
     <Layout>
+      <Header>
+        <Menubar />
+      </Header>
       <Layout>
-        <PageHeader className="site-page-header" title="Nhập hàng" />
+        <PageHeader
+          onBack={() => window.history.back()}
+          className="site-page-header"
+          title="Nhập hàng"
+        />
       </Layout>
       <Layout>
         <Sider
@@ -177,7 +183,9 @@ export default function PhieuNhapPage() {
                         <Text strong style={{ fontSize: "1.5rem" }}>
                           {PNHT.length}
                         </Text>
-                        <Text type="secondary">Phiếu nhập hoàn thành trong tháng</Text>
+                        <Text type="secondary">
+                          Phiếu nhập hoàn thành trong tháng
+                        </Text>
                       </Space>
                     </Space>
                   </Space>

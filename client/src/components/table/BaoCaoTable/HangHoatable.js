@@ -207,6 +207,7 @@ function HangHoatable({ currentDataSource }) {
               prefix: <SearchOutlined />,
             },
           }}
+          scroll={{x:200}}
           columns={columns}
           rowKey="MaSP"
           dataSource={dataSource}

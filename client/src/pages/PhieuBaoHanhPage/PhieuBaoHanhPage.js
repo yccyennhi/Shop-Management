@@ -29,8 +29,9 @@ import {
   isloadingPhieuBaoHanhsState$,
 } from "../../redux/selectors";
 import PhieuBaoHanhModal from "../../components/modal/PhieuBaoHanhModal/PhieuBaoHanhModal";
+import Menubar from "../../components/header/Menubar/Menubar";
 const { Text } = Typography;
-const { Content, Sider } = Layout;
+const { Content, Sider, Header } = Layout;
 
 export default function PhieuBaoHanhPage() {
   const [currentId, setCurrentId] = useState(null);
@@ -61,8 +62,15 @@ export default function PhieuBaoHanhPage() {
   }
   return (
     <Layout>
+      <Header>
+        <Menubar />
+      </Header>
       <Layout>
-        <PageHeader className="site-page-header" title="Bảo hành" />
+        <PageHeader
+          onBack={() => window.history.back()}
+          className="site-page-header"
+          title="Bảo hành"
+        />
       </Layout>
       <Layout>
         <Sider
@@ -76,7 +84,7 @@ export default function PhieuBaoHanhPage() {
               bordered={false}
               style={{ width: 250 }}
             >
-              <Radio.Group  defaultValue={0}>
+              <Radio.Group defaultValue={0}>
                 <Space direction="vertical">
                   <Radio
                     value={0}

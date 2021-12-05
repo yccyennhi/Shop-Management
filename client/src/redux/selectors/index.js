@@ -22,6 +22,8 @@ export const CTPDTsState$ = (state) => state.CTPDTs.data;
 export const SanPhamsState$ = (state) => state.SanPhams.data;
 export const isloadingSanPhamsState$ = (state) => state.SanPhams.isLoading;
 export const TaoSanPhamModalState$ = (state) => state.TaoSanPhamModal;
+export const ArrHangHoaNhapState$ = (state) => state.ArrHangHoaNhap;
+
 
 //PhieuBaoHanh
 export const TaoPhieuBaoHanhModalState$ = (state) => state.TaoPhieuBaoHanhModal;

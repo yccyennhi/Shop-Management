@@ -24,6 +24,7 @@ import {
   PhieuNhapsState$,
   SanPhamsState$,
   ThemPhieuNhapPageState$,
+  ArrHangHoaNhapState$,
 } from "../../redux/selectors";
 import SanPhamModal from "../../components/modal/SanPhamModal/SanPhamModal";
 
@@ -41,10 +42,13 @@ export default function ThemPhieuNhapPage({}) {
   const SP = useSelector(SanPhamsState$);
   const PN = useSelector(PhieuNhapsState$);
   const id = useSelector(ThemPhieuNhapPageState$);
+  const Arr = useSelector(ArrHangHoaNhapState$);
+
   const history = useHistory();
   const handleNhapHang = () => {
     history.push("/PhieuNhaps");
   };
+
   const [dataSource, setDataSource] = useState([
     {
       MaSP: "",
@@ -93,7 +97,16 @@ export default function ThemPhieuNhapPage({}) {
 
   React.useEffect(() => {
     dispatch(actions.getSanPhams.getSanPhamsRequest());
-  }, [dispatch]);
+    if (Arr != null) {
+      console.log(Arr);
+      if (Arr?.arr?.payload?.length > 0) {
+        let listSP = SP.find((e) => e._id == Arr?.arr?.payload[0]);
+        setMaSP(listSP?.MaSP);
+        console.log(listSP);
+        const move = Arr?.arr?.payload?.shift();
+      }
+    }
+  }, [dispatch, MaSP, Arr]);
 
   const openCreateSanPhamModal = React.useCallback(() => {
     dispatch(actions.showTaoSanPhamModal());

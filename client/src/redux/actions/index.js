@@ -289,6 +289,7 @@ export const showTaoSanPhamModal = createAction("SHOW_TAOSANPHAM_MODAL");
 export const hideTaoSanPhamModal = createAction("HIDE_TAOSANPHAM_MODAL");
 
 export const setIdThemPhieuNhapPage = createAction("SET_IDTHEMPHIEUNHAP_PAGE");
+export const setArrHangHoaNhap = createAction("SET_ARRHANGHOANHAP");
 
 
 export const showTaoPhieuBaoHanhModal = createAction("SHOW_TAOPHIEUBAOHANH_MODAL");

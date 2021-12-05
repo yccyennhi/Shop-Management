@@ -14,6 +14,7 @@ import {
   Avatar,
 } from "antd";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import ExpandedRowRender from "./ExpandedRowRender";
 import {
   SearchOutlined,
@@ -23,6 +24,7 @@ import {
 import {
   SanPhamsState$,
   isloadingSanPhamsState$,
+  ArrHangHoaNhapState$,
 } from "../../../redux/selectors";
 import * as actions from "../../../redux/actions";
 const { Search } = Input;
@@ -115,6 +117,11 @@ function HangHoatable({ trangthai, baohanh, currentId, setCurrentId }) {
       setSanPhams(listSP);
     }
   }, [trangthai, baohanh]);
+  const history = useHistory();
+  const movetoNhapHangPage = () => {
+    dispatch(actions.setIdThemPhieuNhapPage(""));
+    history.push("/ThemPhieuNhaps");
+  };
   const dataSource = SanPhams;
   const columns = [
     {
@@ -333,9 +340,11 @@ function HangHoatable({ trangthai, baohanh, currentId, setCurrentId }) {
     loading: false,
   });
 
-  console.log("selectedRowKeys", select);
-
   const { selectedRowKeys, loading } = select;
+  React.useEffect(() => {
+    console.log("select ee", select);
+    setSelect(select);
+  }, [select]);
 
   const rowSelection = {
     selectedRowKeys,
@@ -347,45 +356,46 @@ function HangHoatable({ trangthai, baohanh, currentId, setCurrentId }) {
     },
   };
   const hasSelected = selectedRowKeys.length > 0;
-  function handleButtonClick(e) {
-    message.info("Click on left button.");
-    console.log("click left button", e);
-  }
 
-  function handleMenuClick(e) {
-    message.info("Click on menu item.");
-    console.log("click", e);
-  }
+  const handleNhapHang = React.useCallback(() => {
+    dispatch(actions.setArrHangHoaNhap(select.selectedRowKeys));
+    console.log("select.selectedRowKeys", select.selectedRowKeys);
+    movetoNhapHangPage();
+  }, [dispatch, select]);
   const menu = (
-    <Menu onClick={handleMenuClick}>
-      <Menu.Item key="1">Nhập hàng</Menu.Item>
+    <Menu>
+      <Menu.Item key="1" onClick={handleNhapHang}>
+        Nhập hàng
+      </Menu.Item>
     </Menu>
   );
   return (
     <div>
       <Row justify="end">
-        <Space direction="horizontal" style={{ paddingTop: 10, marginBottom: 16 }}>
-            <span style={{ marginRight: 8 }}>
-              {hasSelected
-                ? `Có ${selectedRowKeys.length} hàng hóa được chọn`
-                : ""}
-            </span>
-            <Dropdown overlay={menu} disabled={!hasSelected}>
-              <Button>
-                Thao tác <DownOutlined />
-              </Button>
-            </Dropdown>
+        <Space
+          direction="horizontal"
+          style={{ paddingTop: 10, marginBottom: 16 }}
+        >
+          <span style={{ marginRight: 8 }}>
+            {hasSelected
+              ? `Có ${selectedRowKeys.length} hàng hóa được chọn`
+              : ""}
+          </span>
+          <Dropdown overlay={menu} disabled={!hasSelected}>
+            <Button>
+              Thao tác <DownOutlined />
+            </Button>
+          </Dropdown>
           <ExportTableButton
             dataSource={dataSource}
             columns={columns}
-            btnProps={{  icon: <FileExcelOutlined /> }}
+            btnProps={{ icon: <FileExcelOutlined /> }}
             showColumnPicker={true}
             showColumnPickerProps={{ id: "Thêm hàng hóa" }}
             fileName="HangHoaCSV"
           >
             Tải file CSV
           </ExportTableButton>
-
         </Space>
       </Row>
 

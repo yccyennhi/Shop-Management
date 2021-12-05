@@ -13,6 +13,7 @@ import {
   Tooltip,
   Form,
   message,
+  PageHeader,
   Divider,
   Popover,
 } from "antd";
@@ -85,8 +86,8 @@ export default function SalePage() {
     ThanhTien: 0,
     TienKhachTra: 0,
     TienTraKhach: 0,
-    GhiChu: '',
-    CTHD:[]
+    GhiChu: "",
+    CTHD: [],
   });
 
   const [textInputKH, setTextInputKH] = useState();
@@ -256,7 +257,7 @@ export default function SalePage() {
     }
     dataHD.CTHD = SPsInfo;
     dispatch(actions.createHoaDon.createHoaDonRequest(dataHD));
-    
+
     localStorage.setItem("HoaDon", JSON.stringify(dataHD));
     localStorage.setItem("CTHDs", JSON.stringify(SPsInfo));
     localStorage.setItem("NV", JSON.stringify(nv));
@@ -279,8 +280,8 @@ export default function SalePage() {
       ThanhTien: 0,
       TienKhachTra: 0,
       TienTraKhach: 0,
-      GhiChu: '',
-      CTHD: []
+      GhiChu: "",
+      CTHD: [],
     });
     setSPsInfo([]);
   }, [dispatch, dataHD, SPsInfo]);
@@ -343,16 +344,14 @@ export default function SalePage() {
 
   const contentPopOver = (
     <>
-    <label style = {{fontWeight: 600}}>{'Nhập số tiền: '}</label>
+      <label style={{ fontWeight: 600 }}>{"Nhập số tiền: "}</label>
       <InputNumber
         placeholder="Tiền khách trả"
         min={0}
         bordered={false}
         value={dataHD.TienKhachTra}
         size="small"
-        formatter={(value) =>
-          `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-        }
+        formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
         onChange={(e) =>
           setDataHD({
             ...dataHD,
@@ -370,7 +369,7 @@ export default function SalePage() {
         }}
       />
     </>
-  )
+  );
 
   return (
     <Layout
@@ -383,6 +382,13 @@ export default function SalePage() {
         position: "fixed",
       }}
     >
+ 
+          <PageHeader
+            onBack={() => window.history.back()}
+            className="site-page-header"
+            title="Báo cáo hàng hóa"
+          />
+
       <KhachHangModal currentId={currentId} setCurrentId={setCurrentId} />
       <Layout
         className="content"
@@ -432,7 +438,9 @@ export default function SalePage() {
                 onClick={() => {
                   setonCollap(!onCollap);
                   setpagesize(!onCollap ? 3 : 7);
-                  setSPSearch(SanPhams.filter(sp => sp.TrangThai === 'Đang kinh doanh'));
+                  setSPSearch(
+                    SanPhams.filter((sp) => sp.TrangThai === "Đang kinh doanh")
+                  );
                 }}
               >
                 Danh sách sản phẩm
@@ -616,7 +624,7 @@ export default function SalePage() {
             labelAlign="left"
           >
             <Popover
-              content = {contentPopOver}
+              content={contentPopOver}
               placement="leftBottom"
               //title= 'Nhập số tiền'
               //title = {contentPopOver}
@@ -630,7 +638,7 @@ export default function SalePage() {
                   marginRight: 10,
                   borderBottomStyle: "solid",
                   borderBottomWidth: 1,
-                  borderBottomColor: 'lightgray'
+                  borderBottomColor: "lightgray",
                 }}
                 type="text"
               >
@@ -650,21 +658,21 @@ export default function SalePage() {
           <Form.Item style={{ margin: 0, height: 30 }} wrapperCol={30}>
             <Input.TextArea
               maxLength={150}
-              showCount ={true}
+              showCount={true}
               prefix={<EditOutlined />}
               bordered={false}
               autoSize={true}
-              value = {dataHD.GhiChu}
+              value={dataHD.GhiChu}
               placeholder="Ghi chú"
               style={{
                 borderBottomStyle: "solid",
                 borderColor: "lightgrey",
                 borderWidth: "2px",
               }}
-              onChange = {(e) => setDataHD({...dataHD, GhiChu: e.target.value})}
+              onChange={(e) => setDataHD({ ...dataHD, GhiChu: e.target.value })}
             />
           </Form.Item>
-          <Form.Item wrapperCol={30} style = {{marginTop: 70}}>
+          <Form.Item wrapperCol={30} style={{ marginTop: 70 }}>
             <Button
               type="primary"
               block

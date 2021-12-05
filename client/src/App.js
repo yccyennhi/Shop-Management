@@ -48,6 +48,7 @@ function App() {
             <Route path="/KhachHangs" exact component={KhachHangPage} />
             <Route path="/NhanViens" exact component={NhanVienPage} />
             <Route path="/TongQuans" exact component={DashboardPage} />
+            <Route path="/" exact component={DashboardPage} />
             <Route path="/CuoiNgays" exact component={BCCuoiNgayPage} />
             <Route path="/BCBanHangs" exact component={BCBanHangPage} />
             <Route path="/BCHangHoas" exact component={BCHangHoaPage} />

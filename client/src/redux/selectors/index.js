@@ -33,7 +33,7 @@ export const isloadingPhieuBaoHanhsState$ = (state) => state.PhieuBaoHanhs.isLoa
 export const PhieuHensState$ = (state) => state.PhieuHens.data;
 export const isloadingPhieuHensState$ = (state) => state.PhieuHens.isLoading;
 export const TaoPhieuHenModalState$ = (state) => state.TaoPhieuHenModal;
-
+export const PhieuHenBanHangModalState$ = (state) => state.PhieuHenBanHangModal.isShow;
 
 //TongQuan
 export const TongQuanStatistics$ =(state) => state.TongQuans.statistics;

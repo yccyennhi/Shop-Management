@@ -52,12 +52,9 @@ export default function PhieuBaoHanhPage() {
 
   const openCreatePhieuBaoHanhModal = React.useCallback(() => {
     dispatch(actions.showTaoPhieuBaoHanhModal());
-    console.log("isshow", isShow);
   }, [dispatch]);
 
   function onChange(date, dateString) {
-    console.log(date, "datétring", dateString);
-    console.log(moment(date).format("M"));
     setThang(moment(date).format("M"));
   }
   return (

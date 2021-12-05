@@ -2,7 +2,7 @@ import { HoaDonModel } from "../models/HoaDonModel.js";
 import { KhuyenMaiModel } from "../models/KhuyenMaiModel.js";
 import { SanPhamModel } from "../models/SanPhamModel.js";
 import { PhieuBaoHanhModel } from "../models/PhieuBaoHanhModel.js";
-import {Modal} from "antd"
+import { Modal } from "antd";
 
 import moment from "moment";
 
@@ -90,14 +90,24 @@ export const createHoaDon = async (req, res) => {
             SPBH = await PhieuBaoHanhModel.findOne({ MaPBH: Ma });
             console.log(SPBH);
           } while (SPBH !== null);
+          moment.addRealMonth = function addRealMonth(d) {
+            var fm = moment(d).add(SP.ThoiGianBaoHanh, "M");
+            var fmEnd = moment(fm).endOf("month");
+            return d.date() != fm.date() &&
+              fm.isSame(fmEnd.format("YYYY-MM-DD"))
+              ? fm.add(1, "d")
+              : fm;
+          };
+          var nextMonth = moment.addRealMonth(moment(CTHD.createdAt));
           const dataPBH = {
             MaPBH: Ma,
             MaHD: HoaDon.MaHD,
             MaSP: CTHD.MaSP,
-            NgayBD: Date.now(),
-            NgayKT: Date.now(),
+            NgayBD: moment(CTHD.createdAt),
+            NgayKT: nextMonth,
           };
           const PhieuBaoHanh = new PhieuBaoHanhModel(dataPBH);
+          console.log(dataPBH);
           await PhieuBaoHanh.save();
         }
       }

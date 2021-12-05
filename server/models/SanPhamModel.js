@@ -36,6 +36,10 @@ const schema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    ThoiGianBaoHanh: {
+      type: Number,
+      default: 0,
+    },
     MoTa: {
       type: String,
       default: "",

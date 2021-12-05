@@ -105,6 +105,9 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
               <Descriptions.Item label="Tồn kho">
                 {record.TonKho}
               </Descriptions.Item>
+              <Descriptions.Item label="Thời gian bảo hành">
+                {record.ThoiGianBaoHanh} tháng
+              </Descriptions.Item>
             </Descriptions>
           </Col>
         </Row>

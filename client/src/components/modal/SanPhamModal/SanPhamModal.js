@@ -58,6 +58,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
       GiaVon: 0,
       GiaBan: 0,
       TonKho: 0,
+      ThoiGianBaoHanh:0,
       TrangThai: "Hết hàng",
       BaoHanh: "Có bảo hành",
       HinhAnh: "",
@@ -71,7 +72,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
   const handleCancel = React.useCallback(() => {
     setTrangthai(false);
 
-    dispatch(hideTaoSanPhamModal())
+    dispatch(hideTaoSanPhamModal());
     if (currentId) {
       setCurrentId(null);
       form.resetFields();
@@ -85,6 +86,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
       GiaVon: 0,
       GiaBan: 0,
       TonKho: 0,
+      ThoiGianBaoHanh: 0,
       TrangThai: "Hết hàng",
       BaoHanh: "Có bảo hành",
       HinhAnh: "",
@@ -110,6 +112,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
       GiaVon: 0,
       GiaBan: 0,
       TonKho: 0,
+      ThoiGianBaoHanh: 0,
       TrangThai: "Hết hàng",
       BaoHanh: "Có bảo hành",
       HinhAnh: "",
@@ -122,16 +125,19 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
       data.GiaBan < 0 ||
       data.GiaVon < 0 ||
       data.Size < 0 ||
-      data.TonKho < 0
+      data.TonKho < 0 ||
+      data.ThoiGianBaoHanh < 0 
     ) {
-      messageError("Vui lòng nhập đúng thông tin!");
+      messageError("Vui lòng nhập đúng thông tin");
     } else if (
       data.MaSP == "" ||
       data.TenSP == "" ||
       data.MauSac == "" ||
       data.LoaiHang == "" ||
       data.GiaBan == "" ||
-      data.GiaBan == ""
+      data.GiaVon == "" ||
+      data.ThoiGianBaoHanh == ""
+
     ) {
       messageError("Vui lòng nhập đầy đủ thông tin");
     } else {
@@ -165,12 +171,13 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
         validateMessages={validateMessages}
         form={form}
         labelCol={{
-          span: 4,
+          span: 5,
         }}
         wrapperCol={{
-          span: 50,
+          span: 30,
         }}
         layout="horizontal"
+        
       >
         <Form.Item
           label="Mã hàng"
@@ -295,6 +302,21 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
             <Option value="Không bảo hành">Không bảo hành</Option>
             <Option value="Có bảo hành">Có bảo hành</Option>
           </Select>
+        </Form.Item>
+        <Form.Item
+          label="Thời gian bảo hành"
+          defaultValue={data.ThoiGianBaoHanh}
+          tooltip="Số tháng bảo hành của sản phẩm"
+        >
+          <InputNumber
+            disabled={data.BaoHanh !== "Có bảo hành"}
+            value={data.ThoiGianBaoHanh}
+            onChange={(e) => {
+              setData({ ...data, ThoiGianBaoHanh: e });
+            }}
+            defaultValue={data.TonKho}
+            style={{ width: 120 }}
+          />
         </Form.Item>
         <Form.Item name="MoTa" label="Mô tả">
           <Input

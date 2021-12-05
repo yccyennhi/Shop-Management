@@ -3,6 +3,10 @@
     padding: 24;
     background: #fff;
   }
+  .site-layout-content-2 {
+    min-height: 280;
+    padding: 24;
+  }
   #components-layout-demo-top .logo {
     float: left;
     width: 100%;

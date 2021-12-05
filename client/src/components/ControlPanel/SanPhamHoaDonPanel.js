@@ -34,7 +34,7 @@ export default function SanPhamTraHang({ sp, SPPanelChange, SPPanelRemove }) {
               {data.TenSP}
             </label>
           </Col>
-          <Col flex="10%" style={{ marginRight: "2%" }}>
+          <Col flex="10%" style={{ marginRight: "1%" }}>
             <InputNumber
               min={0}
               max={data.TonKho}
@@ -62,7 +62,7 @@ export default function SanPhamTraHang({ sp, SPPanelChange, SPPanelRemove }) {
               }}
             />
           </Col>
-          <Col flex="10%">
+          <Col flex="10%" style={{ marginRight: "1%" }}>
             <label style={{ textAlign: "right" }}>
               {`${data.DonGia}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
             </label>

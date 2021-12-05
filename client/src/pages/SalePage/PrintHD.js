@@ -31,6 +31,8 @@ export default function PrintHD({ st }) {
                 Xuất file pdf!{st}
               </Button>
             )}
+            onAfterPrint ={() =>  history.push("/Sales")}
+            //pageStyle = {'A4'}
             content={() => componentRef.current}
           />
           <ComponentToPrint ref={componentRef} />

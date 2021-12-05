@@ -3,6 +3,7 @@ import { KhuyenMaiModel } from "../models/KhuyenMaiModel.js";
 import { SanPhamModel } from "../models/SanPhamModel.js";
 
 import moment from "moment";
+import { KhachHangModel } from "../models/KhachHangModel.js";
 
 export const getHoaDons = async (req, res) => {
   try {
@@ -55,26 +56,30 @@ export const createHoaDon = async (req, res) => {
     const newHoaDon = req.body;
 
     const HoaDon = new HoaDonModel(newHoaDon);
+    
     await HoaDon.save();
-    const KM = await KhuyenMaiModel.findOne({ _id: HoaDon.idKM });
-    KM.SoLuong -= 1;
-    if (KM.SoLuong === 0) KM.TrangThai = false;
-    console.log(KM);
-    const KhuyenMai = await KhuyenMaiModel.findOneAndUpdate(
-      { _id: KM._id },
-      KM,
-      { new: true }
-    );
-    HoaDon.CTHD.map(async(CTHD) => {
+
+    if (HoaDon.MaKM != "KM000") {
+      const KM = await KhuyenMaiModel.findOne({ _id: HoaDon.idKM });
+      KM.SoLuong -= 1;
+      if (KM.SoLuong === 0) KM.TrangThai = false;
+      await KhuyenMaiModel.findOneAndUpdate({ _id: KM._id }, KM, { new: true });
+    }
+
+    if (HoaDon.MaKH != "KH000") {
+      const KH = await KhachHangModel.findOne({ MaKH: HoaDon.MaKH });
+      KH.DiemTichLuy =
+        KH.DiemTichLuy - HoaDon.DiemTru + parseInt(HoaDon.ThanhTien / 100);
+      await KhachHangModel.findOneAndUpdate({ _id: KH._id }, KH, { new: true });
+    }
+    HoaDon.CTHD.map(async (CTHD) => {
       const SP = await SanPhamModel.findOne({ _id: CTHD.idSP });
       SP.TonKho = SP.TonKho - CTHD.SoLuong;
       if (SP.SoLuong === 0 && SP.TrangThai === "Đang kinh doanh")
         SP.TrangThai = "Hết hàng";
-      const SanPham = await SanPhamModel.findOneAndUpdate(
-        { _id: SP._id },
-        SP,
-        { new: true }
-      );
+      const SanPham = await SanPhamModel.findOneAndUpdate({ _id: SP._id }, SP, {
+        new: true,
+      });
     });
     res.status(200).json(HoaDon);
   } catch (err) {

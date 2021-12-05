@@ -38,9 +38,11 @@ import SanPhamHoaDonPanel from "../../components/ControlPanel/SanPhamHoaDonPanel
 import { showKhachHangModal } from "../../redux/actions";
 import KhachHangModal from "../../components/modal/KhachHangModal/KhachHangModal";
 import { useHistory } from "react-router-dom";
+
 const { Content, Sider } = Layout;
 
 export default function SalePage() {
+  //Khai báo
   const dispatch = useDispatch();
   const history = useHistory();
   const dateNow = moment().toDate();
@@ -56,15 +58,16 @@ export default function SalePage() {
   const [onCollap, setonCollap] = useState(0);
   const [pagesize, setpagesize] = useState(7);
   const [SPSearchs, setSPSearch] = useState([]);
+  const [KH, setKH] = useState();
+  const [DiemTichLuy, setDiemTichLuy] = useState(0);
+
+  //Đọc + load dữ liệu
   React.useEffect(() => {
     dispatch(actions.getHoaDons.getHoaDonsRequest());
     dispatch(actions.getSanPhams.getSanPhamsRequest());
     dispatch(actions.getKhuyenMais.getKhuyenMaisRequest());
     dispatch(actions.getNhanViens.getNhanViensRequest());
     dispatch(actions.getKhachHangs.getKhachHangsRequest());
-  }, [dispatch]);
-  const openKhachHangModal = useCallback(() => {
-    dispatch(showKhachHangModal());
   }, [dispatch]);
 
   const [dataHD, setDataHD] = React.useState({
@@ -85,11 +88,9 @@ export default function SalePage() {
     ThanhTien: 0,
     TienKhachTra: 0,
     TienTraKhach: 0,
-    GhiChu: '',
-    CTHD:[]
+    GhiChu: "",
+    CTHD: [],
   });
-
-  const [textInputKH, setTextInputKH] = useState();
 
   const optionNV = React.useMemo(() => {
     return NhanViens.map((NV) => ({
@@ -108,9 +109,13 @@ export default function SalePage() {
   const optionKH = React.useMemo(() => {
     return KhachHangs.map((KH) => ({
       value: KH.MaKH,
-      label: KH.MaKH + " " + KH.TenKH,
+      label: KH.TenKH + "-" + KH.SDT + " (" + KH.DiemTichLuy + "đ)",
     }));
   }, [KhachHangs]);
+
+  const openKhachHangModal = useCallback(() => {
+    dispatch(showKhachHangModal());
+  }, [dispatch]);
 
   const filter = (inputValue, path) => {
     return path.some(
@@ -121,15 +126,15 @@ export default function SalePage() {
 
   const ObjectSP = (sp) => (
     <Tooltip title={sp.TenSP + " (" + sp.MoTa + ")"}>
-      <Button style={{ height: "130px", width: "110px", margin: "1px" }}>
+      <Button style={{ height: "130", width: "110", margin: "1" }}>
         <Row>
           <Image width={90} height={90} src={sp.HinhAnh} />
         </Row>
         <Row>
-          <h5 style={{ width: "100px", textAlign: "center", marginBottom: -2 }}>
+          <h5 style={{ width: "100", textAlign: "center", marginBottom: -2 }}>
             Mã SP: {sp.MaSP}
           </h5>
-          <h5 style={{ width: "100px", textAlign: "center" }}>
+          <h5 style={{ width: "100", textAlign: "center" }}>
             Giá: {sp.GiaBan}
           </h5>
         </Row>
@@ -184,7 +189,7 @@ export default function SalePage() {
     });
     for (let i = index; i < SPsInfo.length - 1; i++) {
       SPsInfo[i] = SPsInfo[i + 1];
-      SPsInfo[i].STT = index + 1;
+      SPsInfo[i].STT = i + 1;
     }
     SPsInfo.splice(SPsInfo.length - 1, 1);
     console.log(SPsInfo);
@@ -217,6 +222,12 @@ export default function SalePage() {
     });
   };
 
+  const KhachHangChange = (e) => {
+    if (!e || e === "KH000") setKH();
+    else setKH(KhachHangs.find((kh) => e === kh.MaKH));
+    setDataHD({ ...dataHD, DiemTru: 0 });
+  };
+
   if (GiaTriKM > 0) {
     dataHD.GiamGia = parseInt((GiaTriKM * dataHD.TongTienHang) / 100);
   } else dataHD.ThanhTien = dataHD.TongTienHang;
@@ -224,8 +235,9 @@ export default function SalePage() {
     dataHD.TienTraKhach =
       dataHD.TienKhachTra - dataHD.TongTienHang + dataHD.GiamGia;
   }
-  dataHD.ThanhTien = dataHD.TongTienHang - dataHD.GiamGia;
-
+  dataHD.ThanhTien = dataHD.TongTienHang - dataHD.GiamGia - dataHD.DiemTru;
+  dataHD.TienTraKhach = dataHD.TienKhachTra - dataHD.ThanhTien;
+  if (KH) console.log(Math.min(dataHD.ThanhTien, KH.DiemTichLuy));
   const onSubmit = React.useCallback(() => {
     if (!dataHD.MaNV) {
       message.warning("Vui lòng thêm nhân viên");
@@ -246,17 +258,15 @@ export default function SalePage() {
     }
     const nv = NhanViens.find((NV) => NV.MaNV === dataHD.MaNV);
     dataHD.idNV = nv._id;
-    if (textInputKH) {
-      const kh = KhachHangs.find((KH) => KH.MaKH === dataHD.MaKH);
-      dataHD.idKH = kh._id;
-      localStorage.setItem("KH", JSON.stringify(kh));
-    } else {
-      dataHD.MaKH = "KH000";
-      dataHD.idKH = "61957aa9e198c2fe3f3f53f6";
+    if (KH) {
+      dataHD.idKH = KH._id;
+      dataHD.MaKH = KH.MaKH;
+      localStorage.setItem("KH", JSON.stringify(KH));
     }
     dataHD.CTHD = SPsInfo;
+    dataHD.ThoiGian = dateNow;
     dispatch(actions.createHoaDon.createHoaDonRequest(dataHD));
-    
+
     localStorage.setItem("HoaDon", JSON.stringify(dataHD));
     localStorage.setItem("CTHDs", JSON.stringify(SPsInfo));
     localStorage.setItem("NV", JSON.stringify(nv));
@@ -279,8 +289,8 @@ export default function SalePage() {
       ThanhTien: 0,
       TienKhachTra: 0,
       TienTraKhach: 0,
-      GhiChu: '',
-      CTHD: []
+      GhiChu: "",
+      CTHD: [],
     });
     setSPsInfo([]);
   }, [dispatch, dataHD, SPsInfo]);
@@ -289,44 +299,44 @@ export default function SalePage() {
     <Row
       style={{
         textAlign: "center",
-        marginRight: 20,
-        marginLeft: 20,
+        width: 850,
+        marginLeft: 30,
         fontWeight: 800,
         marginTop: 5,
         marginBottom: 10,
       }}
     >
-      <Col flex="4%">
+      <Col flex="20">
         <label style={{ textAlign: "center", fontWeight: "500" }}>STT</label>
       </Col>
       <Divider type="vertical" />
-      <Col flex="8%">
+      <Col flex="80">
         <label style={{ textAlign: "center", fontWeight: "500" }}>Mã SP</label>
       </Col>
       <Divider type="vertical" />
-      <Col flex="44%">
+      <Col flex="350">
         <label style={{ float: "left", marginLeft: "10%", fontWeight: "500" }}>
           Tên sản phẩm
         </label>
       </Col>
       <Divider type="vertical" />
-      <Col flex="10%" style={{ marginRight: "2%" }}>
-        <label style={{ float: "center", fontWeight: "500" }}>Số lượng</label>
+      <Col flex="80" >
+        <label style={{ textAlign: "center", fontWeight: "500" }}>Số lượng</label>
       </Col>
       <Divider type="vertical" />
-      <Col flex="8%">
+      <Col flex="70">
         <label style={{ textAlign: "center", fontWeight: "500" }}>
           Đơn giá
         </label>
       </Col>
       <Divider type="vertical" />
-      <Col flex="8%">
+      <Col flex="75">
         <label style={{ textAlign: "right", fontWeight: "500" }}>
           Thành tiền
         </label>
       </Col>
       <Divider type="vertical" />
-      <Col flex="4%">
+      <Col flex="20">
         <label style={{ textAlign: "right", fontWeight: "500" }}>Xóa</label>
       </Col>
     </Row>
@@ -340,37 +350,67 @@ export default function SalePage() {
     );
     setSPSearch(list);
   };
+  console.log(KH);
 
   const contentPopOver = (
-    <>
-    <label style = {{fontWeight: 600}}>{'Nhập số tiền: '}</label>
-      <InputNumber
-        placeholder="Tiền khách trả"
-        min={0}
-        bordered={false}
-        value={dataHD.TienKhachTra}
-        size="small"
-        formatter={(value) =>
-          `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-        }
-        onChange={(e) =>
-          setDataHD({
-            ...dataHD,
-            TienKhachTra: e,
-            TienTraKhach: e - dataHD.ThanhTien,
-          })
-        }
-        style={{
-          float: "right",
-          width: "100px",
-          textAlign: "right",
-          borderBottomStyle: "solid",
-          borderColor: "lightgray",
-          borderBottomWidth: 1,
-        }}
-      />
-    </>
-  )
+    <Col flex= '400'>
+      <Divider orientation="left">
+        <label style={{ fontWeight: 500, fontSize: 14 }}>
+          {"Nhập số tiền mặt: "}
+        </label>
+      </Divider>
+      <Row>
+        <InputNumber
+          placeholder="Tiền khách trả"
+          min={0}
+          bordered={false}
+          value={dataHD.TienKhachTra}
+          size="small"
+          formatter={(value) =>
+            `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+          }
+          onChange={(e) =>
+            setDataHD({
+              ...dataHD,
+              TienKhachTra: e,
+            })
+          }
+          style={{
+            width: 120,
+            borderBottomStyle: "solid",
+            borderColor: "lightgray",
+            borderBottomWidth: 1,
+            marginLeft: 100,
+          }}
+        />
+      </Row>
+      <Divider orientation="left">
+        <label style={{ fontWeight: 500, fontSize: 14 }}>
+          {"Dùng điểm tích lũy: "}
+        </label>
+      </Divider>
+      <Row>
+        <InputNumber
+          placeholder="Điểm tích lũy"
+          min={0}
+          //max={KH ? Math.min(dataHD.ThanhTien, KH.DiemTichLuy): 0}
+          max={KH ? Math.min(dataHD.TongTienHang - dataHD.GiamGia, KH.DiemTichLuy) : 0}
+          bordered={false}
+          size="small"
+          value={dataHD.DiemTru}
+          disabled={!KH}
+          onChange={(e) => setDataHD({ ...dataHD, DiemTru: e })}
+          style={{
+            width: 120,
+            borderBottomStyle: "solid",
+            borderColor: "lightgray",
+            borderBottomWidth: 1,
+            marginLeft: 100,
+          }}
+        />
+      </Row>
+    </Col>
+  );
 
   return (
     <Layout
@@ -387,10 +427,10 @@ export default function SalePage() {
       <Layout
         className="content"
         style={{
-          padding: "0 24",
+          padding: '0 24',
           overflow: "auto",
-          width: "134vh",
-          height: "82vh",
+          width: 925,
+          height: 570,
           top: 128,
           left: 10,
           position: "fixed",
@@ -432,7 +472,9 @@ export default function SalePage() {
                 onClick={() => {
                   setonCollap(!onCollap);
                   setpagesize(!onCollap ? 3 : 7);
-                  setSPSearch(SanPhams.filter(sp => sp.TrangThai === 'Đang kinh doanh'));
+                  setSPSearch(
+                    SanPhams.filter((sp) => sp.TrangThai === "Đang kinh doanh")
+                  );
                 }}
               >
                 Danh sách sản phẩm
@@ -481,7 +523,7 @@ export default function SalePage() {
         style={{
           padding: 15,
           overflow: "auto",
-          height: "100vh",
+          height: 570,
           right: 10,
           position: "fixed",
         }}
@@ -504,7 +546,7 @@ export default function SalePage() {
               format="YYYY-MM-DD HH:mm:ss"
               style={{
                 float: "right",
-                width: "165px",
+                width: 165,
               }}
               bordered={false}
               showTime
@@ -524,11 +566,11 @@ export default function SalePage() {
               shape="circle"
               size="small"
               type="link"
-              style={{ float: "left", marginRight: "5px" }}
+              style={{ float: "left", marginRight: 5 }}
             />
             <Cascader
               options={optionNV}
-              style={{ width: "340px" }}
+              style={{ width: 340 }}
               suffixIcon={<SearchOutlined />}
               placeholder="Chọn nhân viên"
               showSearch={filter}
@@ -543,7 +585,7 @@ export default function SalePage() {
               options={optionKH}
               bordered={false}
               style={{
-                borderWidth: "1px",
+                borderWidth: 1,
                 borderColor: "lightgrey",
                 borderBottomStyle: "solid",
                 width: 320,
@@ -551,8 +593,7 @@ export default function SalePage() {
               placeholder="Tìm khách hàng"
               showSearch={filter}
               onChange={(e) => {
-                setDataHD({ ...dataHD, MaKH: e[0] });
-                setTextInputKH(e);
+                KhachHangChange(e[0]);
               }}
               allowClear
             />
@@ -616,7 +657,7 @@ export default function SalePage() {
             labelAlign="left"
           >
             <Popover
-              content = {contentPopOver}
+              content={contentPopOver}
               placement="leftBottom"
               //title= 'Nhập số tiền'
               //title = {contentPopOver}
@@ -630,7 +671,7 @@ export default function SalePage() {
                   marginRight: 10,
                   borderBottomStyle: "solid",
                   borderBottomWidth: 1,
-                  borderBottomColor: 'lightgray'
+                  borderBottomColor: "lightgray",
                 }}
                 type="text"
               >
@@ -650,26 +691,31 @@ export default function SalePage() {
           <Form.Item style={{ margin: 0, height: 30 }} wrapperCol={30}>
             <Input.TextArea
               maxLength={150}
-              showCount ={true}
+              showCount={true}
               prefix={<EditOutlined />}
               bordered={false}
               autoSize={true}
-              value = {dataHD.GhiChu}
+              value={dataHD.GhiChu}
               placeholder="Ghi chú"
               style={{
                 borderBottomStyle: "solid",
                 borderColor: "lightgrey",
-                borderWidth: "2px",
+                borderWidth: 2,
               }}
-              onChange = {(e) => setDataHD({...dataHD, GhiChu: e.target.value})}
+              onChange={(e) => setDataHD({ ...dataHD, GhiChu: e.target.value })}
             />
           </Form.Item>
-          <Form.Item wrapperCol={30} style = {{marginTop: 70}}>
+          <Form.Item wrapperCol={30} style={{ marginTop: 70 }}>
             <Button
               type="primary"
               block
               size="large"
-              disabled={!(dataHD.TienTraKhach >= 0 && dataHD.TienKhachTra)}
+              disabled={
+                !(
+                  dataHD.TienTraKhach >= 0 &&
+                  (dataHD.TienKhachTra || dataHD.DiemTru)
+                )
+              }
               onClick={() => {
                 onSubmit();
               }}

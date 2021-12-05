@@ -297,8 +297,8 @@ export const hideTaoPhieuBaoHanhModal = createAction("HIDE_TAOPHIEUBAOHANH_MODAL
 export const showTaoPhieuHenModal = createAction("SHOW_TAOPHIEUHEN_MODAL");
 export const hideTaoPhieuHenModal = createAction("HIDE_TAOPHIEUHEN_MODAL");
 
-export const showTaoHoaDonModal = createAction("SHOW_TAOHOADON_MODAL");
-export const hideTaoHoaDonModal = createAction("HIDE_TAOHOADON_MODAL");
+export const showThanhToanTichDiemModal = createAction("SHOW_THANHTOANTICHDIEM_MODAL");
+export const hideThanhToanTichDiemModal = createAction("HIDE_THANHTOANTICHDIEM_MODAL");
 
 export const showTaoPhieuTraHangModal = createAction(
   "SHOW_TAOPHIEUTRAHANG_MODAL"

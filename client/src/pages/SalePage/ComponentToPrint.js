@@ -144,28 +144,49 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
       <h1 style={{ textAlign: "center", marginTop: 10 }}>HÓA ĐƠN BÁN HÀNG</h1>
       <Row>
         <ol>
-          <li>{'Mã hóa đơn: '}{HoaDon.MaHD}</li>
           <li>
-            {'Thời gian: '}{moment(HoaDon.ThoiGian).format("DD/MM/YYYY  HH:mm:ss")}
+            {"Tên nhân viên: "}
+            {NhanVien.TenNV}
           </li>
-          <li>{'Họ tên khách hàng: '}{KhachHang.TenKH}</li>
-          <li>{'Số điện thoại: '}{KhachHang.SDT}</li>
-          <li>{'Địa chỉ: '}{KhachHang.DiaChi}</li>
+          <li>
+            {"Mã hóa đơn: "}
+            {HoaDon.MaHD}
+          </li>
+          <li>
+            {"Thời gian: "}
+            {moment(HoaDon.ThoiGian).format("DD/MM/YYYY  HH:mm:ss")}
+          </li>
+          <li>
+            {"Họ tên khách hàng: "}
+            {KhachHang ? KhachHang.TenKH : ""}
+          </li>
+          <li>
+            {"Số điện thoại: "}
+            {KhachHang ? KhachHang.SDT : ""}
+          </li>
+          <li>
+            {"Điểm tích lũy: "}
+            {KhachHang ? KhachHang.DiemTichLuy + parseInt(HoaDon.ThanhTien/100) - HoaDon.DiemTru: ""}
+          </li>
+          <li>
+            {"Địa chỉ: "}
+            {KhachHang ? KhachHang.DiaChi : ""}
+          </li>
         </ol>
       </Row>
       <Table
         tableLayout={"auto"}
         pagination={false}
         dataSource={CTHDs}
-        bordered = {true}
+        bordered={true}
         columns={columns}
         style={{ marginRight: 20, marginLeft: 20 }}
-        footer = {()=>HoaDon.GhiChu}
+        footer={() => HoaDon.GhiChu}
         rowKey="MaSP"
       />
       {footer()}
       <Divider />
-      <Row >
+      <Row>
         <Col flex="50%">
           <h3 style={{ textAlign: "center" }}>Người mua hàng</h3>
         </Col>

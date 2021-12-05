@@ -88,6 +88,11 @@ function PhieuNhaptable({
   const dataSource = PhieuNhaps;
   const columns = [
     {
+      title: "",
+      key: "createdAt",
+      sorter: (a, b) => moment(a.createdAt) - moment(b.createdAt),
+    },
+    {
       title: "Mã nhập hàng",
       dataIndex: "MaPN",
       key: "MaPN",

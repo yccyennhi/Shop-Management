@@ -27,6 +27,11 @@ function KhuyenMaitable({ dataSource, setCurrentId }) {
 
   const columns = [
     {
+      title: "",
+      key: "createdAt",
+      sorter: (a, b) => moment(a.createdAt) - moment(b.createdAt),
+    },
+    {
       title: "Mã KM",
       dataIndex: "MaKM",
       key: "MaKM",

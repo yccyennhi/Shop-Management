@@ -19,7 +19,9 @@ function PhieuBaoHanhtable({ trangthai, thoigian, thang, setCurrentId }) {
   const SP = useSelector(SanPhamsState$);
   const PBH = useSelector(PhieuBaoHanhsState$);
   const dateNow = moment().toDate();
-
+  React.useEffect(() => {
+    dispatch(actions.getPhieuBaoHanhs.getPhieuBaoHanhsRequest());
+  }, [dispatch]);
   const SPCH = PBH.filter(function (e) {
     return moment(e.NgayKT) >= dateNow;
   });
@@ -78,6 +80,11 @@ function PhieuBaoHanhtable({ trangthai, thoigian, thang, setCurrentId }) {
   }, [trangthai, thoigian, thang]);
   const dataSource = PhieuBaoHanhs;
   const columns = [
+    {
+      title: "",
+      key: "createdAt",
+      sorter: (a, b) => moment(a.createdAt) - moment(b.createdAt),
+    },
     {
       title: "Mã phiếu bảo hành",
       dataIndex: "MaPBH",
@@ -318,7 +325,7 @@ function PhieuBaoHanhtable({ trangthai, thoigian, thang, setCurrentId }) {
       <Table
         tableLayout={"auto"}
         loading={loadingPhieuBaoHanhs}
-        pagination={false}
+        pagination={true}
         scroll={{ x: 1000, y: 500 }}
         searchableProps={{
           inputProps: {

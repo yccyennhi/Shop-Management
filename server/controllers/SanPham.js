@@ -3,7 +3,7 @@ import { SanPhamModel } from "../models/SanPhamModel.js";
 export const getSanPhams = async (req, res) => {
   try {
     const SanPhams = await SanPhamModel.find();
-    console.log("SanPhams", SanPhams);
+   // console.log("SanPhams", SanPhams);
     res.status(200).json(SanPhams);
   } catch (err) {
     res.status(500).json({ error: err });

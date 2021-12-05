@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ExportTableButton, Table } from "ant-table-extensions";
-
+import moment from "moment";
 import {
   Input,
   Row,
@@ -117,6 +117,11 @@ function HangHoatable({ trangthai, baohanh, currentId, setCurrentId }) {
   }, [trangthai, baohanh]);
   const dataSource = SanPhams;
   const columns = [
+    {
+      title: "",
+      key: "createdAt",
+      sorter: (a, b) => moment(a.createdAt) - moment(b.createdAt),
+    },
     {
       title: "",
       dataIndex: "HinhAnh",
@@ -396,7 +401,7 @@ function HangHoatable({ trangthai, baohanh, currentId, setCurrentId }) {
         }}
         loading={loadingSanPhams}
         pagination={true}
-        scroll={{ x: 1500, y: 500 }}
+        scroll={{ x: 1500 }}
         rowSelection={rowSelection}
         expandable={{
           expandedRowRender: (record) => (

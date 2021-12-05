@@ -1,6 +1,8 @@
 import { HoaDonModel } from "../models/HoaDonModel.js";
 import { KhuyenMaiModel } from "../models/KhuyenMaiModel.js";
 import { SanPhamModel } from "../models/SanPhamModel.js";
+import { PhieuBaoHanhModel } from "../models/PhieuBaoHanhModel.js";
+import {Modal} from "antd"
 
 import moment from "moment";
 
@@ -65,16 +67,40 @@ export const createHoaDon = async (req, res) => {
       KM,
       { new: true }
     );
-    HoaDon.CTHD.map(async(CTHD) => {
+    HoaDon.CTHD.map(async (CTHD) => {
       const SP = await SanPhamModel.findOne({ _id: CTHD.idSP });
       SP.TonKho = SP.TonKho - CTHD.SoLuong;
       if (SP.SoLuong === 0 && SP.TrangThai === "Đang kinh doanh")
         SP.TrangThai = "Hết hàng";
-      const SanPham = await SanPhamModel.findOneAndUpdate(
-        { _id: SP._id },
-        SP,
-        { new: true }
-      );
+      const SanPham = await SanPhamModel.findOneAndUpdate({ _id: SP._id }, SP, {
+        new: true,
+      });
+
+      //TaoPBH
+      if (CTHD.BaoHanh == "Có bảo hành") {
+        for (let i = 0; i < CTHD.SoLuong; i++) {
+          let Ma = "";
+          let SPBH;
+          do {
+            const min = 1000000;
+            const max = 9999999;
+            const rand = min + Math.random() * (max - min);
+            Ma = "PBH" + Math.round(rand);
+            console.log("Ma:", Ma);
+            SPBH = await PhieuBaoHanhModel.findOne({ MaPBH: Ma });
+            console.log(SPBH);
+          } while (SPBH !== null);
+          const dataPBH = {
+            MaPBH: Ma,
+            MaHD: HoaDon.MaHD,
+            MaSP: CTHD.MaSP,
+            NgayBD: Date.now(),
+            NgayKT: Date.now(),
+          };
+          const PhieuBaoHanh = new PhieuBaoHanhModel(dataPBH);
+          await PhieuBaoHanh.save();
+        }
+      }
     });
     res.status(200).json(HoaDon);
   } catch (err) {

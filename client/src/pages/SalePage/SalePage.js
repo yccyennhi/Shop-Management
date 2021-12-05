@@ -34,6 +34,7 @@ import {
   KhuyenMaisState$,
   NhanViensState$,
   SanPhamsState$,
+  PhieuBaoHanhsState$,
 } from "../../redux/selectors";
 import SanPhamHoaDonPanel from "../../components/ControlPanel/SanPhamHoaDonPanel";
 import { showKhachHangModal } from "../../redux/actions";
@@ -47,6 +48,7 @@ export default function SalePage() {
   const history = useHistory();
   const dateNow = moment().toDate();
   const HoaDons = useSelector(HoaDonsState$);
+  const PBH = useSelector(PhieuBaoHanhsState$);
   const SanPhams = useSelector(SanPhamsState$);
   const NhanViens = useSelector(NhanViensState$);
   const KhachHangs = useSelector(KhachHangsState$);
@@ -68,7 +70,6 @@ export default function SalePage() {
   const openKhachHangModal = useCallback(() => {
     dispatch(showKhachHangModal());
   }, [dispatch]);
-
   const [dataHD, setDataHD] = React.useState({
     MaHD: "",
     MaNV: "",
@@ -258,7 +259,6 @@ export default function SalePage() {
     }
     dataHD.CTHD = SPsInfo;
     dispatch(actions.createHoaDon.createHoaDonRequest(dataHD));
-
     localStorage.setItem("HoaDon", JSON.stringify(dataHD));
     localStorage.setItem("CTHDs", JSON.stringify(SPsInfo));
     localStorage.setItem("NV", JSON.stringify(nv));
@@ -374,10 +374,9 @@ export default function SalePage() {
 
   return (
     <Layout>
-    <Layout>
-    <MenubarBanHang />
-
-    </Layout>     
+      <Layout>
+        <MenubarBanHang />
+      </Layout>
       <Layout
         style={{
           overflow: "auto",

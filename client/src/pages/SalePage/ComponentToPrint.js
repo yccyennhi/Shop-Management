@@ -43,9 +43,7 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
     {
       title: "Bảo hành",
       dataIndex: "BaoHanh",
-      render: (BaoHanh) => {
-        return <p>{BaoHanh == 0 ? "Không bảo hành" : "Có bảo hành"}</p>;
-      },
+      key: "BaoHanh"
     },
     {
       title: "Thành tiền",
@@ -148,9 +146,9 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
           <li>
             {'Thời gian: '}{moment(HoaDon.ThoiGian).format("DD/MM/YYYY  HH:mm:ss")}
           </li>
-          <li>{'Họ tên khách hàng: '}{KhachHang.TenKH}</li>
-          <li>{'Số điện thoại: '}{KhachHang.SDT}</li>
-          <li>{'Địa chỉ: '}{KhachHang.DiaChi}</li>
+          <li>{'Họ tên khách hàng: '}{KhachHang?.TenKH}</li>
+          <li>{'Số điện thoại: '}{KhachHang?.SDT}</li>
+          <li>{'Địa chỉ: '}{KhachHang?.DiaChi}</li>
         </ol>
       </Row>
       <Table
@@ -160,7 +158,7 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
         bordered = {true}
         columns={columns}
         style={{ marginRight: 20, marginLeft: 20 }}
-        footer = {()=>HoaDon.GhiChu}
+        footer = {()=>HoaDon?.GhiChu}
         rowKey="MaSP"
       />
       {footer()}

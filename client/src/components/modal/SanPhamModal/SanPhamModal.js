@@ -41,20 +41,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
   const { isShow } = useSelector(TaoSanPhamModalState$);
   const [form] = Form.useForm();
   const SP = useSelector(SanPhamsState$);
-  const [data, setData] = useState({
-    // MaSP: "",
-    // TenSP: "",
-    // MauSac: "",
-    // LoaiHang: "",
-    // Size: 0,
-    // GiaVon: 0,
-    // GiaBan: 0,
-    // TonKho: 0,
-    // TrangThai: "Hết hàng",
-    // BaoHanh: "Có bảo hành",
-    // HinhAnh: "",
-    // MoTa: "",
-  });
+  const [data, setData] = useState({});
   const SanPhamValue = useSelector((state) =>
     state.SanPhams.data.find((SanPham) =>
       SanPham._id === currentId ? SanPham : null
@@ -83,14 +70,11 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
 
   const handleCancel = React.useCallback(() => {
     setTrangthai(false);
-    dispatch(hideTaoSanPhamModal());
-    // if (currentId) {
-    // } else {
-    form.resetFields();
-    // }
 
+    dispatch(hideTaoSanPhamModal())
     if (currentId) {
       setCurrentId(null);
+      form.resetFields();
     }
     setData({
       MaSP: "",
@@ -152,7 +136,6 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
       messageError("Vui lòng nhập đầy đủ thông tin");
     } else {
       if (currentId) {
-        //messageLoadingSuccess("Cập nhật sản phẩm");
         let listSP = SP.find(function (e) {
           return e.MaSP === data.MaSP && e.MaSP != SanPhamValue.MaSP;
         });
@@ -179,7 +162,6 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
   const body = (
     <>
       <Form
-        // {...formItemLayout}
         validateMessages={validateMessages}
         form={form}
         labelCol={{

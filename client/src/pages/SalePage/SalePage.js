@@ -127,7 +127,7 @@ export default function SalePage() {
 
   const ObjectSP = (sp) => (
     <Tooltip title={sp.TenSP + " (" + sp.MoTa + ")"}>
-      <Button style={{ height: "130", width: "110", margin: "1" }}>
+      <Button style={{ height: 130, width: 110, margin: "1" }}>
         <Row>
           <Image width={90} height={90} src={sp.HinhAnh} />
         </Row>
@@ -423,10 +423,10 @@ export default function SalePage() {
     <Layout
       style={{
         overflow: "auto",
-        width: "500vh",
-        height: "200vh",
-        top: 128,
+        width: '100%',
+        height: "100%",
         left: 0,
+        top: 110,
         position: "fixed",
       }}
     >
@@ -443,8 +443,7 @@ export default function SalePage() {
           padding: "0 24",
           overflow: "auto",
           width: 925,
-          height: 570,
-          top: 128,
+          height: 580,
           left: 10,
           position: "fixed",
         }}
@@ -536,7 +535,7 @@ export default function SalePage() {
         style={{
           padding: 15,
           overflow: "auto",
-          height: 570,
+          height: 580,
           right: 10,
           position: "fixed",
         }}

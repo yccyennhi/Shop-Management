@@ -25,6 +25,8 @@ import BCHangHoas from "./BCHangHoas";
 import PhieuNhaps from "./PhieuNhaps";
 import TaoPhieuNhapModal  from "./TaoPhieuNhapModal";
 import ThemPhieuNhapPage  from "./ThemPhieuNhapPage";
+import PhieuBaoHanhBanHangModal  from "./PhieuBaoHanhBanHangModal";
+
 
 
 export default combineReducers({
@@ -53,5 +55,6 @@ export default combineReducers({
   BCHangHoas,
   PhieuNhaps,
   TaoPhieuNhapModal,
-  ThemPhieuNhapPage
+  ThemPhieuNhapPage,
+  PhieuBaoHanhBanHangModal,
 });

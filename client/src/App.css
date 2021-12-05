@@ -19,6 +19,11 @@
     background: #F0F2F5;
     min-height: 280;
   }
+    
+  .site-layout-sider-1 {
+    background: #FFFFFF;
+    min-height: 280;
+  }
 
   .site-card-border-less-wrapper {
   width: 250;

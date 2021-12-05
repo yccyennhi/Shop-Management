@@ -131,4 +131,8 @@ export const INIT_STATE = {
   TaoPhieuNhapModal: {
     isShow: false,
   },
+
+  PhieuBaoHanhBanHangModal: {
+    isShow: false,
+  },
 };

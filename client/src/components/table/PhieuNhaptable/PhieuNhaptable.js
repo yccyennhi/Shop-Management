@@ -280,7 +280,7 @@ function PhieuNhaptable({
         }}
         loading={loadingPhieuNhaps}
         pagination={true}
-        scroll={{ x: 1000, y: 500 }}
+        scroll={{ x: 1000 }}
         rowSelection={rowSelection}
         expandable={{
           expandedRowRender: (record) => (

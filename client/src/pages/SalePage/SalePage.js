@@ -239,14 +239,26 @@ export default function SalePage() {
       return;
     }
     form.resetFields();
-    const length = HoaDons.length + 1;
-    if (length < 10) {
-      dataHD.MaHD = "HD00" + length;
-    } else if (length < 100) {
-      dataHD.MaHD = "HD0" + length;
-    } else {
-      dataHD.MaHD = "HD" + length;
-    }
+    // const length = HoaDons.length + 1;
+    // if (length < 10) {
+    //   dataHD.MaHD = "HD00" + length;
+    // } else if (length < 100) {
+    //   dataHD.MaHD = "HD0" + length;
+    // } else {
+    //   dataHD.MaHD = "HD" + length;
+    // }
+    let Ma = "";
+    let HD;
+    do {
+      const min = 1000000;
+      const max = 9999999;
+      const rand = min + Math.random() * (max - min);
+      Ma = "HD" + Math.round(rand);
+      console.log("Ma:", Ma);
+      HD = HoaDons.find((data) => data.MaHD == Ma);
+      console.log(HD);
+    } while (HD !== undefined);
+    dataHD.MaHD = Ma;
     const nv = NhanViens.find((NV) => NV.MaNV === dataHD.MaNV);
     dataHD.idNV = nv._id;
     if (textInputKH) {

@@ -165,7 +165,9 @@ export default function ThemPhieuNhapPage({}) {
               messageSuccess("Thêm phiếu nhập thành công");
               handleNhapHang();
             } else {
-              messageError("Trong danh sách có sản phẩm không tồn tại!");
+              if (SanPham == undefined) {
+                messageError("Trong danh sách có sản phẩm không tồn tại!");
+              }
             }
           }
           dispatch(actions.createPhieuNhap.createPhieuNhapRequest(data));

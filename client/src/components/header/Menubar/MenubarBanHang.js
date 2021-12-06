@@ -3,14 +3,11 @@ import { Link, useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Menu, Dropdown, message, Space } from "antd";
 import {
-  EyeOutlined,
   DatabaseOutlined,
   SwapOutlined,
-  UserOutlined,
-  TagsOutlined,
-  TeamOutlined,
+  SafetyCertificateOutlined,
+  ExclamationCircleOutlined,
   DollarOutlined,
-  BarChartOutlined,
 } from "@ant-design/icons";
 import PhieuHenModal from "../../../components/modal/PhieuHenModal/PhieuHenModal";
 import PhieuBaoHanhBanHangModal from "../../../components/modal/PhieuBaoHanhModal/PhieuBaoHanhBanHangModal";
@@ -31,47 +28,49 @@ function Menubar() {
   const handleDoiTra = () => {};
 
   //Sua chua, bao hanh
-  const handleTaoPhieuHen = () => {
-    openCreatePhieuHenModal();
-  };
   const dispatch = useDispatch();
 
   const openCreatePhieuHenModal = React.useCallback(() => {
     dispatch(actions.showTaoPhieuHenModal());
   }, [dispatch]);
-  
+
+  const openPhieuHenBanHangModal = React.useCallback(() => {
+    dispatch(actions.showPhieuHenBanHangModal());
+  }, [dispatch]);
+
   const openPhieuBaoHanhBanHangModal = React.useCallback(() => {
     dispatch(actions.showPhieuBaoHanhBanHangModal());
   }, [dispatch]);
 
-  
-  const openPhieuHenBanHangModal = React.useCallback(() => {
-    dispatch(actions.showPhieuHenBanHangModal());
-  }, [dispatch]);
+  //Nhap hang
+  const handleNhapHang = () => {
+    history.push("/ThemPhieuNhaps");
+  };
+
   return (
     <div>
       <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["1000"]}>
         <SubMenu
           key="BanHang"
-          icon={<EyeOutlined />}
+          icon={<DollarOutlined />}
           title="Bán hàng"
           onTitleClick={handleBanHang}
         ></SubMenu>
         <SubMenu
           key="DoiTra"
-          icon={<EyeOutlined />}
+          icon={<SwapOutlined />}
           title="Đổi trả"
           onTitleClick={handleDoiTra}
         ></SubMenu>
          <SubMenu
           key="BaoHanh"
-          icon={<EyeOutlined />}
+          icon={<SafetyCertificateOutlined />}
           title="Bảo hành"
           onTitleClick={openPhieuBaoHanhBanHangModal}
         ></SubMenu>
         <SubMenu
           key="PhieuHen"
-          icon={<EyeOutlined />}
+          icon={<ExclamationCircleOutlined />}
           title="Yêu cầu sửa chữa"
           onTitleClick={openCreatePhieuHenModal}
         >
@@ -82,6 +81,12 @@ function Menubar() {
             Cập nhật phiếu hẹn
           </Menu.Item>
         </SubMenu>
+        <SubMenu
+          key="NhapHang"
+          icon={<DatabaseOutlined />}
+          title="Nhập hàng"
+          onTitleClick={handleNhapHang}
+        ></SubMenu>
       </Menu>
       <PhieuHenBanHangModal/>
       <PhieuBaoHanhBanHangModal/>

@@ -250,9 +250,6 @@ export default function ThemPhieuNhapPage({}) {
 
   return (
     <Layout>
-      <Header>
-        <Menubar />
-      </Header>
       <Layout>
         <PageHeader
           onBack={() => window.history.back()}

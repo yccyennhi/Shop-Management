@@ -7,16 +7,12 @@ import "./styles.css";
 const { SubMenu } = Menu;
 
 function Headerbar() {
-  const history = useHistory();
-  const handleTongQuans = () => {
-    history.push("/TongQuans");
-  };
     return (
     <div>
       <Row>
         <Col span={6}>
           <div className="logo">
-            <img src={Logo} alt="Website Logo" onClick={handleTongQuans}></img>
+            <img src={Logo} alt="Website Logo" ></img>
           </div>
         </Col>
         <Col span={6} offset={12}>

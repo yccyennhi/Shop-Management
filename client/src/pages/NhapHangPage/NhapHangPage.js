@@ -206,7 +206,7 @@ export default function PhieuNhapPage() {
                             return (sum += data.TongTien);
                           }, 0)-PNHTAll.reduce((sum, data) => {
                             return (sum += data.TienTra);
-                          }, 0)}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                          }, 0)}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")} VNĐ
                         </Text>
                         <Text type="secondary">Còn nợ nhà cung cấp</Text>
                       </Space>

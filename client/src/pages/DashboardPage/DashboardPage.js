@@ -81,6 +81,7 @@ export default function KhuyenMaiPage() {
                         console.log(page);
                       },
                       pageSize: 5,
+                      size: "small",
                     }}
                     itemLayout="horizontal"
                     dataSource={HoaDons}
@@ -121,6 +122,7 @@ export default function KhuyenMaiPage() {
                         console.log(page);
                       },
                       pageSize: 5,
+                      size: "small",
                     }}
                     itemLayout="horizontal"
                     dataSource={PhieuNhaps.filter((data) => data != "Đã hủy")}

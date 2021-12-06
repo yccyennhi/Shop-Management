@@ -13,7 +13,11 @@ import {
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import FileBase64 from "react-file-base64";
-import { SettingOutlined, UploadOutlined } from "@ant-design/icons";
+import {
+  SettingOutlined,
+  UploadOutlined,
+  RetweetOutlined,
+} from "@ant-design/icons";
 import { messageError, messageLoadingSuccess } from "../../message";
 import {
   TaoSanPhamModalState$,
@@ -48,30 +52,30 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
     )
   );
   useEffect(() => {
-    form.resetFields();
-    setData({
-      MaSP: "",
-      TenSP: "",
-      MauSac: "",
-      LoaiHang: "",
-      Size: 0,
-      GiaVon: 0,
-      GiaBan: 0,
-      TonKho: 0,
-      ThoiGianBaoHanh:0,
-      TrangThai: "Hết hàng",
-      BaoHanh: "Có bảo hành",
-      HinhAnh: "",
-      MoTa: "",
-    });
     if (SanPhamValue) setData(SanPhamValue);
     if (data.TonKho > 0) setTrangthai(true);
   }, [SanPhamValue]);
+
   const dispatch = useDispatch();
+
+  const RandomMa = React.useCallback(() => {
+    if (data.MaSP == "" || data.MaSP == undefined) {
+      let SanPham;
+      do {
+        const min = 1000000;
+        const max = 9999999;
+        const rand = min + Math.random() * (max - min);
+        const Ma = "MA" + Math.round(rand);
+        setData({ ...data, MaSP: Ma });
+        console.log(Ma);
+        SanPham = SP.find((data) => data.MaSP == Ma);
+      } while (SanPham !== undefined);
+    }
+  }, [dispatch, data]);
 
   const handleCancel = React.useCallback(() => {
     setTrangthai(false);
-
+    setCurrentId(null);
     dispatch(hideTaoSanPhamModal());
     if (currentId) {
       setCurrentId(null);
@@ -92,8 +96,6 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
       HinhAnh: "",
       MoTa: "",
     });
-
-    // form.resetFields();
   }, [dispatch]);
 
   const handleReset = React.useCallback(() => {
@@ -121,12 +123,13 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
   }, [dispatch]);
 
   const handleOk = React.useCallback(() => {
+    console.log(data);
     if (
       data.GiaBan < 0 ||
       data.GiaVon < 0 ||
       data.Size < 0 ||
       data.TonKho < 0 ||
-      data.ThoiGianBaoHanh < 0 
+      data.ThoiGianBaoHanh < 0
     ) {
       messageError("Vui lòng nhập đúng thông tin");
     } else if (
@@ -135,9 +138,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
       data.MauSac == "" ||
       data.LoaiHang == "" ||
       data.GiaBan == "" ||
-      data.GiaVon == "" ||
-      data.ThoiGianBaoHanh == ""
-
+      data.GiaVon == ""
     ) {
       messageError("Vui lòng nhập đầy đủ thông tin");
     } else {
@@ -177,27 +178,46 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
           span: 30,
         }}
         layout="horizontal"
-        
       >
         <Form.Item
-          label="Mã hàng"
-          tooltip="Mã hàng là thông tin duy nhất"
+          label="Mã sản phẩm"
+          tooltip="Mã sản phẩm là thông tin duy nhất"
+          required
+          disabled={currentId == null ? false : true}
+        >
+          <Input.Group compact>
+            <Input
+              allowClear
+              style={{ width: "calc(100% - 31px)" }}
+              placeholder="Nhập mã sản phẩm"
+              value={data.MaSP}
+              onChange={(e) => setData({ ...data, MaSP: e.target.value })}
+              defaultValue={data.MaSP}
+              disabled={currentId == null ? false : true}
+            />
+            <Button icon={<RetweetOutlined />} onClick={RandomMa} />
+          </Input.Group>
+        </Form.Item>
+        {/* <Form.Item
+          label="Mã sản phẩm"
+          tooltip="Mã sản phẩm là thông tin duy nhất"
           required
         >
           <Input
-            placeholder="Nhập mã hàng"
+            placeholder="Nhập mã sản phẩm"
             value={data.MaSP}
             onChange={(e) => setData({ ...data, MaSP: e.target.value })}
             defaultValue={data.MaSP}
           />
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item
-          label="Tên hàng"
-          tooltip="Tên hàng là tên của sản phẩm"
+          label="Tên sản phẩm"
+          tooltip="Tên sản phẩm là tên hàng hóa"
           required
         >
           <Input
-            placeholder="Nhập tên hàng"
+          allowClear
+            placeholder="Nhập tên sản phẩm"
             value={data.TenSP}
             onChange={(e) => setData({ ...data, TenSP: e.target.value })}
             defaultValue={data.TenSP}
@@ -224,12 +244,13 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
             placeholder="Nhập màu"
           />
         </Form.Item>
-        <Form.Item label="Loại hàng" tooltip="Nhập loại sản phẩm" required>
+        <Form.Item label="Loại sản phẩm" tooltip="Nhập loại sản phẩm" required>
           <Input
+          allowClear
             value={data.LoaiHang}
             defaultValue={data.LoaiHang}
             onChange={(e) => setData({ ...data, LoaiHang: e.target.value })}
-            placeholder="Nhập loại hàng"
+            placeholder="Nhập loại sản phẩm"
           />
         </Form.Item>
         <Form.Item

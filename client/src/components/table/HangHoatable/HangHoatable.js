@@ -306,18 +306,24 @@ function HangHoatable({ trangthai, baohanh, currentId, setCurrentId }) {
       title: "Giá bán",
       dataIndex: "GiaBan",
       key: "GiaBan",
+      render: (value) =>
+        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
       sorter: (a, b) => a.GiaBan - b.GiaBan,
     },
     {
       title: "Giá vốn",
       dataIndex: "GiaVon",
       key: "GiaVon",
+      render: (value) =>
+        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
       sorter: (a, b) => a.GiaVon - b.GiaVon,
     },
     {
       title: "Tồn kho",
       dataIndex: "TonKho",
       key: "TonKho",
+      render: (value) =>
+        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
       sorter: (a, b) => {
         console.log();
         return a.TonKho - b.TonKho;

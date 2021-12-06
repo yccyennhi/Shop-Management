@@ -18,7 +18,7 @@ import {
 import "./styles.css";
 import moment from "moment";
 import "../../App.css";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, RetweetOutlined } from "@ant-design/icons";
 import * as actions from "../../redux/actions";
 import {
   PhieuNhapsState$,
@@ -36,6 +36,7 @@ const { Content, Sider, Header } = Layout;
 const { Option } = AutoComplete;
 export default function ThemPhieuNhapPage({}) {
   const [currentId, setCurrentId] = useState(null);
+  const [MaAuto, setMaAuto] = useState("");
   const [MaSP, setMaSP] = useState(null);
   const [CanTra, setCanTra] = useState(0);
   const dateNow = moment().toDate();
@@ -94,6 +95,20 @@ export default function ThemPhieuNhapPage({}) {
   }, [PhieuNhapValue]);
 
   const dispatch = useDispatch();
+
+  const RandomMa= React.useCallback(() => {
+    let PhieuNhap;
+    do {
+      const min = 1000000;
+      const max = 9999999;
+      const rand = min + Math.random() * (max - min);
+      const Ma = "PN" + Math.round(rand);
+      setMaAuto(Ma);
+      setData({ ...data, MaPN: Ma });
+      console.log(Ma);
+      PhieuNhap = PN.find((data) => data.MaPN == Ma);
+    } while (PhieuNhap !== undefined);
+  }, [dispatch]);
 
   React.useEffect(() => {
     dispatch(actions.getSanPhams.getSanPhamsRequest());
@@ -343,14 +358,22 @@ export default function ThemPhieuNhapPage({}) {
                 tooltip="Mã phiếu nhập là thông tin duy nhất"
                 required
               >
-                <Input
-                  placeholder="Nhập mã phiếu nhập"
-                  value={data.MaPN}
-                  onChange={(e) => setData({ ...data, MaPN: e.target.value })}
-                  defaultValue={data.MaPN}
-                  disabled={id.payload == "" ? false : true}
-                />
+                <Input.Group compact>
+                  <Input
+                    style={{ width: "calc(100% - 31px)" }}
+                    placeholder="Nhập mã phiếu nhập"
+                    value={data.MaPN}
+                    onChange={(e) =>
+                      setData({ ...data, MaPN: e.target.value })
+                    }
+                    defaultValue={data.MaPN}
+                    disabled={id.payload == "" ? false : true}
+
+                  />
+                  <Button icon={<RetweetOutlined />} onClick={RandomMa} />
+                </Input.Group>
               </Form.Item>
+ 
               <Form.Item label="Người tạo phiếu" required>
                 <Input
                   placeholder="Nhập người tạo phiếu"

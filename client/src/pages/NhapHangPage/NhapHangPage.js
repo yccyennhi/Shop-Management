@@ -22,6 +22,7 @@ import {
   PlusOutlined,
   CheckCircleTwoTone,
   CloseCircleTwoTone,
+  DollarTwoTone,
 } from "@ant-design/icons";
 import * as actions from "../../redux/actions";
 import PhieuNhaptable from "../../components/table/PhieuNhaptable/PhieuNhaptable";
@@ -52,6 +53,9 @@ export default function PhieuNhapPage() {
       e.TrangThai == "Đã nhập hàng" &&
       moment(e.NgayTao).format("M") == moment(dateNow).format("M")
     );
+  });
+  const PNHTAll = PhieuNhaps.filter(function (e) {
+    return e.TrangThai == "Đã nhập hàng";
   });
 
   function onChange(date, dateString) {
@@ -150,7 +154,7 @@ export default function PhieuNhapPage() {
           <Layout style={{ padding: "17px 24px 24px" }}>
             <div className="site-layout-content">
               <Row justify="start">
-                <Col span={8}>
+                <Col span={6}>
                   <Space align="center" size={20}>
                     <SafetyCertificateTwoTone style={{ fontSize: "40px" }} />
                     <Space direction="vertical" size={0}>
@@ -162,7 +166,7 @@ export default function PhieuNhapPage() {
                     </Space>
                   </Space>
                 </Col>
-                <Col span={8}>
+                <Col span={6}>
                   <Space align="center" size={20}>
                     <CheckCircleTwoTone style={{ fontSize: "40px" }} />
                     <Space direction="vertical" size={0}>
@@ -174,7 +178,7 @@ export default function PhieuNhapPage() {
                     </Space>
                   </Space>
                 </Col>
-                <Col span={8}>
+                <Col span={6}>
                   <Space direction="horizontal" size={200}>
                     <Space align="center" size={20}>
                       <CloseCircleTwoTone style={{ fontSize: "40px" }} />
@@ -184,8 +188,27 @@ export default function PhieuNhapPage() {
                           {PNHT.length}
                         </Text>
                         <Text type="secondary">
-                          Phiếu nhập hoàn thành trong tháng
+                          Phiếu nhập hoàn thành tháng {moment(dateNow).format("MM")}
                         </Text>
+                      </Space>
+                    </Space>
+                  </Space>
+                </Col>
+                <Col span={6}>
+                  <Space direction="horizontal" size={200}>
+                    <Space align="center" size={20}>
+                      <DollarTwoTone style={{ fontSize: "40px" }} />
+                      <Space direction="vertical" size={0}>
+                        <Text strong>{PNHTAll.length} phiếu nhập</Text>
+                        <Text strong style={{ fontSize: "1.5rem" }}>
+                         
+                          {`${PNHTAll.reduce((sum, data) => {
+                            return (sum += data.TongTien);
+                          }, 0)-PNHTAll.reduce((sum, data) => {
+                            return (sum += data.TienTra);
+                          }, 0)}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        </Text>
+                        <Text type="secondary">Còn nợ nhà cung cấp</Text>
                       </Space>
                     </Space>
                   </Space>

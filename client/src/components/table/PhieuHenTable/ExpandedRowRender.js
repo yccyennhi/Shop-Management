@@ -53,7 +53,7 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
             {listSP.TenSP}
           </Descriptions.Item>
           <Descriptions.Item label="Ngày hẹn">
-            {moment(record.NgayBD).format("DD-MM-YYYY")}
+            {moment(record.NgayBD).format("DD/MM/YYYY")}
           </Descriptions.Item>
           <Descriptions.Item label="Ghi chú">{record.GhiChu}</Descriptions.Item>
         </Descriptions>

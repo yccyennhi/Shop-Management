@@ -136,7 +136,7 @@ function PhieuNhaptable({
       title: "Thời gian",
       dataIndex: "NgayTao",
       key: "NgayTao",
-      render: (NgayTao) => moment(NgayTao).format("DD-MM-YYYY"),
+      render: (NgayTao) => moment(NgayTao).format("DD/MM/YYYY"),
       sorter: (a, b) => moment(a.NgayTao) - moment(b.NgayTao),
     },
     {

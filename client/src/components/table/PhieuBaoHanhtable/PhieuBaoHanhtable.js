@@ -246,7 +246,7 @@ function PhieuBaoHanhtable({ trangthai, thoigian, thang, setCurrentId }) {
       title: "Thời hạn bảo hành",
       dataIndex: "NgayKT",
       key: "NgayKT",
-      render: (NgayKT) => moment(NgayKT).format("DD-MM-YYYY"),
+      render: (NgayKT) => moment(NgayKT).format("DD/MM/YYYY"),
       sorter: (a, b) => a.NgayKT - b.NgayKT,
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
         return (

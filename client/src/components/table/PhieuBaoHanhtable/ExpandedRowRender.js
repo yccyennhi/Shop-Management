@@ -69,10 +69,10 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
             {listSP.TenSP}
           </Descriptions.Item>
           <Descriptions.Item label="Ngày bắt đầu bảo hành">
-            {moment(record.NgayBD).format("DD-MM-YYYY")}
+            {moment(record.NgayBD).format("DD/MM/YYYY")}
           </Descriptions.Item>
           <Descriptions.Item label="Ngày kết thúc bảo hành">
-            {moment(record.NgayKT).format("DD-MM-YYYY")}
+            {moment(record.NgayKT).format("DD/MM/YYYY")}
           </Descriptions.Item>
         </Descriptions>
       </PageHeader>

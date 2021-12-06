@@ -179,7 +179,7 @@ export default function ExpandedRowRender({ record }) {
     handleNhapHang();
   }, [dispatch]);
 
-  const date = moment(data.NgayTao).format("DD-MM-YYYY");
+  const date = moment(data.NgayTao).format("DD/MM/YYYY");
   const columns = [
     {
       key: "MaSP",
@@ -298,7 +298,7 @@ export default function ExpandedRowRender({ record }) {
             {data.NguoiTao}
           </Descriptions.Item>
           <Descriptions.Item label="Cập nhật lần cuối">
-            {moment(data.NgayCapNhat).format("DD-MM-YYYY")}
+            {moment(data.NgayCapNhat).format("DD/MM/YYYY")}
           </Descriptions.Item>
           <Descriptions.Item label="Tên NCC">{data.TenNCC}</Descriptions.Item>
           <Descriptions.Item label="Tổng số lượng">

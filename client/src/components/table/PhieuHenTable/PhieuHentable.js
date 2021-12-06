@@ -198,7 +198,7 @@ function PhieuHentable({ trangthai, thoigian, ngayBD, ngayKT, setCurrentId }) {
       title: "Ngày hẹn",
       dataIndex: "NgayHen",
       key: "NgayHen",
-      render: (NgayHen) => moment(NgayHen).format("DD-MM-YYYY"),
+      render: (NgayHen) => moment(NgayHen).format("DD/MM/YYYY"),
       // sorter: (a, b) => a.NgayHen - b.NgayHen,
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
         return (

@@ -24,7 +24,6 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
         title={record.TenKM}
         tags={
           <Tag color="blue">
-          
             {record.TrangThai == false
               ? "Không áp dụng"
               : "Đang áp dụng"}

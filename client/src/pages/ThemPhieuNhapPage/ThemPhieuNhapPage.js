@@ -96,7 +96,7 @@ export default function ThemPhieuNhapPage({}) {
 
   const dispatch = useDispatch();
 
-  const RandomMa= React.useCallback(() => {
+  const RandomMa = React.useCallback(() => {
     let PhieuNhap;
     do {
       const min = 1000000;
@@ -363,17 +363,14 @@ export default function ThemPhieuNhapPage({}) {
                     style={{ width: "calc(100% - 31px)" }}
                     placeholder="Nhập mã phiếu nhập"
                     value={data.MaPN}
-                    onChange={(e) =>
-                      setData({ ...data, MaPN: e.target.value })
-                    }
+                    onChange={(e) => setData({ ...data, MaPN: e.target.value })}
                     defaultValue={data.MaPN}
                     disabled={id.payload == "" ? false : true}
-
                   />
                   <Button icon={<RetweetOutlined />} onClick={RandomMa} />
                 </Input.Group>
               </Form.Item>
- 
+
               <Form.Item label="Người tạo phiếu" required>
                 <Input
                   placeholder="Nhập người tạo phiếu"
@@ -431,6 +428,9 @@ export default function ThemPhieuNhapPage({}) {
               </Form.Item>
               <Form.Item label="Số lượng SP">
                 <InputNumber
+                  formatter={(value) =>
+                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }
                   style={{ width: 270 }}
                   disabled="true"
                   value={data.TongSoLuong}
@@ -440,6 +440,9 @@ export default function ThemPhieuNhapPage({}) {
 
               <Form.Item label="Tổng tiền hàng">
                 <InputNumber
+                  formatter={(value) =>
+                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }
                   style={{ width: 270 }}
                   disabled="true"
                   value={data.TongTien}
@@ -452,6 +455,9 @@ export default function ThemPhieuNhapPage({}) {
                 tooltip="Giảm giá trên tổng số tiền"
               >
                 <InputNumber
+                  formatter={(value) =>
+                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }
                   style={{ width: 270 }}
                   placeholder="Nhập số tiền được giảm"
                   value={data.GiamGiaTongTien}
@@ -464,6 +470,9 @@ export default function ThemPhieuNhapPage({}) {
               </Form.Item>
               <Form.Item label="Cần trả NCC">
                 <InputNumber
+                  formatter={(value) =>
+                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }
                   style={{ width: 270 }}
                   tooltip="Cần trả cho NCC"
                   disabled={true}
@@ -474,6 +483,9 @@ export default function ThemPhieuNhapPage({}) {
 
               <Form.Item label="Tiền trả NCC">
                 <InputNumber
+                  formatter={(value) =>
+                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }
                   style={{ width: 270 }}
                   tooltip="Tiền đã trả cho NCC"
                   value={data.TienTra}

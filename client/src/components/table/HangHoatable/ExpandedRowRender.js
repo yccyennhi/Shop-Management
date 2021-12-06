@@ -94,19 +94,19 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
               <Descriptions.Item label="Mô tả">{record.MoTa}</Descriptions.Item>
               <Descriptions.Item label="Size">{record.Size}</Descriptions.Item>
               <Descriptions.Item label="Loại hàng">
-                {record.LoaiHang}
+                {`${record.LoaiHang}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
               </Descriptions.Item>
               <Descriptions.Item label="Giá bán">
-                {record.GiaBan}
+                {`${record.GiaBan}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
               </Descriptions.Item>
               <Descriptions.Item label="Giá vốn">
-                {record.GiaVon}
+                {`${record.GiaVon}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
               </Descriptions.Item>
               <Descriptions.Item label="Tồn kho">
-                {record.TonKho}
+                {`${record.TonKho}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
               </Descriptions.Item>
-              <Descriptions.Item label="Thời gian bảo hành">
-                {record.ThoiGianBaoHanh} tháng
+              <Descriptions.Item label="Thời gian bảo hành" style={{display:(record.BaoHanh!=="Có bảo hành")}}>
+                {`${record.ThoiGianBaoHanh}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")} tháng
               </Descriptions.Item>
             </Descriptions>
           </Col>

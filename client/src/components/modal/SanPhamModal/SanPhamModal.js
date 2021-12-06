@@ -216,7 +216,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
           required
         >
           <Input
-          allowClear
+            allowClear
             placeholder="Nhập tên sản phẩm"
             value={data.TenSP}
             onChange={(e) => setData({ ...data, TenSP: e.target.value })}
@@ -246,7 +246,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
         </Form.Item>
         <Form.Item label="Loại sản phẩm" tooltip="Nhập loại sản phẩm" required>
           <Input
-          allowClear
+            allowClear
             value={data.LoaiHang}
             defaultValue={data.LoaiHang}
             onChange={(e) => setData({ ...data, LoaiHang: e.target.value })}
@@ -260,6 +260,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
         >
           <InputNumber
             value={data.GiaVon}
+            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
             defaultValue={data.GiaVon}
             onChange={(e) => setData({ ...data, GiaVon: e })}
             style={{ width: 120 }}
@@ -269,6 +270,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
         <Form.Item label="Giá bán" required>
           <InputNumber
             value={data.GiaBan}
+            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
             defaultValue={data.GiaBan}
             onChange={(e) => setData({ ...data, GiaBan: e })}
             style={{ width: 120 }}
@@ -282,6 +284,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
         >
           <InputNumber
             value={data.TonKho}
+            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
             onChange={(e) => {
               // setData({ ...data, TonKho: e });
               if (e <= 0) {
@@ -332,6 +335,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
           <InputNumber
             disabled={data.BaoHanh !== "Có bảo hành"}
             value={data.ThoiGianBaoHanh}
+            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
             onChange={(e) => {
               setData({ ...data, ThoiGianBaoHanh: e });
             }}

@@ -110,9 +110,8 @@ const schema = new Schema(
           required: true,
         },
         BaoHanh: {
-          type: String,
-          enum: ["Không bảo hành", "Có bảo hành"],
-          default: "Không bảo hành",
+          type: Number,
+          default: 0,
         },
         ThanhTien: {
           type: Number,

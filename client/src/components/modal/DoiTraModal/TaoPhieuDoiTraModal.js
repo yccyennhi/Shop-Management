@@ -13,10 +13,7 @@ import React, { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import * as actions from "../../../redux/actions";
 import { hideTaoPhieuTraHangModal } from "../../../redux/actions";
-import {
-  TaoPhieuTraHangState$,
-  HoaDonsState$,
-} from "../../../redux/selectors";
+import { TaoPhieuTraHangState$, HoaDonsState$ } from "../../../redux/selectors";
 import { useDispatch } from "react-redux";
 import moment from "moment";
 import { SearchOutlined } from "@ant-design/icons";
@@ -25,6 +22,7 @@ import SanPhamTraHang from "./SanPhamTraHang";
 export default function TaoPhieuTraHang({ PhieuDoiTras, NhanViens }) {
   const dispatch = useDispatch();
   const HoaDons = useSelector(HoaDonsState$);
+  const [event, setHD] = useState();
   const [form] = Form.useForm();
   React.useEffect(() => {
     dispatch(actions.getHoaDons.getHoaDonsRequest());
@@ -38,6 +36,8 @@ export default function TaoPhieuTraHang({ PhieuDoiTras, NhanViens }) {
     MaNV: "",
     idNV: "",
     idHD: "",
+    idKH: "61957aa9e198c2fe3f3f53f6",
+    MaKH: 'KH000',
     ThoiGian: new Date(Date.now()),
     SoLuong: 0,
     TongTienHang: 0,
@@ -50,12 +50,8 @@ export default function TaoPhieuTraHang({ PhieuDoiTras, NhanViens }) {
   const onSearch = useCallback((event) => {
     if (!event) {
       setData({
-        MaPDT: "",
+        ...data,
         MaHD: "",
-        MaNV: "",
-        idNV: "",
-        idHD: "",
-        ThoiGian: new Date(Date.now()),
         SoLuong: 0,
         TongTienHang: 0,
         GiaVon: 0,
@@ -64,10 +60,10 @@ export default function TaoPhieuTraHang({ PhieuDoiTras, NhanViens }) {
       });
       setListSP([]);
       return;
-    } else if (ListSPTraHangs.length > 0)
-    {
-      message.error('Vui lòng xóa hóa đơn cũ trước khi chọn hóa đơn mới!');
-      return;
+    } else if (ListSPTraHangs.length > 0) {
+      do {
+        ListSPTraHangs.pop();
+      } while (ListSPTraHangs.length > 0);
     }
     const HD = HoaDons.find((hd) => hd.MaHD === event);
     const listsp = PhieuDoiTras.filter((ctpdt) => ctpdt.MaHD === event);
@@ -77,36 +73,40 @@ export default function TaoPhieuTraHang({ PhieuDoiTras, NhanViens }) {
       GiaVon: 0,
     };
     HD.CTHD.map((e) => {
-      const ctpdt = {
-        id: ListSPTraHangs.length,
-        MaSP: e.MaSP,
-        TenSP: e.TenSP,
-        idSP: e.idSP,
-        GiaBan: e.DonGia,
-        GiaVon: e.GiaVon,
-        SoLuong: e.SoLuong,
-        SLmax: e.SoLuong,
-        ThanhTien: Number(e.ThanhTien),
-      };
-      listsp.map((p) =>
-        p.CTPDT.map((sp) => {
-          if (sp.MaSP === e.MaSP) {
-            ctpdt.SoLuong -= sp.SoLuong;
-            ctpdt.SLmax -= sp.SoLuong;
-          }
-        })
-      );
-      if (ctpdt.SoLuong === 0) return;
-      ListSPTraHangs.push(ctpdt);
-      datapdt.SoLuong = datapdt.SoLuong + ctpdt.SoLuong;
-      datapdt.TongTienHang =
-        ctpdt.SoLuong * ctpdt.GiaBan + datapdt.TongTienHang;
-      datapdt.GiaVon = datapdt.GiaVon + ctpdt.GiaVon * ctpdt.SoLuong;
-      setgiamgia(HD.GiamGia / HD.SoLuong);
+      if (moment(HD.ThoiGian).add(e.BaoHanh, "month") >= moment()) {
+        const ctpdt = {
+          id: ListSPTraHangs.length,
+          MaSP: e.MaSP,
+          TenSP: e.TenSP,
+          idSP: e.idSP,
+          GiaBan: e.DonGia,
+          GiaVon: e.GiaVon,
+          SoLuong: e.SoLuong,
+          SLmax: e.SoLuong,
+          ThanhTien: Number(e.ThanhTien),
+        };
+        listsp.map((p) =>
+          p.CTPDT.map((sp) => {
+            if (sp.MaSP === e.MaSP) {
+              ctpdt.SoLuong -= sp.SoLuong;
+              ctpdt.SLmax -= sp.SoLuong;
+            }
+          })
+        );
+        if (ctpdt.SoLuong === 0) return;
+        ListSPTraHangs.push(ctpdt);
+        datapdt.SoLuong = datapdt.SoLuong + ctpdt.SoLuong;
+        datapdt.TongTienHang =
+          ctpdt.SoLuong * ctpdt.GiaBan + datapdt.TongTienHang;
+        datapdt.GiaVon = datapdt.GiaVon + ctpdt.GiaVon * ctpdt.SoLuong;
+        setgiamgia(HD.GiamGia / HD.SoLuong);
+      }
     });
     setData({
       ...data,
       MaHD: event,
+      idKH:HD.idKH,
+      MaKH:HD.MaKH,
       SoLuong: datapdt.SoLuong,
       TongTienHang: datapdt.TongTienHang,
       GiaVon: datapdt.GiaVon,
@@ -205,11 +205,7 @@ export default function TaoPhieuTraHang({ PhieuDoiTras, NhanViens }) {
         form={form}
         layout="horizontal"
       >
-        <Form.Item
-          label="Mã nhân viên"
-          name="MaNV"
-          rules={[{ required: true }]}
-        >
+        <Form.Item label="Mã nhân viên" name="MaNV">
           <Cascader
             options={optionNV}
             placeholder="Nhập mã nhân viên"
@@ -220,10 +216,10 @@ export default function TaoPhieuTraHang({ PhieuDoiTras, NhanViens }) {
             onChange={(e) => setData({ ...data, MaNV: e[0] })}
           />
         </Form.Item>
-        <Form.Item label="Mã hóa đơn:" name="MaHD" rules={[{ required: true }]}>
+        <Form.Item label="Mã hóa đơn:" name="MaHD">
           <Cascader
             options={optionHD}
-            placeholder="Chọn mã khuyến mãi"
+            placeholder="Chọn hóa đơn"
             onChange={onSearch}
             allowClear
             suffixIcon={<SearchOutlined />}
@@ -231,15 +227,8 @@ export default function TaoPhieuTraHang({ PhieuDoiTras, NhanViens }) {
             style={{ width: "calc(95%)" }}
             onChange={(e) => {
               onSearch(e[0]);
+              //setHD(e[0]);
             }}
-          />
-        </Form.Item>
-        <Form.Item label="Ngày lập:">
-          <DatePicker
-            showTime
-            format="YYYY-MM-DD HH:mm:ss"
-            defaultValue={moment(data.ThoiGian)}
-            disabled={true}
           />
         </Form.Item>
         <Form.Item>
@@ -287,19 +276,24 @@ export default function TaoPhieuTraHang({ PhieuDoiTras, NhanViens }) {
       message.warning("Vui lòng thêm nhân viên");
       return;
     }
-    const length = PhieuDoiTras.length + 1;
-    if (length < 10) {
-      data.MaPDT = "PDT00" + length;
-    } else if (length < 100) {
-      data.MaPDT = "PDT0" + length;
-    } else {
-      data.MaPDT = "HD" + length;
-    }
+    form.resetFields();
+    let Ma = "";
+    let PDT;
+    do {
+      const min = 1000000;
+      const max = 9999999;
+      const rand = min + Math.random() * (max - min);
+      Ma = "PDT" + Math.round(rand);
+      console.log("Ma:", Ma);
+      PDT = PhieuDoiTras.find((data) => data.MaPDT == Ma);
+    } while (PDT !== undefined);
+    data.MaPDT = Ma;
     const HD = HoaDons.find((hd) => hd.MaHD === data.MaHD);
     data.idHD = HD._id;
     const nv = NhanViens.find((NV) => NV.MaNV === data.MaNV);
     data.idNV = nv._id;
     data.CTPDT = ListSPTraHangs;
+    data.ThoiGian = moment();
     dispatch(actions.createPhieuDoiTra.createPhieuDoiTraRequest(data));
     form.resetFields();
     onCancel();

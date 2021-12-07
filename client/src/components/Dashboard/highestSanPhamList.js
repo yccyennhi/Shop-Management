@@ -36,7 +36,7 @@ export const HighestSanPhamList = () => {
   return (
     <Card
       style={{ width: "100%" }}
-      title="Top 10 hàng hóa bán chạy tháng này"
+      title="Top 10 sản phẩm bán chạy tháng này"
       tabList={tabList}
       activeTabKey={activeTabKey}
       onTabChange={(key) => {

@@ -73,6 +73,11 @@ function PhieuHentable({ trangthai, thoigian, ngayBD, ngayKT, setCurrentId }) {
   const dataSource = PhieuHens;
   const columns = [
     {
+      title: "",
+      key: "createdAt",
+      sorter: (a, b) => moment(a.createdAt) - moment(b.createdAt),
+    },
+    {
       title: "Mã phiếu hẹn",
       dataIndex: "MaPH",
       key: "MaPH",
@@ -193,7 +198,7 @@ function PhieuHentable({ trangthai, thoigian, ngayBD, ngayKT, setCurrentId }) {
       title: "Ngày hẹn",
       dataIndex: "NgayHen",
       key: "NgayHen",
-      render: (NgayHen) => moment(NgayHen).format("DD-MM-YYYY"),
+      render: (NgayHen) => moment(NgayHen).format("DD/MM/YYYY"),
       // sorter: (a, b) => a.NgayHen - b.NgayHen,
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
         return (
@@ -327,10 +332,10 @@ function PhieuHentable({ trangthai, thoigian, ngayBD, ngayKT, setCurrentId }) {
       </Row>
 
       <Table
-        tableLayout={"auto"}
+        //tableLayout={"auto"}
         loading={loadingPhieuHens}
-        pagination={false}
-        scroll={{ x: 1000, y: 500 }}
+        pagination={true}
+        scroll={{ x: 1000 }}
         searchableProps={{
           inputProps: {
             placeholder: "Nhập nội dung cần tìm",

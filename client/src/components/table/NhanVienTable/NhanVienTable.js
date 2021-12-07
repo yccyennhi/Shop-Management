@@ -17,6 +17,11 @@ export default function NhanVienTable({ dataSource, setCurrentId }) {
   // NVởi tạo cột table
   const columns = [
     {
+      title: "",
+      key: "createdAt",
+      sorter: (a, b) => moment(a.createdAt) - moment(b.createdAt),
+    },
+    {
       title: "Mã NV",
       dataIndex: "MaNV",
       filterDropdown: ({

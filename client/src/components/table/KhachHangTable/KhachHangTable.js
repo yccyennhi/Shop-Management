@@ -18,6 +18,11 @@ export default function KhachHangTable({ dataSource, setCurrentId }) {
   //#region Table column
   const columns = [
     {
+      title: "",
+      key: "createdAt",
+      sorter: (a, b) => moment(a.createdAt) - moment(b.createdAt),
+    },
+    {
       title: "Mã KH",
       dataIndex: "MaKH",
       filterDropdown: ({

@@ -18,12 +18,13 @@ import {
 import "./styles.css";
 import moment from "moment";
 import "../../App.css";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, RetweetOutlined } from "@ant-design/icons";
 import * as actions from "../../redux/actions";
 import {
   PhieuNhapsState$,
   SanPhamsState$,
   ThemPhieuNhapPageState$,
+  ArrHangHoaNhapState$,
 } from "../../redux/selectors";
 import SanPhamModal from "../../components/modal/SanPhamModal/SanPhamModal";
 
@@ -35,16 +36,20 @@ const { Content, Sider, Header } = Layout;
 const { Option } = AutoComplete;
 export default function ThemPhieuNhapPage({}) {
   const [currentId, setCurrentId] = useState(null);
+  const [MaAuto, setMaAuto] = useState("");
   const [MaSP, setMaSP] = useState(null);
   const [CanTra, setCanTra] = useState(0);
   const dateNow = moment().toDate();
   const SP = useSelector(SanPhamsState$);
   const PN = useSelector(PhieuNhapsState$);
   const id = useSelector(ThemPhieuNhapPageState$);
+  const Arr = useSelector(ArrHangHoaNhapState$);
+
   const history = useHistory();
   const handleNhapHang = () => {
     history.push("/PhieuNhaps");
   };
+
   const [dataSource, setDataSource] = useState([
     {
       MaSP: "",
@@ -91,9 +96,32 @@ export default function ThemPhieuNhapPage({}) {
 
   const dispatch = useDispatch();
 
+  const RandomMa = React.useCallback(() => {
+    let PhieuNhap;
+    do {
+      const min = 1000000;
+      const max = 9999999;
+      const rand = min + Math.random() * (max - min);
+      const Ma = "PN" + Math.round(rand);
+      setMaAuto(Ma);
+      setData({ ...data, MaPN: Ma });
+      console.log(Ma);
+      PhieuNhap = PN.find((data) => data.MaPN == Ma);
+    } while (PhieuNhap !== undefined);
+  }, [dispatch]);
+
   React.useEffect(() => {
     dispatch(actions.getSanPhams.getSanPhamsRequest());
-  }, [dispatch]);
+    if (Arr != null) {
+      console.log(Arr);
+      if (Arr?.arr?.payload?.length > 0) {
+        let listSP = SP.find((e) => e._id == Arr?.arr?.payload[0]);
+        setMaSP(listSP?.MaSP);
+        console.log(listSP);
+        const move = Arr?.arr?.payload?.shift();
+      }
+    }
+  }, [dispatch, MaSP, Arr]);
 
   const openCreateSanPhamModal = React.useCallback(() => {
     dispatch(actions.showTaoSanPhamModal());
@@ -152,7 +180,9 @@ export default function ThemPhieuNhapPage({}) {
               messageSuccess("Thêm phiếu nhập thành công");
               handleNhapHang();
             } else {
-              messageError("Trong danh sách có sản phẩm không tồn tại!");
+              if (SanPham == undefined) {
+                messageError("Trong danh sách có sản phẩm không tồn tại!");
+              }
             }
           }
           dispatch(actions.createPhieuNhap.createPhieuNhapRequest(data));
@@ -235,9 +265,6 @@ export default function ThemPhieuNhapPage({}) {
 
   return (
     <Layout>
-      <Header>
-        <Menubar />
-      </Header>
       <Layout>
         <PageHeader
           onBack={() => window.history.back()}
@@ -331,14 +358,19 @@ export default function ThemPhieuNhapPage({}) {
                 tooltip="Mã phiếu nhập là thông tin duy nhất"
                 required
               >
-                <Input
-                  placeholder="Nhập mã phiếu nhập"
-                  value={data.MaPN}
-                  onChange={(e) => setData({ ...data, MaPN: e.target.value })}
-                  defaultValue={data.MaPN}
-                  disabled={id.payload == "" ? false : true}
-                />
+                <Input.Group compact>
+                  <Input
+                    style={{ width: "calc(100% - 31px)" }}
+                    placeholder="Nhập mã phiếu nhập"
+                    value={data.MaPN}
+                    onChange={(e) => setData({ ...data, MaPN: e.target.value })}
+                    defaultValue={data.MaPN}
+                    disabled={id.payload == "" ? false : true}
+                  />
+                  <Button icon={<RetweetOutlined />} onClick={RandomMa} />
+                </Input.Group>
               </Form.Item>
+
               <Form.Item label="Người tạo phiếu" required>
                 <Input
                   placeholder="Nhập người tạo phiếu"
@@ -396,6 +428,9 @@ export default function ThemPhieuNhapPage({}) {
               </Form.Item>
               <Form.Item label="Số lượng SP">
                 <InputNumber
+                  formatter={(value) =>
+                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }
                   style={{ width: 270 }}
                   disabled="true"
                   value={data.TongSoLuong}
@@ -405,6 +440,9 @@ export default function ThemPhieuNhapPage({}) {
 
               <Form.Item label="Tổng tiền hàng">
                 <InputNumber
+                  formatter={(value) =>
+                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }
                   style={{ width: 270 }}
                   disabled="true"
                   value={data.TongTien}
@@ -417,6 +455,9 @@ export default function ThemPhieuNhapPage({}) {
                 tooltip="Giảm giá trên tổng số tiền"
               >
                 <InputNumber
+                  formatter={(value) =>
+                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }
                   style={{ width: 270 }}
                   placeholder="Nhập số tiền được giảm"
                   value={data.GiamGiaTongTien}
@@ -429,6 +470,9 @@ export default function ThemPhieuNhapPage({}) {
               </Form.Item>
               <Form.Item label="Cần trả NCC">
                 <InputNumber
+                  formatter={(value) =>
+                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }
                   style={{ width: 270 }}
                   tooltip="Cần trả cho NCC"
                   disabled={true}
@@ -439,6 +483,9 @@ export default function ThemPhieuNhapPage({}) {
 
               <Form.Item label="Tiền trả NCC">
                 <InputNumber
+                  formatter={(value) =>
+                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }
                   style={{ width: 270 }}
                   tooltip="Tiền đã trả cho NCC"
                   value={data.TienTra}

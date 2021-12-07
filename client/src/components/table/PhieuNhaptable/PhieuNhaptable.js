@@ -88,6 +88,11 @@ function PhieuNhaptable({
   const dataSource = PhieuNhaps;
   const columns = [
     {
+      title: "",
+      key: "createdAt",
+      sorter: (a, b) => moment(a.createdAt) - moment(b.createdAt),
+    },
+    {
       title: "Mã nhập hàng",
       dataIndex: "MaPN",
       key: "MaPN",
@@ -131,7 +136,7 @@ function PhieuNhaptable({
       title: "Thời gian",
       dataIndex: "NgayTao",
       key: "NgayTao",
-      render: (NgayTao) => moment(NgayTao).format("DD-MM-YYYY"),
+      render: (NgayTao) => moment(NgayTao).format("DD/MM/YYYY"),
       sorter: (a, b) => moment(a.NgayTao) - moment(b.NgayTao),
     },
     {
@@ -173,12 +178,16 @@ function PhieuNhaptable({
       title: "Tổng tiền hàng",
       dataIndex: "TongTien",
       key: "TongTien",
+      render: (value) =>
+        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
       sorter: (a, b) => a.TongTien - b.TongTien,
     },
     {
       title: "Tiền đã trả NCC",
       dataIndex: "TienTra",
       key: "TienTra",
+      render: (value) =>
+        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
       sorter: (a, b) => a.TienTra - b.TienTra,
     },
     {
@@ -275,7 +284,7 @@ function PhieuNhaptable({
         }}
         loading={loadingPhieuNhaps}
         pagination={true}
-        scroll={{ x: 1000, y: 500 }}
+        scroll={{ x: 1000 }}
         rowSelection={rowSelection}
         expandable={{
           expandedRowRender: (record) => (

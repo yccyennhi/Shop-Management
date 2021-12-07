@@ -43,9 +43,7 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
     {
       title: "Bảo hành",
       dataIndex: "BaoHanh",
-      render: (BaoHanh) => {
-        return <p>{BaoHanh == 0 ? "Không bảo hành" : "Có bảo hành"}</p>;
-      },
+      key: "BaoHanh"
     },
     {
       title: "Thành tiền",

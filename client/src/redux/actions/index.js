@@ -289,10 +289,18 @@ export const showTaoSanPhamModal = createAction("SHOW_TAOSANPHAM_MODAL");
 export const hideTaoSanPhamModal = createAction("HIDE_TAOSANPHAM_MODAL");
 
 export const setIdThemPhieuNhapPage = createAction("SET_IDTHEMPHIEUNHAP_PAGE");
+export const setArrHangHoaNhap = createAction("SET_ARRHANGHOANHAP");
 
 
 export const showTaoPhieuBaoHanhModal = createAction("SHOW_TAOPHIEUBAOHANH_MODAL");
 export const hideTaoPhieuBaoHanhModal = createAction("HIDE_TAOPHIEUBAOHANH_MODAL");
+
+
+export const showPhieuBaoHanhBanHangModal = createAction("SHOW_PHIEUBAOHANH_BANHANG_MODAL");
+export const hidePhieuBaoHanhBanHangModal = createAction("HIDE_PHIEUBAOHANH_BANHANG_MODAL");
+
+export const showPhieuHenBanHangModal = createAction("SHOW_PHIEUHEN_BANHANG_MODAL");
+export const hidePhieuHenBanHangModal = createAction("HIDE_PHIEUHEN_BANHANG_MODAL");
 
 export const showTaoPhieuHenModal = createAction("SHOW_TAOPHIEUHEN_MODAL");
 export const hideTaoPhieuHenModal = createAction("HIDE_TAOPHIEUHEN_MODAL");

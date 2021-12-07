@@ -54,14 +54,9 @@ export default function PhieuHenPage() {
 
   const openCreatePhieuHenModal = React.useCallback(() => {
     dispatch(actions.showTaoPhieuHenModal());
-    console.log("isshow", isShow);
   }, [dispatch]);
 
   function onChange(date, dateString) {
-    if (date != null) {
-      console.log(moment(date[0]));
-      console.log(moment(date[1]));
-    }
     setngayBD(moment(date[0]));
     setngayKT(moment(date[1]));
   }

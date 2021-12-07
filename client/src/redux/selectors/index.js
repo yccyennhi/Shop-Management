@@ -14,20 +14,28 @@ export const HoaDonsState$ = (state) => state.HoaDons.data;
 export const ThanhToanTichDiemModalState$ = (state) => state.ThanhToanTichDiemModal;
 export const TaoPhieuTraHangState$ = (state) => state.TaoPhieuTraHangModal;
 export const modalState$ = (state) => state.Modal;
-export const SanPhamsState$ = (state) => state.SanPhams.data;
-export const isloadingSanPhamsState$ = (state) => state.SanPhams.isLoading;
-export const isloadingPhieuBaoHanhsState$ = (state) => state.PhieuBaoHanhs.isLoading;
-export const TaoSanPhamModalState$ = (state) => state.TaoSanPhamModal;
-export const PhieuBaoHanhsState$ = (state) => state.PhieuBaoHanhs.data;
 export const PhieuDoiTrasState$ = (state)=>state.PhieuDoiTras.data;
-
 export const CTHDsState$ = (state) => state.CTHDs.data;
 export const CTPDTsState$ = (state) => state.CTPDTs.data;
+
+//SanPham
+export const SanPhamsState$ = (state) => state.SanPhams.data;
+export const isloadingSanPhamsState$ = (state) => state.SanPhams.isLoading;
+export const TaoSanPhamModalState$ = (state) => state.TaoSanPhamModal;
+export const ArrHangHoaNhapState$ = (state) => state.ArrHangHoaNhap;
+
+
+//PhieuBaoHanh
 export const TaoPhieuBaoHanhModalState$ = (state) => state.TaoPhieuBaoHanhModal;
+export const PhieuBaoHanhBanHangModalState$ = (state) => state.PhieuBaoHanhBanHangModal;
+export const PhieuBaoHanhsState$ = (state) => state.PhieuBaoHanhs.data;
+export const isloadingPhieuBaoHanhsState$ = (state) => state.PhieuBaoHanhs.isLoading;
+
+//PhieuHen
 export const PhieuHensState$ = (state) => state.PhieuHens.data;
 export const isloadingPhieuHensState$ = (state) => state.PhieuHens.isLoading;
 export const TaoPhieuHenModalState$ = (state) => state.TaoPhieuHenModal;
-
+export const PhieuHenBanHangModalState$ = (state) => state.PhieuHenBanHangModal.isShow;
 
 //TongQuan
 export const TongQuanStatistics$ =(state) => state.TongQuans.statistics;

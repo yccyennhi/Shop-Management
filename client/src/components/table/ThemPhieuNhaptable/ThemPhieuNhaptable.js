@@ -9,10 +9,7 @@ import {
   ThemPhieuNhapPageState$,
 } from "../../../redux/selectors";
 import * as actions from "../../../redux/actions";
-import {
-  messageError,
-  messageSuccess,
-} from "../../message";
+import { messageError, messageSuccess } from "../../message";
 import { SearchOutlined } from "@ant-design/icons";
 
 const { Search } = Input;
@@ -60,7 +57,7 @@ function ThemPhieuNhaptable({ MaSP, setData }) {
         };
         arr.push(newData);
       }
-      console.log("1 lần")
+      console.log("1 lần");
       setDataSource(arr);
     }
   }, [dispatch]);
@@ -138,21 +135,25 @@ function ThemPhieuNhaptable({ MaSP, setData }) {
       key: "SoLuong",
       title: "Số lượng",
       dataIndex: "SoLuong",
+      render: (value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
     },
     {
       key: "GiaNhap",
       title: "Giá nhập",
       dataIndex: "GiaNhap",
+      render: (value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
     },
     {
       key: "GiamGia",
       title: "Giảm giá",
       dataIndex: "GiamGia",
+      render: (value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
     },
     {
       key: "ThanhTien",
       title: "Thành tiền",
       dataIndex: "ThanhTien",
+      render: (value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
     },
     {
       key: "Action",
@@ -210,9 +211,9 @@ function ThemPhieuNhaptable({ MaSP, setData }) {
         }}
         onOk={() => {
           if (
-            Editing.SoLuong <=0 ||
-            Editing.GiaNhap <0 ||
-            Editing.GiamGia <0 
+            Editing.SoLuong <= 0 ||
+            Editing.GiaNhap < 0 ||
+            Editing.GiamGia < 0
           ) {
             messageError("Vui lòng nhập đầy đủ thông tin!");
           } else {

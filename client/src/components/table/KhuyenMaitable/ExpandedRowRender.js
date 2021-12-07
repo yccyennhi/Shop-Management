@@ -23,8 +23,7 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
         className="site-page-header"
         title={record.TenKM}
         tags={
-          <Tag color="blue">
-          
+          <Tag color={record.TrangThai == false ? "red" : "green"}>
             {record.TrangThai == false
               ? "Không áp dụng"
               : "Đang áp dụng"}
@@ -46,7 +45,7 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
             {moment(record.NgayKT).format("DD/MM/YYYY")}
           </Descriptions.Item>
           <Descriptions.Item label="Trị giá hóa đơn">
-            {record.GiaTri}
+          {record.GiaTri.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
           </Descriptions.Item>
           <Descriptions.Item label="Phần trăm giảm">
             {record.PhanTram}

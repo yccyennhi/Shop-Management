@@ -13,7 +13,11 @@ import {
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import FileBase64 from "react-file-base64";
-import { SettingOutlined, UploadOutlined } from "@ant-design/icons";
+import {
+  SettingOutlined,
+  UploadOutlined,
+  RetweetOutlined,
+} from "@ant-design/icons";
 import { messageError, messageLoadingSuccess } from "../../message";
 import {
   TaoSanPhamModalState$,
@@ -41,56 +45,41 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
   const { isShow } = useSelector(TaoSanPhamModalState$);
   const [form] = Form.useForm();
   const SP = useSelector(SanPhamsState$);
-  const [data, setData] = useState({
-    // MaSP: "",
-    // TenSP: "",
-    // MauSac: "",
-    // LoaiHang: "",
-    // Size: 0,
-    // GiaVon: 0,
-    // GiaBan: 0,
-    // TonKho: 0,
-    // TrangThai: "Hết hàng",
-    // BaoHanh: "Có bảo hành",
-    // HinhAnh: "",
-    // MoTa: "",
-  });
+  const [data, setData] = useState({});
   const SanPhamValue = useSelector((state) =>
     state.SanPhams.data.find((SanPham) =>
       SanPham._id === currentId ? SanPham : null
     )
   );
   useEffect(() => {
-    form.resetFields();
-    setData({
-      MaSP: "",
-      TenSP: "",
-      MauSac: "",
-      LoaiHang: "",
-      Size: 0,
-      GiaVon: 0,
-      GiaBan: 0,
-      TonKho: 0,
-      TrangThai: "Hết hàng",
-      BaoHanh: "Có bảo hành",
-      HinhAnh: "",
-      MoTa: "",
-    });
     if (SanPhamValue) setData(SanPhamValue);
     if (data.TonKho > 0) setTrangthai(true);
   }, [SanPhamValue]);
+
   const dispatch = useDispatch();
+
+  const RandomMa = React.useCallback(() => {
+    if (data.MaSP == "" || data.MaSP == undefined) {
+      let SanPham;
+      do {
+        const min = 1000000;
+        const max = 9999999;
+        const rand = min + Math.random() * (max - min);
+        const Ma = "MA" + Math.round(rand);
+        setData({ ...data, MaSP: Ma });
+        console.log(Ma);
+        SanPham = SP.find((data) => data.MaSP == Ma);
+      } while (SanPham !== undefined);
+    }
+  }, [dispatch, data]);
 
   const handleCancel = React.useCallback(() => {
     setTrangthai(false);
+    setCurrentId(null);
     dispatch(hideTaoSanPhamModal());
-    // if (currentId) {
-    // } else {
-    form.resetFields();
-    // }
-
     if (currentId) {
       setCurrentId(null);
+      form.resetFields();
     }
     setData({
       MaSP: "",
@@ -101,13 +90,12 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
       GiaVon: 0,
       GiaBan: 0,
       TonKho: 0,
+      ThoiGianBaoHanh: 0,
       TrangThai: "Hết hàng",
       BaoHanh: "Có bảo hành",
       HinhAnh: "",
       MoTa: "",
     });
-
-    // form.resetFields();
   }, [dispatch]);
 
   const handleReset = React.useCallback(() => {
@@ -126,6 +114,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
       GiaVon: 0,
       GiaBan: 0,
       TonKho: 0,
+      ThoiGianBaoHanh: 0,
       TrangThai: "Hết hàng",
       BaoHanh: "Có bảo hành",
       HinhAnh: "",
@@ -134,25 +123,26 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
   }, [dispatch]);
 
   const handleOk = React.useCallback(() => {
+    console.log(data);
     if (
       data.GiaBan < 0 ||
       data.GiaVon < 0 ||
       data.Size < 0 ||
-      data.TonKho < 0
+      data.TonKho < 0 ||
+      data.ThoiGianBaoHanh < 0
     ) {
-      messageError("Vui lòng nhập đúng thông tin!");
+      messageError("Vui lòng nhập đúng thông tin");
     } else if (
       data.MaSP == "" ||
       data.TenSP == "" ||
       data.MauSac == "" ||
       data.LoaiHang == "" ||
       data.GiaBan == "" ||
-      data.GiaBan == ""
+      data.GiaVon == ""
     ) {
       messageError("Vui lòng nhập đầy đủ thông tin");
     } else {
       if (currentId) {
-        //messageLoadingSuccess("Cập nhật sản phẩm");
         let listSP = SP.find(function (e) {
           return e.MaSP === data.MaSP && e.MaSP != SanPhamValue.MaSP;
         });
@@ -179,36 +169,55 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
   const body = (
     <>
       <Form
-        // {...formItemLayout}
         validateMessages={validateMessages}
         form={form}
         labelCol={{
-          span: 4,
+          span: 5,
         }}
         wrapperCol={{
-          span: 50,
+          span: 30,
         }}
         layout="horizontal"
       >
         <Form.Item
-          label="Mã hàng"
-          tooltip="Mã hàng là thông tin duy nhất"
+          label="Mã sản phẩm"
+          tooltip="Mã sản phẩm là thông tin duy nhất"
+          required
+          disabled={currentId == null ? false : true}
+        >
+          <Input.Group compact>
+            <Input
+              allowClear
+              style={{ width: "calc(100% - 31px)" }}
+              placeholder="Nhập mã sản phẩm"
+              value={data.MaSP}
+              onChange={(e) => setData({ ...data, MaSP: e.target.value })}
+              defaultValue={data.MaSP}
+              disabled={currentId == null ? false : true}
+            />
+            <Button icon={<RetweetOutlined />} onClick={RandomMa} />
+          </Input.Group>
+        </Form.Item>
+        {/* <Form.Item
+          label="Mã sản phẩm"
+          tooltip="Mã sản phẩm là thông tin duy nhất"
           required
         >
           <Input
-            placeholder="Nhập mã hàng"
+            placeholder="Nhập mã sản phẩm"
             value={data.MaSP}
             onChange={(e) => setData({ ...data, MaSP: e.target.value })}
             defaultValue={data.MaSP}
           />
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item
-          label="Tên hàng"
-          tooltip="Tên hàng là tên của sản phẩm"
+          label="Tên sản phẩm"
+          tooltip="Tên sản phẩm là tên hàng hóa"
           required
         >
           <Input
-            placeholder="Nhập tên hàng"
+            allowClear
+            placeholder="Nhập tên sản phẩm"
             value={data.TenSP}
             onChange={(e) => setData({ ...data, TenSP: e.target.value })}
             defaultValue={data.TenSP}
@@ -235,12 +244,13 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
             placeholder="Nhập màu"
           />
         </Form.Item>
-        <Form.Item label="Loại hàng" tooltip="Nhập loại sản phẩm" required>
+        <Form.Item label="Loại sản phẩm" tooltip="Nhập loại sản phẩm" required>
           <Input
+            allowClear
             value={data.LoaiHang}
             defaultValue={data.LoaiHang}
             onChange={(e) => setData({ ...data, LoaiHang: e.target.value })}
-            placeholder="Nhập loại hàng"
+            placeholder="Nhập loại sản phẩm"
           />
         </Form.Item>
         <Form.Item
@@ -250,6 +260,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
         >
           <InputNumber
             value={data.GiaVon}
+            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
             defaultValue={data.GiaVon}
             onChange={(e) => setData({ ...data, GiaVon: e })}
             style={{ width: 120 }}
@@ -259,6 +270,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
         <Form.Item label="Giá bán" required>
           <InputNumber
             value={data.GiaBan}
+            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
             defaultValue={data.GiaBan}
             onChange={(e) => setData({ ...data, GiaBan: e })}
             style={{ width: 120 }}
@@ -272,6 +284,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
         >
           <InputNumber
             value={data.TonKho}
+            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
             onChange={(e) => {
               // setData({ ...data, TonKho: e });
               if (e <= 0) {
@@ -313,6 +326,22 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
             <Option value="Không bảo hành">Không bảo hành</Option>
             <Option value="Có bảo hành">Có bảo hành</Option>
           </Select>
+        </Form.Item>
+        <Form.Item
+          label="Thời gian bảo hành"
+          defaultValue={data.ThoiGianBaoHanh}
+          tooltip="Số tháng bảo hành của sản phẩm"
+        >
+          <InputNumber
+            disabled={data.BaoHanh !== "Có bảo hành"}
+            value={data.ThoiGianBaoHanh}
+            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            onChange={(e) => {
+              setData({ ...data, ThoiGianBaoHanh: e });
+            }}
+            defaultValue={data.TonKho}
+            style={{ width: 120 }}
+          />
         </Form.Item>
         <Form.Item name="MoTa" label="Mô tả">
           <Input

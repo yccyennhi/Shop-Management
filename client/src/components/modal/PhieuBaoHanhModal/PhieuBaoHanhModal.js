@@ -11,9 +11,9 @@ import {
   updatePhieuBaoHanh,
   hideTaoPhieuBaoHanhModal,
 } from "../../../redux/actions";
-import { Form, Input, DatePicker, Modal } from "antd";
+import { Form, Input, DatePicker, Modal, Button } from "antd";
 import { messageError } from "../../message";
-
+import { RetweetOutlined } from "@ant-design/icons";
 import moment from "moment";
 
 const validateMessages = {
@@ -31,8 +31,8 @@ export default function PhieuBaoHanh({ currentId, setCurrentId }) {
   const [form] = Form.useForm();
   const SP = useSelector(SanPhamsState$);
   const PBH = useSelector(PhieuBaoHanhsState$);
-
   const dateNow = moment().toDate();
+  const [MaAuto, setMaAuto] = useState("");
   const [data, setData] = useState({
     MaPBH: "",
     MaHD: "",
@@ -51,8 +51,6 @@ export default function PhieuBaoHanh({ currentId, setCurrentId }) {
     if (PhieuBaoHanhValue) setData(PhieuBaoHanhValue);
   }, [PhieuBaoHanhValue]);
 
-  console.log("PhieuBaoHanh", data);
-
   const dispatch = useDispatch();
 
   React.useEffect(() => {
@@ -70,6 +68,7 @@ export default function PhieuBaoHanh({ currentId, setCurrentId }) {
       NgayBD: dateNow,
       NgayKT: dateNow,
     });
+    setMaAuto("");
   }, [dispatch]);
 
   const onSubmit = React.useCallback(() => {
@@ -92,7 +91,7 @@ export default function PhieuBaoHanh({ currentId, setCurrentId }) {
         if (currentId) {
           if (listSP.BaoHanh == "Có bảo hành") {
             if (listPBH && data.MaPBH !== PhieuBaoHanhValue.MaPBH) {
-              messageError("Mã phiếu bảo hành đã tồn tại");
+              messageError("Mã phiếu bảo hành đã tồn tại, vui lòng đặt l");
             } else {
               dispatch(updatePhieuBaoHanh.updatePhieuBaoHanhRequest(data));
               onClose();
@@ -120,6 +119,16 @@ export default function PhieuBaoHanh({ currentId, setCurrentId }) {
     }
   }, [data, dispatch, onClose, messageError]);
 
+  const RandomMaPBH = React.useCallback(() => {
+    const min = 1000000;
+    const max = 9999999;
+    const rand = min + Math.random() * (max - min);
+    const Ma = "PBH" + Math.round(rand);
+    setMaAuto(Ma);
+    setData({ ...data, MaPBH: Ma })
+    console.log(Ma);
+  }, [dispatch]);
+
   const body = (
     <>
       <Form
@@ -138,12 +147,16 @@ export default function PhieuBaoHanh({ currentId, setCurrentId }) {
           tooltip="Mã phiếu bảo hành là thông tin duy nhất"
           required
         >
-          <Input
-            placeholder="Nhập mã phiếu bảo hành"
-            value={data.MaPBH}
-            onChange={(e) => setData({ ...data, MaPBH: e.target.value })}
-            defaultValue={data.MaPBH}
-          />
+          <Input.Group compact>
+            <Input
+              style={{ width: "calc(100% - 31px)" }}
+              placeholder="Nhập mã phiếu bảo hành"
+              value={data.MaPBH != "" ? data.MaPBH : MaAuto}
+              onChange={(e) => setData({ ...data, MaPBH: e.target.value })}
+              defaultValue={data.MaPBH}
+            />
+            <Button icon={<RetweetOutlined />} onClick={RandomMaPBH} />
+          </Input.Group>
         </Form.Item>
         <Form.Item
           label="Mã hóa đơn"
@@ -188,7 +201,7 @@ export default function PhieuBaoHanh({ currentId, setCurrentId }) {
             style={{ display: "inline-block", width: "calc(30% - 12px)" }}
           >
             <DatePicker
-            disabled={currentId}
+              disabled={currentId}
               value={moment(data.NgayBD)}
               defaultValue={moment(data.NgayBD)}
               onChange={(e) => {
@@ -214,9 +227,7 @@ export default function PhieuBaoHanh({ currentId, setCurrentId }) {
               min
               disabled={currentId}
               value={moment(data.NgayKT)}
-              defaultValue={
-                (moment(data.NgayKT), console.log(moment(data.NgayKT)))
-              }
+              defaultValue={moment(data.NgayKT)}
               onChange={(e) => {
                 if (e) setData({ ...data, NgayKT: e.toDate() });
               }}

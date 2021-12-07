@@ -179,7 +179,7 @@ export default function ExpandedRowRender({ record }) {
     handleNhapHang();
   }, [dispatch]);
 
-  const date = moment(data.NgayTao).format("DD-MM-YYYY");
+  const date = moment(data.NgayTao).format("DD/MM/YYYY");
   const columns = [
     {
       key: "MaSP",
@@ -209,22 +209,30 @@ export default function ExpandedRowRender({ record }) {
     {
       key: "SoLuong",
       title: "Số lượng",
+      render: (value) =>
+        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
       dataIndex: "SoLuong",
     },
     {
       key: "GiaNhap",
       title: "Giá nhập",
       dataIndex: "GiaNhap",
+      render: (value) =>
+        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
     },
     {
       key: "GiamGia",
       title: "Giảm giá",
       dataIndex: "GiamGia",
+      render: (value) =>
+        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
     },
     {
       key: "ThanhTien",
       title: "Thành tiền",
       dataIndex: "ThanhTien",
+      render: (value) =>
+        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
     },
   ];
   return (
@@ -290,23 +298,23 @@ export default function ExpandedRowRender({ record }) {
             {data.NguoiTao}
           </Descriptions.Item>
           <Descriptions.Item label="Cập nhật lần cuối">
-            {moment(data.NgayCapNhat).format("DD-MM-YYYY")}
+            {moment(data.NgayCapNhat).format("DD/MM/YYYY")}
           </Descriptions.Item>
           <Descriptions.Item label="Tên NCC">{data.TenNCC}</Descriptions.Item>
           <Descriptions.Item label="Tổng số lượng">
-            {data.TongSoLuong}
+            {`${data.TongSoLuong}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
           </Descriptions.Item>
           <Descriptions.Item label="Tổng số tiền">
-            {data.TongTien}
+            {`${data.TongTien}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
           </Descriptions.Item>
           <Descriptions.Item label="Giảm giá trên tổng hóa đơn">
-            {data.GiamGiaTongTien}
+            {`${data.GiamGiaTongTien}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
           </Descriptions.Item>
           <Descriptions.Item label="Số tiền cần trả">
-            {data.TongTien - data.GiamGiaTongTien - data.TienTra}
+            {`${data.TongTien - data.GiamGiaTongTien - data.TienTra}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
           </Descriptions.Item>
           <Descriptions.Item label="Số tiền đã trả">
-            {data.TienTra}
+            {`${data.TienTra}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
           </Descriptions.Item>
         </Descriptions>
         <Table

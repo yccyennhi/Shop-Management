@@ -6,6 +6,7 @@ import {
 } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import FormTraHang from "./FormTraHang";
+import moment from "moment";
 const { Search } = Input;
 
 export default function TraHangTable({PhieuDoiTras}) {
@@ -98,6 +99,9 @@ export default function TraHangTable({PhieuDoiTras}) {
       dataIndex: "ThoiGian",
       key: "ThoiGian",
       sorter: (a, b) => a.ThoiGian - b.ThoiGian,
+      render: (date) => {
+        return <label>{moment(date).format("DD/MM/YYYY  HH:mm:ss")}</label>;
+      },
     },
     {
       title: "Mã nhân viên",

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Table, Input, Row } from "antd";
+import { Input, Row } from "antd";
+import { Table } from "ant-table-extensions";
 import { SearchOutlined } from "@ant-design/icons";
 import FormHoaDon from "./FormHoaDon";
 import moment from "moment";
@@ -55,9 +56,9 @@ export default function HoaDontable({HoaDons}) {
       dataIndex: "ThoiGian",
       key: "ThoiGian",
       render: (date) => {
-        return <p>{moment(date).format("DD/MM/YYYY  HH:mm:ss")}</p>;
+        return <label>{moment(date).format("DD/MM/YYYY  HH:mm:ss")}</label>;
       },
-      sorter: (a, b) => a.ThoiGian - b.ThoiGian,
+      sorter: (a, b) => a.date > b.date,
     },
     {
       title: "Mã nhân viên",
@@ -98,6 +99,7 @@ export default function HoaDontable({HoaDons}) {
       title: "Khách hàng",
       dataIndex: "MaKH",
       key: "MaKH",
+      render: (value) => value === 'KH000'? 'Không':value,
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
         return (
           <Search
@@ -133,6 +135,7 @@ export default function HoaDontable({HoaDons}) {
       title: "Mã khuyến mãi",
       dataIndex: "MaKM",
       key: "MaKM",
+      render: (value) => value === 'KM000'? 'Không':value,
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
         return (
           <Search
@@ -204,7 +207,15 @@ export default function HoaDontable({HoaDons}) {
       <Table
         tableLayout={"auto"}
         loading={false}
-        scroll={{ x: 1100 }}
+        searchable
+        searchableProps={{
+          inputProps: {
+            placeholder: "Nhập nội dung cần tìm",
+            prefix: <SearchOutlined />,
+            width: 200,
+          },
+        }}
+        scroll={{ x: 900 }}
         pagination={true}
         columns={columns}
         expandable={{

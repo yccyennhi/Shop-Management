@@ -1,21 +1,10 @@
 import { PhieuDoiTraModel } from "../models/PhieuDoiTraModel.js";
-import {SanPhamModel} from "../models/SanPhamModel.js"
+import { SanPhamModel } from "../models/SanPhamModel.js";
+import { KhachHangModel } from "../models/KhachHangModel.js";
 import moment from "moment";
 
 export const getPhieuDoiTras = async (req, res) => {
   try {
-    // const newPhieuDoiTra = new PhieuDoiTraModel({
-    //   MaPDT: 'DT001',
-    //   idHD: '619b037675c410c00a58b1d6',
-    //   MaHD: 'HD006',
-    //   idNV: '618f87add7f3f02b3fe340d5',
-    //   MaNV: 'NV001',
-    //   SoLuong: 2,
-    //   ThoiGian: moment(),
-    //   TongTien: 500000,
-    // })
-
-    // await newPhieuDoiTra.save();
     const PhieuDoiTras = await PhieuDoiTraModel.find();
     console.log("PhieuDoiTras", PhieuDoiTras);
     res.status(200).json(PhieuDoiTras);
@@ -35,10 +24,19 @@ export const createPhieuDoiTra = async (req, res) => {
       const SP = await SanPhamModel.findOne({ _id: CTPDT.idSP });
       SP.TonKho = SP.TonKho + CTPDT.SoLuong;
       if (SP.TrangThai === "Hết hàng") SP.TrangThai = "Đang kinh doanh";
-      const SanPham = await SanPhamModel.findOneAndUpdate({ _id: SP._id }, SP, {
+      await SanPhamModel.findOneAndUpdate({ _id: SP._id }, SP, {
         new: true,
       });
     });
+    console.log(PhieuDoiTra);
+    if (PhieuDoiTra.MaKH != "KH000") {
+      const KhachHang = await KhachHangModel.findOne({ _id: PhieuDoiTra.idKH });
+      KhachHang.DiemTichLuy -= parseInt(PhieuDoiTra.ThanhTien / 100);
+      await KhachHangModel.findOneAndUpdate({ _id: KhachHang._id }, KhachHang, {
+        new: true,
+      });
+    }
+
     res.status(200).json(PhieuDoiTra);
   } catch (err) {
     res.status(500).json({ error: err });

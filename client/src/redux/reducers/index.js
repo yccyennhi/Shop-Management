@@ -13,7 +13,7 @@ import PhieuDoiTras from "./PhieuDoiTras";
 import PhieuHens from "./PhieuHens";
 import SanPhams from "./SanPhams";
 import TaiKhoans from "./TaiKhoans";
-import TaoHoaDonModal from "./TaoHoaDonModal";
+import ThanhToanTichDiemModal from "./ThanhToanTichDiemModal";
 import TaoPhieuBaoHanhModal from "./TaoPhieuBaoHanhModal";
 import TaoPhieuHenModal from "./TaoPhieuHenModal";
 import TaoPhieuTraHangModal from "./TaoPhieuTraHangModal";
@@ -43,7 +43,7 @@ export default combineReducers({
   PhieuBaoHanhs,
   PhieuHens,
   PhieuDoiTras,
-  TaoHoaDonModal,
+  ThanhToanTichDiemModal,
   TaoPhieuTraHangModal,
   TaoPhieuBaoHanhModal,
   TaoPhieuHenModal,

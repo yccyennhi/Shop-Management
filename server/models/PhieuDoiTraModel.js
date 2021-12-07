@@ -25,6 +25,15 @@ const schema = new Schema(
       type: String,
       required: true,
     },
+    idKH: {
+      type: Schema.Types.ObjectId,
+      ref: "KhachHang",
+      required: true,
+    },
+    MaKH: {
+      type: String,
+      required: true,
+    },
     SoLuong: {
       type: Number,
       required: true,

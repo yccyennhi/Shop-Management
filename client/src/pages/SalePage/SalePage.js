@@ -8,12 +8,10 @@ import {
   Image,
   InputNumber,
   Cascader,
-  DatePicker,
   List,
   Tooltip,
   Form,
   message,
-  PageHeader,
   Divider,
   Popover,
 } from "antd";
@@ -23,7 +21,7 @@ import {
   PlusOutlined,
   EditOutlined,
 } from "@ant-design/icons";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../redux/actions";
 import "./styles.css";
@@ -37,15 +35,18 @@ import {
   PhieuBaoHanhsState$,
 } from "../../redux/selectors";
 import SanPhamHoaDonPanel from "../../components/ControlPanel/SanPhamHoaDonPanel";
-import { showKhachHangModal } from "../../redux/actions";
+import {
+  showKhachHangModal,
+  showThanhToanTichDiemModal,
+} from "../../redux/actions";
 import KhachHangModal from "../../components/modal/KhachHangModal/KhachHangModal";
-import { useHistory } from "react-router-dom";
+import PrintModal from "../../components/modal/PrintModal/PrintModal";
 import MenubarBanHang from "../../components/header/Menubar/MenubarBanHang";
 const { Content, Sider } = Layout;
 
 export default function SalePage() {
+  //Khai báo
   const dispatch = useDispatch();
-  const history = useHistory();
   const dateNow = moment().toDate();
   const HoaDons = useSelector(HoaDonsState$);
   const PBH = useSelector(PhieuBaoHanhsState$);
@@ -60,6 +61,10 @@ export default function SalePage() {
   const [onCollap, setonCollap] = useState(0);
   const [pagesize, setpagesize] = useState(7);
   const [SPSearchs, setSPSearch] = useState([]);
+  const [KH, setKH] = useState();
+  const [oksubmit, setoksubmit] = useState(0);
+
+  //Đọc + load dữ liệu
   React.useEffect(() => {
     dispatch(actions.getHoaDons.getHoaDonsRequest());
     dispatch(actions.getSanPhams.getSanPhamsRequest());
@@ -69,6 +74,10 @@ export default function SalePage() {
   }, [dispatch]);
   const openKhachHangModal = useCallback(() => {
     dispatch(showKhachHangModal());
+  }, [dispatch]);
+
+  const openprint = useCallback(() => {
+    dispatch(showThanhToanTichDiemModal());
   }, [dispatch]);
   const [dataHD, setDataHD] = React.useState({
     MaHD: "",
@@ -92,8 +101,6 @@ export default function SalePage() {
     CTHD: [],
   });
 
-  const [textInputKH, setTextInputKH] = useState();
-
   const optionNV = React.useMemo(() => {
     return NhanViens.map((NV) => ({
       value: NV.MaNV,
@@ -111,7 +118,7 @@ export default function SalePage() {
   const optionKH = React.useMemo(() => {
     return KhachHangs.map((KH) => ({
       value: KH.MaKH,
-      label: KH.MaKH + " " + KH.TenKH,
+      label: KH.TenKH + "-" + KH.SDT + " (" + KH.DiemTichLuy + "đ)",
     }));
   }, [KhachHangs]);
 
@@ -124,15 +131,15 @@ export default function SalePage() {
 
   const ObjectSP = (sp) => (
     <Tooltip title={sp.TenSP + " (" + sp.MoTa + ")"}>
-      <Button style={{ height: "130px", width: "110px", margin: "1px" }}>
+      <Button style={{ height: 130, width: 110, margin: "1" }}>
         <Row>
           <Image width={90} height={90} src={sp.HinhAnh} />
         </Row>
         <Row>
-          <h5 style={{ width: "100px", textAlign: "center", marginBottom: -2 }}>
+          <h5 style={{ width: "100", textAlign: "center", marginBottom: -2 }}>
             Mã SP: {sp.MaSP}
           </h5>
-          <h5 style={{ width: "100px", textAlign: "center" }}>
+          <h5 style={{ width: "100", textAlign: "center" }}>
             Giá: {sp.GiaBan}
           </h5>
         </Row>
@@ -152,14 +159,20 @@ export default function SalePage() {
       Size: result.Size,
       GiaVon: result.GiaVon,
       DonGia: result.GiaBan,
-      BaoHanh: result.BaoHanh,
+      BaoHanh: result.ThoiGianBaoHanh,
       ThanhTien: result.GiaBan,
     };
     const index = SPsInfo.findIndex((sp) => sp.MaSP === result.MaSP);
     if (index < 0) SPsInfo.push(SPInfo);
     else {
-      SPsInfo[index].SoLuong += 1;
-      SPsInfo[index].ThanhTien += result.GiaBan;
+      if (SPsInfo[index].SoLuong >= result.TonKho) {
+        message.warn("Không thể chọn số lượng vượt quá số tồn kho");
+        return;
+      }
+      const tam = SPsInfo[index];
+      tam.SoLuong += 1;
+      tam.ThanhTien += result.GiaBan;
+      SPPanelChange(tam);
     }
     setDataHD({
       ...dataHD,
@@ -187,7 +200,7 @@ export default function SalePage() {
     });
     for (let i = index; i < SPsInfo.length - 1; i++) {
       SPsInfo[i] = SPsInfo[i + 1];
-      SPsInfo[i].STT = index + 1;
+      SPsInfo[i].STT = i + 1;
     }
     SPsInfo.splice(SPsInfo.length - 1, 1);
     console.log(SPsInfo);
@@ -202,7 +215,7 @@ export default function SalePage() {
       KM.NgayKT < dateNow ||
       KM.GiaTri > dataHD.ThanhTien
     ) {
-      message.error("Mã khuyến mãi không phù hợp");
+      if (e) message.error("Mã khuyến mãi không phù hợp");
       setGTKM(0);
       setDataHD({
         ...dataHD,
@@ -220,33 +233,44 @@ export default function SalePage() {
     });
   };
 
+  const KhachHangChange = (e) => {
+    if (!e || e === "KH000") setKH();
+    else {
+      const KH = KhachHangs.find((kh) => e === kh.MaKH);
+      if (KH.TrangThai) setKH(KH);
+      else message.warn("Khách hàng không còn hiệu lực");
+    }
+    setDataHD({ ...dataHD, DiemTru: 0 });
+  };
+
   if (GiaTriKM > 0) {
     dataHD.GiamGia = parseInt((GiaTriKM * dataHD.TongTienHang) / 100);
   } else dataHD.ThanhTien = dataHD.TongTienHang;
-  if (dataHD.TienKhachTra > 0) {
-    dataHD.TienTraKhach =
-      dataHD.TienKhachTra - dataHD.TongTienHang + dataHD.GiamGia;
-  }
+
   dataHD.ThanhTien = dataHD.TongTienHang - dataHD.GiamGia;
+  dataHD.TienTraKhach =
+    dataHD.TienKhachTra - dataHD.TongTienHang + dataHD.GiamGia + dataHD.DiemTru;
 
   const onSubmit = React.useCallback(() => {
-    if (!dataHD.MaNV) {
-      message.warning("Vui lòng thêm nhân viên");
-      return;
-    }
     if (!dataHD.SoLuong) {
       message.warning("Vui lòng thêm sản phẩm vào hóa đon");
       return;
     }
+    if (!dataHD.MaNV) {
+      message.warning("Vui lòng thêm nhân viên");
+      return;
+    } else {
+      const nv = NhanViens.find((NV) => NV.MaNV === dataHD.MaNV);
+      if (nv.TrangThai) {
+        dataHD.idNV = nv._id;
+        localStorage.setItem("NV", JSON.stringify(nv));
+      } else {
+        message.warning("Nhân viên đã không còn làm việc tại cửa hàng");
+        return;
+      }
+    }
+
     form.resetFields();
-    // const length = HoaDons.length + 1;
-    // if (length < 10) {
-    //   dataHD.MaHD = "HD00" + length;
-    // } else if (length < 100) {
-    //   dataHD.MaHD = "HD0" + length;
-    // } else {
-    //   dataHD.MaHD = "HD" + length;
-    // }
     let Ma = "";
     let HD;
     do {
@@ -256,25 +280,19 @@ export default function SalePage() {
       Ma = "HD" + Math.round(rand);
       console.log("Ma:", Ma);
       HD = HoaDons.find((data) => data.MaHD == Ma);
-      console.log(HD);
     } while (HD !== undefined);
     dataHD.MaHD = Ma;
-    const nv = NhanViens.find((NV) => NV.MaNV === dataHD.MaNV);
-    dataHD.idNV = nv._id;
-    if (textInputKH) {
-      const kh = KhachHangs.find((KH) => KH.MaKH === dataHD.MaKH);
-      dataHD.idKH = kh._id;
-      localStorage.setItem("KH", JSON.stringify(kh));
-    } else {
-      dataHD.MaKH = "KH000";
-      dataHD.idKH = "61957aa9e198c2fe3f3f53f6";
+    if (KH) {
+      dataHD.idKH = KH._id;
+      dataHD.MaKH = KH.MaKH;
+      localStorage.setItem("KH", JSON.stringify(KH));
     }
     dataHD.CTHD = SPsInfo;
-    dispatch(actions.createHoaDon.createHoaDonRequest(dataHD));
+    dataHD.ThoiGian = moment().toDate();
+    //dispatch(actions.createHoaDon.createHoaDonRequest(dataHD));
     localStorage.setItem("HoaDon", JSON.stringify(dataHD));
     localStorage.setItem("CTHDs", JSON.stringify(SPsInfo));
-    localStorage.setItem("NV", JSON.stringify(nv));
-    history.push("/PrintHD");
+    openprint();
     setDataHD({
       MaHD: "",
       MaNV: "",
@@ -284,7 +302,7 @@ export default function SalePage() {
       MaKM: "KM000",
       idKM: "619f673906c0b162302fb7f2",
       SoLuong: 0,
-      ThoiGian: dateNow,
+      ThoiGian: "",
       GiamGia: 0,
       PhanTram: 0,
       GiaVon: 0,
@@ -297,50 +315,53 @@ export default function SalePage() {
       CTHD: [],
     });
     setSPsInfo([]);
+    setoksubmit(1);
   }, [dispatch, dataHD, SPsInfo]);
 
   const headerTable = (
     <Row
       style={{
         textAlign: "center",
-        marginRight: 20,
-        marginLeft: 20,
+        width: 850,
+        marginLeft: 30,
         fontWeight: 800,
         marginTop: 5,
         marginBottom: 10,
       }}
     >
-      <Col flex="4%">
+      <Col flex="20">
         <label style={{ textAlign: "center", fontWeight: "500" }}>STT</label>
       </Col>
       <Divider type="vertical" />
-      <Col flex="8%">
+      <Col flex="80">
         <label style={{ textAlign: "center", fontWeight: "500" }}>Mã SP</label>
       </Col>
       <Divider type="vertical" />
-      <Col flex="44%">
+      <Col flex="350">
         <label style={{ float: "left", marginLeft: "10%", fontWeight: "500" }}>
           Tên sản phẩm
         </label>
       </Col>
       <Divider type="vertical" />
-      <Col flex="10%" style={{ marginRight: "2%" }}>
-        <label style={{ float: "center", fontWeight: "500" }}>Số lượng</label>
+      <Col flex="80">
+        <label style={{ textAlign: "center", fontWeight: "500" }}>
+          Số lượng
+        </label>
       </Col>
       <Divider type="vertical" />
-      <Col flex="8%">
+      <Col flex="70">
         <label style={{ textAlign: "center", fontWeight: "500" }}>
           Đơn giá
         </label>
       </Col>
       <Divider type="vertical" />
-      <Col flex="8%">
+      <Col flex="75">
         <label style={{ textAlign: "right", fontWeight: "500" }}>
           Thành tiền
         </label>
       </Col>
       <Divider type="vertical" />
-      <Col flex="4%">
+      <Col flex="20">
         <label style={{ textAlign: "right", fontWeight: "500" }}>Xóa</label>
       </Col>
     </Row>
@@ -356,34 +377,255 @@ export default function SalePage() {
   };
 
   const contentPopOver = (
-    <>
-      <label style={{ fontWeight: 600 }}>{"Nhập số tiền: "}</label>
-      <InputNumber
-        placeholder="Tiền khách trả"
-        min={0}
-        bordered={false}
-        value={dataHD.TienKhachTra}
-        size="small"
-        formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-        onChange={(e) =>
-          setDataHD({
-            ...dataHD,
-            TienKhachTra: e,
-            TienTraKhach: e - dataHD.ThanhTien,
-          })
-        }
-        style={{
-          float: "right",
-          width: "100px",
-          textAlign: "right",
-          borderBottomStyle: "solid",
-          borderColor: "lightgray",
-          borderBottomWidth: 1,
-        }}
-      />
-    </>
+    <Col flex="400">
+      <Divider orientation="left">
+        <label style={{ fontWeight: 500, fontSize: 14 }}>
+          {"Nhập số tiền mặt: "}
+        </label>
+      </Divider>
+      <Row>
+        <InputNumber
+          placeholder="Tiền khách trả"
+          min={0}
+          bordered={false}
+          value={dataHD.TienKhachTra}
+          size="small"
+          formatter={(value) =>
+            `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+          }
+          onChange={(e) =>
+            setDataHD({
+              ...dataHD,
+              TienKhachTra: e ? e : 0,
+            })
+          }
+          style={{
+            width: 120,
+            borderBottomStyle: "solid",
+            borderColor: "lightgray",
+            borderBottomWidth: 1,
+            marginLeft: 100,
+          }}
+        />
+      </Row>
+      <Divider orientation="left">
+        <label style={{ fontWeight: 500, fontSize: 14 }}>
+          {"Dùng điểm tích lũy: "}
+        </label>
+      </Divider>
+      <Row>
+        <InputNumber
+          placeholder="Điểm tích lũy"
+          min={0}
+          max={
+            KH
+              ? Math.min(dataHD.TongTienHang - dataHD.GiamGia, KH.DiemTichLuy)
+              : 0
+          }
+          bordered={false}
+          size="small"
+          formatter={(value) =>
+            `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+          }
+          value={dataHD.DiemTru}
+          disabled={!KH}
+          onChange={(e) => setDataHD({ ...dataHD, DiemTru: e })}
+          style={{
+            width: 120,
+            borderBottomStyle: "solid",
+            borderColor: "lightgray",
+            borderBottomWidth: 1,
+            marginLeft: 100,
+          }}
+        />
+      </Row>
+    </Col>
   );
 
+  const bodySider = (
+    <>
+      <Form
+        labelCol={{
+          span: 10,
+        }}
+        wrapperCol={{
+          span: 14,
+        }}
+        form={form}
+        layout="horizontal"
+      >
+        <Form.Item labelCol={{ span: 50 }} style={{ marginBottom: 10 }}>
+          <h1 style={{ fontSize: 20 }}>Thông tin hóa đơn</h1>
+        </Form.Item>
+        <Form.Item
+          style={{ marginBottom: 5 }}
+          name="NV"
+          wrapperCol={30}
+          rules={[{ required: true }]}
+        >
+          <Button
+            icon={<UserOutlined />}
+            shape="circle"
+            size="small"
+            type="link"
+            style={{ float: "left", marginRight: 5 }}
+          />
+          <Cascader
+            options={optionNV}
+            style={{ width: 330 }}
+            suffixIcon={<SearchOutlined />}
+            placeholder="Chọn nhân viên"
+            showSearch={filter}
+            onChange={(e) => {
+              setDataHD({ ...dataHD, MaNV: e[0] });
+            }}
+          />
+        </Form.Item>
+        <Form.Item style={{ marginBottom: 25 }} name="KH" wrapperCol={30}>
+          <Button size="small" icon={<SearchOutlined />} type="link" />
+          <Cascader
+            options={optionKH}
+            bordered={false}
+            style={{
+              borderWidth: 1,
+              borderColor: "lightgrey",
+              borderBottomStyle: "solid",
+              width: 310,
+            }}
+            placeholder="Tìm khách hàng"
+            showSearch={filter}
+            onChange={(e) => {
+              KhachHangChange(e[0]);
+            }}
+            allowClear
+          />
+          <Button
+            size="small"
+            icon={<PlusOutlined />}
+            type="link"
+            onClick={() => openKhachHangModal()}
+          />
+        </Form.Item>
+        <Form.Item
+          style={{ marginTop: 10, margin: 0 }}
+          label="Tổng tiền hàng"
+          labelAlign="left"
+        >
+          <label style={{ float: "right", marginRight: 10 }}>
+            {`${dataHD.TongTienHang}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </label>
+        </Form.Item>
+        <Form.Item style={{ margin: 0 }} label="Số lượng" labelAlign="left">
+          <label style={{ float: "right", marginRight: 10 }}>
+            {dataHD.SoLuong}
+          </label>
+        </Form.Item>
+        <Form.Item
+          style={{ margin: 0 }}
+          label="Mã khuyến mãi"
+          name="KM"
+          labelAlign="left"
+        >
+          <Cascader
+            options={optionKM}
+            style={{ width: 150, float: "right" }}
+            suffixIcon={<SearchOutlined />}
+            placeholder="Nhập mã KM"
+            showSearch={filter}
+            onChange={(e) => {
+              KhuyenMaiChange(e[0]);
+            }}
+            allowClear
+          />
+        </Form.Item>
+        <Form.Item style={{ margin: 0 }} label="Giảm giá" labelAlign="left">
+          <label style={{ float: "right", marginRight: 10 }}>
+            {`${dataHD.GiamGia}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </label>
+        </Form.Item>
+        <Form.Item style={{ margin: 0 }} label="Thành tiền" labelAlign="left">
+          <label
+            style={{
+              float: "right",
+              marginRight: 10,
+            }}
+          >
+            {`${dataHD.ThanhTien}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </label>
+        </Form.Item>
+        <Form.Item
+          style={{ margin: 0 }}
+          label="Tiền khách trả"
+          labelAlign="left"
+        >
+          <Popover
+            content={contentPopOver}
+            placement="leftBottom"
+            trigger="click"
+          >
+            <span
+              style={{
+                float: "right",
+                width: 70,
+                textAlign: "right",
+                marginRight: 10,
+                borderBottomStyle: "solid",
+                borderBottomWidth: 1,
+                borderBottomColor: "lightgray",
+              }}
+              type="text"
+            >
+              {`${dataHD.TienKhachTra}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            </span>
+          </Popover>
+        </Form.Item>
+        <Form.Item
+          style={{ margin: 0 }}
+          label="Tiền thừa trả khách"
+          labelAlign="left"
+        >
+          <label style={{ float: "right", marginRight: 10 }}>
+            {`${dataHD.TienTraKhach}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </label>
+        </Form.Item>
+        <Form.Item style={{ marginTop: 20, height: 30 }} wrapperCol={30}>
+          <Input.TextArea
+            maxLength={150}
+            showCount={true}
+            prefix={<EditOutlined />}
+            bordered={false}
+            autoSize={true}
+            value={dataHD.GhiChu}
+            placeholder="Ghi chú"
+            style={{
+              borderBottomStyle: "solid",
+              borderColor: "lightgrey",
+              borderWidth: 2,
+            }}
+            onChange={(e) => setDataHD({ ...dataHD, GhiChu: e.target.value })}
+          />
+        </Form.Item>
+        <Form.Item wrapperCol={30} style={{ marginTop: 70 }}>
+          <Button
+            type="primary"
+            block
+            size="large"
+            disabled={
+              !(
+                dataHD.TienTraKhach >= 0 &&
+                (dataHD.TienKhachTra || dataHD.DiemTru)
+              )
+            }
+            onClick={() => {
+              onSubmit();
+            }}
+          >
+            <p> Thanh toán </p>
+          </Button>
+        </Form.Item>
+      </Form>
+    </>
+  );
   return (
     <Layout>
       <Layout>
@@ -392,22 +634,23 @@ export default function SalePage() {
       <Layout
         style={{
           overflow: "auto",
-          width: "500vh",
-          height: "200vh",
-          top: 128,
+          width: "100%",
+          height: "100%",
           left: 0,
+          top: 110,
           position: "fixed",
         }}
       >
         <KhachHangModal currentId={currentId} setCurrentId={setCurrentId} />
+        <PrintModal />
         <Layout
           className="content"
           style={{
             padding: "0 24",
             overflow: "auto",
-            width: "134vh",
-            height: "82vh",
-            top: 128,
+            width: 925,
+            height: 580,
+            top: 120,
             left: 10,
             position: "fixed",
           }}
@@ -431,7 +674,6 @@ export default function SalePage() {
               renderItem={(item) => (
                 <List.Item key={item.MaSP}>
                   <SanPhamHoaDonPanel
-                    //key={sp.MaSP}
                     sp={item}
                     SPPanelChange={SPPanelChange}
                     SPPanelRemove={SPPanelRemove}
@@ -501,212 +743,13 @@ export default function SalePage() {
           style={{
             padding: 15,
             overflow: "auto",
-            height: "100vh",
+            height: 580,
             right: 10,
+            top: 120,
             position: "fixed",
           }}
         >
-          <Form
-            labelCol={{
-              span: 10,
-            }}
-            wrapperCol={{
-              span: 14,
-            }}
-            form={form}
-            layout="horizontal"
-          >
-            <Form.Item labelCol={{ span: 50 }} style={{ margin: 0 }}>
-              <h1 style={{ fontSize: 20 }}>Thông tin hóa đơn</h1>
-            </Form.Item>
-            <Form.Item style={{ margin: 0 }} wrapperCol={{ span: 30 }}>
-              <DatePicker
-                format="YYYY-MM-DD HH:mm:ss"
-                style={{
-                  float: "right",
-                  width: "165px",
-                }}
-                bordered={false}
-                showTime
-                value={moment(dataHD.ThoiGian)}
-                size="small"
-                defaultValue={moment(new Date())}
-                onChange={(e) => setDataHD({ ...dataHD, ThoiGian: e })}
-              />
-            </Form.Item>
-            <Form.Item
-              style={{ marginBottom: 5 }}
-              wrapperCol={30}
-              rules={[{ required: true }]}
-            >
-              <Button
-                icon={<UserOutlined />}
-                shape="circle"
-                size="small"
-                type="link"
-                style={{ float: "left", marginRight: "5px" }}
-              />
-              <Cascader
-                options={optionNV}
-                style={{ width: "340px" }}
-                suffixIcon={<SearchOutlined />}
-                placeholder="Chọn nhân viên"
-                showSearch={filter}
-                onChange={(e) => {
-                  setDataHD({ ...dataHD, MaNV: e[0] });
-                }}
-              />
-            </Form.Item>
-            <Form.Item style={{ marginBottom: 5 }} wrapperCol={30}>
-              <Button size="small" icon={<SearchOutlined />} type="link" />
-              <Cascader
-                options={optionKH}
-                bordered={false}
-                style={{
-                  borderWidth: "1px",
-                  borderColor: "lightgrey",
-                  borderBottomStyle: "solid",
-                  width: 320,
-                }}
-                placeholder="Tìm khách hàng"
-                showSearch={filter}
-                onChange={(e) => {
-                  setDataHD({ ...dataHD, MaKH: e[0] });
-                  setTextInputKH(e);
-                }}
-                allowClear
-              />
-              <Button
-                size="small"
-                icon={<PlusOutlined />}
-                type="link"
-                onClick={() => openKhachHangModal()}
-              />
-            </Form.Item>
-            <Form.Item
-              style={{ marginTop: 10, margin: 0 }}
-              name="CasKM"
-              label="Tổng tiền hàng"
-              labelAlign="left"
-            >
-              <label style={{ float: "right", marginRight: 10 }}>
-                {`${dataHD.TongTienHang}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-              </label>
-            </Form.Item>
-            <Form.Item style={{ margin: 0 }} label="Số lượng" labelAlign="left">
-              <label style={{ float: "right", marginRight: 10 }}>
-                {dataHD.SoLuong}
-              </label>
-            </Form.Item>
-            <Form.Item
-              style={{ margin: 0 }}
-              label="Mã khuyến mãi"
-              labelAlign="left"
-            >
-              <Cascader
-                options={optionKM}
-                style={{ width: 150, float: "right" }}
-                suffixIcon={<SearchOutlined />}
-                placeholder="Nhập mã KM"
-                showSearch={filter}
-                onChange={(e) => {
-                  KhuyenMaiChange(e[0]);
-                }}
-                allowClear
-              />
-            </Form.Item>
-            <Form.Item style={{ margin: 0 }} label="Giảm giá" labelAlign="left">
-              <label style={{ float: "right", marginRight: 10 }}>
-                {`${dataHD.GiamGia}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-              </label>
-            </Form.Item>
-            <Form.Item
-              style={{ margin: 0 }}
-              label="Thành tiền"
-              labelAlign="left"
-            >
-              <label
-                style={{
-                  float: "right",
-                  marginRight: 10,
-                }}
-              >
-                {`${dataHD.ThanhTien}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-              </label>
-            </Form.Item>
-            <Form.Item
-              style={{ margin: 0 }}
-              label="Tiền khách trả"
-              labelAlign="left"
-            >
-              <Popover
-                content={contentPopOver}
-                placement="leftBottom"
-                //title= 'Nhập số tiền'
-                //title = {contentPopOver}
-                trigger="click"
-              >
-                <span
-                  style={{
-                    float: "right",
-                    width: 70,
-                    textAlign: "right",
-                    marginRight: 10,
-                    borderBottomStyle: "solid",
-                    borderBottomWidth: 1,
-                    borderBottomColor: "lightgray",
-                  }}
-                  type="text"
-                >
-                  {`${dataHD.TienKhachTra}`.replace(
-                    /\B(?=(\d{3})+(?!\d))/g,
-                    ","
-                  )}
-                </span>
-              </Popover>
-            </Form.Item>
-            <Form.Item
-              style={{ margin: 0 }}
-              label="Tiền thừa trả khách"
-              labelAlign="left"
-            >
-              <label style={{ float: "right", marginRight: 10 }}>
-                {`${dataHD.TienTraKhach}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-              </label>
-            </Form.Item>
-            <Form.Item style={{ margin: 0, height: 30 }} wrapperCol={30}>
-              <Input.TextArea
-                maxLength={150}
-                showCount={true}
-                prefix={<EditOutlined />}
-                bordered={false}
-                autoSize={true}
-                value={dataHD.GhiChu}
-                placeholder="Ghi chú"
-                style={{
-                  borderBottomStyle: "solid",
-                  borderColor: "lightgrey",
-                  borderWidth: "2px",
-                }}
-                onChange={(e) =>
-                  setDataHD({ ...dataHD, GhiChu: e.target.value })
-                }
-              />
-            </Form.Item>
-            <Form.Item wrapperCol={30} style={{ marginTop: 70 }}>
-              <Button
-                type="primary"
-                block
-                size="large"
-                disabled={!(dataHD.TienTraKhach >= 0 && dataHD.TienKhachTra)}
-                onClick={() => {
-                  onSubmit();
-                }}
-              >
-                <p> Thanh toán </p>
-              </Button>
-            </Form.Item>
-          </Form>
+          {bodySider}
         </Sider>
       </Layout>
     </Layout>

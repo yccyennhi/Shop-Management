@@ -12,23 +12,32 @@ import {
 import PhieuHenModal from "../../../components/modal/PhieuHenModal/PhieuHenModal";
 import PhieuBaoHanhBanHangModal from "../../../components/modal/PhieuBaoHanhModal/PhieuBaoHanhBanHangModal";
 import PhieuHenBanHangModal from "../../../components/modal/PhieuHenModal/PhieuHenBanHangModal";
+import PhieuDoiTraModal from "../../modal/DoiTraModal/TaoPhieuDoiTraModal";
+import { NhanViensState$, PhieuDoiTrasState$ } from "../../../redux/selectors";
 import * as actions from "../../../redux/actions";
 import MenuItem from "antd/lib/menu/MenuItem";
 const { SubMenu } = Menu;
 
 function Menubar() {
   const [currentId, setCurrentId] = useState(null);
+  const dispatch = useDispatch();
   const history = useHistory();
+  const PhieuDoiTras = useSelector(PhieuDoiTrasState$);
+  const NhanViens = useSelector(NhanViensState$);
   //Ban Hang
   const handleBanHang = () => {
     history.push("/Sales");
   };
-
+  React.useEffect(() => {
+    dispatch(actions.getPhieuDoiTras.getPhieuDoiTrasRequest());
+    dispatch(actions.getNhanViens.getNhanViensRequest());
+  },[dispatch]);
   //Doi tra
-  const handleDoiTra = () => {};
+  const openPhieuDoiTraModal = React.useCallback(() => {
+    dispatch(actions.showTaoPhieuTraHangModal());
+  });
 
   //Sua chua, bao hanh
-  const dispatch = useDispatch();
 
   const openCreatePhieuHenModal = React.useCallback(() => {
     dispatch(actions.showTaoPhieuHenModal());
@@ -60,9 +69,9 @@ function Menubar() {
           key="DoiTra"
           icon={<SwapOutlined />}
           title="Đổi trả"
-          onTitleClick={handleDoiTra}
+          onTitleClick={openPhieuDoiTraModal}
         ></SubMenu>
-         <SubMenu
+        <SubMenu
           key="BaoHanh"
           icon={<SafetyCertificateOutlined />}
           title="Bảo hành"
@@ -74,7 +83,7 @@ function Menubar() {
           title="Yêu cầu sửa chữa"
           onTitleClick={openCreatePhieuHenModal}
         >
-           <Menu.Item key="TaoPhieuHen" onClick={openCreatePhieuHenModal}>
+          <Menu.Item key="TaoPhieuHen" onClick={openCreatePhieuHenModal}>
             Tạo phiếu hẹn
           </Menu.Item>
           <Menu.Item key="CapNhatPhieuHen" onClick={openPhieuHenBanHangModal}>
@@ -88,8 +97,9 @@ function Menubar() {
           onTitleClick={handleNhapHang}
         ></SubMenu>
       </Menu>
-      <PhieuHenBanHangModal/>
-      <PhieuBaoHanhBanHangModal/>
+      <PhieuHenBanHangModal />
+      <PhieuBaoHanhBanHangModal />
+      <PhieuDoiTraModal PhieuDoiTras={PhieuDoiTras} NhanViens={NhanViens} />
       <PhieuHenModal currentId={currentId} setCurrentId={setCurrentId} />
     </div>
   );

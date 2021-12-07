@@ -336,6 +336,7 @@ export default function HoaDonPage() {
                   </Space>
                 </Col>
               </Row>
+              <Divider orientation="left"></Divider>
               <Row justify="end" style={{ marginBottom: 15 }}>
                 <Space>
                   <Button

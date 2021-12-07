@@ -9,6 +9,7 @@ import {
   Card,
   Radio,
   DatePicker,
+  Divider,
   Cascader,
   Typography,
 } from "antd";
@@ -307,6 +308,7 @@ export default function DoiTraPage() {
                   </Space>
                 </Col>
               </Row>
+              <Divider orientation="left"></Divider>
               <Row justify="end">
                 <Space>
                   <Button

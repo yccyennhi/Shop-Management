@@ -235,7 +235,11 @@ export default function SalePage() {
 
   const KhachHangChange = (e) => {
     if (!e || e === "KH000") setKH();
-    else setKH(KhachHangs.find((kh) => e === kh.MaKH));
+    else {
+      const KH = KhachHangs.find((kh) => e === kh.MaKH);
+      if (KH.TrangThai) setKH(KH);
+      else message.warn("Khách hàng không còn hiệu lực");
+    }
     setDataHD({ ...dataHD, DiemTru: 0 });
   };
 
@@ -248,14 +252,24 @@ export default function SalePage() {
     dataHD.TienKhachTra - dataHD.TongTienHang + dataHD.GiamGia + dataHD.DiemTru;
 
   const onSubmit = React.useCallback(() => {
-    if (!dataHD.MaNV) {
-      message.warning("Vui lòng thêm nhân viên");
-      return;
-    }
     if (!dataHD.SoLuong) {
       message.warning("Vui lòng thêm sản phẩm vào hóa đon");
       return;
     }
+    if (!dataHD.MaNV) {
+      message.warning("Vui lòng thêm nhân viên");
+      return;
+    } else {
+      const nv = NhanViens.find((NV) => NV.MaNV === dataHD.MaNV);
+      if (nv.TrangThai) {
+        dataHD.idNV = nv._id;
+        localStorage.setItem("NV", JSON.stringify(nv));
+      } else {
+        message.warning("Nhân viên đã không còn làm việc tại cửa hàng");
+        return;
+      }
+    }
+
     form.resetFields();
     let Ma = "";
     let HD;
@@ -268,8 +282,6 @@ export default function SalePage() {
       HD = HoaDons.find((data) => data.MaHD == Ma);
     } while (HD !== undefined);
     dataHD.MaHD = Ma;
-    const nv = NhanViens.find((NV) => NV.MaNV === dataHD.MaNV);
-    dataHD.idNV = nv._id;
     if (KH) {
       dataHD.idKH = KH._id;
       dataHD.MaKH = KH.MaKH;
@@ -280,7 +292,6 @@ export default function SalePage() {
     //dispatch(actions.createHoaDon.createHoaDonRequest(dataHD));
     localStorage.setItem("HoaDon", JSON.stringify(dataHD));
     localStorage.setItem("CTHDs", JSON.stringify(SPsInfo));
-    localStorage.setItem("NV", JSON.stringify(nv));
     openprint();
     setDataHD({
       MaHD: "",

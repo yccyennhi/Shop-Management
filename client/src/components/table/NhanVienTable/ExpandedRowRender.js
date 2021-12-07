@@ -9,28 +9,28 @@ import { NhanViensState$ } from "../../../redux/selectors";
 export default function ExpandedRowRender({ record, setCurrentId }) {
   const dispatch = useDispatch();
 
-  //#region Data
-  const NhanViens = useSelector(NhanViensState$);
+  // //#region Data
+  // const NhanViens = useSelector(NhanViensState$);
 
-  const [data, setData] = useState({
-    MaNV: "",
-    TenNV: "",
-    NgaySinh: new Date(),
-    SDT: "",
-    Email: "",
-    DiaChi: "",
-    NgayVaoLam: new Date(),
-    TrangThai: true,
-  });
+  // const [data, setData] = useState({
+  //   MaNV: "",
+  //   TenNV: "",
+  //   NgaySinh: new Date(),
+  //   SDT: "",
+  //   Email: "",
+  //   DiaChi: "",
+  //   NgayVaoLam: new Date(),
+  //   TrangThai: true,
+  // });
 
-  const NhanVienValue = NhanViens.find((NhanVien) =>
-    NhanVien._id === record._id ? NhanVien : null
-  );
+  // const NhanVienValue = NhanViens.find((NhanVien) =>
+  //   NhanVien._id === record._id ? NhanVien : null
+  // );
 
-  useEffect(() => {
-    if (NhanVienValue) setData(NhanVienValue);
-  }, [NhanVienValue]);
-  //#endregion
+  // useEffect(() => {
+  //   if (NhanVienValue) setData(NhanVienValue);
+  // }, [NhanVienValue]);
+  // //#endregion
 
   //#region handle
   const openNhanVienModal = useCallback(() => {
@@ -39,10 +39,10 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
   }, [dispatch]);
 
   const changeStatus = useCallback(() => {
-    const newStatus = !data.TrangThai;
-    setData({ ...data, TrangThai: newStatus });
+    const newStatus = !record.TrangThai;
+    const data = {...record, TrangThai: newStatus}
     dispatch(updateNhanVien.updateNhanVienRequest(data));
-  }, [data, dispatch]);
+  }, [record, dispatch]);
   //#endregion
 
   return (

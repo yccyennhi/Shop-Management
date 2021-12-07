@@ -8,29 +8,28 @@ import { KhachHangsState$ } from "../../../redux/selectors";
 export default function ExpandedRowRender({ record, setCurrentId }) {
   const dispatch = useDispatch();
 
-  //#region Data
-  const KhachHangs = useSelector(KhachHangsState$);
+  // //#region Data
+  // const KhachHangs = useSelector(KhachHangsState$);
 
-  const [data, setData] = useState({
-    MaKH: "",
-    TenKH: "",
-    NgaySinh: "",
-    SDT: "",
-    Email: "",
-    DiaChi: "",
-    DiemTichLuy: 0,
-    TrangThai: true,
-  });
+  // const [data, setData] = useState({
+  //   MaKH: "",
+  //   TenKH: "",
+  //   NgaySinh: "",
+  //   SDT: "",
+  //   Email: "",
+  //   DiaChi: "",
+  //   DiemTichLuy: 0,
+  //   TrangThai: true,
+  // });
 
-  const KhachHangValue = KhachHangs.find((KhachHang) =>
-    KhachHang._id === record._id ? KhachHang : null
-  );
+  // const KhachHangValue = KhachHangs.find((KhachHang) =>
+  //   KhachHang._id === record._id ? KhachHang : null
+  // );
 
-  useEffect(() => {
-    if (KhachHangValue) setData(KhachHangValue);
-  }, [KhachHangValue]);
-  //#endregion
-
+  // useEffect(() => {
+  //   if (KhachHangValue) setData(KhachHangValue);
+  // }, [KhachHangValue]);
+  // //#endregion
   const openKhachHangModal = useCallback(() => {
     setCurrentId(record._id);
     dispatch(showKhachHangModal());
@@ -38,9 +37,9 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
 
   const changeStatus = useCallback(() => {
     const newStatus = !record.TrangThai;
-    setData({ ...data, TrangThai: newStatus });
+    const data = {...record, TrangThai: newStatus}
     dispatch(updateKhachHang.updateKhachHangRequest(data));
-  }, [data, dispatch]);
+  }, [record, dispatch]);
 
   return (
     <>

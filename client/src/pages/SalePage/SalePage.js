@@ -118,10 +118,6 @@ export default function SalePage() {
     }));
   }, [KhachHangs]);
 
-  const openKhachHangModal = useCallback(() => {
-    dispatch(showKhachHangModal());
-  }, [dispatch]);
-
   const filter = (inputValue, path) => {
     return path.some(
       (option) =>
@@ -442,24 +438,17 @@ export default function SalePage() {
       </Row>
     </Col>
   );
-  console.log(SPsInfo);
   return (
     <Layout
-      style={{
-        overflow: "auto",
-        width: "100%",
-        height: "100%",
-        left: 0,
-        top: 110,
-        position: "fixed",
-      }}
+      // style={{
+      //   overflow: "auto",
+      //   width: "100%",
+      //   height: "100%",
+      //   left: 0,
+      //   position: "fixed",
+      // }}
     >
-      <Layout>
-        <MenubarBanHang />
-      </Layout>
-
-      <KhachHangModal currentId={currentId} setCurrentId={setCurrentId} />
-
+      <MenubarBanHang />
       <Layout
         style={{
           overflow: "auto",
@@ -501,7 +490,6 @@ export default function SalePage() {
               renderItem={(item) => (
                 <List.Item key={item.MaSP}>
                   <SanPhamHoaDonPanel
-                    //key={sp.MaSP}
                     sp={item}
                     SPPanelChange={SPPanelChange}
                     SPPanelRemove={SPPanelRemove}
@@ -509,7 +497,6 @@ export default function SalePage() {
                 </List.Item>
               )}
             />
-            {/*  */}
           </Content>
           <Collapse bordered={false} collapsible="header">
             <Collapse.Panel
@@ -640,7 +627,6 @@ export default function SalePage() {
             </Form.Item>
             <Form.Item
               style={{ marginTop: 10, margin: 0 }}
-              name="CasKM"
               label="Tổng tiền hàng"
               labelAlign="left"
             >
@@ -771,6 +757,3 @@ export default function SalePage() {
     </Layout>
   );
 }
-/*
-         
-         */

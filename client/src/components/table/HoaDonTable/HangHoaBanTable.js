@@ -41,7 +41,7 @@ function HangHoaBanTable({ dataCTHDs }) {
       title: "Bảo hành",
       dataIndex: "BaoHanh",
       render: (BaoHanh) => {
-        return <p>{BaoHanh == 0 ? "Không bảo hành" : "Có bảo hành"}</p>;
+        return <p>{BaoHanh ? BaoHanh + ' Tháng' : "Không"}</p>;
       },
     },
     {

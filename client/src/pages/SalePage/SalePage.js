@@ -161,8 +161,15 @@ export default function SalePage() {
     const index = SPsInfo.findIndex((sp) => sp.MaSP === result.MaSP);
     if (index < 0) SPsInfo.push(SPInfo);
     else {
-      SPsInfo[index].SoLuong += 1;
-      SPsInfo[index].ThanhTien += result.GiaBan;
+      if (SPsInfo[index].SoLuong >= result.TonKho) {
+        message.warn("Không thể chọn số lượng vượt quá số tồn kho");
+        return;
+      }
+      const  tam = SPsInfo[index]
+      tam.SoLuong+= 1;
+      tam.ThanhTien+= result.GiaBan;
+      SPPanelChange(tam)
+      //setSPsInfo(tamp);
     }
     setDataHD({
       ...dataHD,
@@ -181,6 +188,8 @@ export default function SalePage() {
     });
     SPsInfo.splice(SP.STT - 1, 1, SP);
   };
+
+  console.log(SPsInfo)
 
   const SPPanelRemove = (index) => {
     setDataHD({
@@ -205,7 +214,7 @@ export default function SalePage() {
       KM.NgayKT < dateNow ||
       KM.GiaTri > dataHD.ThanhTien
     ) {
-      message.error("Mã khuyến mãi không phù hợp");
+      if (e) message.error("Mã khuyến mãi không phù hợp");
       setGTKM(0);
       setDataHD({
         ...dataHD,
@@ -232,13 +241,11 @@ export default function SalePage() {
   if (GiaTriKM > 0) {
     dataHD.GiamGia = parseInt((GiaTriKM * dataHD.TongTienHang) / 100);
   } else dataHD.ThanhTien = dataHD.TongTienHang;
-  if (dataHD.TienKhachTra > 0) {
-    dataHD.TienTraKhach =
-      dataHD.TienKhachTra - dataHD.TongTienHang + dataHD.GiamGia;
-  }
-  dataHD.ThanhTien = dataHD.TongTienHang - dataHD.GiamGia - dataHD.DiemTru;
-  dataHD.TienTraKhach = dataHD.TienKhachTra - dataHD.ThanhTien;
-  if (KH) console.log(Math.min(dataHD.ThanhTien, KH.DiemTichLuy));
+
+  dataHD.ThanhTien = dataHD.TongTienHang - dataHD.GiamGia;
+  dataHD.TienTraKhach =
+    dataHD.TienKhachTra - dataHD.TongTienHang + dataHD.GiamGia + dataHD.DiemTru;
+
   const onSubmit = React.useCallback(() => {
     if (!dataHD.MaNV) {
       message.warning("Vui lòng thêm nhân viên");
@@ -265,9 +272,9 @@ export default function SalePage() {
       localStorage.setItem("KH", JSON.stringify(KH));
     }
     dataHD.CTHD = SPsInfo;
-    dataHD.ThoiGian = dateNow;
+    dataHD.ThoiGian = moment().toDate();
     dispatch(actions.createHoaDon.createHoaDonRequest(dataHD));
-
+    console.log(moment(HoaDons.ThoiGian).format("DD-MM-YYYY HH-MM-SS"));
     localStorage.setItem("HoaDon", JSON.stringify(dataHD));
     localStorage.setItem("CTHDs", JSON.stringify(SPsInfo));
     localStorage.setItem("NV", JSON.stringify(nv));
@@ -281,7 +288,7 @@ export default function SalePage() {
       MaKM: "KM000",
       idKM: "619f673906c0b162302fb7f2",
       SoLuong: 0,
-      ThoiGian: dateNow,
+      ThoiGian: "",
       GiamGia: 0,
       PhanTram: 0,
       GiaVon: 0,
@@ -353,7 +360,6 @@ export default function SalePage() {
     );
     setSPSearch(list);
   };
-  console.log(KH);
 
   const contentPopOver = (
     <Col flex="400">
@@ -375,7 +381,7 @@ export default function SalePage() {
           onChange={(e) =>
             setDataHD({
               ...dataHD,
-              TienKhachTra: e,
+              TienKhachTra: e ? e : 0,
             })
           }
           style={{
@@ -404,6 +410,9 @@ export default function SalePage() {
           }
           bordered={false}
           size="small"
+          formatter={(value) =>
+            `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+          }
           value={dataHD.DiemTru}
           disabled={!KH}
           onChange={(e) => setDataHD({ ...dataHD, DiemTru: e })}
@@ -418,12 +427,12 @@ export default function SalePage() {
       </Row>
     </Col>
   );
-
+console.log(SPsInfo);
   return (
     <Layout
       style={{
         overflow: "auto",
-        width: '100%',
+        width: "100%",
         height: "100%",
         left: 0,
         top: 110,
@@ -550,23 +559,8 @@ export default function SalePage() {
           form={form}
           layout="horizontal"
         >
-          <Form.Item labelCol={{ span: 50 }} style={{ margin: 0 }}>
+          <Form.Item labelCol={{ span: 50 }} style={{ marginBottom: 10 }}>
             <h1 style={{ fontSize: 20 }}>Thông tin hóa đơn</h1>
-          </Form.Item>
-          <Form.Item style={{ margin: 0 }} wrapperCol={{ span: 30 }}>
-            <DatePicker
-              format="YYYY-MM-DD HH:mm:ss"
-              style={{
-                float: "right",
-                width: 165,
-              }}
-              bordered={false}
-              showTime
-              value={moment(dataHD.ThoiGian)}
-              size="small"
-              defaultValue={moment(new Date())}
-              onChange={(e) => setDataHD({ ...dataHD, ThoiGian: e })}
-            />
           </Form.Item>
           <Form.Item
             style={{ marginBottom: 5 }}
@@ -591,7 +585,7 @@ export default function SalePage() {
               }}
             />
           </Form.Item>
-          <Form.Item style={{ marginBottom: 5 }} wrapperCol={30}>
+          <Form.Item style={{ marginBottom: 25 }} wrapperCol={30}>
             <Button size="small" icon={<SearchOutlined />} type="link" />
             <Cascader
               options={optionKH}
@@ -700,7 +694,7 @@ export default function SalePage() {
               {`${dataHD.TienTraKhach}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
             </label>
           </Form.Item>
-          <Form.Item style={{ margin: 0, height: 30 }} wrapperCol={30}>
+          <Form.Item style={{ marginTop: 20, height: 30 }} wrapperCol={30}>
             <Input.TextArea
               maxLength={150}
               showCount={true}

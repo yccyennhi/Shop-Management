@@ -16,21 +16,18 @@ import { hideTaoPhieuTraHangModal } from "../../../redux/actions";
 import {
   TaoPhieuTraHangState$,
   HoaDonsState$,
-  NhanViensState$,
 } from "../../../redux/selectors";
 import { useDispatch } from "react-redux";
 import moment from "moment";
 import { SearchOutlined } from "@ant-design/icons";
 import SanPhamTraHang from "./SanPhamTraHang";
 
-export default function TaoPhieuTraHang({ PhieuDoiTras }) {
+export default function TaoPhieuTraHang({ PhieuDoiTras, NhanViens }) {
   const dispatch = useDispatch();
   const HoaDons = useSelector(HoaDonsState$);
-  const NhanViens = useSelector(NhanViensState$);
   const [form] = Form.useForm();
   React.useEffect(() => {
     dispatch(actions.getHoaDons.getHoaDonsRequest());
-    dispatch(actions.getNhanViens.getNhanViensRequest());
   }, [dispatch]);
   const [ListSPTraHangs, setListSP] = useState([]);
   const { isShow } = useSelector(TaoPhieuTraHangState$);

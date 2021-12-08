@@ -12,7 +12,6 @@ import {
   Divider,
   Cascader,
   Typography,
-  Divider,
 } from "antd";
 import "./styles.css";
 import {

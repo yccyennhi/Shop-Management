@@ -107,7 +107,7 @@ export default function KhuyenMaiPage() {
                           description={
                             <>
                               Ngày {moment(item.createdAt).format("DD/MM/YYYY")}{" "}
-                              lúc {moment(item.createdAt).format("HH:SS")}{" "}
+                              lúc {moment(item.createdAt).format("HH:mm")}{" "}
                             </>
                           }
                         />
@@ -147,7 +147,7 @@ export default function KhuyenMaiPage() {
                           description={
                             <>
                               Ngày {moment(item.createdAt).format("DD/MM/YYYY")}{" "}
-                              lúc {moment(item.createdAt).format("HH:SS")}{" "}
+                              lúc {moment(item.createdAt).format("HH:mm")}{" "}
                             </>
                           }
                         />

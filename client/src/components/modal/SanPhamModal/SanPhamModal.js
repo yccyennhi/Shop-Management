@@ -53,7 +53,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
   );
   useEffect(() => {
     if (SanPhamValue) setData(SanPhamValue);
-    if (data.TonKho > 0) setTrangthai(true);
+    if (SanPhamValue && data.TonKho == 0) setTrangthai(false);
   }, [SanPhamValue]);
 
   const dispatch = useDispatch();
@@ -91,7 +91,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
       GiaBan: 0,
       TonKho: 0,
       ThoiGianBaoHanh: 0,
-      TrangThai: "Hết hàng",
+      TrangThai: "Đang kinh doanh",
       BaoHanh: "Có bảo hành",
       HinhAnh: "",
       MoTa: "",
@@ -99,11 +99,6 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
   }, [dispatch]);
 
   const handleReset = React.useCallback(() => {
-    if (data.TonKho > 0) {
-      setTrangthai(true);
-    } else {
-      setTrangthai(false);
-    }
     form.resetFields();
     setData({
       MaSP: "",
@@ -115,7 +110,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
       GiaBan: 0,
       TonKho: 0,
       ThoiGianBaoHanh: 0,
-      TrangThai: "Hết hàng",
+      TrangThai: "Đang kinh doanh",
       BaoHanh: "Có bảo hành",
       HinhAnh: "",
       MoTa: "",
@@ -126,9 +121,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
     console.log(data);
     if (
       data.GiaBan < 0 ||
-      data.GiaVon < 0 ||
       data.Size < 0 ||
-      data.TonKho < 0 ||
       data.ThoiGianBaoHanh < 0
     ) {
       messageError("Vui lòng nhập đúng thông tin");
@@ -137,8 +130,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
       data.TenSP == "" ||
       data.MauSac == "" ||
       data.LoaiHang == "" ||
-      data.GiaBan == "" ||
-      data.GiaVon == ""
+      data.GiaBan == ""
     ) {
       messageError("Vui lòng nhập đầy đủ thông tin");
     } else {
@@ -253,7 +245,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
             placeholder="Nhập loại sản phẩm"
           />
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           label="Giá vốn"
           tooltip="Giá vốn để tính lợi nhuận cho sản phẩm, sẽ được cập nhật tự động khi nhập hàng"
           required
@@ -266,18 +258,20 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
             style={{ width: 120 }}
             placeholder="VNĐ"
           />
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item label="Giá bán" required>
           <InputNumber
             value={data.GiaBan}
-            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            formatter={(value) =>
+              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            }
             defaultValue={data.GiaBan}
             onChange={(e) => setData({ ...data, GiaBan: e })}
             style={{ width: 120 }}
             placeholder="VNĐ"
           />
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           label="Tồn kho"
           tooltip="Số lượng tồn kho của sản phẩm"
           required
@@ -300,10 +294,10 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
             defaultValue={data.TonKho}
             style={{ width: 120 }}
           />
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item label="Trạng thái" tooltip="Trạng thái kinh doanh sản phẩm">
           <Select
-            disabled={!trangthai}
+            disabled={data.TrangThai=="Hết hàng"}
             placeholder="Chọn trạng thái"
             value={data.TrangThai}
             onChange={(e) => setData({ ...data, TrangThai: e })}
@@ -335,7 +329,9 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
           <InputNumber
             disabled={data.BaoHanh !== "Có bảo hành"}
             value={data.ThoiGianBaoHanh}
-            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            formatter={(value) =>
+              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            }
             onChange={(e) => {
               setData({ ...data, ThoiGianBaoHanh: e });
             }}

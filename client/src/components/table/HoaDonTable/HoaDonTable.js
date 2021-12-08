@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Input, Row } from "antd";
-import { Table } from "ant-table-extensions";
-import { SearchOutlined } from "@ant-design/icons";
+import { Table, ExportTableButton } from "ant-table-extensions";
+import { SearchOutlined, FileExcelOutlined } from "@ant-design/icons";
 import FormHoaDon from "./FormHoaDon";
 import moment from "moment";
 
 const { Search } = Input;
 
-export default function HoaDontable({HoaDons}) {
+export default function HoaDontable({ HoaDons }) {
   const dataSource = HoaDons;
 
   const columns = [
@@ -58,7 +58,7 @@ export default function HoaDontable({HoaDons}) {
       render: (date) => {
         return <label>{moment(date).format("DD/MM/YYYY  HH:mm:ss")}</label>;
       },
-      sorter: (a, b) => a.date > b.date,
+      sorter: (a, b) => moment(a.ThoiGian) > moment(b.ThoiGian),
     },
     {
       title: "Mã nhân viên",
@@ -99,7 +99,7 @@ export default function HoaDontable({HoaDons}) {
       title: "Khách hàng",
       dataIndex: "MaKH",
       key: "MaKH",
-      render: (value) => value === 'KH000'? 'Không':value,
+      render: (value) => (value === "KH000" ? "Không" : value),
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
         return (
           <Search
@@ -135,7 +135,7 @@ export default function HoaDontable({HoaDons}) {
       title: "Mã khuyến mãi",
       dataIndex: "MaKM",
       key: "MaKM",
-      render: (value) => value === 'KM000'? 'Không':value,
+      render: (value) => (value === "KM000" ? "Không" : value),
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
         return (
           <Search
@@ -171,24 +171,21 @@ export default function HoaDontable({HoaDons}) {
       title: "Tổng tiền hàng",
       dataIndex: "TongTienHang",
       key: "TongTienHang",
-      render: (value) =>
-        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      render: (value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
       sorter: (a, b) => a.TongTienHang - b.TongTienHang,
     },
     {
       title: "Giảm giá",
       dataIndex: "GiamGia",
       key: "GiamGia",
-      render: (value) =>
-        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      render: (value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
       sorter: (a, b) => a.GiamGia - b.GiamGia,
     },
     {
       title: "ThanhTien ",
       dataIndex: "ThanhTien",
       key: "ThanhTien",
-      render: (value) =>
-        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      render: (value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
       sorter: (a, b) => a.ThanhTien - b.ThanhTien,
     },
   ];
@@ -203,7 +200,18 @@ export default function HoaDontable({HoaDons}) {
 
   return (
     <div>
-      <Row></Row>
+      <Row justify="end">
+        <ExportTableButton
+          dataSource={dataSource}
+          columns={columns}
+          btnProps={{ icon: <FileExcelOutlined /> }}
+          showColumnPicker={true}
+          showColumnPickerProps={{ id: "Xuất hóa đơn" }}
+          fileName="HoaDonCSV"
+        >
+          Tải file CSV
+        </ExportTableButton>
+      </Row>
       <Table
         tableLayout={"auto"}
         loading={false}
@@ -219,9 +227,7 @@ export default function HoaDontable({HoaDons}) {
         pagination={true}
         columns={columns}
         expandable={{
-          expandedRowRender: (record) => (
-            <FormHoaDon record={record} />
-          ),
+          expandedRowRender: (record) => <FormHoaDon record={record} />,
           rowExpandable: (record) => record.MaHD !== "Not Expandable",
         }}
         dataSource={dataSource}

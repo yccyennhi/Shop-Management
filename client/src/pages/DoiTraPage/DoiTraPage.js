@@ -12,6 +12,7 @@ import {
   Divider,
   Cascader,
   Typography,
+  Divider,
 } from "antd";
 import "./styles.css";
 import {
@@ -308,8 +309,8 @@ export default function DoiTraPage() {
                   </Space>
                 </Col>
               </Row>
-              <Divider orientation="left"></Divider>
-              <Row justify="end">
+              <Divider/>
+              <Row justify="start">
                 <Space>
                   <Button
                     type="primary"
@@ -317,12 +318,6 @@ export default function DoiTraPage() {
                     onClick={openTaoPhieuTraHangModal}
                   >
                     Thêm phiếu trả hàng
-                  </Button>
-                  <Button type="primary" icon={<ImportOutlined />}>
-                    Import
-                  </Button>
-                  <Button type="primary" icon={<DownloadOutlined />}>
-                    Xuất file
                   </Button>
                 </Space>
               </Row>

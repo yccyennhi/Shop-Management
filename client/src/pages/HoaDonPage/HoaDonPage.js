@@ -336,8 +336,8 @@ export default function HoaDonPage() {
                   </Space>
                 </Col>
               </Row>
-              <Divider orientation="left"></Divider>
-              <Row justify="end" style={{ marginBottom: 15 }}>
+              <Divider/>
+              <Row justify="start" style={{ marginBottom: 15 }}>
                 <Space>
                   <Button
                     type="primary"
@@ -345,9 +345,6 @@ export default function HoaDonPage() {
                     onClick={() => history.push("/Sales")}
                   >
                     Thêm hóa đơn
-                  </Button>
-                  <Button type="primary" icon={<DownloadOutlined />}>
-                    Xuất file
                   </Button>
                 </Space>
               </Row>

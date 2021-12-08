@@ -1,16 +1,12 @@
 import React, { useState } from "react";
-import {
-  Table,
-  Input,
-  Row,
-} from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { Input, Row } from "antd";
+import { Table, ExportTableButton } from "ant-table-extensions";
+import { SearchOutlined, FileExcelOutlined } from "@ant-design/icons";
 import FormTraHang from "./FormTraHang";
 import moment from "moment";
 const { Search } = Input;
 
-export default function TraHangTable({PhieuDoiTras}) {
-
+export default function TraHangTable({ PhieuDoiTras }) {
   const dataSource = PhieuDoiTras;
 
   const columns = [
@@ -98,7 +94,7 @@ export default function TraHangTable({PhieuDoiTras}) {
       title: "Thời gian",
       dataIndex: "ThoiGian",
       key: "ThoiGian",
-      sorter: (a, b) => a.ThoiGian - b.ThoiGian,
+      sorter: (a, b) => moment(a.ThoiGian) > moment(b.ThoiGian),
       render: (date) => {
         return <label>{moment(date).format("DD/MM/YYYY  HH:mm:ss")}</label>;
       },
@@ -162,21 +158,33 @@ export default function TraHangTable({PhieuDoiTras}) {
 
   return (
     <div>
-      <Row></Row>
-
-      <span style={{ marginLeft: 8 }}>
-        {selectedRowKeys.length > 0
-          ? `Có ${selectedRowKeys.length} phiếu trả hàng được chọn`
-          : ""}
-      </span>
+      <Row justify="end">
+        <ExportTableButton
+          dataSource={dataSource}
+          columns={columns}
+          btnProps={{ icon: <FileExcelOutlined /> }}
+          showColumnPicker={true}
+          showColumnPickerProps={{ id: "Xuất hóa đơn" }}
+          fileName="HoaDonCSV"
+        >
+          Tải file CSV
+        </ExportTableButton>
+      </Row>
       <Table
         loading={false}
         pagination={true}
         columns={columns}
+        searchable
+        searchableProps={{
+          inputProps: {
+            placeholder: "Nhập nội dung cần tìm",
+            prefix: <SearchOutlined />,
+            width: 200,
+          },
+        }}
         scroll={{ y: 600 }}
-        rowSelection={rowSelection}
         expandable={{
-          expandedRowRender: (record) => <FormTraHang record = {record}/>,
+          expandedRowRender: (record) => <FormTraHang record={record} />,
           rowExpandable: (record) => record.MaPDT !== "Not Expandable",
         }}
         dataSource={dataSource}

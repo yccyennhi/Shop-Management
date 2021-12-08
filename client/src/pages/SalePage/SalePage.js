@@ -131,15 +131,15 @@ export default function SalePage() {
 
   const ObjectSP = (sp) => (
     <Tooltip title={sp.TenSP + " (" + sp.MoTa + ")"}>
-      <Button style={{ height: 130, width: 110, margin: "1" }}>
-        <Row>
+      <Button style={{ height: 130, width: 130, margin: "1" }}>
+        <Row style = {{marginLeft: 3}}>
           <Image width={90} height={90} src={sp.HinhAnh} />
         </Row>
         <Row>
-          <h5 style={{ width: "100", textAlign: "center", marginBottom: -2 }}>
+          <h5 style={{marginBottom: -2 }}>
             Mã SP: {sp.MaSP}
           </h5>
-          <h5 style={{ width: "100", textAlign: "center" }}>
+          <h5 >
             Giá: {sp.GiaBan}
           </h5>
         </Row>
@@ -710,9 +710,9 @@ export default function SalePage() {
                 onPressEnter={(e) => SearchSP(e)}
               />
               <List
-                grid={{ gutter: 0, column: 7 }}
+                grid={{ gutter: 0, column: 6 }}
                 pagination={{
-                  pageSize: 7,
+                  pageSize: 6,
                 }}
                 dataSource={SPSearchs}
                 style={{ marginTop: 5 }}

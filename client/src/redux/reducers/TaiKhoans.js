@@ -1,8 +1,6 @@
 import { INIT_STATE } from "../../constant";
 import {
   getTaiKhoans,
-  createTaiKhoan,
-  updateTaiKhoan,
   getType,
 } from "../actions";
 

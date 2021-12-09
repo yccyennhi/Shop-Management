@@ -6,14 +6,6 @@ import { useState } from "react";
 import ExpandedRowRender from "./ExpandedRowRender";
 
 export default function NhanVienTable({ dataSource, setCurrentId }) {
-  //Menu Item cho Dropdown Button Thao tác
-  const menu = (
-    <Menu>
-      <Menu.Item key="1">Nghỉ việc</Menu.Item>
-      <Menu.Item key="2">Làm lại</Menu.Item>
-    </Menu>
-  );
-
   // NVởi tạo cột table
   const columns = [
     {
@@ -109,7 +101,7 @@ export default function NhanVienTable({ dataSource, setCurrentId }) {
       render: (date) => {
         return <p>{moment(date).format("DD/MM/YYYY")}</p>;
       },
-      sorter: (a, b) => a.NgaySinh - b.NgaySinh,
+      sorter: (a, b) => moment(a.NgaySinh) - moment(b.NgaySinh),
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -277,7 +269,7 @@ export default function NhanVienTable({ dataSource, setCurrentId }) {
       render: (date) => {
         return <p>{moment(date).format("DD/MM/YYYY")}</p>;
       },
-      sorter: (a, b) => a.NgayVaoLam - b.NgayVaoLam,
+      sorter: (a, b) => moment(a.NgayVaoLam) - moment(b.NgayVaoLam),
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -363,20 +355,11 @@ export default function NhanVienTable({ dataSource, setCurrentId }) {
   return (
     <>
       <div>
-        <Row>
-          <div style={{ marginBottom: 16 }}>
-            <Dropdown disabled={!hasSelected} overlay={menu}>
-              <Button>
-                Thao tác <DownOutlined />
-              </Button>
-            </Dropdown>
-            <span style={{ marginLeft: 8 }}>
-              {hasSelected
-                ? `Có ${selectedRowKeys.length} khách hàng được chọn`
-                : ""}
-            </span>
-          </div>
-        </Row>
+        <span style={{ marginLeft: 8 }}>
+          {hasSelected
+            ? `Có ${selectedRowKeys.length} khách hàng được chọn`
+            : ""}
+        </span>
         <Table
           tableLayout="auto"
           searchable

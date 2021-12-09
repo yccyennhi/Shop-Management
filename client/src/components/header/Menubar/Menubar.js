@@ -90,12 +90,6 @@ function Menubar() {
   const handleBCHangHoa = () => {
     history.push("/BCHangHoas");
   };
-  const handleBCKhachHang = () => {
-    history.push("/BCKhachHangs");
-  };
-  const handleBCNhanVien = () => {
-    history.push("/BCNhanViens");
-  };
 
   return (
     <div>
@@ -173,12 +167,6 @@ function Menubar() {
           </Menu.Item>
           <Menu.Item key="BCHangHoa" onClick={handleBCHangHoa}>
             Hàng hóa
-          </Menu.Item>
-          <Menu.Item key="BCKhachHang" onClick={handleBCKhachHang}>
-            Khách hàng
-          </Menu.Item>
-          <Menu.Item key="BCNhanVien" onClick={handleBCNhanVien}>
-            Nhân viên
           </Menu.Item>
         </SubMenu>
       </Menu>

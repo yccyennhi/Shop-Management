@@ -2,6 +2,20 @@ import axios from "axios";
 
 const URL = "http://localhost:5000";
 
+//#region Auth
+export const loginTaiKhoan = (userForm) => axios.post(`${URL}/TaiKhoans/Auth`, userForm);
+
+export const verifyAuthToken = () => axios.get(`${URL}/TaiKhoans/Auth`);
+
+export const setAuthToken = (token) => {
+  if (token) {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  } else {
+    delete axios.defaults.headers.common["Authorization"];
+  }
+}
+//#endregion
+
 //#region Khach hang
 export const fetchKhachHangs = () => axios.get(`${URL}/KhachHangs`);
 

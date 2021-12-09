@@ -2,14 +2,9 @@ import mongoose from "mongoose";
 
 const schema = new mongoose.Schema(
   {
-    MaTK: {
-      type: String,
-      required: true,
-      unique: true,
-    },
     MaNV: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "KhachHangs",
+      ref: "KhachHang",
       required: true,
     },
     TenTK: {

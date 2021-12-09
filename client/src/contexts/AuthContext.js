@@ -12,7 +12,7 @@ const AuthContextProvider = ({ children }) => {
     TaiKhoan: null,
   });
 
-  //Authicate
+  //#region Authicate if user is logged in
   const loadTaiKhoan = async () => {
     if (localStorage["Auth_Token"]) {
       console.log(`${localStorage["Auth_Token"]}`);
@@ -36,8 +36,9 @@ const AuthContextProvider = ({ children }) => {
       });
     }
   };
+  //#endregion
 
-  //login
+  //#region login
   const loginTaiKhoan = async (userForm) => {
     try {
       const response = await api.loginTaiKhoan(userForm);
@@ -57,7 +58,9 @@ const AuthContextProvider = ({ children }) => {
       }
     }
   };
+  //#endregion
 
+  //#region logout
   const logoutTaiKhoan = () => {
     localStorage.removeItem("Auth_Token");
     dispatch({
@@ -65,9 +68,11 @@ const AuthContextProvider = ({ children }) => {
       payload: { isAuthenticated: false, TaiKhoan: null },
     });
   };
+  //#endregion
 
-  //context data
+  //#region context data
   const authContextData = { loginTaiKhoan, logoutTaiKhoan, authState };
+  //#endregion
 
   useEffect(() => loadTaiKhoan(), []);
 

@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
-import { Redirect, Route } from "react-router-dom";
 import { Spin } from "antd";
+import { useContext } from "react";
+import { Redirect, Route } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 
 export default function ProtectedRoute({ component: Component, ...rest }) {
@@ -10,7 +10,7 @@ export default function ProtectedRoute({ component: Component, ...rest }) {
 
   if (authLoading) {
     return (
-      <div style={{ margin: "0 auto" }}>
+      <div style={{ margin: "0 auto" , padding: "50px 0px 0px 0px"}}>
         <Spin size="large" />
       </div>
     );

@@ -2,10 +2,9 @@ import { Button, Card, Form, Input, Layout, Spin, Typography } from "antd";
 import React, { useContext, useState } from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import COLOR from "../../color";
-import Menubar from "../../components/header/Menubar/Menubar";
 import { messageError } from "../../components/message";
 import { AuthContext } from "../../contexts/AuthContext";
-const { Content, Header } = Layout;
+const { Content } = Layout;
 
 export default function AuthPage() {
   const [form] = Form.useForm();
@@ -40,12 +39,14 @@ export default function AuthPage() {
 
   if (authLoading) {
     body = (
-      <div style={{ margin: "0 auto" }}>
+      <div style={{ margin: "0 auto", padding: "50px 0px 0px 0px" }}>
         <Spin size="large" />
       </div>
     );
   } else if (isAuthenticated) {
-    return <Redirect to={TaiKhoan.TenTK == "ADMIN" ? "/TongQuans" : "/Sales"} />;
+    return (
+      <Redirect to={TaiKhoan.TenTK == "ADMIN" ? "/TongQuans" : "/Sales"} />
+    );
   } else {
     body = (
       <>

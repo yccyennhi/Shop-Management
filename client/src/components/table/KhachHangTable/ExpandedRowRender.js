@@ -1,35 +1,15 @@
-import { Button, Descriptions, PageHeader, Tag } from "antd";
-import moment from "moment";
-import { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { Button, PageHeader, Tabs, Tag } from "antd";
+import { useCallback } from "react";
+import { useDispatch } from "react-redux";
 import { showKhachHangModal, updateKhachHang } from "../../../redux/actions";
-import { KhachHangsState$ } from "../../../redux/selectors";
+import HoaDonDaMuaTab from "./Tabs/HoaDonDaMuaTab";
+import ThongTinCaNhanTab from "./Tabs/ThongTinCaNhanTab";
+
+const { TabPane } = Tabs;
 
 export default function ExpandedRowRender({ record, setCurrentId }) {
   const dispatch = useDispatch();
 
-  // //#region Data
-  // const KhachHangs = useSelector(KhachHangsState$);
-
-  // const [data, setData] = useState({
-  //   MaKH: "",
-  //   TenKH: "",
-  //   NgaySinh: "",
-  //   SDT: "",
-  //   Email: "",
-  //   DiaChi: "",
-  //   DiemTichLuy: 0,
-  //   TrangThai: true,
-  // });
-
-  // const KhachHangValue = KhachHangs.find((KhachHang) =>
-  //   KhachHang._id === record._id ? KhachHang : null
-  // );
-
-  // useEffect(() => {
-  //   if (KhachHangValue) setData(KhachHangValue);
-  // }, [KhachHangValue]);
-  // //#endregion
   const openKhachHangModal = useCallback(() => {
     setCurrentId(record._id);
     dispatch(showKhachHangModal());
@@ -37,7 +17,7 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
 
   const changeStatus = useCallback(() => {
     const newStatus = !record.TrangThai;
-    const data = {...record, TrangThai: newStatus}
+    const data = { ...record, TrangThai: newStatus };
     dispatch(updateKhachHang.updateKhachHangRequest(data));
   }, [record, dispatch]);
 
@@ -49,7 +29,7 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
         subTitle={record.MaKH}
         tags={
           record.TrangThai == true ? (
-            <Tag color="blue">Còn hoạt động</Tag>
+            <Tag color="green">Còn hoạt động</Tag>
           ) : (
             <Tag color="red">Ngừng hoạt động</Tag>
           )
@@ -69,19 +49,14 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
           ),
         ]}
       >
-        <Descriptions size="small" column={3}>
-          <Descriptions.Item label="Ngày sinh">
-            {moment(record.NgaySinh).format("DD/MM/YYYY")}
-          </Descriptions.Item>
-          <Descriptions.Item label="Số điện thoại">
-            {record.SDT}
-          </Descriptions.Item>
-          <Descriptions.Item label="Email">{record.Email}</Descriptions.Item>
-          <Descriptions.Item label="Địa chỉ">{record.DiaChi}</Descriptions.Item>
-          <Descriptions.Item label="Điểm tích lũy">
-            {record.DiemTichLuy}
-          </Descriptions.Item>
-        </Descriptions>
+        <Tabs type="card" defaultActiveKey="1">
+          <TabPane tab="Thông tin cá nhân" key="1">
+            <ThongTinCaNhanTab record={record} />
+          </TabPane>
+          <TabPane tab="Hóa đơn đã mua" key="2">
+            <HoaDonDaMuaTab idKH={record._id} />
+          </TabPane>
+        </Tabs>
       </PageHeader>
     </>
   );

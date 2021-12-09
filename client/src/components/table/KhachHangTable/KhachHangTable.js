@@ -6,15 +6,6 @@ import { useState } from "react";
 import ExpandedRowRender from "./ExpandedRowRender";
 
 export default function KhachHangTable({ dataSource, setCurrentId }) {
-  //#region Dropdown menu
-  const menu = (
-    <Menu>
-      <Menu.Item key="1">Ngừng hoạt động</Menu.Item>
-      <Menu.Item key="2">Hoạt động lại</Menu.Item>
-    </Menu>
-  );
-  //#endregion
-
   //#region Table column
   const columns = [
     {
@@ -110,7 +101,7 @@ export default function KhachHangTable({ dataSource, setCurrentId }) {
       render: (date) => {
         return <p>{moment(date).format("DD/MM/YYYY")}</p>;
       },
-      sorter: (a, b) => a.NgaySinh - b.NgaySinh,
+      sorter: (a, b) => moment(a.NgaySinh) - moment(b.NgaySinh),
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -325,20 +316,11 @@ export default function KhachHangTable({ dataSource, setCurrentId }) {
   return (
     <>
       <div>
-        <Row>
-          <div style={{ marginBottom: 16 }}>
-            <Dropdown disabled={!hasSelected} overlay={menu}>
-              <Button>
-                Thao tác <DownOutlined />
-              </Button>
-            </Dropdown>
-            <span style={{ marginLeft: 8 }}>
-              {hasSelected
-                ? `Có ${selectedRowKeys.length} khách hàng được chọn`
-                : ""}
-            </span>
-          </div>
-        </Row>
+        <span style={{ marginLeft: 8 }}>
+          {hasSelected
+            ? `Có ${selectedRowKeys.length} khách hàng được chọn`
+            : ""}
+        </span>
         <Table
           tableLayout="auto"
           searchable

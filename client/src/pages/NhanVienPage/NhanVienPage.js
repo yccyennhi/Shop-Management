@@ -1,5 +1,21 @@
-import { PlusOutlined } from "@ant-design/icons";
-import { Button, Card, Layout, PageHeader, Radio, Row, Space } from "antd";
+import {
+  DatabaseTwoTone,
+  FrownTwoTone,
+  PlusOutlined,
+  SmileTwoTone,
+} from "@ant-design/icons";
+import {
+  Button,
+  Card,
+  Col,
+  Divider,
+  Layout,
+  PageHeader,
+  Radio,
+  Row,
+  Space,
+  Typography,
+} from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import COLOR from "../../color";
@@ -11,6 +27,7 @@ import { showNhanVienModal } from "../../redux/actions";
 import { NhanViensState$ } from "../../redux/selectors";
 
 const { Content, Sider, Header } = Layout;
+const { Text } = Typography;
 
 export default function NhanVienPage() {
   const dispatch = useDispatch();
@@ -35,6 +52,10 @@ export default function NhanVienPage() {
   useEffect(() => {
     if (NhanViens) setdataSoure(NhanViens);
   }, [NhanViens]);
+
+  const SLNVConLamViec = NhanViens.filter(
+    (NhanVien) => NhanVien.TrangThai === true
+  ).length;
   //#endregion
 
   return (
@@ -97,6 +118,49 @@ export default function NhanVienPage() {
         </Sider>
         <Content style={{ padding: "17px 24px 24px" }}>
           <div className="site-layout-content">
+            <Row justify="start">
+              <Col span={8}>
+                <Space align="center" size={20}>
+                  <DatabaseTwoTone style={{ fontSize: "40px" }} />
+                  <Space direction="vertical" size={0}>
+                    <Text strong>{NhanViens.length} nhân viên</Text>
+                    <Text strong style={{ fontSize: "1.5rem" }}>
+                      {NhanViens.length}
+                    </Text>
+                    <Text type="secondary">Tổng số lượng nhân viên</Text>
+                  </Space>
+                </Space>
+              </Col>
+              <Col span={8}>
+                <Space align="center" size={20}>
+                  <SmileTwoTone style={{ fontSize: "40px" }} />
+                  <Space direction="vertical" size={0}>
+                    <Text strong>{SLNVConLamViec} nhân viên</Text>
+                    <Text strong style={{ fontSize: "1.5rem" }}>
+                      {SLNVConLamViec}
+                    </Text>
+                    <Text type="secondary">Số nhân viên còn làm việc</Text>
+                  </Space>
+                </Space>
+              </Col>
+              <Col span={8}>
+                <Space align="center" size={20}>
+                  <FrownTwoTone style={{ fontSize: "40px" }} />
+                  <Space direction="vertical" size={0}>
+                    <Text strong>
+                      {NhanViens.length - SLNVConLamViec} nhân viên
+                    </Text>
+                    <Text strong style={{ fontSize: "1.5rem" }}>
+                      {NhanViens.length - SLNVConLamViec}
+                    </Text>
+                    <Text type="secondary">
+                      Số nhân viên không còn làm việc
+                    </Text>
+                  </Space>
+                </Space>
+              </Col>
+            </Row>
+            <Divider orientation="left"></Divider>
             <Row justify="end">
               <Space direction="horizontal">
                 <Button
@@ -106,12 +170,6 @@ export default function NhanVienPage() {
                 >
                   Thêm nhân viên
                 </Button>
-                {/* <Button icon={<ImportOutlined />} type="primary">
-                Import
-              </Button>
-              <Button icon={<DownloadOutlined />} type="primary">
-                Xuất file
-              </Button> */}
               </Space>
             </Row>
             <NhanVienTable

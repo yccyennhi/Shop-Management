@@ -1,5 +1,21 @@
-import { PlusOutlined } from "@ant-design/icons";
-import { Button, Card, Layout, PageHeader, Radio, Row, Space } from "antd";
+import {
+  DatabaseTwoTone,
+  FrownTwoTone,
+  PlusOutlined,
+  SmileTwoTone,
+} from "@ant-design/icons";
+import {
+  Button,
+  Card,
+  Col,
+  Divider,
+  Layout,
+  PageHeader,
+  Radio,
+  Row,
+  Space,
+  Typography,
+} from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import COLOR from "../../color.js";
@@ -11,6 +27,7 @@ import { showKhachHangModal } from "../../redux/actions";
 import { KhachHangsState$ } from "../../redux/selectors/index.js";
 
 const { Content, Sider, Header } = Layout;
+const { Text } = Typography;
 
 export default function KhachHangPage() {
   const dispatch = useDispatch();
@@ -35,6 +52,10 @@ export default function KhachHangPage() {
   useEffect(() => {
     if (KhachHangs) setdataSoure(KhachHangs);
   }, [KhachHangs]);
+
+  const SLKHConHoatDong = KhachHangs.filter(
+    (KhachHang) => KhachHang.TrangThai === true
+  ).length;
   //#endregion
 
   return (
@@ -97,6 +118,51 @@ export default function KhachHangPage() {
         </Sider>
         <Content style={{ padding: "17px 24px 24px" }}>
           <div className="site-layout-content">
+            <Row justify="start">
+              <Col span={8}>
+                <Space align="center" size={20}>
+                  <DatabaseTwoTone style={{ fontSize: "40px" }} />
+                  <Space direction="vertical" size={0}>
+                    <Text strong>{KhachHangs.length} khách hàng</Text>
+                    <Text strong style={{ fontSize: "1.5rem" }}>
+                      {KhachHangs.length}
+                    </Text>
+                    <Text type="secondary">
+                      Tổng số khách hàng đã đăng ký
+                    </Text>
+                  </Space>
+                </Space>
+              </Col>
+              <Col span={8}>
+                <Space align="center" size={20}>
+                  <SmileTwoTone style={{ fontSize: "40px" }} />
+                  <Space direction="vertical" size={0}>
+                    <Text strong>{SLKHConHoatDong} khách hàng</Text>
+                    <Text strong style={{ fontSize: "1.5rem" }}>
+                      {SLKHConHoatDong}
+                    </Text>
+                    <Text type="secondary">Số khách hàng còn hoạt động</Text>
+                  </Space>
+                </Space>
+              </Col>
+              <Col span={8}>
+                <Space align="center" size={20}>
+                  <FrownTwoTone style={{ fontSize: "40px" }} />
+                  <Space direction="vertical" size={0}>
+                    <Text strong>
+                      {KhachHangs.length - SLKHConHoatDong} khách hàng
+                    </Text>
+                    <Text strong style={{ fontSize: "1.5rem" }}>
+                      {KhachHangs.length - SLKHConHoatDong}
+                    </Text>
+                    <Text type="secondary">
+                      Số khách hàng không còn hoạt động
+                    </Text>
+                  </Space>
+                </Space>
+              </Col>
+            </Row>
+            <Divider orientation="left"></Divider>
             <Row justify="end">
               <Space>
                 <Button
@@ -106,12 +172,6 @@ export default function KhachHangPage() {
                 >
                   Thêm khách hàng
                 </Button>
-                {/* <Button icon={<ImportOutlined />} type="primary">
-                  Import
-                </Button>
-                <Button icon={<DownloadOutlined />} type="primary">
-                  Xuất file
-                </Button> */}
               </Space>
             </Row>
             <KhachHangTable

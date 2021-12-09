@@ -1,38 +1,15 @@
-import { Button, Descriptions, PageHeader, Tag } from "antd";
-import DescriptionsItem from "antd/lib/descriptions/Item";
-import moment from "moment";
-import React, { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { Button, PageHeader, Tabs, Tag } from "antd";
+import { useCallback } from "react";
+import { useDispatch } from "react-redux";
 import { showNhanVienModal, updateNhanVien } from "../../../redux/actions";
-import { NhanViensState$ } from "../../../redux/selectors";
+import HoaDonDaBanTab from "./Tabs/HoaDonDaBanTab";
+import ThongTinCaNhanTab from "./Tabs/ThongTinCaNhanTab";
+
+const { TabPane } = Tabs;
 
 export default function ExpandedRowRender({ record, setCurrentId }) {
   const dispatch = useDispatch();
 
-  // //#region Data
-  // const NhanViens = useSelector(NhanViensState$);
-
-  // const [data, setData] = useState({
-  //   MaNV: "",
-  //   TenNV: "",
-  //   NgaySinh: new Date(),
-  //   SDT: "",
-  //   Email: "",
-  //   DiaChi: "",
-  //   NgayVaoLam: new Date(),
-  //   TrangThai: true,
-  // });
-
-  // const NhanVienValue = NhanViens.find((NhanVien) =>
-  //   NhanVien._id === record._id ? NhanVien : null
-  // );
-
-  // useEffect(() => {
-  //   if (NhanVienValue) setData(NhanVienValue);
-  // }, [NhanVienValue]);
-  // //#endregion
-
-  //#region handle
   const openNhanVienModal = useCallback(() => {
     setCurrentId(record._id);
     dispatch(showNhanVienModal());
@@ -40,10 +17,9 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
 
   const changeStatus = useCallback(() => {
     const newStatus = !record.TrangThai;
-    const data = {...record, TrangThai: newStatus}
+    const data = { ...record, TrangThai: newStatus };
     dispatch(updateNhanVien.updateNhanVienRequest(data));
   }, [record, dispatch]);
-  //#endregion
 
   return (
     <>
@@ -53,7 +29,7 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
         subTitle={record.MaNV}
         tags={
           record.TrangThai == true ? (
-            <Tag color="blue">Đang làm việc</Tag>
+            <Tag color="green">Đang làm việc</Tag>
           ) : (
             <Tag color="red">Đã nghỉ việc</Tag>
           )
@@ -73,19 +49,14 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
           ),
         ]}
       >
-        <Descriptions size="small" column={3}>
-          <DescriptionsItem label="Ngày sinh">
-            {moment(record.NgaySinh).format("DD/MM/YYYY")}
-          </DescriptionsItem>
-          <DescriptionsItem label="Số điện thoại">
-            {record.SDT}
-          </DescriptionsItem>
-          <DescriptionsItem label="Email">{record.Email}</DescriptionsItem>
-          <DescriptionsItem label="Địa chỉ">{record.DiaChi}</DescriptionsItem>
-          <DescriptionsItem label="Ngày vào làm">
-            {moment(record.NgayVaoLam).format("DD/MM/YYYY")}
-          </DescriptionsItem>
-        </Descriptions>
+        <Tabs type="card" defaultActiveKey="1">
+          <TabPane tab="Thông tin cá nhân" key="1">
+            <ThongTinCaNhanTab record={record} />
+          </TabPane>
+          <TabPane tab="Hóa đơn đã bán" key="2">
+            <HoaDonDaBanTab idNV={record._id} />
+          </TabPane>
+        </Tabs>
       </PageHeader>
     </>
   );

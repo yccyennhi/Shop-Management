@@ -149,7 +149,7 @@ export default function ThemPhieuNhapPage({}) {
       let PhieuNhap = PN.find(function (e) {
         return e.MaPN == data.MaPN;
       });
-      if (id.payload == "") {
+      if (id.payload == "" || id.payload == null) {
         if (PhieuNhap != undefined) {
           messageError("Mã phiếu nhập đã tồn tại!");
         } else {
@@ -278,7 +278,11 @@ export default function ThemPhieuNhapPage({}) {
         <PageHeader
           onBack={() => window.history.back()}
           className="site-page-header"
-          title={id.payload == "" ? "Thêm phiếu nhập" : "Cập nhật phiếu nhập"}
+          title={
+            id.payload == "" || id.payload == null
+              ? "Thêm phiếu nhập"
+              : "Cập nhật phiếu nhập"
+          }
         />
       </Layout>
       <Layout>
@@ -374,7 +378,9 @@ export default function ThemPhieuNhapPage({}) {
                     value={data.MaPN}
                     onChange={(e) => setData({ ...data, MaPN: e.target.value })}
                     defaultValue={data.MaPN}
-                    disabled={id.payload == "" ? false : true}
+                    disabled={
+                      id.payload == "" || id.payload == null ? false : true
+                    }
                   />
                   <Button icon={<RetweetOutlined />} onClick={RandomMa} />
                 </Input.Group>

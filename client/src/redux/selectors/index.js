@@ -3,6 +3,11 @@ export const KhachHangsState$ = (state) => state.KhachHangs.data;
 export const KhachHangModalState$ = (state) => state.KhachHangModal;
 //#endregion
 
+//#region TaiKhoan
+export const TaiKhoansState$ = (state)=> state.TaiKhoans.data;
+export const TaiKhoanModalState$ = (state) => state.TaiKhoanModal;
+//#endregion
+
 export const KhuyenMaisState$ = (state) => state.KhuyenMais.data;
 
 //#region NhanVien
@@ -46,7 +51,6 @@ export const TongQuanHighestSanPhamList$ =(state) =>state.TongQuans.highestSanPh
 export const CuoiNgaysState$ = (state) => state.CuoiNgays.data;
 export const BCBanHangsState$ = (state) => state.BCBanHangs.data;
 export const BCHangHoasState$ = (state) => state.BCHangHoas.data;
-export const TaiKhoansState$ = (state)=>state.TaiKhoans.data;
 
 //PhieuNhap
 export const PhieuNhapsState$ = (state) => state.PhieuNhaps?.data;

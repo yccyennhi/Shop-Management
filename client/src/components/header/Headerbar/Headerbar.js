@@ -1,19 +1,27 @@
-import React, { useContext } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useCallback, useContext } from "react"
 import Logo from "../../../assets/Logo.png";
 import { Menu, Col, Row } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import "./styles.css";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { showTaiKhoanModal } from "../../../redux/actions";
+import { useDispatch } from "react-redux";
+import TaiKhoanModal from "../../modal/TaiKhoanModal/TaiKhoanModal";
 const { SubMenu } = Menu;
 
-function Headerbar() {
+export default function Headerbar() {
+  const dispatch = useDispatch();
+
   const {
     logoutTaiKhoan,
-    authState: { isAuthenticated, TaiKhoan },
+    authState: { TaiKhoan },
   } = useContext(AuthContext);
 
   const logout = () => logoutTaiKhoan();
+
+  const openTaiKhoanModal = useCallback(() => {
+    dispatch(showTaiKhoanModal());
+  }, [dispatch]);
 
   return (
     <div>
@@ -32,15 +40,14 @@ function Headerbar() {
                 title={TaiKhoan ? TaiKhoan.TenTK : "No user"}
                 icon={<UserOutlined />}
               >
-                <Menu.Item key="subitem1">Tài khoản</Menu.Item>
+                <Menu.Item key="subitem1" onClick={openTaiKhoanModal}>Tài khoản</Menu.Item>
                 <Menu.Item key="subitem2" onClick={logout}>Đăng xuất</Menu.Item>
               </SubMenu>
             </Menu>
+            <TaiKhoanModal/>
           </div>
         </Col>
       </Row>
     </div>
   );
 }
-
-export default Headerbar;

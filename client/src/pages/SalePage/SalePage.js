@@ -42,6 +42,7 @@ import KhachHangModal from "../../components/modal/KhachHangModal/KhachHangModal
 import PrintModal from "../../components/modal/PrintModal/PrintModal";
 import MenubarBanHang from "../../components/header/Menubar/MenubarBanHang";
 import { AuthContext } from "../../contexts/AuthContext";
+import { Header } from "antd/lib/layout/layout";
 
 const { Content, Sider } = Layout;
 
@@ -607,129 +608,118 @@ export default function SalePage() {
   );
   return (
     <Layout>
-      <Layout>
+      <Header>
         <MenubarBanHang />
-      </Layout>
-      <Layout
-        style={{
-          overflow: "auto",
-          width: "100%",
-          height: "100%",
-          left: 0,
-          top: 110,
-          position: "fixed",
-        }}
-      >
+      </Header>
+      <Layout>
         <KhachHangModal currentId={currentId} setCurrentId={setCurrentId} />
         <PrintModal />
-        <Layout
-          className="content"
-          style={{
-            padding: "0 24",
-            overflow: "auto",
-            width: 925,
-            height: 580,
-            top: 120,
-            left: 10,
-            position: "fixed",
-          }}
-        >
+        <Layout>
           <Content
             className="site-layout-background"
             style={{
               padding: 10,
+              margin: 15,
+              width: "100%",
             }}
           >
-            {headerTable}
-            <List
-              grid={{ gutter: 0, column: 1 }}
-              pagination={{
-                pageSize: pagesize,
-              }}
-              dataSource={SPsInfo}
-              itemLayout="vertical"
-              style={{ marginTop: 5 }}
-              size="small"
-              renderItem={(item) => (
-                <List.Item key={item.MaSP}>
-                  <SanPhamHoaDonPanel
-                    sp={item}
-                    SPPanelChange={SPPanelChange}
-                    SPPanelRemove={SPPanelRemove}
-                  />
-                </List.Item>
-              )}
-            />
-          </Content>
-          <Collapse bordered={false} collapsible="header">
-            <Collapse.Panel
-              header={
-                <span
-                  style={{ fontWeight: 500 }}
-                  onClick={() => {
-                    setonCollap(!onCollap);
-                    setpagesize(!onCollap ? 3 : 7);
-                    setSPSearch(
-                      SanPhams.filter(
-                        (sp) => sp.TrangThai === "Đang kinh doanh"
-                      )
-                    );
-                  }}
-                >
-                  Danh sách sản phẩm
-                </span>
-              }
-            >
-              <Input.Search
-                style={{ width: 330, marginLeft: 570 }}
-                enterButton
-                placeholder="Tìm kiếm sản phẩm"
-                onSearch={(e) => SearchSP(e)}
-                allowClear
-                onPressEnter={(e) => SearchSP(e)}
-              />
+            <Row>{headerTable}</Row>
+            <Row justify="center">
               <List
-                grid={{ gutter: 0, column: 6 }}
+                grid={{ gutter: 0, column: 1 }}
                 pagination={{
-                  pageSize: 6,
+                  pageSize: pagesize,
                 }}
-                dataSource={SPSearchs}
-                style={{ marginTop: 5 }}
-                itemLayout="horizontal"
+                dataSource={SPsInfo}
+                itemLayout="vertical"
+                style={{ marginTop: 5, width: "100%" }}
                 size="small"
                 renderItem={(item) => (
-                  <List.Item
-                    key={item._id}
-                    onClick={() => {
-                      if (item.TonKho && item.TrangThai === "Đang kinh doanh")
-                        SPPanelClick(item);
-                      else
-                        message.error(
-                          "Không thể đặt hàng sản phẩm " + item.TenSP
-                        );
-                    }}
-                  >
-                    {ObjectSP(item)}
+                  <List.Item style={{ width: "100%" }} key={item.MaSP}>
+                    <SanPhamHoaDonPanel
+                      sp={item}
+                      SPPanelChange={SPPanelChange}
+                      SPPanelRemove={SPPanelRemove}
+                    />
                   </List.Item>
                 )}
               />
-            </Collapse.Panel>
-          </Collapse>
+            </Row>
+            <Row align="bottom">
+              <Collapse
+                bordered={false}
+                style={{ width: "100%", marginTop: "10px" }}
+                collapsible="header"
+              >
+                <Collapse.Panel
+                  header={
+                    <span
+                      style={{ fontWeight: 500 }}
+                      onClick={() => {
+                        setonCollap(!onCollap);
+                        setpagesize(!onCollap ? 3 : 7);
+                        setSPSearch(
+                          SanPhams.filter(
+                            (sp) => sp.TrangThai === "Đang kinh doanh"
+                          )
+                        );
+                      }}
+                    >
+                      Danh sách sản phẩm
+                    </span>
+                  }
+                >
+                <Row justify="end">
+                <Input.Search
+                    style={{ width: 500, paddingBottom:15 }}
+                    enterButton
+                    placeholder="Tìm kiếm sản phẩm"
+                    onSearch={(e) => SearchSP(e)}
+                    allowClear
+                    onPressEnter={(e) => SearchSP(e)}
+                  />
+                </Row>
+                  
+                  <List
+                    grid={{ gutter: 0, column: 6, row: 2 }}
+                    pagination={{
+                      pageSize: 12,
+                    }}
+                    dataSource={SPSearchs}
+                    style={{ marginTop: 5 }}
+                    itemLayout="horizontal"
+                    size="small"
+                    renderItem={(item) => (
+                      <List.Item
+                        key={item._id}
+                        onClick={() => {
+                          if (
+                            item.TonKho &&
+                            item.TrangThai === "Đang kinh doanh"
+                          )
+                            SPPanelClick(item);
+                          else
+                            message.error(
+                              "Không thể đặt hàng sản phẩm " + item.TenSP
+                            );
+                        }}
+                      >
+                        {ObjectSP(item)}
+                      </List.Item>
+                    )}
+                  />
+                </Collapse.Panel>
+              </Collapse>
+            </Row>
+          </Content>
+          <Sider
+            width={400}
+            style={{ padding: "12px 12px 0px 12px", margin: "15px" }}
+            className="site-layout-sider"
+          >
+            {bodySider}
+          </Sider>
         </Layout>
-        <Sider
-          width={400}
-          className="site-layout-background"
-          style={{
-            padding: 15,
-            overflow: "auto",
-            height: 580,
-            right: 10,
-            top: 120,
-            position: "fixed",
-          }}
-        >
-          {bodySider}
-        </Sider>
       </Layout>
     </Layout>
   );

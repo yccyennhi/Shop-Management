@@ -101,7 +101,7 @@ function App() {
               />
               <ProtectedRoute path="/Sales" exact component={SalePage} />
             </Switch>
-            <Footer style={{ textAlign: "center", height: "400px" }}></Footer>
+            <Footer style={{ textAlign: "center", color: "gray"}}>Dynamic Shop Management</Footer>
           </Layout>
         </Router>
       </div>

@@ -229,6 +229,7 @@ function KhuyenMaitable({ dataSource, setCurrentId }) {
             width: 200,
           },
         }}
+        scroll={{ x: 1000 }}
         pagination={true}
         columns={columns}
         rowSelection={rowSelection}

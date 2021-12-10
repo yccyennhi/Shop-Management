@@ -8,8 +8,9 @@ import {
   Col,
   Divider,
   Cascader,
+  Input,
 } from "antd";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useContext } from "react";
 import { useSelector } from "react-redux";
 import * as actions from "../../../redux/actions";
 import { hideTaoPhieuTraHangModal } from "../../../redux/actions";
@@ -18,12 +19,18 @@ import { useDispatch } from "react-redux";
 import moment from "moment";
 import { SearchOutlined } from "@ant-design/icons";
 import SanPhamTraHang from "./SanPhamTraHang";
+import { AuthContext } from "../../../contexts/AuthContext";
 
 export default function TaoPhieuTraHang({ PhieuDoiTras, NhanViens }) {
   const dispatch = useDispatch();
   const HoaDons = useSelector(HoaDonsState$);
   const [event, setHD] = useState();
   const [form] = Form.useForm();
+  const [NV, setNV] = useState();
+  const {
+    authState: { TaiKhoan },
+  } = useContext(AuthContext);
+
   React.useEffect(() => {
     dispatch(actions.getHoaDons.getHoaDonsRequest());
   }, [dispatch]);
@@ -37,7 +44,7 @@ export default function TaoPhieuTraHang({ PhieuDoiTras, NhanViens }) {
     idNV: "",
     idHD: "",
     idKH: "61957aa9e198c2fe3f3f53f6",
-    MaKH: 'KH000',
+    MaKH: "KH000",
     ThoiGian: new Date(Date.now()),
     SoLuong: 0,
     TongTienHang: 0,
@@ -46,7 +53,9 @@ export default function TaoPhieuTraHang({ PhieuDoiTras, NhanViens }) {
     ThanhTien: 0,
   });
   const [giamgia, setgiamgia] = useState(0);
-
+  React.useEffect(() => {
+    if (NhanViens) setNV(NhanViens.find((nv) => nv._id === TaiKhoan.MaNV));
+  }, [TaiKhoan, NhanViens]);
   const onSearch = useCallback((event) => {
     if (!event) {
       setData({
@@ -105,8 +114,8 @@ export default function TaoPhieuTraHang({ PhieuDoiTras, NhanViens }) {
     setData({
       ...data,
       MaHD: event,
-      idKH:HD.idKH,
-      MaKH:HD.MaKH,
+      idKH: HD.idKH,
+      MaKH: HD.MaKH,
       SoLuong: datapdt.SoLuong,
       TongTienHang: datapdt.TongTienHang,
       GiaVon: datapdt.GiaVon,
@@ -114,12 +123,6 @@ export default function TaoPhieuTraHang({ PhieuDoiTras, NhanViens }) {
   });
   data.GiamGia = parseInt(giamgia * data.SoLuong);
   data.ThanhTien = data.TongTienHang - data.GiamGia;
-  const optionNV = React.useMemo(() => {
-    return NhanViens.map((NV) => ({
-      value: NV.MaNV,
-      label: NV.MaNV + " " + NV.TenNV,
-    }));
-  }, [NhanViens]);
 
   const optionHD = React.useMemo(() => {
     return HoaDons.map((HD) => ({
@@ -195,87 +198,75 @@ export default function TaoPhieuTraHang({ PhieuDoiTras, NhanViens }) {
   };
   const body = (
     <>
-      <Form
-        labelCol={{
-          span: 5,
-        }}
-        wrapperCol={{
-          span: 50,
-        }}
-        form={form}
-        layout="horizontal"
-      >
-        <Form.Item label="Mã nhân viên" name="MaNV">
-          <Cascader
-            options={optionNV}
-            placeholder="Nhập mã nhân viên"
-            style={{ width: "calc(95%)" }}
-            suffixIcon={<SearchOutlined />}
-            allowClear
-            showSearch={filter}
-            onChange={(e) => setData({ ...data, MaNV: e[0] })}
-          />
-        </Form.Item>
-        <Form.Item label="Mã hóa đơn:" name="MaHD">
-          <Cascader
-            options={optionHD}
-            placeholder="Chọn hóa đơn"
-            onChange={onSearch}
-            allowClear
-            suffixIcon={<SearchOutlined />}
-            showSearch={filter}
-            style={{ width: "calc(95%)" }}
-            onChange={(e) => {
-              onSearch(e[0]);
-              //setHD(e[0]);
-            }}
-          />
-        </Form.Item>
-        <Form.Item>
-          {headerTable}
-          <List
-            grid={{ gutter: 0, column: 1 }}
-            pagination={{
-              pageSize: 5,
-            }}
-            dataSource={ListSPTraHangs}
-            itemLayout="vertical"
-            style={{ marginTop: 5 }}
-            size="small"
-            renderItem={(item) => (
-              <List.Item key={item.MaSP}>
-                <SanPhamTraHang setDataPDT={setDataPDT} SP={item} />
-              </List.Item>
-            )}
-          />
-        </Form.Item>
-        <Form.Item>
-          <section
-            style={{ float: "right", width: "200px", marginTop: "20px" }}
-          >
-            <h4 style={{ float: "left", marginRight: "10px" }}>
-              Tổng số lượng <span style={{ float: "right" }}> : </span> <br />
-              Tổng tiền hàng trả <span style={{ float: "right" }}>: </span>
-              <br />
-              Giảm Giá <span style={{ float: "right" }}>: </span>
-              <br />
-              Thành tiền <span style={{ float: "right" }}>: </span>
-            </h4>
-            <label>
-              {data.SoLuong} <br /> {data.TongTienHang} <br /> {data.GiamGia}
-              <br /> {data.ThanhTien}
-            </label>
-          </section>
-        </Form.Item>
-      </Form>
+      {NV ? (
+        <Form
+          labelCol={{
+            span: 5,
+          }}
+          wrapperCol={{
+            span: 50,
+          }}
+          form={form}
+          layout="horizontal"
+        >
+          <Form.Item label="Mã nhân viên">
+            <Input value={NV.TenNV} readOnly />
+          </Form.Item>
+          <Form.Item label="Mã hóa đơn:" name="MaHD">
+            <Cascader
+              options={optionHD}
+              placeholder="Chọn hóa đơn"
+              onChange={onSearch}
+              allowClear
+              suffixIcon={<SearchOutlined />}
+              showSearch={filter}
+              onChange={(e) => {
+                onSearch(e[0]);
+              }}
+            />
+          </Form.Item>
+          <Form.Item>
+            {headerTable}
+            <List
+              grid={{ gutter: 0, column: 1 }}
+              pagination={{
+                pageSize: 5,
+              }}
+              dataSource={ListSPTraHangs}
+              itemLayout="vertical"
+              style={{ marginTop: 5 }}
+              size="small"
+              renderItem={(item) => (
+                <List.Item key={item.MaSP}>
+                  <SanPhamTraHang setDataPDT={setDataPDT} SP={item} />
+                </List.Item>
+              )}
+            />
+          </Form.Item>
+          <Form.Item>
+            <section
+              style={{ float: "right", width: "200px", marginTop: "20px" }}
+            >
+              <h4 style={{ float: "left", marginRight: "10px" }}>
+                Tổng số lượng <span style={{ float: "right" }}> : </span> <br />
+                Tổng tiền hàng trả <span style={{ float: "right" }}>: </span>
+                <br />
+                Giảm Giá <span style={{ float: "right" }}>: </span>
+                <br />
+                Thành tiền <span style={{ float: "right" }}>: </span>
+              </h4>
+              <label>
+                {data.SoLuong} <br /> {data.TongTienHang} <br /> {data.GiamGia}
+                <br /> {data.ThanhTien}
+              </label>
+            </section>
+          </Form.Item>
+        </Form>
+      ) : null}
     </>
   );
 
   const onSubmit = () => {
-    if (!data.MaNV) {
-      message.warning("Vui lòng thêm nhân viên");
-      return;
-    }
     form.resetFields();
     let Ma = "";
     let PDT;
@@ -284,14 +275,13 @@ export default function TaoPhieuTraHang({ PhieuDoiTras, NhanViens }) {
       const max = 9999999;
       const rand = min + Math.random() * (max - min);
       Ma = "PDT" + Math.round(rand);
-      console.log("Ma:", Ma);
       PDT = PhieuDoiTras.find((data) => data.MaPDT == Ma);
     } while (PDT !== undefined);
     data.MaPDT = Ma;
     const HD = HoaDons.find((hd) => hd.MaHD === data.MaHD);
     data.idHD = HD._id;
-    const nv = NhanViens.find((NV) => NV.MaNV === data.MaNV);
-    data.idNV = nv._id;
+    data.MaNV = NV.MaNV;
+    data.idNV = NV._id;
     data.CTPDT = ListSPTraHangs;
     data.ThoiGian = moment();
     dispatch(actions.createPhieuDoiTra.createPhieuDoiTraRequest(data));
@@ -306,7 +296,7 @@ export default function TaoPhieuTraHang({ PhieuDoiTras, NhanViens }) {
         width={600}
         onOk={onSubmit}
         okButtonProps={{
-          disabled: !(data.MaHD && data.MaNV),
+          disabled: !data.MaHD,
         }}
         okText="Thêm"
         onCancel={onCancel}

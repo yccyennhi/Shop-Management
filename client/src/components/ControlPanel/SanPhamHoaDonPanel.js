@@ -1,10 +1,6 @@
 import React, { useEffect } from "react";
-import { Button, Col, Input, InputNumber, Row } from "antd";
-import {
-  CaretLeftOutlined,
-  CaretRightOutlined,
-  DeleteOutlined,
-} from "@ant-design/icons";
+import { Button, Col, InputNumber, Row } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
 
 export default function SanPhamTraHang({ sp, SPPanelChange, SPPanelRemove }) {
   const [data, setData] = React.useState();

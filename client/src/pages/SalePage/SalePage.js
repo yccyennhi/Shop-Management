@@ -21,7 +21,7 @@ import {
   PlusOutlined,
   EditOutlined,
 } from "@ant-design/icons";
-import React, { useCallback, useState, useRef } from "react";
+import React, { useCallback, useState, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../redux/actions";
 import "./styles.css";
@@ -32,7 +32,6 @@ import {
   KhuyenMaisState$,
   NhanViensState$,
   SanPhamsState$,
-  PhieuBaoHanhsState$,
 } from "../../redux/selectors";
 import SanPhamHoaDonPanel from "../../components/ControlPanel/SanPhamHoaDonPanel";
 import {
@@ -42,6 +41,8 @@ import {
 import KhachHangModal from "../../components/modal/KhachHangModal/KhachHangModal";
 import PrintModal from "../../components/modal/PrintModal/PrintModal";
 import MenubarBanHang from "../../components/header/Menubar/MenubarBanHang";
+import { AuthContext } from "../../contexts/AuthContext";
+
 const { Content, Sider } = Layout;
 
 export default function SalePage() {
@@ -49,7 +50,6 @@ export default function SalePage() {
   const dispatch = useDispatch();
   const dateNow = moment().toDate();
   const HoaDons = useSelector(HoaDonsState$);
-  const PBH = useSelector(PhieuBaoHanhsState$);
   const SanPhams = useSelector(SanPhamsState$);
   const NhanViens = useSelector(NhanViensState$);
   const KhachHangs = useSelector(KhachHangsState$);
@@ -62,8 +62,7 @@ export default function SalePage() {
   const [pagesize, setpagesize] = useState(7);
   const [SPSearchs, setSPSearch] = useState([]);
   const [KH, setKH] = useState();
-  const [oksubmit, setoksubmit] = useState(0);
-
+  const [NV, setNV] = useState();
   //Đọc + load dữ liệu
   React.useEffect(() => {
     dispatch(actions.getHoaDons.getHoaDonsRequest());
@@ -79,6 +78,7 @@ export default function SalePage() {
   const openprint = useCallback(() => {
     dispatch(showThanhToanTichDiemModal());
   }, [dispatch]);
+
   const [dataHD, setDataHD] = React.useState({
     MaHD: "",
     MaNV: "",
@@ -101,13 +101,13 @@ export default function SalePage() {
     CTHD: [],
   });
 
-  const optionNV = React.useMemo(() => {
-    return NhanViens.map((NV) => ({
-      value: NV.MaNV,
-      label: NV.MaNV + " " + NV.TenNV,
-    }));
-  }, [NhanViens]);
+  const {
+    authState: { TaiKhoan },
+  } = useContext(AuthContext);
 
+  React.useEffect(() => {
+    setNV(NhanViens.find((nv) => nv._id === TaiKhoan.MaNV));
+  }, [TaiKhoan, NhanViens]);
   const optionKM = React.useMemo(() => {
     return KhuyenMais.map((km) => ({
       value: km.MaKM,
@@ -132,16 +132,12 @@ export default function SalePage() {
   const ObjectSP = (sp) => (
     <Tooltip title={sp.TenSP + " (" + sp.MoTa + ")"}>
       <Button style={{ height: 130, width: 130, margin: "1" }}>
-        <Row style = {{marginLeft: 3}}>
+        <Row style={{ marginLeft: 3 }}>
           <Image width={90} height={90} src={sp.HinhAnh} />
         </Row>
         <Row>
-          <h5 style={{marginBottom: -2 }}>
-            Mã SP: {sp.MaSP}
-          </h5>
-          <h5 >
-            Giá: {sp.GiaBan}
-          </h5>
+          <h5 style={{ marginBottom: -2 }}>Mã SP: {sp.MaSP}</h5>
+          <h5>Giá: {sp.GiaBan}</h5>
         </Row>
       </Button>
     </Tooltip>
@@ -256,20 +252,6 @@ export default function SalePage() {
       message.warning("Vui lòng thêm sản phẩm vào hóa đon");
       return;
     }
-    if (!dataHD.MaNV) {
-      message.warning("Vui lòng thêm nhân viên");
-      return;
-    } else {
-      const nv = NhanViens.find((NV) => NV.MaNV === dataHD.MaNV);
-      if (nv.TrangThai) {
-        dataHD.idNV = nv._id;
-        localStorage.setItem("NV", JSON.stringify(nv));
-      } else {
-        message.warning("Nhân viên đã không còn làm việc tại cửa hàng");
-        return;
-      }
-    }
-
     form.resetFields();
     let Ma = "";
     let HD;
@@ -278,10 +260,12 @@ export default function SalePage() {
       const max = 9999999;
       const rand = min + Math.random() * (max - min);
       Ma = "HD" + Math.round(rand);
-      console.log("Ma:", Ma);
       HD = HoaDons.find((data) => data.MaHD == Ma);
     } while (HD !== undefined);
     dataHD.MaHD = Ma;
+    dataHD.idNV = NV._id;
+    dataHD.MaNV = NV.MaNV;
+    localStorage.setItem("NV", JSON.stringify(NV));
     if (KH) {
       dataHD.idKH = KH._id;
       dataHD.MaKH = KH.MaKH;
@@ -289,7 +273,7 @@ export default function SalePage() {
     }
     dataHD.CTHD = SPsInfo;
     dataHD.ThoiGian = moment().toDate();
-    //dispatch(actions.createHoaDon.createHoaDonRequest(dataHD));
+    dispatch(actions.createHoaDon.createHoaDonRequest(dataHD));
     localStorage.setItem("HoaDon", JSON.stringify(dataHD));
     localStorage.setItem("CTHDs", JSON.stringify(SPsInfo));
     openprint();
@@ -315,7 +299,6 @@ export default function SalePage() {
       CTHD: [],
     });
     setSPsInfo([]);
-    setoksubmit(1);
   }, [dispatch, dataHD, SPsInfo]);
 
   const headerTable = (
@@ -444,186 +427,182 @@ export default function SalePage() {
 
   const bodySider = (
     <>
-      <Form
-        labelCol={{
-          span: 10,
-        }}
-        wrapperCol={{
-          span: 14,
-        }}
-        form={form}
-        layout="horizontal"
-      >
-        <Form.Item labelCol={{ span: 50 }} style={{ marginBottom: 10 }}>
-          <h1 style={{ fontSize: 20 }}>Thông tin hóa đơn</h1>
-        </Form.Item>
-        <Form.Item
-          style={{ marginBottom: 5 }}
-          name="NV"
-          wrapperCol={30}
-          rules={[{ required: true }]}
+      {NV ? (
+        <Form
+          labelCol={{
+            span: 10,
+          }}
+          wrapperCol={{
+            span: 14,
+          }}
+          form={form}
+          layout="horizontal"
         >
-          <Button
-            icon={<UserOutlined />}
-            shape="circle"
-            size="small"
-            type="link"
-            style={{ float: "left", marginRight: 5 }}
-          />
-          <Cascader
-            options={optionNV}
-            style={{ width: 330 }}
-            suffixIcon={<SearchOutlined />}
-            placeholder="Chọn nhân viên"
-            showSearch={filter}
-            onChange={(e) => {
-              setDataHD({ ...dataHD, MaNV: e[0] });
-            }}
-          />
-        </Form.Item>
-        <Form.Item style={{ marginBottom: 25 }} name="KH" wrapperCol={30}>
-          <Button size="small" icon={<SearchOutlined />} type="link" />
-          <Cascader
-            options={optionKH}
-            bordered={false}
-            style={{
-              borderWidth: 1,
-              borderColor: "lightgrey",
-              borderBottomStyle: "solid",
-              width: 310,
-            }}
-            placeholder="Tìm khách hàng"
-            showSearch={filter}
-            onChange={(e) => {
-              KhachHangChange(e[0]);
-            }}
-            allowClear
-          />
-          <Button
-            size="small"
-            icon={<PlusOutlined />}
-            type="link"
-            onClick={() => openKhachHangModal()}
-          />
-        </Form.Item>
-        <Form.Item
-          style={{ marginTop: 10, margin: 0 }}
-          label="Tổng tiền hàng"
-          labelAlign="left"
-        >
-          <label style={{ float: "right", marginRight: 10 }}>
-            {`${dataHD.TongTienHang}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          </label>
-        </Form.Item>
-        <Form.Item style={{ margin: 0 }} label="Số lượng" labelAlign="left">
-          <label style={{ float: "right", marginRight: 10 }}>
-            {dataHD.SoLuong}
-          </label>
-        </Form.Item>
-        <Form.Item
-          style={{ margin: 0 }}
-          label="Mã khuyến mãi"
-          name="KM"
-          labelAlign="left"
-        >
-          <Cascader
-            options={optionKM}
-            style={{ width: 150, float: "right" }}
-            suffixIcon={<SearchOutlined />}
-            placeholder="Nhập mã KM"
-            showSearch={filter}
-            onChange={(e) => {
-              KhuyenMaiChange(e[0]);
-            }}
-            allowClear
-          />
-        </Form.Item>
-        <Form.Item style={{ margin: 0 }} label="Giảm giá" labelAlign="left">
-          <label style={{ float: "right", marginRight: 10 }}>
-            {`${dataHD.GiamGia}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          </label>
-        </Form.Item>
-        <Form.Item style={{ margin: 0 }} label="Thành tiền" labelAlign="left">
-          <label
-            style={{
-              float: "right",
-              marginRight: 10,
-            }}
+          <Form.Item labelCol={{ span: 50 }} style={{ marginBottom: 10 }}>
+            <h1 style={{ fontSize: 20 }}>Thông tin hóa đơn</h1>
+          </Form.Item>
+          <Form.Item
+            style={{ marginBottom: 5 }}
+            wrapperCol={30}
+            rules={[{ required: true }]}
           >
-            {`${dataHD.ThanhTien}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          </label>
-        </Form.Item>
-        <Form.Item
-          style={{ margin: 0 }}
-          label="Tiền khách trả"
-          labelAlign="left"
-        >
-          <Popover
-            content={contentPopOver}
-            placement="leftBottom"
-            trigger="click"
+            <Button
+              icon={<UserOutlined />}
+              shape="circle"
+              size="small"
+              type="link"
+              style={{ float: "left", marginRight: 5 }}
+            />
+            <Input
+              value={NV ? NV.TenNV : null}
+              readOnly
+              style={{ width: 330 }}
+            />
+          </Form.Item>
+          <Form.Item style={{ marginBottom: 25 }} name="KH" wrapperCol={30}>
+            <Button size="small" icon={<SearchOutlined />} type="link" />
+            <Cascader
+              options={optionKH}
+              bordered={false}
+              style={{
+                borderWidth: 1,
+                borderColor: "lightgrey",
+                borderBottomStyle: "solid",
+                width: 310,
+              }}
+              placeholder="Tìm khách hàng"
+              showSearch={filter}
+              onChange={(e) => {
+                KhachHangChange(e[0]);
+              }}
+              allowClear
+            />
+            <Button
+              size="small"
+              icon={<PlusOutlined />}
+              type="link"
+              onClick={() => openKhachHangModal()}
+            />
+          </Form.Item>
+          <Form.Item
+            style={{ marginTop: 10, margin: 0 }}
+            label="Tổng tiền hàng"
+            labelAlign="left"
           >
-            <span
+            <label style={{ float: "right", marginRight: 10 }}>
+              {`${dataHD.TongTienHang}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            </label>
+          </Form.Item>
+          <Form.Item style={{ margin: 0 }} label="Số lượng" labelAlign="left">
+            <label style={{ float: "right", marginRight: 10 }}>
+              {dataHD.SoLuong}
+            </label>
+          </Form.Item>
+          <Form.Item
+            style={{ margin: 0 }}
+            label="Mã khuyến mãi"
+            name="KM"
+            labelAlign="left"
+          >
+            <Cascader
+              options={optionKM}
+              style={{ width: 150, float: "right" }}
+              suffixIcon={<SearchOutlined />}
+              placeholder="Nhập mã KM"
+              showSearch={filter}
+              onChange={(e) => {
+                KhuyenMaiChange(e[0]);
+              }}
+              allowClear
+            />
+          </Form.Item>
+          <Form.Item style={{ margin: 0 }} label="Giảm giá" labelAlign="left">
+            <label style={{ float: "right", marginRight: 10 }}>
+              {`${dataHD.GiamGia}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            </label>
+          </Form.Item>
+          <Form.Item style={{ margin: 0 }} label="Thành tiền" labelAlign="left">
+            <label
               style={{
                 float: "right",
-                width: 70,
-                textAlign: "right",
                 marginRight: 10,
-                borderBottomStyle: "solid",
-                borderBottomWidth: 1,
-                borderBottomColor: "lightgray",
               }}
-              type="text"
             >
-              {`${dataHD.TienKhachTra}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-            </span>
-          </Popover>
-        </Form.Item>
-        <Form.Item
-          style={{ margin: 0 }}
-          label="Tiền thừa trả khách"
-          labelAlign="left"
-        >
-          <label style={{ float: "right", marginRight: 10 }}>
-            {`${dataHD.TienTraKhach}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          </label>
-        </Form.Item>
-        <Form.Item style={{ marginTop: 20, height: 30 }} wrapperCol={30}>
-          <Input.TextArea
-            maxLength={150}
-            showCount={true}
-            prefix={<EditOutlined />}
-            bordered={false}
-            autoSize={true}
-            value={dataHD.GhiChu}
-            placeholder="Ghi chú"
-            style={{
-              borderBottomStyle: "solid",
-              borderColor: "lightgrey",
-              borderWidth: 2,
-            }}
-            onChange={(e) => setDataHD({ ...dataHD, GhiChu: e.target.value })}
-          />
-        </Form.Item>
-        <Form.Item wrapperCol={30} style={{ marginTop: 70 }}>
-          <Button
-            type="primary"
-            block
-            size="large"
-            disabled={
-              !(
-                dataHD.TienTraKhach >= 0 &&
-                (dataHD.TienKhachTra || dataHD.DiemTru)
-              )
-            }
-            onClick={() => {
-              onSubmit();
-            }}
+              {`${dataHD.ThanhTien}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            </label>
+          </Form.Item>
+          <Form.Item
+            style={{ margin: 0 }}
+            label="Tiền khách trả"
+            labelAlign="left"
           >
-            <p> Thanh toán </p>
-          </Button>
-        </Form.Item>
-      </Form>
+            <Popover
+              content={contentPopOver}
+              placement="leftBottom"
+              trigger="click"
+            >
+              <span
+                style={{
+                  float: "right",
+                  width: 70,
+                  textAlign: "right",
+                  marginRight: 10,
+                  borderBottomStyle: "solid",
+                  borderBottomWidth: 1,
+                  borderBottomColor: "lightgray",
+                }}
+                type="text"
+              >
+                {`${dataHD.TienKhachTra}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              </span>
+            </Popover>
+          </Form.Item>
+          <Form.Item
+            style={{ margin: 0 }}
+            label="Tiền thừa trả khách"
+            labelAlign="left"
+          >
+            <label style={{ float: "right", marginRight: 10 }}>
+              {`${dataHD.TienTraKhach}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            </label>
+          </Form.Item>
+          <Form.Item style={{ marginTop: 20, height: 30 }} wrapperCol={30}>
+            <Input.TextArea
+              maxLength={150}
+              showCount={true}
+              prefix={<EditOutlined />}
+              bordered={false}
+              autoSize={true}
+              value={dataHD.GhiChu}
+              placeholder="Ghi chú"
+              style={{
+                borderBottomStyle: "solid",
+                borderColor: "lightgrey",
+                borderWidth: 2,
+              }}
+              onChange={(e) => setDataHD({ ...dataHD, GhiChu: e.target.value })}
+            />
+          </Form.Item>
+          <Form.Item wrapperCol={30} style={{ marginTop: 70 }}>
+            <Button
+              type="primary"
+              block
+              size="large"
+              disabled={
+                !(
+                  dataHD.TienTraKhach >= 0 &&
+                  (dataHD.TienKhachTra || dataHD.DiemTru)
+                )
+              }
+              onClick={() => {
+                onSubmit();
+              }}
+            >
+              <p> Thanh toán </p>
+            </Button>
+          </Form.Item>
+        </Form>
+      ) : null}
     </>
   );
   return (

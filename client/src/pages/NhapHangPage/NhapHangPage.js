@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Layout,
@@ -12,11 +12,13 @@ import {
   Divider,
   Row,
   Col,
+  Result
 } from "antd";
 import "./styles.css";
 import moment from "moment";
 import "../../App.css";
 import { useHistory } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthContext";
 import {
   SafetyCertificateTwoTone,
   PlusOutlined,
@@ -61,6 +63,19 @@ export default function PhieuNhapPage() {
   function onChange(date, dateString) {
     setThang(moment(date).format("M"));
   }
+  const {
+    authState: { TaiKhoan },
+  } = useContext(AuthContext);
+  if (TaiKhoan.TenTK != "ADMIN") {
+    return (
+      <Result
+        status="error"
+        title="Hạn chế quyền truy cập"
+        subTitle="Vui lòng kiểm tra lại đường link hoặc tài khoản đăng nhập!"
+      />
+    );
+  }
+  else
   return (
     <Layout>
       <Header>

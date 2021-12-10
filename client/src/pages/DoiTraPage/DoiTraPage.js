@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   PageHeader,
   Row,
@@ -12,6 +12,7 @@ import {
   Divider,
   Cascader,
   Typography,
+  Result,
 } from "antd";
 import "./styles.css";
 import {
@@ -21,9 +22,10 @@ import {
   SearchOutlined,
   ContainerTwoTone,
   SnippetsTwoTone,
-  SafetyCertificateTwoTone 
+  SafetyCertificateTwoTone,
 } from "@ant-design/icons";
 import TraHangTable from "../../components/table/DoiTraTable/TraHangTable";
+import { AuthContext } from "../../contexts/AuthContext";
 import TaoPhieuTraHangModal from "../../components/modal/DoiTraModal/TaoPhieuDoiTraModal";
 import { showTaoPhieuTraHangModal } from "../../redux/actions";
 import { PhieuDoiTrasState$, NhanViensState$ } from "../../redux/selectors";
@@ -125,6 +127,18 @@ export default function DoiTraPage() {
     setSL(tong);
   }, [PhieuDoiTras]);
 
+  const {
+    authState: { TaiKhoan },
+  } = useContext(AuthContext);
+  if (TaiKhoan.TenTK != "ADMIN") {
+    return (
+      <Result
+        status="error"
+        title="Hạn chế quyền truy cập"
+        subTitle="Vui lòng kiểm tra lại đường link hoặc tài khoản đăng nhập!"
+      />
+    );
+  }
   return (
     <Layout>
       <Header>
@@ -308,7 +322,7 @@ export default function DoiTraPage() {
                   </Space>
                 </Col>
               </Row>
-              <Divider/>
+              <Divider />
               <Row justify="start">
                 <Space>
                   <Button

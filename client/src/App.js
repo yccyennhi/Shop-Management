@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import { Layout } from "antd";
+import { AuthContext } from "./contexts/AuthContext";
+
 import AuthContextProvider from "./contexts/AuthContext.js";
 import ProtectedRoute from "./components/route/ProtectedRoute";
 import Menubar from "./components/header/Menubar/Menubar";
@@ -23,9 +25,9 @@ import ThemPhieuNhapPage from "./pages/ThemPhieuNhapPage/ThemPhieuNhapPage";
 import SalePage from "./pages/SalePage/SalePage";
 import AuthPage from "./pages/AuthPage/AuthPage";
 
+
 function App() {
   const { Header, Content, Footer } = Layout;
-  
   return (
     <AuthContextProvider>
       <div className="App">
@@ -99,7 +101,7 @@ function App() {
               />
               <ProtectedRoute path="/Sales" exact component={SalePage} />
             </Switch>
-            <Footer style={{ textAlign: "center" }}></Footer>
+            <Footer style={{ textAlign: "center", height: "400px" }}></Footer>
           </Layout>
         </Router>
       </div>

@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import * as actions from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { showModal } from "../../redux/actions";
 import { KhuyenMaisState$ } from "../../redux/selectors";
-
+import { AuthContext } from "../../contexts/AuthContext";
 import {
   PageHeader,
   Row,
@@ -14,7 +14,8 @@ import {
   Radio,
   Typography,
   Col,
-  Divider
+  Divider, 
+  Result
 } from "antd";
 import {
   DatabaseTwoTone,
@@ -56,7 +57,18 @@ export default function KhuyenMaiPage() {
   const SLKMDangApDung = KhuyenMais.filter(
     (KhuyenMai) => KhuyenMai.TrangThai === true
   ).length;
-
+  const {
+    authState: { TaiKhoan },
+  } = useContext(AuthContext);
+  if (TaiKhoan.TenTK != "ADMIN") {
+    return (
+      <Result
+        status="error"
+        title="Hạn chế quyền truy cập"
+        subTitle="Vui lòng kiểm tra lại đường link hoặc tài khoản đăng nhập!"
+      />
+    );
+  }
   return (
     <Layout>
       <Header>

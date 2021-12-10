@@ -1,11 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../redux/actions";
 import moment from "moment";
-import { PageHeader, Space, Card, DatePicker, Layout, Radio } from "antd";
+import {
+  PageHeader,
+  Space,
+  Card,
+  DatePicker,
+  Layout,
+  Radio,
+  Result,
+} from "antd";
 import HangHoatable from "../../components/table/BaoCaoTable/HangHoatable";
 import HangHoaBarReport from "../../components/chart/HangHoaBarReport";
-
+import { AuthContext } from "../../contexts/AuthContext";
 import { BCHangHoasState$ } from "../../redux/selectors";
 
 import COLOR from "../../color.js";
@@ -38,12 +46,28 @@ export default function BCHangHoaPage() {
 
   const typeShow = {
     baoCao: <HangHoatable currentDataSource={currentDataSource} />,
-    bieuDo: <HangHoaBarReport highestSanPhamObj={getHighestSanPhamObj(currentDataSource)} /> ,
+    bieuDo: (
+      <HangHoaBarReport
+        highestSanPhamObj={getHighestSanPhamObj(currentDataSource)}
+      />
+    ),
   };
 
   /* #endregion */
 
   const dateFormat = "DD/MM/YYYY";
+  const {
+    authState: { TaiKhoan },
+  } = useContext(AuthContext);
+  if (TaiKhoan.TenTK != "ADMIN") {
+    return (
+      <Result
+        status="error"
+        title="Hạn chế quyền truy cập"
+        subTitle="Vui lòng kiểm tra lại đường link hoặc tài khoản đăng nhập!"
+      />
+    );
+  }
   return (
     <Layout>
       <Header>
@@ -193,7 +217,7 @@ export const getHighestSanPhamObj = (currentDataSource) => {
   const highestSanPhamObj = {};
 
   Object.values(currentDataSource).forEach((SanPhamValue) => {
-    console.log('SanPhamValue',SanPhamValue)
+    console.log("SanPhamValue", SanPhamValue);
     const TenSP = SanPhamValue.TenSP;
     highestSanPhamObj[TenSP] = {
       SoLuong: SanPhamValue.SLXuat,

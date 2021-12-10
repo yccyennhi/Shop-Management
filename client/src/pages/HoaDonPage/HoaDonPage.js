@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useContext } from "react";
 import {
   PageHeader,
   Row,
@@ -12,6 +12,7 @@ import {
   Card,
   DatePicker,
   Cascader,
+  Result,
 } from "antd";
 import "./styles.css";
 import COLOR from "../../color.js";
@@ -24,6 +25,7 @@ import {
   DollarTwoTone,
 } from "@ant-design/icons";
 import DataTableHoaDon from "../../components/table/HoaDonTable/HoaDonTable.js";
+import { AuthContext } from "../../contexts/AuthContext";
 import { useDispatch, useSelector } from "react-redux";
 import { getHoaDons, getNhanViens } from "../../redux/actions";
 import { HoaDonsState$, NhanViensState$ } from "../../redux/selectors";
@@ -132,7 +134,18 @@ export default function HoaDonPage() {
   function disabledDate(current) {
     return current && current > moment().endOf("day");
   }
-
+  const {
+    authState: { TaiKhoan },
+  } = useContext(AuthContext);
+  if (TaiKhoan.TenTK != "ADMIN") {
+    return (
+      <Result
+        status="error"
+        title="Hạn chế quyền truy cập"
+        subTitle="Vui lòng kiểm tra lại đường link hoặc tài khoản đăng nhập!"
+      />
+    );
+  }
   return (
     <Layout>
       <Header>

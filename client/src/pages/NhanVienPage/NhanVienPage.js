@@ -15,8 +15,9 @@ import {
   Row,
   Space,
   Typography,
+  Result,
 } from "antd";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import COLOR from "../../color";
 import Menubar from "../../components/header/Menubar/Menubar";
@@ -25,7 +26,7 @@ import NhanVienTable from "../../components/table/NhanVienTable/NhanVienTable";
 import * as actions from "../../redux/actions";
 import { showNhanVienModal } from "../../redux/actions";
 import { NhanViensState$ } from "../../redux/selectors";
-
+import { AuthContext } from "../../contexts/AuthContext";
 const { Content, Sider, Header } = Layout;
 const { Text } = Typography;
 
@@ -57,7 +58,19 @@ export default function NhanVienPage() {
     (NhanVien) => NhanVien.TrangThai === true
   ).length;
   //#endregion
-
+  const {
+    authState: { TaiKhoan },
+  } = useContext(AuthContext);
+  if (TaiKhoan.TenTK != "ADMIN") {
+    return (
+      <Result
+        status="error"
+        title="Hạn chế quyền truy cập"
+        subTitle="Vui lòng kiểm tra lại đường link hoặc tài khoản đăng nhập!"
+      />
+    );
+  } 
+  else
   return (
     <Layout>
       <Header>

@@ -1,5 +1,16 @@
-import React, { useState } from "react";
-import { Layout, Space, PageHeader, Row, Col, Card, List, Avatar } from "antd";
+import React, { useState, useContext } from "react";
+import {
+  Layout,
+  Space,
+  PageHeader,
+  Row,
+  Col,
+  Card,
+  List,
+  Avatar,
+  Result,
+} from "antd";
+import { AuthContext } from "../../contexts/AuthContext";
 import TodayReportOverall from "../../components/Dashboard/TodayReportOverall";
 import DemoColumn from "../../components/chart/DashboardColumnReport";
 import { Content, Header } from "antd/lib/layout/layout";
@@ -40,6 +51,18 @@ export default function KhuyenMaiPage() {
     setHD(listHD);
   }, [dispatch, HoaDons]);
 
+  const {
+    authState: { TaiKhoan },
+  } = useContext(AuthContext);
+  if (TaiKhoan.TenTK != "ADMIN") {
+    return (
+      <Result
+        status="error"
+        title="Hạn chế quyền truy cập"
+        subTitle="Vui lòng kiểm tra lại đường link hoặc tài khoản đăng nhập!"
+      />
+    );
+  }
   return (
     <Layout>
       <Header>

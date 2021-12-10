@@ -152,6 +152,9 @@ export const updateTaiKhoan = createActions({
   updateTaiKhoanSuccess: (payload) => payload,
   updateTaiKhoanFailure: (err) => err,
 });
+
+export const showTaiKhoanModal = createAction("SHOW_TAIKHOAN_MODAL");
+export const hideTaiKhoanModal = createAction("HIDE_TAIKHOAN_MODAL");
 //#endregion
 
 //PhieuNhapFeature

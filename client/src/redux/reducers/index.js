@@ -28,6 +28,7 @@ import ThemPhieuNhapPage  from "./ThemPhieuNhapPage";
 import PhieuBaoHanhBanHangModal  from "./PhieuBaoHanhBanHangModal";
 import PhieuHenBanHangModal  from "./PhieuHenBanHangModal";
 import ArrHangHoaNhap  from "./ArrHangHoaNhap";
+import TaiKhoanModal from "./TaiKhoanModal";
 
 export default combineReducers({
   KhachHangs,
@@ -36,6 +37,7 @@ export default combineReducers({
   NhanVienModal,
   SanPhams,
   TaiKhoans,
+  TaiKhoanModal,
   KhuyenMais,
   HoaDons,
   Modal,

@@ -4,7 +4,7 @@ const schema = new mongoose.Schema(
   {
     MaNV: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "KhachHang",
+      ref: "NhanVien",
       required: true,
     },
     TenTK: {

@@ -1,7 +1,13 @@
 import { Button, PageHeader, Tabs, Tag } from "antd";
-import { useCallback } from "react";
-import { useDispatch } from "react-redux";
-import { showNhanVienModal, updateNhanVien } from "../../../redux/actions";
+import { useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  showNhanVienModal,
+  getTaiKhoans,
+  updateNhanVien,
+  updateTaiKhoan,
+} from "../../../redux/actions";
+import { TaiKhoansState$ } from "../../../redux/selectors";
 import HoaDonDaBanTab from "./Tabs/HoaDonDaBanTab";
 import ThongTinCaNhanTab from "./Tabs/ThongTinCaNhanTab";
 
@@ -9,6 +15,12 @@ const { TabPane } = Tabs;
 
 export default function ExpandedRowRender({ record, setCurrentId }) {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getTaiKhoans.getTaiKhoansRequest());
+  }, [dispatch]);
+
+  const TaiKhoans = useSelector(TaiKhoansState$);
 
   const openNhanVienModal = useCallback(() => {
     setCurrentId(record._id);
@@ -20,6 +32,25 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
     const data = { ...record, TrangThai: newStatus };
     dispatch(updateNhanVien.updateNhanVienRequest(data));
   }, [record, dispatch]);
+
+  const TaiKhoanValue = TaiKhoans.find((TaiKhoan) =>
+    TaiKhoan.MaNV === record._id ? TaiKhoan : null
+  );
+
+  const resetPassword = useCallback(() => {
+    if (TaiKhoanValue) {
+      const data = {
+        TenTK: TaiKhoanValue.TenTK,
+        MatKhau: TaiKhoanValue.MatKhau,
+        newMatKhau: record.MaNV,
+        confirmedMatKhau: record.MaNV,
+      };
+
+      console.log(data.TenTK);
+
+      dispatch(updateTaiKhoan.updateTaiKhoanRequest(data));
+    }
+  }, [record, TaiKhoanValue, dispatch]);
 
   return (
     <>
@@ -47,6 +78,9 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
               Làm lại
             </Button>
           ),
+          <Button key="4" type="default" onClick={resetPassword}>
+            Đặt lại mật khẩu
+          </Button>,
         ]}
       >
         <Tabs type="card" defaultActiveKey="1">

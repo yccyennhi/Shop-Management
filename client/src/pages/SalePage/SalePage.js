@@ -305,7 +305,7 @@ export default function SalePage() {
     <Row
       style={{
         textAlign: "center",
-        width: 850,
+        width: 870,
         marginLeft: 30,
         fontWeight: 800,
         marginTop: 5,
@@ -320,7 +320,7 @@ export default function SalePage() {
         <label style={{ textAlign: "center", fontWeight: "500" }}>Mã SP</label>
       </Col>
       <Divider type="vertical" />
-      <Col flex="350">
+      <Col flex="370">
         <label style={{ float: "left", marginLeft: "10%", fontWeight: "500" }}>
           Tên sản phẩm
         </label>
@@ -615,7 +615,6 @@ export default function SalePage() {
           overflow: "auto",
           width: "100%",
           height: "100%",
-          left: 0,
           top: 110,
           position: "fixed",
         }}
@@ -629,19 +628,19 @@ export default function SalePage() {
             overflow: "auto",
             width: 925,
             height: 580,
-            top: 120,
+            //top: 120,
+            top: 10,
             left: 10,
-            position: "fixed",
+            position: "absolute",
           }}
         >
           <Content
             className="site-layout-background"
             style={{
-              padding: 10,
               width: "100%",
             }}
           >
-            <Row>{headerTable}</Row>
+            <Row style={{ marginTop: 10 }}>{headerTable}</Row>
             <Row justify="center">
               <List
                 grid={{ gutter: 0, column: 1 }}
@@ -650,7 +649,7 @@ export default function SalePage() {
                 }}
                 dataSource={SPsInfo}
                 itemLayout="vertical"
-                style={{ marginTop: 5, width: "100%" }}
+                style={{ width: "100%" }}
                 size="small"
                 renderItem={(item) => (
                   <List.Item key={item.MaSP}>
@@ -663,11 +662,11 @@ export default function SalePage() {
                 )}
               />
             </Row>
-            <Row justify="end">
+            <Row>
               <Collapse
                 bordered={false}
                 collapsible="header"
-                style={{ width: "100%", marginTop: "10px" }}
+                style={{ width: "100%", position: "absolute", bottom: 0 }}
               >
                 <Collapse.Panel
                   header={
@@ -687,14 +686,16 @@ export default function SalePage() {
                     </span>
                   }
                 >
-                  <Input.Search
-                    style={{ width: 330, marginLeft: 570 }}
-                    enterButton
-                    placeholder="Tìm kiếm sản phẩm"
-                    onSearch={(e) => SearchSP(e)}
-                    allowClear
-                    onPressEnter={(e) => SearchSP(e)}
-                  />
+                  <Row justify="end">
+                    <Input.Search
+                      style={{ width: 330, marginLeft: 550 }}
+                      enterButton
+                      placeholder="Tìm kiếm sản phẩm"
+                      onSearch={(e) => SearchSP(e)}
+                      allowClear
+                      onPressEnter={(e) => SearchSP(e)}
+                    />
+                  </Row>
                   <List
                     grid={{ gutter: 0, column: 6 }}
                     pagination={{
@@ -736,8 +737,9 @@ export default function SalePage() {
             overflow: "auto",
             height: 580,
             right: 10,
-            top: 120,
-            position: "fixed",
+            top: 10,
+            //top: 120,
+            position: "absolute",
           }}
         >
           {bodySider}

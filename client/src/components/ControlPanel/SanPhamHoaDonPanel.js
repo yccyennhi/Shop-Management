@@ -13,7 +13,6 @@ export default function SanPhamTraHang({ sp, SPPanelChange, SPPanelRemove }) {
       {data ? (
         <section
           style={{
-            marginBottom: "2px",
             borderStyle: "solid",
             borderWidth: "2px",
             borderColor: "lightblue",

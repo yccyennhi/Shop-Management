@@ -305,46 +305,47 @@ export default function SalePage() {
     <Row
       style={{
         textAlign: "center",
-        width: 870,
+        width: "100%",
         marginLeft: 30,
+        marginRight: 20,
         fontWeight: 800,
         marginTop: 5,
         marginBottom: 10,
       }}
     >
-      <Col flex="20">
+      <Col flex="3%">
         <label style={{ textAlign: "center", fontWeight: "500" }}>STT</label>
       </Col>
       <Divider type="vertical" />
-      <Col flex="80">
+      <Col flex="8%">
         <label style={{ textAlign: "center", fontWeight: "500" }}>Mã SP</label>
       </Col>
       <Divider type="vertical" />
-      <Col flex="370">
-        <label style={{ float: "left", marginLeft: "10%", fontWeight: "500" }}>
+      <Col flex="46%">
+        <label style={{ fontWeight: "500", textAlign: "center" }}>
           Tên sản phẩm
         </label>
       </Col>
       <Divider type="vertical" />
-      <Col flex="80">
+      <Col flex="10%">
         <label style={{ textAlign: "center", fontWeight: "500" }}>
           Số lượng
         </label>
       </Col>
       <Divider type="vertical" />
-      <Col flex="70">
+      <Col flex="8%">
         <label style={{ textAlign: "center", fontWeight: "500" }}>
           Đơn giá
         </label>
       </Col>
       <Divider type="vertical" />
-      <Col flex="75">
+      <Col flex="10%">
         <label style={{ textAlign: "right", fontWeight: "500" }}>
           Thành tiền
         </label>
       </Col>
       <Divider type="vertical" />
-      <Col flex="20">
+      <Col flex="1%">
         <label style={{ textAlign: "right", fontWeight: "500" }}>Xóa</label>
       </Col>
     </Row>
@@ -456,7 +457,7 @@ export default function SalePage() {
             <Input
               value={NV ? NV.TenNV : null}
               readOnly
-              style={{ width: 330 }}
+              style={{ width: "90%" }}
             />
           </Form.Item>
           <Form.Item style={{ marginBottom: 25 }} name="KH" wrapperCol={30}>
@@ -468,7 +469,7 @@ export default function SalePage() {
                 borderWidth: 1,
                 borderColor: "lightgrey",
                 borderBottomStyle: "solid",
-                width: 310,
+                width: "87%",
               }}
               placeholder="Tìm khách hàng"
               showSearch={filter}
@@ -506,7 +507,7 @@ export default function SalePage() {
           >
             <Cascader
               options={optionKM}
-              style={{ width: 150, float: "right" }}
+              style={{ width: "70%", float: "right", marginRight: 10 }}
               suffixIcon={<SearchOutlined />}
               placeholder="Nhập mã KM"
               showSearch={filter}
@@ -626,7 +627,7 @@ export default function SalePage() {
           style={{
             padding: "0 24",
             overflow: "auto",
-            width: 925,
+            width: "68%",
             height: 580,
             //top: 120,
             top: 10,
@@ -730,7 +731,7 @@ export default function SalePage() {
           </Content>
         </Layout>
         <Sider
-          width={400}
+          width={"30%"}
           className="site-layout-background"
           style={{
             padding: 15,

@@ -615,7 +615,7 @@ export default function SalePage() {
         style={{
           overflow: "auto",
           width: "100%",
-          height: "100%",
+          height: "calc(100% - 110px)",
           top: 110,
           position: "fixed",
         }}
@@ -628,7 +628,7 @@ export default function SalePage() {
             padding: "0 24",
             overflow: "auto",
             width: "68%",
-            height: 580,
+            height: "100%",
             top: 10,
             left: 10,
             position: "absolute",
@@ -638,6 +638,7 @@ export default function SalePage() {
             className="site-layout-background"
             style={{
               width: "100%",
+              height: "100%",
             }}
           >
             <Row style={{ marginTop: 10 }}>{headerTable}</Row>
@@ -735,7 +736,7 @@ export default function SalePage() {
           style={{
             padding: 15,
             overflow: "auto",
-            height: 580,
+            height: "100%",
             right: 10,
             top: 10,
             //top: 120,

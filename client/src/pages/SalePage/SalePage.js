@@ -638,83 +638,95 @@ export default function SalePage() {
             className="site-layout-background"
             style={{
               padding: 10,
+              width: "100%",
             }}
           >
-            {headerTable}
-            <List
-              grid={{ gutter: 0, column: 1 }}
-              pagination={{
-                pageSize: pagesize,
-              }}
-              dataSource={SPsInfo}
-              itemLayout="vertical"
-              style={{ marginTop: 5 }}
-              size="small"
-              renderItem={(item) => (
-                <List.Item key={item.MaSP}>
-                  <SanPhamHoaDonPanel
-                    sp={item}
-                    SPPanelChange={SPPanelChange}
-                    SPPanelRemove={SPPanelRemove}
-                  />
-                </List.Item>
-              )}
-            />
-          </Content>
-          <Collapse bordered={false} collapsible="header">
-            <Collapse.Panel
-              header={
-                <span
-                  style={{ fontWeight: 500 }}
-                  onClick={() => {
-                    setonCollap(!onCollap);
-                    setpagesize(!onCollap ? 3 : 7);
-                    setSPSearch(
-                      SanPhams.filter(
-                        (sp) => sp.TrangThai === "Đang kinh doanh"
-                      )
-                    );
-                  }}
-                >
-                  Danh sách sản phẩm
-                </span>
-              }
-            >
-              <Input.Search
-                style={{ width: 330, marginLeft: 570 }}
-                enterButton
-                placeholder="Tìm kiếm sản phẩm"
-                onSearch={(e) => SearchSP(e)}
-                allowClear
-                onPressEnter={(e) => SearchSP(e)}
-              />
+            <Row>{headerTable}</Row>
+            <Row justify="center">
               <List
-                grid={{ gutter: 0, column: 6 }}
+                grid={{ gutter: 0, column: 1 }}
                 pagination={{
-                  pageSize: 6,
+                  pageSize: pagesize,
                 }}
-                dataSource={SPSearchs}
-                style={{ marginTop: 5 }}
-                itemLayout="horizontal"
+                dataSource={SPsInfo}
+                itemLayout="vertical"
+                style={{ marginTop: 5, width: "100%" }}
                 size="small"
                 renderItem={(item) => (
-                  <List.Item
-                    key={item._id}
-                    onClick={() => {
-                      if (item.TonKho && item.TrangThai === "Đang kinh doanh")
-                        SPPanelClick(item);
-                      else
-                        message.error(
-                          "Không thể đặt hàng sản phẩm " + item.TenSP
-                        );
-                    }}
-                  >
-                    {ObjectSP(item)}
+                  <List.Item key={item.MaSP}>
+                    <SanPhamHoaDonPanel
+                      sp={item}
+                      SPPanelChange={SPPanelChange}
+                      SPPanelRemove={SPPanelRemove}
+                    />
                   </List.Item>
                 )}
               />
-            </Collapse.Panel>
-          </Collapse>
+            </Row>
+            <Row justify="end">
+              <Collapse
+                bordered={false}
+                collapsible="header"
+                style={{ width: "100%", marginTop: "10px" }}
+              >
+                <Collapse.Panel
+                  header={
+                    <span
+                      style={{ fontWeight: 500 }}
+                      onClick={() => {
+                        setonCollap(!onCollap);
+                        setpagesize(!onCollap ? 3 : 7);
+                        setSPSearch(
+                          SanPhams.filter(
+                            (sp) => sp.TrangThai === "Đang kinh doanh"
+                          )
+                        );
+                      }}
+                    >
+                      Danh sách sản phẩm
+                    </span>
+                  }
+                >
+                  <Input.Search
+                    style={{ width: 330, marginLeft: 570 }}
+                    enterButton
+                    placeholder="Tìm kiếm sản phẩm"
+                    onSearch={(e) => SearchSP(e)}
+                    allowClear
+                    onPressEnter={(e) => SearchSP(e)}
+                  />
+                  <List
+                    grid={{ gutter: 0, column: 6 }}
+                    pagination={{
+                      pageSize: 6,
+                    }}
+                    dataSource={SPSearchs}
+                    style={{ marginTop: 5 }}
+                    itemLayout="horizontal"
+                    size="small"
+                    renderItem={(item) => (
+                      <List.Item
+                        key={item._id}
+                        onClick={() => {
+                          if (
+                            item.TonKho &&
+                            item.TrangThai === "Đang kinh doanh"
+                          )
+                            SPPanelClick(item);
+                          else
+                            message.error(
+                              "Không thể đặt hàng sản phẩm " + item.TenSP
+                            );
+                        }}
+                      >
+                        {ObjectSP(item)}
+                      </List.Item>
+                    )}
+                  />
+                </Collapse.Panel>
+              </Collapse>
+            </Row>
+          </Content>
         </Layout>
         <Sider
           width={400}

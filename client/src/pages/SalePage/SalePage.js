@@ -306,14 +306,14 @@ export default function SalePage() {
       style={{
         textAlign: "center",
         width: "100%",
-        marginLeft: 30,
-        marginRight: 20,
+        marginLeft: "2%",
+        marginRight: "2%",
         fontWeight: 800,
         marginTop: 5,
         marginBottom: 10,
       }}
     >
-      <Col flex="3%">
+      <Col flex="4%">
         <label style={{ textAlign: "center", fontWeight: "500" }}>STT</label>
       </Col>
       <Divider type="vertical" />
@@ -321,13 +321,13 @@ export default function SalePage() {
         <label style={{ textAlign: "center", fontWeight: "500" }}>Mã SP</label>
       </Col>
       <Divider type="vertical" />
-      <Col flex="46%">
+      <Col flex="48%">
         <label style={{ fontWeight: "500", textAlign: "center" }}>
           Tên sản phẩm
         </label>
       </Col>
       <Divider type="vertical" />
-      <Col flex="10%">
+      <Col flex="8%">
         <label style={{ textAlign: "center", fontWeight: "500" }}>
           Số lượng
         </label>
@@ -339,13 +339,13 @@ export default function SalePage() {
         </label>
       </Col>
       <Divider type="vertical" />
-      <Col flex="10%">
+      <Col flex="8%">
         <label style={{ textAlign: "right", fontWeight: "500" }}>
           Thành tiền
         </label>
       </Col>
       <Divider type="vertical" />
-      <Col flex="1%">
+      <Col flex="4%">
         <label style={{ textAlign: "right", fontWeight: "500" }}>Xóa</label>
       </Col>
     </Row>
@@ -629,7 +629,6 @@ export default function SalePage() {
             overflow: "auto",
             width: "68%",
             height: 580,
-            //top: 120,
             top: 10,
             left: 10,
             position: "absolute",

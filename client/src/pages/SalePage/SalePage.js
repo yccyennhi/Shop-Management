@@ -129,20 +129,6 @@ export default function SalePage() {
     );
   };
 
-  const ObjectSP = (sp) => (
-    <Tooltip title={sp.TenSP + " (" + sp.MoTa + ")"}>
-      <Button style={{ height: 130, width: 130, margin: "1" }}>
-        <Row style={{ marginLeft: 3 }}>
-          <Image width={90} height={90} src={sp.HinhAnh} />
-        </Row>
-        <Row>
-          <h5 style={{ marginBottom: -2 }}>Mã SP: {sp.MaSP}</h5>
-          <h5>Giá: {sp.GiaBan}</h5>
-        </Row>
-      </Button>
-    </Tooltip>
-  );
-
   const SPPanelClick = (result) => {
     const SPInfo = {
       STT: SPsInfo.length + 1,
@@ -351,6 +337,19 @@ export default function SalePage() {
     </Row>
   );
 
+  const ObjectSP = (sp) => (
+    <Tooltip title={sp.TenSP + " (" + sp.MoTa + ")"}>
+      <Button style={{ height: 130, width: 130 }}>
+        <Row style={{ marginLeft: 3 }}>
+          <Image width={90} height={90} src={sp.HinhAnh} />
+        </Row>
+        <Row>
+          <h5 style={{ marginBottom: -2 }}>Mã SP: {sp.MaSP}</h5>
+          <h5>Giá: {sp.GiaBan}</h5>
+        </Row>
+      </Button>
+    </Tooltip>
+  );
   const SearchSP = (info) => {
     const list = SanPhams.filter(
       (sp) =>
@@ -703,7 +702,7 @@ export default function SalePage() {
                       pageSize: 6,
                     }}
                     dataSource={SPSearchs}
-                    style={{ marginTop: 5 }}
+                    style={{ marginTop: 10 }}
                     itemLayout="horizontal"
                     size="small"
                     renderItem={(item) => (
@@ -739,7 +738,6 @@ export default function SalePage() {
             height: "100%",
             right: 10,
             top: 10,
-            //top: 120,
             position: "absolute",
           }}
         >

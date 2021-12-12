@@ -21,7 +21,7 @@ import {
   SearchOutlined,
   ContainerTwoTone,
   SnippetsTwoTone,
-  SafetyCertificateTwoTone 
+  SafetyCertificateTwoTone,
 } from "@ant-design/icons";
 import TraHangTable from "../../components/table/DoiTraTable/TraHangTable";
 import TaoPhieuTraHangModal from "../../components/modal/DoiTraModal/TaoPhieuDoiTraModal";
@@ -150,7 +150,7 @@ export default function DoiTraPage() {
               <Card
                 title="Thời gian"
                 bordered={false}
-                style={{ width: 290, color: COLOR.darkblue }}
+                style={{ width: 250, color: COLOR.darkblue }}
               >
                 <Radio.Group
                   value={valueradio}
@@ -236,7 +236,7 @@ export default function DoiTraPage() {
               <Card
                 title="Người tạo"
                 bordered={false}
-                style={{ width: 290, color: COLOR.darkblue }}
+                style={{ width: 250, color: COLOR.darkblue }}
               >
                 <Cascader
                   options={optionNV}
@@ -308,7 +308,7 @@ export default function DoiTraPage() {
                   </Space>
                 </Col>
               </Row>
-              <Divider/>
+              <Divider />
               <Row justify="start">
                 <Space>
                   <Button

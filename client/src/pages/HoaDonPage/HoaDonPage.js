@@ -111,9 +111,9 @@ export default function HoaDonPage() {
     setData(tamp);
   }, [HoaDons, GiaTien, NV, ThoiGian]);
   React.useEffect(() => {
-    let Tong=0;
-    HoaDons.map((hd) => Tong += hd.ThanhTien);
-    setTongTien(Tong)
+    let Tong = 0;
+    HoaDons.map((hd) => (Tong += hd.ThanhTien));
+    setTongTien(Tong);
   }, [HoaDons]);
   const optionNV = React.useMemo(() => {
     return NhanViens.map((NV) => ({
@@ -158,7 +158,7 @@ export default function HoaDonPage() {
               <Card
                 title="Thời gian"
                 bordered={false}
-                style={{ width: 290, color: COLOR.darkblue }}
+                style={{ width: 250, color: COLOR.darkblue }}
               >
                 <Radio.Group
                   value={valueradio}
@@ -244,7 +244,7 @@ export default function HoaDonPage() {
               <Card
                 title="Người bán"
                 bordered={false}
-                style={{ width: 290, color: COLOR.darkblue }}
+                style={{ width: 250, color: COLOR.darkblue }}
               >
                 <Cascader
                   options={optionNV}
@@ -258,7 +258,7 @@ export default function HoaDonPage() {
               <Card
                 title="Giá tiền"
                 bordered={false}
-                style={{ width: 290, color: COLOR.darkblue }}
+                style={{ width: 250, color: COLOR.darkblue }}
               >
                 <Radio.Group defaultValue={1}>
                   <Space direction="vertical">
@@ -331,12 +331,14 @@ export default function HoaDonPage() {
                       <Text strong style={{ fontSize: "1.5rem" }}>
                         {`${tongTien}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                       </Text>
-                      <Text type="secondary">{`${tongTien}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")} Đ </Text>
+                      <Text type="secondary">
+                        {`${tongTien}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")} Đ{" "}
+                      </Text>
                     </Space>
                   </Space>
                 </Col>
               </Row>
-              <Divider/>
+              <Divider />
               <Row justify="start" style={{ marginBottom: 15 }}>
                 <Space>
                   <Button

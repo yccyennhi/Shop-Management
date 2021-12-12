@@ -66,7 +66,10 @@ export default function PhieuNhapPage() {
   const {
     authState: { TaiKhoan },
   } = useContext(AuthContext);
+
   if (TaiKhoan.TenTK != "ADMIN") {
+    
+  history.push("/Sales");
     return (
       <Result
         status="error"

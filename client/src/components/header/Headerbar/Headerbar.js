@@ -1,4 +1,5 @@
-import React, { useCallback, useContext } from "react"
+import React, { useCallback, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import Logo from "../../../assets/Logo.png";
 import { Menu, Col, Row } from "antd";
 import { UserOutlined } from "@ant-design/icons";
@@ -22,13 +23,19 @@ export default function Headerbar() {
   const openTaiKhoanModal = useCallback(() => {
     dispatch(showTaiKhoanModal());
   }, [dispatch]);
-
+  const history = useHistory();
+  let link = TaiKhoan?.TenTK === "ADMIN" ? "/" : "/Sales";
   return (
     <div>
       <Row>
         <Col span={6}>
           <div className="logo">
-            <img src={Logo} alt="Website Logo"></img>
+            <img
+              src={Logo}
+              alt="Website Logo"
+              onClick={()=>{history.push(link)}}
+              
+            ></img>
           </div>
         </Col>
         <Col span={6} offset={12}>
@@ -40,11 +47,15 @@ export default function Headerbar() {
                 title={TaiKhoan ? TaiKhoan.TenTK : "No user"}
                 icon={<UserOutlined />}
               >
-                <Menu.Item key="subitem1" onClick={openTaiKhoanModal}>Tài khoản</Menu.Item>
-                <Menu.Item key="subitem2" onClick={logout}>Đăng xuất</Menu.Item>
+                <Menu.Item key="subitem1" onClick={openTaiKhoanModal}>
+                  Tài khoản
+                </Menu.Item>
+                <Menu.Item key="subitem2" onClick={logout}>
+                  Đăng xuất
+                </Menu.Item>
               </SubMenu>
             </Menu>
-            <TaiKhoanModal/>
+            <TaiKhoanModal />
           </div>
         </Col>
       </Row>

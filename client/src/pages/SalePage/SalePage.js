@@ -42,7 +42,6 @@ import KhachHangModal from "../../components/modal/KhachHangModal/KhachHangModal
 import PrintModal from "../../components/modal/PrintModal/PrintModal";
 import MenubarBanHang from "../../components/header/Menubar/MenubarBanHang";
 import { AuthContext } from "../../contexts/AuthContext";
-import { Header } from "antd/lib/layout/layout";
 
 const { Content, Sider } = Layout;
 
@@ -608,9 +607,8 @@ export default function SalePage() {
   );
   return (
     <Layout>
-      <Header>
+      <Layout>
         <MenubarBanHang />
-
       </Layout>
       <Layout
         style={{
@@ -643,13 +641,11 @@ export default function SalePage() {
             }}
           >
             <Row style={{ marginTop: 10 }}>{headerTable}</Row>
-
             <Row justify="center">
               <List
                 grid={{ gutter: 0, column: 1 }}
                 pagination={{
                   pageSize: pagesize,
-
                   style: { marginRight: 15 },
                 }}
                 dataSource={SPsInfo}
@@ -667,7 +663,6 @@ export default function SalePage() {
                 )}
               />
             </Row>
-
             <Row>
               <Collapse
                 bordered={false}
@@ -692,7 +687,6 @@ export default function SalePage() {
                     </span>
                   }
                 >
-
                   <Row justify="end">
                     <Input.Search
                       style={{ width: 330, marginLeft: 550 }}
@@ -735,7 +729,6 @@ export default function SalePage() {
               </Collapse>
             </Row>
           </Content>
-
         </Layout>
         <Sider
           width={"30%"}

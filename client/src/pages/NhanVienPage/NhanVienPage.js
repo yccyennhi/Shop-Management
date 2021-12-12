@@ -64,135 +64,138 @@ export default function NhanVienPage() {
   if (TaiKhoan.TenTK != "ADMIN") {
     return (
       <Result
+        className="error-page"
         status="error"
         title="Hạn chế quyền truy cập"
         subTitle="Vui lòng kiểm tra lại đường link hoặc tài khoản đăng nhập!"
       />
     );
-  } 
-  else
-  return (
-    <Layout>
-      <Header>
-        <Menubar />
-      </Header>
-      <PageHeader
-        onBack={() => window.history.back()}
-        className="site-page-header"
-        title="Nhân viên"
-      />
+  } else
+    return (
       <Layout>
-        <Sider
-          width={300}
-          style={{ padding: "0px 0px 0px 24px", background:"#F0F2F5"  }}
-          className="site-layout-sider"
-        >
-          <div className="site-card-border-less-wrapper">
-            <Space direction="vertical">
-              <Card
-                title="Trạng thái hoạt động"
-                bordered={false}
-                style={{ width: 250, color: COLOR.darkblue }}
-              >
-                <Radio.Group defaultValue={1}>
-                  <Space direction="vertical">
-                    <Radio value={1} onClick={() => setdataSoure(NhanViens)}>
-                      Tất cả
-                    </Radio>
-                    <Radio
-                      value={2}
-                      onClick={() =>
-                        setdataSoure(
-                          NhanViens.filter(
-                            (NhanVien) => NhanVien.TrangThai === true
-                          )
-                        )
-                      }
-                    >
-                      Đang làm việc
-                    </Radio>
-                    <Radio
-                      value={3}
-                      onClick={() =>
-                        setdataSoure(
-                          NhanViens.filter(
-                            (NhanVien) => NhanVien.TrangThai === false
-                          )
-                        )
-                      }
-                    >
-                      Đã nghỉ
-                    </Radio>
-                  </Space>
-                </Radio.Group>
-              </Card>
-            </Space>
-          </div>
-        </Sider>
-        <Content style={{ padding: "17px 24px 24px" }}>
-          <div className="site-layout-content">
-            <Row justify="start">
-              <Col span={8}>
-                <Space align="center" size={20}>
-                  <DatabaseTwoTone style={{ fontSize: "40px" }} />
-                  <Space direction="vertical" size={0}>
-                    <Text strong>{NhanViens.length} nhân viên</Text>
-                    <Text strong style={{ fontSize: "1.5rem" }}>
-                      {NhanViens.length}
-                    </Text>
-                    <Text type="secondary">Tổng số lượng nhân viên</Text>
-                  </Space>
-                </Space>
-              </Col>
-              <Col span={8}>
-                <Space align="center" size={20}>
-                  <SmileTwoTone style={{ fontSize: "40px" }} />
-                  <Space direction="vertical" size={0}>
-                    <Text strong>{SLNVConLamViec} nhân viên</Text>
-                    <Text strong style={{ fontSize: "1.5rem" }}>
-                      {SLNVConLamViec}
-                    </Text>
-                    <Text type="secondary">Số nhân viên còn làm việc</Text>
-                  </Space>
-                </Space>
-              </Col>
-              <Col span={8}>
-                <Space align="center" size={20}>
-                  <FrownTwoTone style={{ fontSize: "40px" }} />
-                  <Space direction="vertical" size={0}>
-                    <Text strong>
-                      {NhanViens.length - SLNVConLamViec} nhân viên
-                    </Text>
-                    <Text strong style={{ fontSize: "1.5rem" }}>
-                      {NhanViens.length - SLNVConLamViec}
-                    </Text>
-                    <Text type="secondary">
-                      Số nhân viên không còn làm việc
-                    </Text>
-                  </Space>
-                </Space>
-              </Col>
-            </Row>
-            <Divider orientation="left"></Divider>
-            <Row justify="end">
-              <Space direction="horizontal">
-                <Button
-                  icon={<PlusOutlined />}
-                  type="primary"
-                  onClick={openNhanVienModal}
+        <Header>
+          <Menubar />
+        </Header>
+        <PageHeader
+          onBack={() => window.history.back()}
+          className="site-page-header"
+          title="Nhân viên"
+        />
+        <Layout>
+          <Sider
+            width={300}
+            style={{ padding: "0px 0px 0px 24px", background: "#F0F2F5" }}
+            className="site-layout-sider"
+          >
+            <div className="site-card-border-less-wrapper">
+              <Space direction="vertical">
+                <Card
+                  title="Trạng thái hoạt động"
+                  bordered={false}
+                  style={{ width: 250, color: COLOR.darkblue }}
                 >
-                  Thêm nhân viên
-                </Button>
+                  <Radio.Group defaultValue={1}>
+                    <Space direction="vertical">
+                      <Radio value={1} onClick={() => setdataSoure(NhanViens)}>
+                        Tất cả
+                      </Radio>
+                      <Radio
+                        value={2}
+                        onClick={() =>
+                          setdataSoure(
+                            NhanViens.filter(
+                              (NhanVien) => NhanVien.TrangThai === true
+                            )
+                          )
+                        }
+                      >
+                        Đang làm việc
+                      </Radio>
+                      <Radio
+                        value={3}
+                        onClick={() =>
+                          setdataSoure(
+                            NhanViens.filter(
+                              (NhanVien) => NhanVien.TrangThai === false
+                            )
+                          )
+                        }
+                      >
+                        Đã nghỉ
+                      </Radio>
+                    </Space>
+                  </Radio.Group>
+                </Card>
               </Space>
-            </Row>
-            <NhanVienTable
-              dataSource={dataSource}
-              setCurrentId={setCurrentId}
-            />
-            <NhanVienModal currentId={currentId} setCurrentId={setCurrentId} />
-          </div>
-        </Content>
+            </div>
+          </Sider>
+          <Content style={{ padding: "17px 24px 24px" }}>
+            <div className="site-layout-content">
+              <Row justify="start">
+                <Col span={8}>
+                  <Space align="center" size={20}>
+                    <DatabaseTwoTone style={{ fontSize: "40px" }} />
+                    <Space direction="vertical" size={0}>
+                      <Text strong>{NhanViens.length} nhân viên</Text>
+                      <Text strong style={{ fontSize: "1.5rem" }}>
+                        {NhanViens.length}
+                      </Text>
+                      <Text type="secondary">Tổng số lượng nhân viên</Text>
+                    </Space>
+                  </Space>
+                </Col>
+                <Col span={8}>
+                  <Space align="center" size={20}>
+                    <SmileTwoTone style={{ fontSize: "40px" }} />
+                    <Space direction="vertical" size={0}>
+                      <Text strong>{SLNVConLamViec} nhân viên</Text>
+                      <Text strong style={{ fontSize: "1.5rem" }}>
+                        {SLNVConLamViec}
+                      </Text>
+                      <Text type="secondary">Số nhân viên còn làm việc</Text>
+                    </Space>
+                  </Space>
+                </Col>
+                <Col span={8}>
+                  <Space align="center" size={20}>
+                    <FrownTwoTone style={{ fontSize: "40px" }} />
+                    <Space direction="vertical" size={0}>
+                      <Text strong>
+                        {NhanViens.length - SLNVConLamViec} nhân viên
+                      </Text>
+                      <Text strong style={{ fontSize: "1.5rem" }}>
+                        {NhanViens.length - SLNVConLamViec}
+                      </Text>
+                      <Text type="secondary">
+                        Số nhân viên không còn làm việc
+                      </Text>
+                    </Space>
+                  </Space>
+                </Col>
+              </Row>
+              <Divider orientation="left"></Divider>
+              <Row justify="end">
+                <Space direction="horizontal">
+                  <Button
+                    icon={<PlusOutlined />}
+                    type="primary"
+                    onClick={openNhanVienModal}
+                  >
+                    Thêm nhân viên
+                  </Button>
+                </Space>
+              </Row>
+              <NhanVienTable
+                dataSource={dataSource}
+                setCurrentId={setCurrentId}
+              />
+              <NhanVienModal
+                currentId={currentId}
+                setCurrentId={setCurrentId}
+              />
+            </div>
+          </Content>
+        </Layout>
       </Layout>
-    </Layout>
-  );
+    );
 }

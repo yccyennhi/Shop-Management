@@ -113,9 +113,9 @@ export default function HoaDonPage() {
     setData(tamp);
   }, [HoaDons, GiaTien, NV, ThoiGian]);
   React.useEffect(() => {
-    let Tong=0;
-    HoaDons.map((hd) => Tong += hd.ThanhTien);
-    setTongTien(Tong)
+    let Tong = 0;
+    HoaDons.map((hd) => (Tong += hd.ThanhTien));
+    setTongTien(Tong);
   }, [HoaDons]);
   const optionNV = React.useMemo(() => {
     return NhanViens.map((NV) => ({
@@ -140,6 +140,7 @@ export default function HoaDonPage() {
   if (TaiKhoan.TenTK != "ADMIN") {
     return (
       <Result
+        className="error-page"
         status="error"
         title="Hạn chế quyền truy cập"
         subTitle="Vui lòng kiểm tra lại đường link hoặc tài khoản đăng nhập!"
@@ -163,7 +164,7 @@ export default function HoaDonPage() {
       <Layout>
         <Sider
           width={300}
-          style={{ padding: "0px 0px 0px 20px", background:"#F0F2F5"  }}
+          style={{ padding: "0px 0px 0px 20px", background: "#F0F2F5" }}
           className="site-layout-sider"
         >
           <div className="site-card-border-less-wrapper">
@@ -344,12 +345,14 @@ export default function HoaDonPage() {
                       <Text strong style={{ fontSize: "1.5rem" }}>
                         {`${tongTien}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                       </Text>
-                      <Text type="secondary">{`${tongTien}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")} Đ </Text>
+                      <Text type="secondary">
+                        {`${tongTien}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")} Đ{" "}
+                      </Text>
                     </Space>
                   </Space>
                 </Col>
               </Row>
-              <Divider/>
+              <Divider />
               <Row justify="start" style={{ marginBottom: 15 }}>
                 <Space>
                   <Button

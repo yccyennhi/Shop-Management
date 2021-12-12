@@ -23,7 +23,7 @@ import {
 export default function ExpandedRowRender({ record, setCurrentId }) {
   const dispatch = useDispatch();
   const [isShow, setIsShow] = useState(false);
-  function warning() {
+  function confirm() {
     setIsShow(true);
     Modal.confirm({
       visible: isShow,
@@ -64,7 +64,7 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
           <Button key="1" type="primary" onClick={openUpdateSanPhamModal}>
             Sửa
           </Button>,
-          <Button key="2" onClick={warning}>
+          <Button key="2" onClick={confirm}>
             Xóa
           </Button>,
         ]}

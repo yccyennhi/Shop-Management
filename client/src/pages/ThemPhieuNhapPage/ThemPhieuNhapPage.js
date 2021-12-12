@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
@@ -15,6 +15,7 @@ import {
   AutoComplete,
   Tooltip,
 } from "antd";
+import { AuthContext } from "../../contexts/AuthContext";
 import "./styles.css";
 import moment from "moment";
 import "../../App.css";
@@ -25,6 +26,7 @@ import {
   SanPhamsState$,
   ThemPhieuNhapPageState$,
   ArrHangHoaNhapState$,
+  NhanViensState$,
 } from "../../redux/selectors";
 import SanPhamModal from "../../components/modal/SanPhamModal/SanPhamModal";
 
@@ -39,8 +41,10 @@ export default function ThemPhieuNhapPage({}) {
   const [MaAuto, setMaAuto] = useState("");
   const [MaSP, setMaSP] = useState(null);
   const [CanTra, setCanTra] = useState(0);
+  const [NhanVien, setNhanVien] = useState();
   const dateNow = moment().toDate();
   const SP = useSelector(SanPhamsState$);
+  const NV = useSelector(NhanViensState$);
   const PN = useSelector(PhieuNhapsState$);
   const id = useSelector(ThemPhieuNhapPageState$);
   const Arr = useSelector(ArrHangHoaNhapState$);
@@ -49,6 +53,12 @@ export default function ThemPhieuNhapPage({}) {
   const handleNhapHang = () => {
     history.push("/PhieuNhaps");
   };
+  const {
+    authState: { TaiKhoan },
+  } = useContext(AuthContext);
+  React.useEffect(() => {
+    setNhanVien(NV.find((nv) => nv._id === TaiKhoan.MaNV));
+  }, [TaiKhoan, NV]);
 
   const [dataSource, setDataSource] = useState([
     {
@@ -68,7 +78,7 @@ export default function ThemPhieuNhapPage({}) {
     MaPN: "",
     MaSP: [],
     NguoiNhap: "",
-    NguoiTao: "",
+    NguoiTao: NhanVien,
     NgayTao: new Date(Date.now()),
     NgayCapNhat: new Date(Date.now()),
     TenNCC: "",
@@ -131,7 +141,6 @@ export default function ThemPhieuNhapPage({}) {
     if (
       data.MaPN == "" ||
       data.NguoiNhap == "" ||
-      data.NguoiTao == "" ||
       data.TenNCC == "" ||
       data.TongSoLuong == 0
     ) {
@@ -140,7 +149,7 @@ export default function ThemPhieuNhapPage({}) {
       let PhieuNhap = PN.find(function (e) {
         return e.MaPN == data.MaPN;
       });
-      if (id.payload == "") {
+      if (id.payload == "" || id.payload == null) {
         if (PhieuNhap != undefined) {
           messageError("Mã phiếu nhập đã tồn tại!");
         } else {
@@ -269,7 +278,11 @@ export default function ThemPhieuNhapPage({}) {
         <PageHeader
           onBack={() => window.history.back()}
           className="site-page-header"
-          title={id.payload == "" ? "Thêm phiếu nhập" : "Cập nhật phiếu nhập"}
+          title={
+            id.payload == "" || id.payload == null
+              ? "Thêm phiếu nhập"
+              : "Cập nhật phiếu nhập"
+          }
         />
       </Layout>
       <Layout>
@@ -365,7 +378,9 @@ export default function ThemPhieuNhapPage({}) {
                     value={data.MaPN}
                     onChange={(e) => setData({ ...data, MaPN: e.target.value })}
                     defaultValue={data.MaPN}
-                    disabled={id.payload == "" ? false : true}
+                    disabled={
+                      id.payload == "" || id.payload == null ? false : true
+                    }
                   />
                   <Button icon={<RetweetOutlined />} onClick={RandomMa} />
                 </Input.Group>
@@ -374,11 +389,8 @@ export default function ThemPhieuNhapPage({}) {
               <Form.Item label="Người tạo phiếu" required>
                 <Input
                   placeholder="Nhập người tạo phiếu"
-                  value={data.NguoiTao}
-                  onChange={(e) =>
-                    setData({ ...data, NguoiTao: e.target.value })
-                  }
-                  defaultValue={data.NguoiTao}
+                  value={NhanVien?.TenNV}
+                  defaultValue={NhanVien?.TenNV}
                 />
               </Form.Item>
               <Form.Item

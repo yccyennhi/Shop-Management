@@ -1,30 +1,25 @@
-import {
-  Modal,
-  Form,
-  Row,
-  DatePicker,
-  message,
-  List,
-  Col,
-  Divider,
-  Cascader,
-  Input,
-} from "antd";
+import { Modal, Form, Row, List, Col, Divider, Cascader, Input } from "antd";
 import React, { useCallback, useState, useContext } from "react";
 import { useSelector } from "react-redux";
 import * as actions from "../../../redux/actions";
 import { hideTaoPhieuTraHangModal } from "../../../redux/actions";
-import { TaoPhieuTraHangState$, HoaDonsState$ } from "../../../redux/selectors";
+import {
+  TaoPhieuTraHangState$,
+  HoaDonsState$,
+  NhanViensState$,
+  PhieuDoiTrasState$,
+} from "../../../redux/selectors";
 import { useDispatch } from "react-redux";
 import moment from "moment";
 import { SearchOutlined } from "@ant-design/icons";
 import SanPhamTraHang from "./SanPhamTraHang";
 import { AuthContext } from "../../../contexts/AuthContext";
 
-export default function TaoPhieuTraHang({ PhieuDoiTras, NhanViens }) {
+export default function TaoPhieuTraHang() {
   const dispatch = useDispatch();
   const HoaDons = useSelector(HoaDonsState$);
-  const [event, setHD] = useState();
+  const PhieuDoiTras = useSelector(PhieuDoiTrasState$);
+  const NhanViens = useSelector(NhanViensState$);
   const [form] = Form.useForm();
   const [NV, setNV] = useState();
   const {
@@ -32,6 +27,8 @@ export default function TaoPhieuTraHang({ PhieuDoiTras, NhanViens }) {
   } = useContext(AuthContext);
 
   React.useEffect(() => {
+    dispatch(actions.getPhieuDoiTras.getPhieuDoiTrasRequest());
+    dispatch(actions.getNhanViens.getNhanViensRequest());
     dispatch(actions.getHoaDons.getHoaDonsRequest());
   }, [dispatch]);
   const [ListSPTraHangs, setListSP] = useState([]);

@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useMemo, useState } from "react";
-import { Link, useHistory, useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { Menu, Dropdown, message, Space } from "antd";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Menu } from "antd";
 import {
   DatabaseOutlined,
   SwapOutlined,
@@ -13,25 +13,26 @@ import PhieuHenModal from "../../../components/modal/PhieuHenModal/PhieuHenModal
 import PhieuBaoHanhBanHangModal from "../../../components/modal/PhieuBaoHanhModal/PhieuBaoHanhBanHangModal";
 import PhieuHenBanHangModal from "../../../components/modal/PhieuHenModal/PhieuHenBanHangModal";
 import PhieuDoiTraModal from "../../modal/DoiTraModal/TaoPhieuDoiTraModal";
-import { NhanViensState$, PhieuDoiTrasState$ } from "../../../redux/selectors";
 import * as actions from "../../../redux/actions";
-import MenuItem from "antd/lib/menu/MenuItem";
 const { SubMenu } = Menu;
 
 function Menubar() {
   const [currentId, setCurrentId] = useState(null);
   const dispatch = useDispatch();
   const history = useHistory();
-  const PhieuDoiTras = useSelector(PhieuDoiTrasState$);
-  const NhanViens = useSelector(NhanViensState$);
+  let openModalTraHang = localStorage.getItem("OpenModal");
   //Ban Hang
   const handleBanHang = () => {
     history.push("/Sales");
   };
+
   React.useEffect(() => {
-    dispatch(actions.getPhieuDoiTras.getPhieuDoiTrasRequest());
-    dispatch(actions.getNhanViens.getNhanViensRequest());
-  },[dispatch]);
+    if (openModalTraHang === "true") {
+      openPhieuDoiTraModal();
+      localStorage.setItem("OpenModal", JSON.stringify(false));
+    }
+  }, [openModalTraHang]);
+
   //Doi tra
   const openPhieuDoiTraModal = React.useCallback(() => {
     dispatch(actions.showTaoPhieuTraHangModal());
@@ -99,7 +100,7 @@ function Menubar() {
       </Menu>
       <PhieuHenBanHangModal />
       <PhieuBaoHanhBanHangModal />
-      <PhieuDoiTraModal PhieuDoiTras={PhieuDoiTras} NhanViens={NhanViens} />
+      <PhieuDoiTraModal />
       <PhieuHenModal currentId={currentId} setCurrentId={setCurrentId} />
     </div>
   );

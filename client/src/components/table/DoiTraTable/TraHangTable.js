@@ -158,7 +158,7 @@ export default function TraHangTable({ PhieuDoiTras }) {
 
   return (
     <div>
-      <Row justify="end">
+      <Row justify="end" style={{ marginBottom: 16 }}>
         <ExportTableButton
           dataSource={dataSource}
           columns={columns}

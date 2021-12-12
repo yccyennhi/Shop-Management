@@ -109,19 +109,19 @@ export default function SalePage() {
     setNV(NhanViens.find((nv) => nv._id === TaiKhoan.MaNV));
   }, [TaiKhoan, NhanViens]);
   const optionKM = React.useMemo(() => {
-    return KhuyenMais.map((km) => ({
-      value: km.MaKM,
-      label: km.MaKM + " " + km.TenKM,
+    return KhuyenMais.filter((km) => km.TrangThai === true).map((KM) => ({
+      value: KM.MaKM,
+      label: KM.MaKM + " " + KM.TenKM,
     }));
   }, [KhuyenMais]);
 
   const optionKH = React.useMemo(() => {
-    return KhachHangs.map((KH) => ({
+    return KhachHangs.filter((kh) => kh.TrangThai === true).map((KH) => ({
       value: KH.MaKH,
       label: KH.TenKH + "-" + KH.SDT + " (" + KH.DiemTichLuy + "đ)",
     }));
   }, [KhachHangs]);
-
+  //fix
   const filter = (inputValue, path) => {
     return path.some(
       (option) =>

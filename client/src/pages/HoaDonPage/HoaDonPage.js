@@ -248,7 +248,7 @@ export default function HoaDonPage() {
               >
                 <Cascader
                   options={optionNV}
-                  style={{ width: 225 }}
+                  style={{ width: 200 }}
                   suffixIcon={<SearchOutlined />}
                   placeholder="Chọn nhân viên"
                   showSearch={filter}
@@ -317,7 +317,7 @@ export default function HoaDonPage() {
                               moment(hd.ThoiGian).format("DD-MM-YYYY") ===
                               moment().format("DD-MM-YYYY")
                           ).length
-                        }{" "}
+                        }
                         hóa đơn
                       </Text>
                     </Space>
@@ -332,7 +332,8 @@ export default function HoaDonPage() {
                         {`${tongTien}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                       </Text>
                       <Text type="secondary">
-                        {`${tongTien}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")} Đ{" "}
+                        {`${tongTien}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        VNĐ
                       </Text>
                     </Space>
                   </Space>

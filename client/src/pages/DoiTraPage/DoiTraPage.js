@@ -16,22 +16,19 @@ import {
 import "./styles.css";
 import {
   PlusOutlined,
-  ImportOutlined,
-  DownloadOutlined,
   SearchOutlined,
   ContainerTwoTone,
   SnippetsTwoTone,
   SafetyCertificateTwoTone,
 } from "@ant-design/icons";
 import TraHangTable from "../../components/table/DoiTraTable/TraHangTable";
-import TaoPhieuTraHangModal from "../../components/modal/DoiTraModal/TaoPhieuDoiTraModal";
-import { showTaoPhieuTraHangModal } from "../../redux/actions";
 import { PhieuDoiTrasState$, NhanViensState$ } from "../../redux/selectors";
 import * as actions from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import Menubar from "../../components/header/Menubar/Menubar";
 import COLOR from "../../color.js";
 import moment from "moment";
+import { useHistory } from "react-router-dom";
 
 const { Header, Sider, Content } = Layout;
 const { RangePicker } = DatePicker;
@@ -39,6 +36,7 @@ const { Text } = Typography;
 
 export default function DoiTraPage() {
   const dispatch = useDispatch();
+  const history = useHistory();
   const PhieuDoiTras = useSelector(PhieuDoiTrasState$);
   const NhanViens = useSelector(NhanViensState$);
   const [ThoiGian, setThoiGian] = useState("");
@@ -49,9 +47,6 @@ export default function DoiTraPage() {
   React.useEffect(() => {
     dispatch(actions.getPhieuDoiTras.getPhieuDoiTrasRequest());
     dispatch(actions.getNhanViens.getNhanViensRequest());
-  }, [dispatch]);
-  const openTaoPhieuTraHangModal = React.useCallback(() => {
-    dispatch(showTaoPhieuTraHangModal());
   }, [dispatch]);
 
   const optionNV = React.useMemo(() => {
@@ -240,7 +235,7 @@ export default function DoiTraPage() {
               >
                 <Cascader
                   options={optionNV}
-                  style={{ width: 225 }}
+                  style={{ width: 200 }}
                   suffixIcon={<SearchOutlined />}
                   placeholder="Chọn nhân viên"
                   showSearch={filter}
@@ -314,16 +309,15 @@ export default function DoiTraPage() {
                   <Button
                     type="primary"
                     icon={<PlusOutlined />}
-                    onClick={openTaoPhieuTraHangModal}
+                    onClick={() => {
+                      history.push("/Sales");
+                      localStorage.setItem("OpenModal", JSON.stringify(true));
+                    }}
                   >
                     Thêm phiếu trả hàng
                   </Button>
                 </Space>
               </Row>
-              <TaoPhieuTraHangModal
-                PhieuDoiTras={PhieuDoiTras}
-                NhanViens={NhanViens}
-              />
               <TraHangTable PhieuDoiTras={data} />
             </div>
           </Layout>

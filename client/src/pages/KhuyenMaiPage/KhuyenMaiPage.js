@@ -14,8 +14,8 @@ import {
   Radio,
   Typography,
   Col,
-  Divider, 
-  Result
+  Divider,
+  Result,
 } from "antd";
 import {
   DatabaseTwoTone,
@@ -63,6 +63,7 @@ export default function KhuyenMaiPage() {
   if (TaiKhoan.TenTK != "ADMIN") {
     return (
       <Result
+        className="error-page"
         status="error"
         title="Hạn chế quyền truy cập"
         subTitle="Vui lòng kiểm tra lại đường link hoặc tài khoản đăng nhập!"
@@ -86,7 +87,7 @@ export default function KhuyenMaiPage() {
       <Layout>
         <Sider
           width={300}
-          style={{ padding: "0px 0px 0px 24px", background:"#F0F2F5"  }}
+          style={{ padding: "0px 0px 0px 24px", background: "#F0F2F5" }}
           className="site-layout-sider"
         >
           <div className="site-card-border-less-wrapper">
@@ -158,15 +159,19 @@ export default function KhuyenMaiPage() {
                   </Space>
                 </Space>
               </Col>
-            <Col span={8}>
+              <Col span={8}>
                 <Space align="center" size={20}>
                   <StopTwoTone style={{ fontSize: "40px" }} />
                   <Space direction="vertical" size={0}>
-                    <Text strong>{KhuyenMais.length - SLKMDangApDung} khuyến mãi</Text>
-                    <Text strong style={{ fontSize: "1.5rem" }}>
-                    {KhuyenMais.length - SLKMDangApDung}
+                    <Text strong>
+                      {KhuyenMais.length - SLKMDangApDung} khuyến mãi
                     </Text>
-                    <Text type="secondary">Số khuyến mãi không còn áp dụng</Text>
+                    <Text strong style={{ fontSize: "1.5rem" }}>
+                      {KhuyenMais.length - SLKMDangApDung}
+                    </Text>
+                    <Text type="secondary">
+                      Số khuyến mãi không còn áp dụng
+                    </Text>
                   </Space>
                 </Space>
               </Col>

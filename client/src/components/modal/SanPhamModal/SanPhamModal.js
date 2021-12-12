@@ -339,8 +339,9 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
             style={{ width: 120 }}
           />
         </Form.Item>
-        <Form.Item name="MoTa" label="Mô tả">
+        <Form.Item label="Mô tả">
           <Input
+            allowClear
             value={data.MoTa}
             defaultValue={data.MoTa}
             onChange={(e) => setData({ ...data, MoTa: e.target.value })}
@@ -348,7 +349,6 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
           />
         </Form.Item>
         <Form.Item
-          name="HinhAnh"
           label="Hình ảnh"
           tooltip="Hình ảnh của sản phẩm"
         >

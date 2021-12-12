@@ -60,6 +60,7 @@ export default function KhuyenMaiPage() {
     history.push("/Sales");
     return (
       <Result
+        className="error-page"
         status="error"
         title="Hạn chế quyền truy cập"
         subTitle="Vui lòng kiểm tra lại đường link hoặc tài khoản đăng nhập!"

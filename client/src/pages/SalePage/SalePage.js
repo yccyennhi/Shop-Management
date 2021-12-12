@@ -646,6 +646,7 @@ export default function SalePage() {
                 grid={{ gutter: 0, column: 1 }}
                 pagination={{
                   pageSize: pagesize,
+                  style: { marginRight: 15 },
                 }}
                 dataSource={SPsInfo}
                 itemLayout="vertical"

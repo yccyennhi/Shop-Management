@@ -254,11 +254,11 @@ function PhieuNhaptable({
               ? `Có ${selectedRowKeys.length} phiếu nhập được chọn`
               : ""}
           </span>
-          <Dropdown overlay={menu} disabled={!hasSelected}>
+          {/* <Dropdown overlay={menu} disabled={!hasSelected}>
             <Button>
               Thao tác <DownOutlined />
             </Button>
-          </Dropdown>
+          </Dropdown> */}
           <ExportTableButton
             dataSource={dataSource}
             columns={columns}

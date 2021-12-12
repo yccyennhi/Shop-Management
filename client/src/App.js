@@ -35,7 +35,7 @@ function App() {
               <Headerbar />
             </Header>
           </Layout>
-          <Layout className="layout">
+          <Layout>
             <Switch>
               <Route path="/Auth" exact component={AuthPage} />
               <ProtectedRoute path="/SanPhams" exact component={HangHoaPage} />
@@ -71,7 +71,7 @@ function App() {
                 exact
                 component={DashboardPage}
               />
-              <ProtectedRoute path="/" exact component={DashboardPage} />
+              <ProtectedRoute path="/" exact component={AuthPage} />
               <ProtectedRoute
                 path="/CuoiNgays"
                 exact

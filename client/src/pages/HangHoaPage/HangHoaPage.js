@@ -59,7 +59,7 @@ export default function HangHoaPage() {
           <PageHeader
             onBack={() => window.history.back()}
             className="site-page-header"
-            title="Danh mục hàng hóa"
+            title="Danh mục sản phẩm"
           />
         </Content>
       </Layout>
@@ -162,7 +162,7 @@ export default function HangHoaPage() {
                 icon={<PlusOutlined />}
                 onClick={openCreateSanPhamModal}
               >
-                Thêm hàng hóa
+                Thêm sản phẩm
               </Button>
 
               <HangHoatable

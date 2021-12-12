@@ -195,13 +195,13 @@ export default function PhieuHenPage() {
                 </Col>
               </Row>
               <Divider orientation="left"></Divider>
-              <Button
+              {/* <Button
                 type="primary"
                 icon={<PlusOutlined />}
                 onClick={openCreatePhieuHenModal}
               >
                 Thêm phiếu hẹn
-              </Button>
+              </Button> */}
               <PhieuHentable
                 trangthai={trangthai}
                 thoigian={thoigian}

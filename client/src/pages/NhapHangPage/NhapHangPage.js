@@ -68,7 +68,6 @@ export default function PhieuNhapPage() {
   } = useContext(AuthContext);
 
   if (TaiKhoan.TenTK != "ADMIN") {
-    
   history.push("/Sales");
     return (
       <Result

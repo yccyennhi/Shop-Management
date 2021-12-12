@@ -243,6 +243,9 @@ function ThemPhieuNhaptable({ MaSP, setData }) {
             <InputNumber
               style={{ width: 270 }}
               placeholder="Nhập số lượng sản phẩm muốn nhập"
+              formatter={(value) =>
+                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              }
               value={Editing?.SoLuong}
               onChange={(e) => {
                 setEditing((pre) => {
@@ -265,6 +268,9 @@ function ThemPhieuNhaptable({ MaSP, setData }) {
           <Form.Item label="Giá nhập" required>
             <InputNumber
               style={{ width: 270 }}
+              formatter={(value) =>
+                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              }
               placeholder="Nhập giá nhập"
               value={Editing?.GiaNhap}
               onChange={(e) => {
@@ -289,6 +295,9 @@ function ThemPhieuNhaptable({ MaSP, setData }) {
             <InputNumber
               style={{ width: 270 }}
               placeholder="Nhập số tiền được giảm"
+              formatter={(value) =>
+                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              }
               value={Editing?.GiamGia}
               onChange={(e) => {
                 setEditing((pre) => {
@@ -311,6 +320,9 @@ function ThemPhieuNhaptable({ MaSP, setData }) {
           <Form.Item label="Thành tiền">
             <InputNumber
               style={{ width: 270 }}
+              formatter={(value) =>
+                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              }
               value={Editing?.ThanhTien}
               disabled="true"
             ></InputNumber>

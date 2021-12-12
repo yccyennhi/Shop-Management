@@ -95,7 +95,7 @@ export default function BCBanHangPage() {
               <Card
                 title="Kiểu hiển thị"
                 bordered={false}
-                style={{ width: 250, color: COLOR.darkblue }}
+                style={{ width: 250, color: COLOR.darkblue, background:"#F0F2F5"  }}
               >
                 <Radio.Group defaultValue={1}>
                   <Space direction="vertical">

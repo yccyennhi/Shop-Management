@@ -84,7 +84,7 @@ export default function KhachHangPage() {
       <Layout>
         <Sider
           width={300}
-          style={{ padding: "0px 0px 0px 24px" }}
+          style={{ padding: "0px 0px 0px 24px", background:"#F0F2F5"  }}
           className="site-layout-sider"
         >
           <div className="site-card-border-less-wrapper">

@@ -163,7 +163,7 @@ export default function HoaDonPage() {
       <Layout>
         <Sider
           width={300}
-          style={{ padding: "0px 0px 0px 20px" }}
+          style={{ padding: "0px 0px 0px 20px", background:"#F0F2F5"  }}
           className="site-layout-sider"
         >
           <div className="site-card-border-less-wrapper">

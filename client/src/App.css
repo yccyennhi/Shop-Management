@@ -22,10 +22,11 @@
   .site-layout-sider {
     background: #F0F2F5;
     min-height: 280;
+    padding: 10;
   }
     
   .site-layout-sider-1 {
-    background: #FFFFFF;
+    background: #F0F2F5;
     min-height: 280;
   }
 

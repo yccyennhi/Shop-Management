@@ -87,13 +87,13 @@ export default function PhieuBaoHanhPage() {
       <Layout>
         <Sider
           width={300}
-          style={{ padding: "0px 0px 0px 24px", background:"#F0F2F5"  }}
+          style={{ padding: "0px 0px 0px 24px", background:"#F0F2F5", backgroundColor:"#F0F2F5"  }}
           className="site-layout-sider"
         >
           <Space direction="vertical">
             <Card
               title="Thời gian mua hàng"
-              bordered={false}
+              bordered={true}
               style={{ width: 250 }}
             >
               <Radio.Group defaultValue={0}>
@@ -119,7 +119,7 @@ export default function PhieuBaoHanhPage() {
             </Card>
             <Card
               title="Trạng thái bảo hành"
-              bordered={false}
+              bordered={true}
               style={{ width: 250 }}
             >
               <Radio.Group defaultValue={0}>

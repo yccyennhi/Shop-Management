@@ -1,11 +1,30 @@
+import { Button, Descriptions, Modal, PageHeader, Tag } from "antd";
 import React, { useState } from "react";
-import { PageHeader, Descriptions, Tag, Button } from "antd";
-import { useDispatch } from "react-redux";
 import { deleteKhuyenMai, showModal } from "../../../redux/actions";
+
 import moment from "moment";
+import { useDispatch } from "react-redux";
+
 export default function ExpandedRowRender({ record, setCurrentId }) {
+
   
   const dispatch = useDispatch();
+
+  const [isShow, setIsShow] = useState(false);
+
+  function warning() {
+    setIsShow(true);
+    Modal.confirm({
+      visible: isShow,
+      title: "Cảnh báo",
+      content:
+        "Bạn có chắc chắn muốn xóa thông tin khuyến mãi này?",
+      onOk() {
+        onDelete();
+      },
+      
+    });
+  }
 
   const openCreateKMModal = React.useCallback(() => {
     setCurrentId(record._id);
@@ -13,8 +32,8 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
   }, [dispatch]);
 
   const onDelete = React.useCallback(() => {
-    console.log('record', record);
     dispatch(deleteKhuyenMai.deleteKhuyenMaiRequest(record._id));
+    setIsShow(false);
   }, [record, dispatch]);
 
   return (
@@ -34,7 +53,7 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
           <Button key="1" type="primary" onClick={openCreateKMModal}>
             Sửa
           </Button>,
-          <Button key="2"  onClick={onDelete}  >Xóa</Button>,
+          <Button key="2"  onClick={warning}  >Xóa</Button>,
         ]}
       >
         <Descriptions size="small" column={2}>

@@ -130,20 +130,6 @@ export default function SalePage() {
     );
   };
 
-  const ObjectSP = (sp) => (
-    <Tooltip title={sp.TenSP + " (" + sp.MoTa + ")"}>
-      <Button style={{ height: 130, width: 130, margin: "1" }}>
-        <Row style={{ marginLeft: 3 }}>
-          <Image width={90} height={90} src={sp.HinhAnh} />
-        </Row>
-        <Row>
-          <h5 style={{ marginBottom: -2 }}>Mã SP: {sp.MaSP}</h5>
-          <h5>Giá: {sp.GiaBan}</h5>
-        </Row>
-      </Button>
-    </Tooltip>
-  );
-
   const SPPanelClick = (result) => {
     const SPInfo = {
       STT: SPsInfo.length + 1,
@@ -306,51 +292,65 @@ export default function SalePage() {
     <Row
       style={{
         textAlign: "center",
-        width: 850,
-        marginLeft: 30,
+        width: "100%",
+        marginLeft: "2%",
+        marginRight: "2%",
         fontWeight: 800,
         marginTop: 5,
         marginBottom: 10,
       }}
     >
-      <Col flex="20">
+      <Col flex="4%">
         <label style={{ textAlign: "center", fontWeight: "500" }}>STT</label>
       </Col>
       <Divider type="vertical" />
-      <Col flex="80">
+      <Col flex="8%">
         <label style={{ textAlign: "center", fontWeight: "500" }}>Mã SP</label>
       </Col>
       <Divider type="vertical" />
-      <Col flex="350">
-        <label style={{ float: "left", marginLeft: "10%", fontWeight: "500" }}>
+      <Col flex="48%">
+        <label style={{ fontWeight: "500", textAlign: "center" }}>
           Tên sản phẩm
         </label>
       </Col>
       <Divider type="vertical" />
-      <Col flex="80">
+      <Col flex="8%">
         <label style={{ textAlign: "center", fontWeight: "500" }}>
           Số lượng
         </label>
       </Col>
       <Divider type="vertical" />
-      <Col flex="70">
+      <Col flex="8%">
         <label style={{ textAlign: "center", fontWeight: "500" }}>
           Đơn giá
         </label>
       </Col>
       <Divider type="vertical" />
-      <Col flex="75">
+      <Col flex="8%">
         <label style={{ textAlign: "right", fontWeight: "500" }}>
           Thành tiền
         </label>
       </Col>
       <Divider type="vertical" />
-      <Col flex="20">
+      <Col flex="4%">
         <label style={{ textAlign: "right", fontWeight: "500" }}>Xóa</label>
       </Col>
     </Row>
   );
 
+  const ObjectSP = (sp) => (
+    <Tooltip title={sp.TenSP + " (" + sp.MoTa + ")"}>
+      <Button style={{ height: 130, width: 130 }}>
+        <Row style={{ marginLeft: 3 }}>
+          <Image width={90} height={90} src={sp.HinhAnh} />
+        </Row>
+        <Row>
+          <h5 style={{ marginBottom: -2 }}>Mã SP: {sp.MaSP}</h5>
+          <h5>Giá: {sp.GiaBan}</h5>
+        </Row>
+      </Button>
+    </Tooltip>
+  );
   const SearchSP = (info) => {
     const list = SanPhams.filter(
       (sp) =>
@@ -457,7 +457,7 @@ export default function SalePage() {
             <Input
               value={NV ? NV.TenNV : null}
               readOnly
-              style={{ width: 330 }}
+              style={{ width: "90%" }}
             />
           </Form.Item>
           <Form.Item style={{ marginBottom: 25 }} name="KH" wrapperCol={30}>
@@ -469,7 +469,7 @@ export default function SalePage() {
                 borderWidth: 1,
                 borderColor: "lightgrey",
                 borderBottomStyle: "solid",
-                width: 310,
+                width: "87%",
               }}
               placeholder="Tìm khách hàng"
               showSearch={filter}
@@ -507,7 +507,7 @@ export default function SalePage() {
           >
             <Cascader
               options={optionKM}
-              style={{ width: 150, float: "right" }}
+              style={{ width: "70%", float: "right", marginRight: 10 }}
               suffixIcon={<SearchOutlined />}
               placeholder="Nhập mã KM"
               showSearch={filter}
@@ -610,32 +610,54 @@ export default function SalePage() {
     <Layout>
       <Header>
         <MenubarBanHang />
-      </Header>
-      <Layout>
+
+      </Layout>
+      <Layout
+        style={{
+          overflow: "auto",
+          width: "100%",
+          height: "calc(100% - 110px)",
+          top: 110,
+          position: "fixed",
+        }}
+      >
         <KhachHangModal currentId={currentId} setCurrentId={setCurrentId} />
         <PrintModal />
-        <Layout>
+        <Layout
+          className="content"
+          style={{
+            padding: "0 24",
+            overflow: "auto",
+            width: "68%",
+            height: "100%",
+            top: 10,
+            left: 10,
+            position: "absolute",
+          }}
+        >
           <Content
             className="site-layout-background"
             style={{
-              padding: 10,
-              margin: 15,
               width: "100%",
+              height: "100%",
             }}
           >
-            <Row>{headerTable}</Row>
+            <Row style={{ marginTop: 10 }}>{headerTable}</Row>
+
             <Row justify="center">
               <List
                 grid={{ gutter: 0, column: 1 }}
                 pagination={{
                   pageSize: pagesize,
+
+                  style: { marginRight: 15 },
                 }}
                 dataSource={SPsInfo}
                 itemLayout="vertical"
-                style={{ marginTop: 5, width: "100%" }}
+                style={{ width: "100%" }}
                 size="small"
                 renderItem={(item) => (
-                  <List.Item style={{ width: "100%" }} key={item.MaSP}>
+                  <List.Item key={item.MaSP}>
                     <SanPhamHoaDonPanel
                       sp={item}
                       SPPanelChange={SPPanelChange}
@@ -645,11 +667,12 @@ export default function SalePage() {
                 )}
               />
             </Row>
-            <Row align="bottom">
+
+            <Row>
               <Collapse
                 bordered={false}
-                style={{ width: "100%", marginTop: "10px" }}
                 collapsible="header"
+                style={{ width: "100%", position: "absolute", bottom: 0 }}
               >
                 <Collapse.Panel
                   header={
@@ -669,24 +692,24 @@ export default function SalePage() {
                     </span>
                   }
                 >
-                <Row justify="end">
-                <Input.Search
-                    style={{ width: 500, paddingBottom:15 }}
-                    enterButton
-                    placeholder="Tìm kiếm sản phẩm"
-                    onSearch={(e) => SearchSP(e)}
-                    allowClear
-                    onPressEnter={(e) => SearchSP(e)}
-                  />
-                </Row>
-                  
+
+                  <Row justify="end">
+                    <Input.Search
+                      style={{ width: 330, marginLeft: 550 }}
+                      enterButton
+                      placeholder="Tìm kiếm sản phẩm"
+                      onSearch={(e) => SearchSP(e)}
+                      allowClear
+                      onPressEnter={(e) => SearchSP(e)}
+                    />
+                  </Row>
                   <List
-                    grid={{ gutter: 0, column: 6, row: 2 }}
+                    grid={{ gutter: 0, column: 6 }}
                     pagination={{
-                      pageSize: 12,
+                      pageSize: 6,
                     }}
                     dataSource={SPSearchs}
-                    style={{ marginTop: 5 }}
+                    style={{ marginTop: 10 }}
                     itemLayout="horizontal"
                     size="small"
                     renderItem={(item) => (
@@ -712,14 +735,22 @@ export default function SalePage() {
               </Collapse>
             </Row>
           </Content>
-          <Sider
-            width={400}
-            style={{ padding: "12px 12px 0px 12px", margin: "15px" }}
-            className="site-layout-sider"
-          >
-            {bodySider}
-          </Sider>
+
         </Layout>
+        <Sider
+          width={"30%"}
+          className="site-layout-background"
+          style={{
+            padding: 15,
+            overflow: "auto",
+            height: "100%",
+            right: 10,
+            top: 10,
+            position: "absolute",
+          }}
+        >
+          {bodySider}
+        </Sider>
       </Layout>
     </Layout>
   );

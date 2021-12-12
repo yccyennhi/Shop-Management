@@ -13,7 +13,6 @@ export default function SanPhamTraHang({ sp, SPPanelChange, SPPanelRemove }) {
       {data ? (
         <section
           style={{
-            marginBottom: "2px",
             borderStyle: "solid",
             borderWidth: "2px",
             borderColor: "lightblue",
@@ -25,12 +24,12 @@ export default function SanPhamTraHang({ sp, SPPanelChange, SPPanelRemove }) {
             <Col flex="10%">
               <label style={{ textAlign: "center" }}>{data.MaSP}</label>{" "}
             </Col>
-            <Col flex="48%">
+            <Col flex="50%">
               <label style={{ float: "left", marginLeft: "10%" }}>
                 {data.TenSP}
               </label>
             </Col>
-            <Col flex="10%" style={{ marginRight: "1%" }}>
+            <Col flex="10%">
               <InputNumber
                 min={0}
                 max={data.TonKho}
@@ -55,7 +54,7 @@ export default function SanPhamTraHang({ sp, SPPanelChange, SPPanelRemove }) {
                 }}
               />
             </Col>
-            <Col flex="10%" style={{ marginRight: "1%" }}>
+            <Col flex="10%">
               <label style={{ textAlign: "right" }}>
                 {`${data.DonGia}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
               </label>

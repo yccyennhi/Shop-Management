@@ -121,7 +121,7 @@ export default function SalePage() {
       label: KH.TenKH + "-" + KH.SDT + " (" + KH.DiemTichLuy + "đ)",
     }));
   }, [KhachHangs]);
-  //fix
+
   const filter = (inputValue, path) => {
     return path.some(
       (option) =>

@@ -1,5 +1,4 @@
 .account {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row-reverse;
+  float: right;
+  margin-right: 40px;
 }

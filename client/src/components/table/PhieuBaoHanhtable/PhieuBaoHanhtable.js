@@ -326,7 +326,7 @@ function PhieuBaoHanhtable({ trangthai, thoigian, thang, setCurrentId }) {
         tableLayout={"auto"}
         loading={loadingPhieuBaoHanhs}
         pagination={true}
-        scroll={{ x: 1000, y: 500 }}
+        scroll={{ x: 1000 }}
         searchableProps={{
           inputProps: {
             placeholder: "Nhập nội dung cần tìm",

@@ -78,7 +78,7 @@ export default function ThemPhieuNhapPage({}) {
     MaPN: "",
     MaSP: [],
     NguoiNhap: "",
-    NguoiTao: NhanVien,
+    NguoiTao: NhanVien?.TenNV,
     NgayTao: new Date(Date.now()),
     NgayCapNhat: new Date(Date.now()),
     TenNCC: "",
@@ -115,19 +115,16 @@ export default function ThemPhieuNhapPage({}) {
       const Ma = "PN" + Math.round(rand);
       setMaAuto(Ma);
       setData({ ...data, MaPN: Ma });
-      console.log(Ma);
       PhieuNhap = PN.find((data) => data.MaPN == Ma);
     } while (PhieuNhap !== undefined);
-  }, [dispatch]);
+  }, [dispatch, data]);
 
   React.useEffect(() => {
     dispatch(actions.getSanPhams.getSanPhamsRequest());
     if (Arr != null) {
-      console.log(Arr);
       if (Arr?.arr?.payload?.length > 0) {
         let listSP = SP.find((e) => e._id == Arr?.arr?.payload[0]);
         setMaSP(listSP?.MaSP);
-        console.log(listSP);
         const move = Arr?.arr?.payload?.shift();
       }
     }
@@ -178,9 +175,6 @@ export default function ThemPhieuNhapPage({}) {
               let SoLuong = arrSoLuong.reduce((sum, data) => {
                 return (sum += data);
               }, 0);
-
-              console.log(data.GiaNhap, data.SoLuong);
-
               SanPham.GiaVon = Math.round(
                 (GiaNhap + data.GiaNhap[i]) / (SoLuong + data.SoLuong[i])
               );
@@ -194,7 +188,13 @@ export default function ThemPhieuNhapPage({}) {
               }
             }
           }
-          dispatch(actions.createPhieuNhap.createPhieuNhapRequest(data));
+          const d = data;
+          let ten = "";
+          if (NhanVien != undefined) {
+            ten = NhanVien.TenNV;
+          } else ten = "ADMIN";
+          d.NguoiTao = ten;
+          dispatch(actions.createPhieuNhap.createPhieuNhapRequest(d));
           handleNhapHang();
         }
       } else {
@@ -312,6 +312,7 @@ export default function ThemPhieuNhapPage({}) {
                     }}
                   >
                     <Input.Search
+                      allowClear
                       size="medium"
                       placeholder="Nhập mã sản phẩm muốn nhập kho"
                     />
@@ -373,6 +374,7 @@ export default function ThemPhieuNhapPage({}) {
               >
                 <Input.Group compact>
                   <Input
+                    allowClear
                     style={{ width: "calc(100% - 31px)" }}
                     placeholder="Nhập mã phiếu nhập"
                     value={data.MaPN}
@@ -388,6 +390,7 @@ export default function ThemPhieuNhapPage({}) {
 
               <Form.Item label="Người tạo phiếu" required>
                 <Input
+                  allowClear
                   placeholder="Nhập người tạo phiếu"
                   value={NhanVien?.TenNV}
                   defaultValue={NhanVien?.TenNV}
@@ -399,6 +402,7 @@ export default function ThemPhieuNhapPage({}) {
                 required
               >
                 <Input
+                  allowClear
                   placeholder="Nhập người nhập"
                   value={data.NguoiNhap}
                   onChange={(e) =>
@@ -413,6 +417,7 @@ export default function ThemPhieuNhapPage({}) {
                 required
               >
                 <Input
+                  allowClear
                   placeholder="Nhập nhà cung cấp"
                   value={data.TenNCC}
                   onChange={(e) => setData({ ...data, TenNCC: e.target.value })}
@@ -433,6 +438,7 @@ export default function ThemPhieuNhapPage({}) {
               </Form.Item>
               <Form.Item label="Ghi chú">
                 <Input
+                  allowClear
                   value={data.GhiChu}
                   onChange={(e) => setData({ ...data, GhiChu: e.target.value })}
                   defaultValue={data.GhiChu}
@@ -440,6 +446,7 @@ export default function ThemPhieuNhapPage({}) {
               </Form.Item>
               <Form.Item label="Số lượng SP">
                 <InputNumber
+                  allowClear
                   formatter={(value) =>
                     `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   }
@@ -452,6 +459,7 @@ export default function ThemPhieuNhapPage({}) {
 
               <Form.Item label="Tổng tiền hàng">
                 <InputNumber
+                  allowClear
                   formatter={(value) =>
                     `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   }
@@ -467,6 +475,7 @@ export default function ThemPhieuNhapPage({}) {
                 tooltip="Giảm giá trên tổng số tiền"
               >
                 <InputNumber
+                  allowClear
                   formatter={(value) =>
                     `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   }
@@ -482,6 +491,7 @@ export default function ThemPhieuNhapPage({}) {
               </Form.Item>
               <Form.Item label="Cần trả NCC">
                 <InputNumber
+                  allowClear
                   formatter={(value) =>
                     `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   }
@@ -495,6 +505,7 @@ export default function ThemPhieuNhapPage({}) {
 
               <Form.Item label="Tiền trả NCC">
                 <InputNumber
+                  allowClear
                   formatter={(value) =>
                     `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   }

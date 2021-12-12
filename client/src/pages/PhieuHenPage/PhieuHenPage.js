@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Layout,
@@ -12,6 +12,7 @@ import {
   Divider,
   Row,
   Col,
+  Result
 } from "antd";
 import "./styles.css";
 import moment from "moment";
@@ -24,6 +25,7 @@ import {
 } from "@ant-design/icons";
 import * as actions from "../../redux/actions";
 import PhieuHentable from "../../components/table/PhieuHenTable/PhieuHentable";
+import { AuthContext } from "../../contexts/AuthContext";
 import {
   PhieuHensState$,
   isloadingPhieuHensState$,
@@ -60,6 +62,19 @@ export default function PhieuHenPage() {
     setngayBD(moment(date[0]));
     setngayKT(moment(date[1]));
   }
+  const {
+    authState: { TaiKhoan },
+  } = useContext(AuthContext);
+  if (TaiKhoan.TenTK != "ADMIN") {
+    return (
+      <Result
+        status="error"
+        title="Hạn chế quyền truy cập"
+        subTitle="Vui lòng kiểm tra lại đường link hoặc tài khoản đăng nhập!"
+      />
+    );
+  }
+  else
   return (
     <Layout>
       <Header>
@@ -75,7 +90,7 @@ export default function PhieuHenPage() {
       <Layout>
         <Sider
           width={300}
-          style={{ padding: "0px 0px 0px 24px" }}
+          style={{ padding: "0px 0px 0px 24px", background:"#F0F2F5"  }}
           className="site-layout-sider"
         >
           <Space direction="vertical">
@@ -180,13 +195,13 @@ export default function PhieuHenPage() {
                 </Col>
               </Row>
               <Divider orientation="left"></Divider>
-              <Button
+              {/* <Button
                 type="primary"
                 icon={<PlusOutlined />}
                 onClick={openCreatePhieuHenModal}
               >
                 Thêm phiếu hẹn
-              </Button>
+              </Button> */}
               <PhieuHentable
                 trangthai={trangthai}
                 thoigian={thoigian}

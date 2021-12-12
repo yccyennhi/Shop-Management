@@ -15,8 +15,10 @@ import {
   Row,
   Space,
   Typography,
+  Result,
 } from "antd";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
 import { useDispatch, useSelector } from "react-redux";
 import COLOR from "../../color.js";
 import Menubar from "../../components/header/Menubar/Menubar.js";
@@ -57,7 +59,18 @@ export default function KhachHangPage() {
     (KhachHang) => KhachHang.TrangThai === true
   ).length;
   //#endregion
-
+  const {
+    authState: { TaiKhoan },
+  } = useContext(AuthContext);
+  if (TaiKhoan.TenTK != "ADMIN") {
+    return (
+      <Result
+        status="error"
+        title="Hạn chế quyền truy cập"
+        subTitle="Vui lòng kiểm tra lại đường link hoặc tài khoản đăng nhập!"
+      />
+    );
+  }
   return (
     <Layout>
       <Header>
@@ -71,7 +84,7 @@ export default function KhachHangPage() {
       <Layout>
         <Sider
           width={300}
-          style={{ padding: "0px 0px 0px 24px" }}
+          style={{ padding: "0px 0px 0px 24px", background:"#F0F2F5"  }}
           className="site-layout-sider"
         >
           <div className="site-card-border-less-wrapper">

@@ -381,7 +381,7 @@ export default function NhanVienTable({ dataSource, setCurrentId }) {
           pagination={true}
           rowKey="_id"
           rowSelection={rowSelection}
-          scroll={{ x: 1300, y: 500 }}
+          scroll={{ x: 1300}}
         ></Table>
       </div>
     </>

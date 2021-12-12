@@ -55,10 +55,11 @@ export const login = async (req, res) => {
 };
 
 export const getTaiKhoan = async (req, res) => {
+  console.log('getTaiKhoan');
   try {
     const TaiKhoans = await TaiKhoanModel.find();
-
-    res.status(200).json({ success: true, TaiKhoans });
+    console.log('TaiKhoans',TaiKhoans)
+    res.status(200).json(TaiKhoans);
   } catch (err) {
     res.status(500).json({ success: false, error: err });
   }
@@ -108,14 +109,41 @@ export const createTaiKhoan = async (req, res) => {
 
 export const updateTaiKhoan = async (req, res) => {
   try {
-    const updateTaiKhoan = req.body;
+    const { TenTK, MatKhau, newMatKhau, confirmedMatKhau } = req.body;
+    
 
-    const TaiKhoan = await TaiKhoanModel.findOneAndUpdate(
-      { _id: updateTaiKhoan._id },
-      updateTaiKhoan,
-      { new: true }
-    );
-    res.status(200).json({ success: true, TaiKhoan });
+    if (!TenTK || !MatKhau || !newMatKhau || !confirmedMatKhau) {
+      return res
+        .status(400)
+        .send("Thiếu tài khoản hoặc mật khẩu");
+    }
+
+    if (newMatKhau !== confirmedMatKhau) {
+      return res
+        .status(400)
+        .send("Xác nhận mật khẩu không đúng");
+    }
+
+    const TaiKhoan = await TaiKhoanModel.findOne({ TenTK: TenTK });
+
+    if (!TaiKhoan) {
+      return res.status(400).json({
+        success: false,
+        message: "Tên tài khoản hoặc mật khẩu không đúng",
+      });
+    }
+
+    const passwordValid = await argon2.verify(TaiKhoan.MatKhau, MatKhau);
+    if (!passwordValid && TaiKhoan.MatKhau !== MatKhau) {
+      return res.status(400).send("Mật khẩu không đúng");
+    }
+
+    const hashedMatKhau = await argon2.hash(newMatKhau);
+
+    TaiKhoan.MatKhau = hashedMatKhau;
+    await TaiKhoan.save();
+    
+    res.status(200).json(TaiKhoan);
   } catch (err) {
     res.status(500).json({ success: false, error: err });
   }

@@ -331,6 +331,7 @@ export default function KhachHangTable({ dataSource, setCurrentId }) {
               width: 200,
             },
           }}
+          scroll={{ x: 1000 }} 
           columns={columns}
           dataSource={dataSource}
           expandable={{

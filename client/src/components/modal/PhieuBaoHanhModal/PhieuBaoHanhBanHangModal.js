@@ -62,7 +62,7 @@ export default function PhieuBaoHanh() {
         <Layout>
           <Sider
             width={300}
-            style={{ padding:"0px 0px 0px 24px" }}
+            style={{ padding:"0px 0px 0px 24px", background:"#F0F2F5" }}
             className="site-layout-sider"
           >
             <Space direction="vertical">
@@ -94,7 +94,7 @@ export default function PhieuBaoHanh() {
               </Card>
               <Card
                 title="Trạng thái bảo hành"
-                bordered={false}
+                bordered={true}
                 style={{ width: 250 }}
               >
                 <Radio.Group defaultValue={0}>

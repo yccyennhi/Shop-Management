@@ -24,7 +24,6 @@ function* fetchPhieuHensSaga(action) {
   }
 }
 
-//#region KhachHang
 function* fetchPhieuNhapsSaga(action) {
   try {
     const PhieuNhaps = yield call(api.fetchPhieuNhaps);
@@ -468,11 +467,34 @@ function* getBCHangHoasSaga(action) {
 function* fetchTaiKhoansSaga(action) {
   try {
     const TaiKhoans = yield call(api.fetchTaiKhoans);
-    console.log("[TaiKhoans]", TaiKhoans);
+    console.log("[TaiKhoans]", TaiKhoans.data);
     yield put(actions.getTaiKhoans.getTaiKhoansSuccess(TaiKhoans.data));
   } catch (err) {
     console.err(err);
     yield put(actions.getTaiKhoans.getTaiKhoansFailure(err));
+  }
+}
+
+function* createTaiKhoanSaga(action) {
+  try {
+    const TaiKhoan = yield call(api.createTaiKhoan, action.payload);
+    yield put(actions.createTaiKhoan.createTaiKhoanSuccess(TaiKhoan.data));
+  } catch (error) {
+    yield put(
+      actions.createTaiKhoan.createTaiKhoanFailure(error.response.data)
+    );
+  }
+}
+
+function* updateTaiKhoanSaga(action) {
+  try {
+    const TaiKhoan = yield call(api.updateTaiKhoan, action.payload);
+  console.log('saga');
+    yield put(actions.updateTaiKhoan.updateTaiKhoanSuccess(TaiKhoan.data));
+  } catch (error) {
+    yield put(
+      actions.updateTaiKhoan.updateTaiKhoanFailure(error.response.data)
+    );
   }
 }
 // #endregion
@@ -516,6 +538,16 @@ function* mySaga() {
   yield takeLatest(
     actions.getTaiKhoans.getTaiKhoansRequest,
     fetchTaiKhoansSaga
+  );
+
+  yield takeLatest(
+    actions.createTaiKhoan.createTaiKhoanRequest,
+    createTaiKhoanSaga
+  );
+
+  yield takeLatest(
+    actions.updateTaiKhoan.updateTaiKhoanRequest,
+    updateTaiKhoanSaga
   );
   //#endregion
 

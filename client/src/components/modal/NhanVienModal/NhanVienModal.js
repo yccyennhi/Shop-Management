@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createNhanVien,
+  createTaiKhoan,
   hideNhanVienModal,
   updateNhanVien
 } from "../../../redux/actions";
@@ -95,6 +96,12 @@ export default function NhanVienModal({ currentId, setCurrentId }) {
         dispatch(updateNhanVien.updateNhanVienRequest(data));
       } else {
         dispatch(createNhanVien.createNhanVienRequest(data));
+
+        const TK = {
+          TenTK: data.MaNV,
+          MatKhau: data.MaNV,
+        }
+        dispatch(createTaiKhoan.createTaiKhoanRequest(TK));
       }
       onClose();
     }

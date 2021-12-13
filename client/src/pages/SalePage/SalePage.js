@@ -216,7 +216,7 @@ export default function SalePage() {
   };
 
   const KhachHangChange = (e) => {
-    if (!e || e === "KH000") setKH();
+    if (!e || e === "KH000" ) setKH();
     else {
       const KH = KhachHangs.find((kh) => e === kh.MaKH);
       if (KH.TrangThai) setKH(KH);
@@ -259,7 +259,9 @@ export default function SalePage() {
     }
     dataHD.CTHD = SPsInfo;
     dataHD.ThoiGian = moment().toDate();
+    console.log(dataHD);
     dispatch(actions.createHoaDon.createHoaDonRequest(dataHD));
+
     localStorage.setItem("HoaDon", JSON.stringify(dataHD));
     localStorage.setItem("CTHDs", JSON.stringify(SPsInfo));
     openprint();

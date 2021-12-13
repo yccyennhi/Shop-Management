@@ -2,7 +2,15 @@ import React, { useState, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../redux/actions";
 import moment from "moment";
-import { PageHeader, Space, Card, DatePicker, Layout, Radio, Result } from "antd";
+import {
+  PageHeader,
+  Space,
+  Card,
+  DatePicker,
+  Layout,
+  Radio,
+  Result,
+} from "antd";
 import CuoiNgaytable from "../../components/table/BaoCaoTable/CuoiNgaytable";
 import { AuthContext } from "../../contexts/AuthContext";
 import { CuoiNgaysState$ } from "../../redux/selectors";
@@ -68,6 +76,7 @@ export default function BCCuoiNgayPage() {
   if (TaiKhoan.TenTK != "ADMIN") {
     return (
       <Result
+        className="error-page"
         status="error"
         title="Hạn chế quyền truy cập"
         subTitle="Vui lòng kiểm tra lại đường link hoặc tài khoản đăng nhập!"
@@ -91,7 +100,7 @@ export default function BCCuoiNgayPage() {
       <Layout>
         <Sider
           width={300}
-          style={{ padding: "0px 0px 0px 24px", background:"#F0F2F5"  }}
+          style={{ padding: "0px 0px 0px 24px", background: "#F0F2F5" }}
           className="site-layout-sider"
         >
           <div className="siste-card-border-less-wrapper">

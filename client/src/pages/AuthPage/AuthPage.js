@@ -59,7 +59,7 @@ export default function AuthPage() {
           >
             <Typography.Title level={4}>Đăng nhập</Typography.Title>
           </Content>
-          <Content style={{ margin: "0 auto" }}>
+          <Content style={{ margin: "0 auto", minHeight:"70vh" }}>
             <Card
               bordered={false}
               style={{ width: 500, color: COLOR.darkblue }}

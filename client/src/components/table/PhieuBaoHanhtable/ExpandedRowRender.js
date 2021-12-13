@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Table, Input, Row, PageHeader, Descriptions, Tag, Button, message } from "antd";
+import { Table, Input, Row, Modal, PageHeader, Descriptions, Tag, Button, message } from "antd";
 import * as actions from "../../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -15,6 +15,20 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
   const dateNow = moment().toDate();
   const SP = useSelector(SanPhamsState$);
   const PH = useSelector(PhieuHensState$);
+  const [isShow, setIsShow] = useState(false);
+  function confirm() {
+    setIsShow(true);
+    Modal.confirm({
+      visible: isShow,
+      title: "Cảnh báo",
+      content:
+        "Xác nhận xóa phiếu bảo hành?",
+      onOk() {
+        onDelete();
+      },
+      
+    });
+  }
   React.useEffect(() => {
     dispatch(actions.getSanPhams.getSanPhamsRequest());
   }, [dispatch]);
@@ -48,7 +62,7 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
           <Button key="1" type="primary" onClick={openCreatePBHModal}>
             Sửa
           </Button>,
-          <Button key="2" onClick={onDelete}>
+          <Button key="2" onClick={confirm}>
             Xóa
           </Button>,
         ]}

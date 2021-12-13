@@ -23,9 +23,9 @@ import {
 export default function ExpandedRowRender({ record, setCurrentId }) {
   const dispatch = useDispatch();
   const [isShow, setIsShow] = useState(false);
-  function warning() {
+  function confirm() {
     setIsShow(true);
-    Modal.warning({
+    Modal.confirm({
       visible: isShow,
       title: "Cảnh báo",
       content:
@@ -33,7 +33,7 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
       onOk() {
         handleDelete();
       },
-      //  onCancel: {}
+      
     });
   }
   const openUpdateSanPhamModal = React.useCallback(() => {
@@ -55,6 +55,7 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
 
   return (
     <>
+    
       <PageHeader
         className="site-page-header"
         title={record.TenSP}
@@ -63,7 +64,7 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
           <Button key="1" type="primary" onClick={openUpdateSanPhamModal}>
             Sửa
           </Button>,
-          <Button key="2" onClick={warning}>
+          <Button key="2" onClick={confirm}>
             Xóa
           </Button>,
         ]}
@@ -87,7 +88,7 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
       >
         <Row justify="start">
           <Col flex={1}>
-              <Image width={300} src={record.HinhAnh || ""} />
+            <Image width={300} src={record.HinhAnh || ""} />
           </Col>
           <Col flex={10}>
             <Descriptions title="Thông tin chi tiết" size="default">
@@ -105,8 +106,15 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
               <Descriptions.Item label="Tồn kho">
                 {`${record.TonKho}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
               </Descriptions.Item>
-              <Descriptions.Item label="Thời gian bảo hành" style={{display:(record.BaoHanh!=="Có bảo hành")}}>
-                {`${record.ThoiGianBaoHanh}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")} tháng
+              <Descriptions.Item
+                label="Thời gian bảo hành"
+                style={{ display: record.BaoHanh !== "Có bảo hành" }}
+              >
+                {`${record.ThoiGianBaoHanh}`.replace(
+                  /\B(?=(\d{3})+(?!\d))/g,
+                  ","
+                )}{" "}
+                tháng
               </Descriptions.Item>
             </Descriptions>
           </Col>

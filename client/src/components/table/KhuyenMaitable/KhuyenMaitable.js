@@ -12,19 +12,6 @@ import { ExportTableButton, Table } from "ant-table-extensions";
 const { Search } = Input;
 
 function KhuyenMaitable({ dataSource, setCurrentId }) {
-  // const dispatch = useDispatch();
-
-  // const KhuyenMais = useSelector(KhuyenMaisState$);
-
-  // React.useEffect(() => {
-  //   dispatch(actions.getKhuyenMais.getKhuyenMaisRequest());
-  // }, [dispatch]);
-
-  // const dataSource =
-  //   filterStatus == null
-  //     ? KhuyenMais
-  //     : KhuyenMais.filter((KhuyenMai) => KhuyenMai.TrangThai === filterStatus);
-
   const columns = [
     {
       title: "",

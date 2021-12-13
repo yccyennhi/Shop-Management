@@ -12,7 +12,7 @@ import {
   Divider,
   Row,
   Col,
-  Result
+  Result,
 } from "antd";
 import "./styles.css";
 import moment from "moment";
@@ -68,187 +68,191 @@ export default function PhieuNhapPage() {
   } = useContext(AuthContext);
 
   if (TaiKhoan.TenTK != "ADMIN") {
-  history.push("/Sales");
+    history.push("/Sales");
     return (
       <Result
+        className="error-page"
         status="error"
         title="Hạn chế quyền truy cập"
         subTitle="Vui lòng kiểm tra lại đường link hoặc tài khoản đăng nhập!"
       />
     );
-  }
-  else
-  return (
-    <Layout>
-      <Header>
-        <Menubar />
-      </Header>
+  } else
+    return (
       <Layout>
-        <PageHeader
-          onBack={() => window.history.back()}
-          className="site-page-header"
-          title="Nhập hàng"
-        />
-      </Layout>
-      <Layout>
-        <Sider
-          width={300}
-          style={{ padding: "0px 0px 0px 24px", background:"#F0F2F5"  }}
-          className="site-layout-sider"
-        >
-          <Space direction="vertical">
-            <Card
-              title="Thời gian nhập hàng"
-              bordered={false}
-              style={{ width: 250 }}
-            >
-              <Radio.Group defaultValue={0}>
-                <Space direction="vertical">
-                  <Radio
-                    value={0}
-                    onClick={() => {
-                      setThoigian(0);
-                    }}
-                  >
-                    Tất cả
-                  </Radio>
-                  <Radio
-                    value={1}
-                    onClick={() => {
-                      setThoigian(1);
-                    }}
-                  >
-                    <DatePicker onChange={onChange} picker="month" />
-                  </Radio>
-                </Space>
-              </Radio.Group>
-            </Card>
-            <Card
-              title="Trạng thái phiếu nhập"
-              bordered={false}
-              style={{ width: 250 }}
-            >
-              <Radio.Group defaultValue={0}>
-                <Space direction="vertical">
-                  <Radio
-                    value={0}
-                    onClick={() => {
-                      setTrangthai(0);
-                    }}
-                  >
-                    Tất cả
-                  </Radio>
-                  <Radio
-                    value={1}
-                    onClick={() => {
-                      setTrangthai(1);
-                    }}
-                  >
-                    Phiếu tạm
-                  </Radio>
-                  <Radio
-                    value={2}
-                    onClick={() => {
-                      setTrangthai(2);
-                    }}
-                  >
-                    Đã nhập hàng
-                  </Radio>
-                  <Radio
-                    value={3}
-                    onClick={() => {
-                      setTrangthai(3);
-                    }}
-                  >
-                    Đã hủy
-                  </Radio>
-                </Space>
-              </Radio.Group>
-            </Card>
-          </Space>
-        </Sider>
-        <Content>
-          <Layout style={{ padding: "17px 24px 24px" }}>
-            <div className="site-layout-content">
-              <Row justify="start">
-                <Col span={6}>
-                  <Space align="center" size={20}>
-                    <SafetyCertificateTwoTone style={{ fontSize: "40px" }} />
-                    <Space direction="vertical" size={0}>
-                      <Text strong>{PhieuNhaps.length} phiếu nhập</Text>
-                      <Text strong style={{ fontSize: "1.5rem" }}>
-                        {PhieuNhaps.length}
-                      </Text>
-                      <Text type="secondary">Tổng số lượng phiếu nhập</Text>
-                    </Space>
-                  </Space>
-                </Col>
-                <Col span={6}>
-                  <Space align="center" size={20}>
-                    <CheckCircleTwoTone style={{ fontSize: "40px" }} />
-                    <Space direction="vertical" size={0}>
-                      <Text strong>{PNTN.length} phiếu nhập</Text>
-                      <Text strong style={{ fontSize: "1.5rem" }}>
-                        {PNTN.length}
-                      </Text>
-                      <Text type="secondary">Phiếu nhập tháng này</Text>
-                    </Space>
-                  </Space>
-                </Col>
-                <Col span={6}>
-                  <Space direction="horizontal" size={200}>
-                    <Space align="center" size={20}>
-                      <CloseCircleTwoTone style={{ fontSize: "40px" }} />
-                      <Space direction="vertical" size={0}>
-                        <Text strong>{PNHT.length} phiếu nhập</Text>
-                        <Text strong style={{ fontSize: "1.5rem" }}>
-                          {PNHT.length}
-                        </Text>
-                        <Text type="secondary">
-                          Phiếu nhập hoàn thành tháng {moment(dateNow).format("MM")}
-                        </Text>
-                      </Space>
-                    </Space>
-                  </Space>
-                </Col>
-                <Col span={6}>
-                  <Space direction="horizontal" size={200}>
-                    <Space align="center" size={20}>
-                      <DollarTwoTone style={{ fontSize: "40px" }} />
-                      <Space direction="vertical" size={0}>
-                        <Text strong>{PNHTAll.length} phiếu nhập</Text>
-                        <Text strong style={{ fontSize: "1.5rem" }}>
-                         
-                          {`${PNHTAll.reduce((sum, data) => {
-                            return (sum += data.TongTien);
-                          }, 0)-PNHTAll.reduce((sum, data) => {
-                            return (sum += data.TienTra);
-                          }, 0)}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                        </Text>
-                        <Text type="secondary">Còn nợ nhà cung cấp</Text>
-                      </Space>
-                    </Space>
-                  </Space>
-                </Col>
-              </Row>
-              <Divider orientation="left"></Divider>
-              <Button
-                type="primary"
-                icon={<PlusOutlined />}
-                onClick={handleNhapHang}
+        <Header>
+          <Menubar />
+        </Header>
+        <Layout>
+          <PageHeader
+            onBack={() => window.history.back()}
+            className="site-page-header"
+            title="Nhập hàng"
+          />
+        </Layout>
+        <Layout>
+          <Sider
+            width={300}
+            style={{ padding: "0px 0px 0px 24px", background: "#F0F2F5" }}
+            className="site-layout-sider"
+          >
+            <Space direction="vertical">
+              <Card
+                title="Thời gian nhập hàng"
+                bordered={false}
+                style={{ width: 250 }}
               >
-                Thêm phiếu nhập
-              </Button>
-              <PhieuNhaptable
-                trangthai={trangthai}
-                thoigian={thoigian}
-                thang={thang}
-                setCurrentId={setCurrentId}
-              />
-            </div>
-          </Layout>
-        </Content>
+                <Radio.Group defaultValue={0}>
+                  <Space direction="vertical">
+                    <Radio
+                      value={0}
+                      onClick={() => {
+                        setThoigian(0);
+                      }}
+                    >
+                      Tất cả
+                    </Radio>
+                    <Radio
+                      value={1}
+                      onClick={() => {
+                        setThoigian(1);
+                      }}
+                    >
+                      <DatePicker onChange={onChange} picker="month" />
+                    </Radio>
+                  </Space>
+                </Radio.Group>
+              </Card>
+              <Card
+                title="Trạng thái phiếu nhập"
+                bordered={false}
+                style={{ width: 250 }}
+              >
+                <Radio.Group defaultValue={0}>
+                  <Space direction="vertical">
+                    <Radio
+                      value={0}
+                      onClick={() => {
+                        setTrangthai(0);
+                      }}
+                    >
+                      Tất cả
+                    </Radio>
+                    <Radio
+                      value={1}
+                      onClick={() => {
+                        setTrangthai(1);
+                      }}
+                    >
+                      Phiếu tạm
+                    </Radio>
+                    <Radio
+                      value={2}
+                      onClick={() => {
+                        setTrangthai(2);
+                      }}
+                    >
+                      Đã nhập hàng
+                    </Radio>
+                    <Radio
+                      value={3}
+                      onClick={() => {
+                        setTrangthai(3);
+                      }}
+                    >
+                      Đã hủy
+                    </Radio>
+                  </Space>
+                </Radio.Group>
+              </Card>
+            </Space>
+          </Sider>
+          <Content>
+            <Layout style={{ padding: "17px 24px 24px" }}>
+              <div className="site-layout-content">
+                <Row justify="start">
+                  <Col span={6}>
+                    <Space align="center" size={20}>
+                      <SafetyCertificateTwoTone style={{ fontSize: "40px" }} />
+                      <Space direction="vertical" size={0}>
+                        <Text strong>{PhieuNhaps.length} phiếu nhập</Text>
+                        <Text strong style={{ fontSize: "1.5rem" }}>
+                          {PhieuNhaps.length}
+                        </Text>
+                        <Text type="secondary">Tổng số lượng phiếu nhập</Text>
+                      </Space>
+                    </Space>
+                  </Col>
+                  <Col span={6}>
+                    <Space align="center" size={20}>
+                      <CheckCircleTwoTone style={{ fontSize: "40px" }} />
+                      <Space direction="vertical" size={0}>
+                        <Text strong>{PNTN.length} phiếu nhập</Text>
+                        <Text strong style={{ fontSize: "1.5rem" }}>
+                          {PNTN.length}
+                        </Text>
+                        <Text type="secondary">Phiếu nhập tháng này</Text>
+                      </Space>
+                    </Space>
+                  </Col>
+                  <Col span={6}>
+                    <Space direction="horizontal" size={200}>
+                      <Space align="center" size={20}>
+                        <CloseCircleTwoTone style={{ fontSize: "40px" }} />
+                        <Space direction="vertical" size={0}>
+                          <Text strong>{PNHT.length} phiếu nhập</Text>
+                          <Text strong style={{ fontSize: "1.5rem" }}>
+                            {PNHT.length}
+                          </Text>
+                          <Text type="secondary">
+                            Phiếu nhập hoàn thành tháng{" "}
+                            {moment(dateNow).format("MM")}
+                          </Text>
+                        </Space>
+                      </Space>
+                    </Space>
+                  </Col>
+                  <Col span={6}>
+                    <Space direction="horizontal" size={200}>
+                      <Space align="center" size={20}>
+                        <DollarTwoTone style={{ fontSize: "40px" }} />
+                        <Space direction="vertical" size={0}>
+                          <Text strong>{PNHTAll.length} phiếu nhập</Text>
+                          <Text strong style={{ fontSize: "1.5rem" }}>
+                            {`${
+                              PNHTAll.reduce((sum, data) => {
+                                return (sum += data.TongTien);
+                              }, 0) -
+                              PNHTAll.reduce((sum, data) => {
+                                return (sum += data.TienTra);
+                              }, 0)
+                            }`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+                            VNĐ
+                          </Text>
+                          <Text type="secondary">Còn nợ nhà cung cấp</Text>
+                        </Space>
+                      </Space>
+                    </Space>
+                  </Col>
+                </Row>
+                <Divider orientation="left"></Divider>
+                <Button
+                  type="primary"
+                  icon={<PlusOutlined />}
+                  onClick={handleNhapHang}
+                >
+                  Thêm phiếu nhập
+                </Button>
+                <PhieuNhaptable
+                  trangthai={trangthai}
+                  thoigian={thoigian}
+                  thang={thang}
+                  setCurrentId={setCurrentId}
+                />
+              </div>
+            </Layout>
+          </Content>
+        </Layout>
       </Layout>
-    </Layout>
-  );
+    );
 }

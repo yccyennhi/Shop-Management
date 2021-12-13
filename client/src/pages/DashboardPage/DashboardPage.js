@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import {
   Layout,
   Space,
@@ -28,6 +29,7 @@ import { DollarOutlined, ImportOutlined } from "@ant-design/icons";
 
 export default function KhuyenMaiPage() {
   const dispatch = useDispatch();
+  const history = useHistory();
   const HoaDons = useSelector(HoaDonsState$);
   const PhieuNhaps = useSelector(PhieuNhapsState$);
   const NhanViens = useSelector(NhanViensState$);
@@ -55,8 +57,10 @@ export default function KhuyenMaiPage() {
     authState: { TaiKhoan },
   } = useContext(AuthContext);
   if (TaiKhoan.TenTK != "ADMIN") {
+    history.push("/Sales");
     return (
       <Result
+        className="error-page"
         status="error"
         title="Hạn chế quyền truy cập"
         subTitle="Vui lòng kiểm tra lại đường link hoặc tài khoản đăng nhập!"

@@ -29,6 +29,17 @@ export const login = async (req, res) => {
         .json({ success: false, message: "Thiếu tài khoản hoặc mật khẩu" });
     }
 
+    const NhanVien = await NhanVienModel.findOne({ MaNV: TenTK });
+
+    if (NhanVien) {
+      if (!NhanVien.TrangThai) {
+        return res.status(400).json({
+          success: false,
+          message: "Người dùng đã nghỉ làm",
+        })
+      }
+    }
+
     const TaiKhoan = await TaiKhoanModel.findOne({ TenTK: TenTK });
 
     if (!TaiKhoan) {

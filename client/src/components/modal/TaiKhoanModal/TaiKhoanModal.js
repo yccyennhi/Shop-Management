@@ -21,9 +21,11 @@ export default function TaiKhoanModal() {
   //#region data
   const NhanViens = useSelector(NhanViensState$);
 
-  const NhanVienValue = TaiKhoan ? NhanViens.find((NhanVien) =>
-    NhanVien._id === TaiKhoan.MaNV ? NhanVien : null
-  ) : null;
+  const NhanVienValue = TaiKhoan
+    ? NhanViens.find((NhanVien) =>
+        NhanVien._id === TaiKhoan.MaNV ? NhanVien : null
+      )
+    : null;
 
   const [data, setData] = useState({
     MaNV: "",
@@ -69,17 +71,19 @@ export default function TaiKhoanModal() {
       return false;
     }
     return true;
-  }
+  };
 
   const onClose = useCallback(() => {
     dispatch(hideTaiKhoanModal());
     setData({
-      ...data,
+      MaNV: NhanVienValue.MaNV,
+      TenNV: NhanVienValue.TenNV,
+      TenTK: TaiKhoan.TenTK,
       MatKhau: "",
       newMatKhau: "",
       confirmedMatKhau: "",
     });
-  }, [dispatch]);
+  }, [data, dispatch]);
 
   const onSubmit = useCallback(() => {
     if (checkData()) {

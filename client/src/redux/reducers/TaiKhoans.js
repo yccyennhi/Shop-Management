@@ -37,7 +37,7 @@ export default function TaiKhoansReducer(state = INIT_STATE.TaiKhoans, action) {
         data: [...state.data, action.payload],
       };
     case getType(createTaiKhoan.createTaiKhoanFailure):
-      messageError(action.payload);
+      messageError(action.payload.message);
       return {
         ...state,
         isLoading: false,
@@ -55,7 +55,7 @@ export default function TaiKhoansReducer(state = INIT_STATE.TaiKhoans, action) {
         ),
       };
     case getType(updateTaiKhoan.updateTaiKhoanFailure):
-      messageError(action.payload);
+      messageError(action.payload.message);
       return {
         ...state,
         isLoading: false,

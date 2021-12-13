@@ -1,4 +1,5 @@
-import { DatePicker, Form, Input, Modal, Switch } from "antd";
+import { RetweetOutlined } from "@ant-design/icons";
+import { Button, DatePicker, Form, Input, Modal, Switch } from "antd";
 import moment from "moment";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,7 +23,7 @@ export default function KhachHangModal({ currentId, setCurrentId }) {
   const [data, setData] = useState({
     MaKH: "",
     TenKH: "",
-    NgaySinh: "",
+    NgaySinh: new Date(),
     SDT: "",
     Email: "",
     DiaChi: "",
@@ -44,11 +45,27 @@ export default function KhachHangModal({ currentId, setCurrentId }) {
 
   const { isShow } = useSelector(KhachHangModalState$);
 
+  const RandomMa = useCallback(() => {
+    if (data.MaKH === "" || data.MaKH === undefined) {
+      let KhachHang;
+      do {
+        const min = 1000000;
+        const max = 9999999;
+        const rand = min + Math.random() * (max - min);
+        const Ma = "KH" + Math.round(rand);
+        setData({ ...data, MaKH: Ma });
+        KhachHang = KhachHangs.find((KhachHang) => KhachHang.MaKH == Ma);
+      } while (KhachHang !== undefined);
+    }
+  }, [data, dispatch]);
+
   const checkData = () => {
     const isExistMaKH = KhachHangs.find((KhachHang) =>
-      KhachHang.MaKH === data.MaKH && data.MaKH != KhachHangValue.MaKH
-        ? true
-        : false
+      KhachHangValue
+        ? KhachHang.MaKH === data.MaKH && data.MaKH !== KhachHangValue.MaKH
+          ? true
+          : false
+        : KhachHang.MaKH === data.MaKH
     );
     if (isExistMaKH) {
       messageError("Đã tồn tại mã khách hàng");
@@ -115,12 +132,15 @@ export default function KhachHangModal({ currentId, setCurrentId }) {
       >
         <Form.Item label="Mã khách hàng" required>
           <Input
+            style={{ width: "calc(100% - 32px)" }}
             placeholder="Nhập mã khách hàng"
             value={data.MaKH.toUpperCase()}
             onChange={(e) => {
               setData({ ...data, MaKH: e.target.value.toUpperCase() });
             }}
+            disabled={currentId ? true : false}
           />
+          <Button icon={<RetweetOutlined />} onClick={RandomMa} />
         </Form.Item>
         <Form.Item label="Tên khách hàng" required>
           <Input

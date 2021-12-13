@@ -87,6 +87,9 @@ export default function SalePage() {
     dispatch(showThanhToanTichDiemModal());
   }, [dispatch]);
 
+  useEffect(() => {
+    setSPSearch(SanPhams.filter((sp) => sp.TrangThai === "Đang kinh doanh"));
+  }, [SanPhams]);
   const [dataHD, setDataHD] = React.useState({
     MaHD: "",
     MaNV: "",
@@ -247,7 +250,9 @@ export default function SalePage() {
   useEffect(() => {
     setDataHD({ ...dataHD, TienKhachTra: dataHD.ThanhTien });
   }, [dataHD.ThanhTien]);
-
+  const createHD = () => {
+    dispatch(actions.createHoaDon.createHoaDonRequest(dataHD));
+  };
   const onSubmit = React.useCallback(() => {
     if (!dataHD.SoLuong) {
       message.warning("Vui lòng thêm sản phẩm vào hóa đon");
@@ -274,9 +279,9 @@ export default function SalePage() {
     }
     dataHD.CTHD = SPsInfo;
     dataHD.ThoiGian = moment().toDate();
-    dispatch(actions.createHoaDon.createHoaDonRequest(dataHD));
     localStorage.setItem("HoaDon", JSON.stringify(dataHD));
     localStorage.setItem("CTHDs", JSON.stringify(SPsInfo));
+    createHD();
     openprint();
     setDataHD({
       MaHD: "",
@@ -693,11 +698,6 @@ export default function SalePage() {
                       onClick={() => {
                         setonCollap(!onCollap);
                         setpagesize(!onCollap ? 3 : 7);
-                        setSPSearch(
-                          SanPhams.filter(
-                            (sp) => sp.TrangThai === "Đang kinh doanh"
-                          )
-                        );
                       }}
                     >
                       Danh sách sản phẩm

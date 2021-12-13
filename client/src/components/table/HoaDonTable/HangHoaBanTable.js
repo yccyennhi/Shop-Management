@@ -1,7 +1,6 @@
 import React from "react";
 import { Table } from "antd";
 function HangHoaBanTable({ dataCTHDs }) {
-
   const columns = [
     {
       title: "Mã hàng",
@@ -26,29 +25,26 @@ function HangHoaBanTable({ dataCTHDs }) {
     {
       title: "Đơn giá",
       dataIndex: "GiaVon",
-      render: (value) =>
-        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      render: (value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
       key: "GiaVon",
     },
     {
       title: "Giá bán",
       dataIndex: "DonGia",
-      render: (value) =>
-        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      render: (value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
       key: "GiaBan",
     },
     {
       title: "Bảo hành",
       dataIndex: "BaoHanh",
       render: (BaoHanh) => {
-        return <p>{BaoHanh ? BaoHanh + ' Tháng' : "Không"}</p>;
+        return <p>{BaoHanh ? BaoHanh + " Tháng" : "Không"}</p>;
       },
     },
     {
       title: "Thành tiền",
       dataIndex: "ThanhTien",
-      render: (value) =>
-        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      render: (value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
       key: "ThanhTien",
     },
   ];
@@ -59,8 +55,10 @@ function HangHoaBanTable({ dataCTHDs }) {
       pagination={false}
       dataSource={dataCTHDs.CTHD}
       columns={columns}
-      rowKey='_id'
-      footer = {()=>dataCTHDs.GhiChu}
+      rowKey="_id"
+      footer={() =>
+        "Ghi chú: " + (dataCTHDs.GhiChu ? dataCTHDs.GhiChu : "Không")
+      }
     />
   );
 }

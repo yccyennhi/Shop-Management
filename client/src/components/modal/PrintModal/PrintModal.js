@@ -5,7 +5,6 @@ import { ThanhToanTichDiemModalState$ } from "../../../redux/selectors/index.js"
 import { hideThanhToanTichDiemModal } from "../../../redux/actions";
 import ReactToPrint from "react-to-print";
 import { ComponentToPrint } from "../../../pages/SalePage/ComponentToPrint.js";
-
 export default function ThanhToanTichDiemModal() {
   const dispatch = useDispatch();
   const componentRef = useRef(null);
@@ -13,12 +12,16 @@ export default function ThanhToanTichDiemModal() {
   React.useEffect(() => {}, [dispatch]);
 
   const onCancel = React.useCallback(() => {
+    localStorage.setItem("NV", JSON.stringify(""));
+    localStorage.setItem("KH", JSON.stringify(""));
+    localStorage.setItem("HoaDon", JSON.stringify(""));
+    localStorage.setItem("CTHDs", JSON.stringify(""));
     dispatch(hideThanhToanTichDiemModal());
   }, [dispatch]);
 
   const body = (
     <>
-      <Row style={{ width: 170, float: 'right' }}>
+      <Row style={{ width: 170, float: "right" }}>
         <ReactToPrint
           trigger={() => (
             <Button type="primary" style={{ marginRight: 10 }}>
@@ -28,7 +31,7 @@ export default function ThanhToanTichDiemModal() {
           onAfterPrint={() => onCancel()}
           content={() => componentRef.current}
         />
-        <Button onClick={() => onCancel()} type="primary" danger >
+        <Button onClick={() => onCancel()} type="primary" danger>
           Hủy
         </Button>
       </Row>

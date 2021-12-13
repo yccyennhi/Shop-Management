@@ -293,7 +293,7 @@ export default function TaoPhieuTraHang() {
         width={600}
         onOk={onSubmit}
         okButtonProps={{
-          disabled: !data.MaHD,
+          disabled: !data.SoLuong,
         }}
         okText="Thêm"
         onCancel={onCancel}

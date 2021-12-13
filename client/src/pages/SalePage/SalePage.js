@@ -21,7 +21,13 @@ import {
   PlusOutlined,
   EditOutlined,
 } from "@ant-design/icons";
-import React, { useCallback, useState, useContext } from "react";
+import React, {
+  useCallback,
+  useState,
+  useContext,
+  useEffect,
+  useMemo,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../redux/actions";
 import "./styles.css";
@@ -42,7 +48,6 @@ import KhachHangModal from "../../components/modal/KhachHangModal/KhachHangModal
 import PrintModal from "../../components/modal/PrintModal/PrintModal";
 import MenubarBanHang from "../../components/header/Menubar/MenubarBanHang";
 import { AuthContext } from "../../contexts/AuthContext";
-
 const { Content, Sider } = Layout;
 
 export default function SalePage() {
@@ -61,16 +66,19 @@ export default function SalePage() {
   const [onCollap, setonCollap] = useState(0);
   const [pagesize, setpagesize] = useState(7);
   const [SPSearchs, setSPSearch] = useState([]);
-  const [KH, setKH] = useState();
+  const [KH, setKH] = useState(null);
   const [NV, setNV] = useState();
+  const [optionKM, setOptionKM] = useState();
+  const [optionKH, setOptionKH] = useState();
   //Đọc + load dữ liệu
-  React.useEffect(() => {
-    dispatch(actions.getHoaDons.getHoaDonsRequest());
+  useEffect(() => {
     dispatch(actions.getSanPhams.getSanPhamsRequest());
+    dispatch(actions.getHoaDons.getHoaDonsRequest());
     dispatch(actions.getKhuyenMais.getKhuyenMaisRequest());
-    dispatch(actions.getNhanViens.getNhanViensRequest());
     dispatch(actions.getKhachHangs.getKhachHangsRequest());
+    dispatch(actions.getNhanViens.getNhanViensRequest());
   }, [dispatch]);
+
   const openKhachHangModal = useCallback(() => {
     dispatch(showKhachHangModal());
   }, [dispatch]);
@@ -105,21 +113,25 @@ export default function SalePage() {
     authState: { TaiKhoan },
   } = useContext(AuthContext);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setNV(NhanViens.find((nv) => nv._id === TaiKhoan.MaNV));
   }, [TaiKhoan, NhanViens]);
-  const optionKM = React.useMemo(() => {
-    return KhuyenMais.filter((km) => km.TrangThai === true).map((KM) => ({
-      value: KM.MaKM,
-      label: KM.MaKM + " " + KM.TenKM,
-    }));
+  useEffect(() => {
+    setOptionKM(
+      KhuyenMais.filter((km) => km.TrangThai === true).map((KM) => ({
+        value: KM.MaKM,
+        label: KM.MaKM + " " + KM.TenKM,
+      }))
+    );
   }, [KhuyenMais]);
 
-  const optionKH = React.useMemo(() => {
-    return KhachHangs.filter((kh) => kh.TrangThai === true).map((KH) => ({
-      value: KH.MaKH,
-      label: KH.TenKH + "-" + KH.SDT + " (" + KH.DiemTichLuy + "đ)",
-    }));
+  useEffect(() => {
+    setOptionKH(
+      KhachHangs.filter((kh) => kh.TrangThai === true).map((KH) => ({
+        value: KH.MaKH,
+        label: KH.TenKH + "-" + KH.SDT + " (" + KH.DiemTichLuy + "điểm)",
+      }))
+    );
   }, [KhachHangs]);
 
   const filter = (inputValue, path) => {
@@ -216,11 +228,10 @@ export default function SalePage() {
   };
 
   const KhachHangChange = (e) => {
-    if (!e || e === "KH000") setKH();
+    if (!e || e === "KH000") setKH(null);
     else {
       const KH = KhachHangs.find((kh) => e === kh.MaKH);
-      if (KH.TrangThai) setKH(KH);
-      else message.warn("Khách hàng không còn hiệu lực");
+      setKH(KH);
     }
     setDataHD({ ...dataHD, DiemTru: 0 });
   };
@@ -232,6 +243,10 @@ export default function SalePage() {
   dataHD.ThanhTien = dataHD.TongTienHang - dataHD.GiamGia;
   dataHD.TienTraKhach =
     dataHD.TienKhachTra - dataHD.TongTienHang + dataHD.GiamGia + dataHD.DiemTru;
+
+  useEffect(() => {
+    setDataHD({ ...dataHD, TienKhachTra: dataHD.ThanhTien });
+  }, [dataHD.ThanhTien]);
 
   const onSubmit = React.useCallback(() => {
     if (!dataHD.SoLuong) {
@@ -267,7 +282,7 @@ export default function SalePage() {
       MaHD: "",
       MaNV: "",
       idNV: "",
-      MaKH: "",
+      MaKH: "KH000",
       idKH: "61957aa9e198c2fe3f3f53f6",
       MaKM: "KM000",
       idKM: "619f673906c0b162302fb7f2",
@@ -338,7 +353,7 @@ export default function SalePage() {
   );
 
   const ObjectSP = (sp) => (
-    <Tooltip title={sp.TenSP + " (" + sp.MoTa + ")"}>
+    <Tooltip title={sp.TenSP + " (" + sp.TonKho + ")"}>
       <Button style={{ height: 130, width: 130 }}>
         <Row style={{ marginLeft: 3 }}>
           <Image width={90} height={90} src={sp.HinhAnh} />
@@ -352,6 +367,8 @@ export default function SalePage() {
   );
   const SearchSP = (info) => {
     const list = SanPhams.filter(
+      (sp) => sp.TrangThai === "Đang kinh doanh"
+    ).filter(
       (sp) =>
         sp.TenSP.toLowerCase().indexOf(info.toLowerCase()) !== -1 ||
         sp.MaSP.toLowerCase().indexOf(info.toLowerCase()) !== -1

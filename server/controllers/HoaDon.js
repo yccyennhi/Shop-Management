@@ -58,7 +58,7 @@ export const createHoaDon = async (req, res) => {
     const newHoaDon = req.body;
 
     const HoaDon = new HoaDonModel(newHoaDon);
-    
+
     await HoaDon.save();
 
     if (HoaDon.MaKM != "KM000") {
@@ -77,9 +77,8 @@ export const createHoaDon = async (req, res) => {
     HoaDon.CTHD.map(async (CTHD) => {
       const SP = await SanPhamModel.findOne({ _id: CTHD.idSP });
       SP.TonKho = SP.TonKho - CTHD.SoLuong;
-      if (SP.SoLuong === 0 && SP.TrangThai === "Đang kinh doanh")
-        SP.TrangThai = "Hết hàng";
-      const SanPham = await SanPhamModel.findOneAndUpdate({ _id: SP._id }, SP, {
+      if (SP.TonKho === 0) SP.TrangThai = "Hết hàng";
+      await SanPhamModel.findOneAndUpdate({ _id: SP._id }, SP, {
         new: true,
       });
 

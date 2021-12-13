@@ -119,11 +119,13 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
 
   const handleOk = React.useCallback(() => {
     console.log(data);
+    if (data.BaoHanh == "Có bảo hành" && data.ThoiGianBaoHanh < 1)
+    {messageError("Vui lòng nhập thời gian bảo hành lớn hơn 0")}
+    else
     if (
       data.GiaBan < 0 ||
       data.Size < 0 ||
-      data.ThoiGianBaoHanh < 0
-    ) {
+      data.ThoiGianBaoHanh < 0 ) {
       messageError("Vui lòng nhập đúng thông tin");
     } else if (
       data.MaSP == "" ||
@@ -297,7 +299,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
         </Form.Item> */}
         <Form.Item label="Trạng thái" tooltip="Trạng thái kinh doanh sản phẩm">
           <Select
-            disabled={data.TrangThai=="Hết hàng"}
+            disabled={data.TrangThai == "Hết hàng"}
             placeholder="Chọn trạng thái"
             value={data.TrangThai}
             onChange={(e) => setData({ ...data, TrangThai: e })}
@@ -348,10 +350,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
             placeholder="Nhập mô tả"
           />
         </Form.Item>
-        <Form.Item
-          label="Hình ảnh"
-          tooltip="Hình ảnh của sản phẩm"
-        >
+        <Form.Item label="Hình ảnh" tooltip="Hình ảnh của sản phẩm">
           <FileBase64
             accept="image/*"
             multiple={false}

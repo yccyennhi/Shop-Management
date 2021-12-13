@@ -1,12 +1,26 @@
 import React, { useState } from "react";
-import { Table, Input, Row, Modal, PageHeader, Descriptions, Tag, Button, message } from "antd";
+import {
+  Table,
+  Input,
+  Row,
+  Modal,
+  PageHeader,
+  Descriptions,
+  Tag,
+  Button,
+  message,
+} from "antd";
 import * as actions from "../../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deletePhieuBaoHanh,
   showTaoPhieuBaoHanhModal,
 } from "../../../redux/actions";
-import { SanPhamsState$, PhieuHensState$ } from "../../../redux/selectors";
+import {
+  SanPhamsState$,
+  PhieuHensState$,
+  PhieuDoiTrasState$,
+} from "../../../redux/selectors";
 import moment from "moment";
 import { messageError } from "../../message";
 
@@ -15,19 +29,32 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
   const dateNow = moment().toDate();
   const SP = useSelector(SanPhamsState$);
   const PH = useSelector(PhieuHensState$);
+  const PDT = useSelector(PhieuDoiTrasState$);
+
   const [isShow, setIsShow] = useState(false);
   function confirm() {
     setIsShow(true);
-    Modal.confirm({
-      visible: isShow,
-      title: "Cảnh báo",
-      content:
-        "Xác nhận xóa phiếu bảo hành?",
-      onOk() {
-        onDelete();
-      },
-      
-    });
+    let listPDT = PDT.find((data) => data.MaHD == record.MaHD);
+    if (listPDT != undefined) {
+      Modal.confirm({
+        visible: isShow,
+        title: "Cảnh báo",
+        content: "Xác nhận xóa phiếu bảo hành?",
+        onOk() {
+          onDelete();
+        },
+      });
+    } else {
+      Modal.confirm({
+        visible: isShow,
+        title: "Cảnh báo",
+        content:
+          "Sản phẩm không được đổi trả nên không thể xóa phiếu bảo hành!",
+        onOk() {
+          // onDelete();
+        },
+      });
+    }
   }
   React.useEffect(() => {
     dispatch(actions.getSanPhams.getSanPhamsRequest());
@@ -39,14 +66,15 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
 
   const onDelete = React.useCallback(() => {
     let listPBH = PH.find(function (e) {
-      return (e.MaPBH === record.MaPBH) && (e.TrangThai==="Chưa hoàn thành");
+      return e.MaPBH === record.MaPBH && e.TrangThai === "Chưa hoàn thành";
     });
     if (listPBH == undefined) {
       console.log("record data", record);
       dispatch(deletePhieuBaoHanh.deletePhieuBaoHanhRequest(record._id));
-    }
-    else {
-      messageError('Không thể xóa phiếu bảo hành vì còn phiếu hẹn của sản phẩm chưa hoàn thành!');
+    } else {
+      messageError(
+        "Không thể xóa phiếu bảo hành vì còn phiếu hẹn của sản phẩm chưa hoàn thành!"
+      );
     }
   }, [record, dispatch]);
   let listSP = SP.find(function (e) {

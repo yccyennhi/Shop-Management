@@ -46,7 +46,7 @@ export const getHoaDons = async (req, res) => {
     // await HD.save();
     const HoaDons = await HoaDonModel.find();
 
-    console.log("HoaDons", HoaDons);
+    //console.log("HoaDons", HoaDons);
     res.status(200).json(HoaDons);
   } catch (err) {
     res.status(500).json({ error: err });
@@ -70,9 +70,12 @@ export const createHoaDon = async (req, res) => {
 
     if (HoaDon.MaKH != "KH000") {
       const KH = await KhachHangModel.findOne({ MaKH: HoaDon.MaKH });
-      KH.DiemTichLuy =
+      if (KH!=undefined)
+      {
+        KH.DiemTichLuy =
         KH.DiemTichLuy - HoaDon.DiemTru + parseInt(HoaDon.ThanhTien / 100);
       await KhachHangModel.findOneAndUpdate({ _id: KH._id }, KH, { new: true });
+      }
     }
     HoaDon.CTHD.map(async (CTHD) => {
       const SP = await SanPhamModel.findOne({ _id: CTHD.idSP });
@@ -83,7 +86,8 @@ export const createHoaDon = async (req, res) => {
       });
 
       //TaoPBH
-      if (CTHD.BaoHanh == "Có bảo hành") {
+      if (CTHD.BaoHanh > 0) {
+        console.log(CTHD);
         for (let i = 0; i < CTHD.SoLuong; i++) {
           let Ma = "";
           let SPBH;
@@ -113,11 +117,13 @@ export const createHoaDon = async (req, res) => {
             NgayKT: nextMonth,
           };
           const PhieuBaoHanh = new PhieuBaoHanhModel(dataPBH);
-          console.log(dataPBH);
+          console.log("datapbh",dataPBH);
           await PhieuBaoHanh.save();
         }
       }
     });
+    console.log("datapbh",HoaDon);
+
     res.status(200).json(HoaDon);
   } catch (err) {
     console.log(err);

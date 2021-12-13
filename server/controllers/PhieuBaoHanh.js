@@ -5,7 +5,7 @@ import { SanPhamModel } from "../models/SanPhamModel.js";
 export const getPhieuBaoHanhs = async (req, res) => {
   try {
     const PhieuBaoHanhs = await PhieuBaoHanhModel.find();
-    console.log("PhieuBaoHanhs", PhieuBaoHanhs);
+   // console.log("PhieuBaoHanhs", PhieuBaoHanhs);
     res.status(200).json(PhieuBaoHanhs);
   } catch (err) {
     res.status(500).json({ error: err });

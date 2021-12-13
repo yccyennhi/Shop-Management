@@ -56,7 +56,13 @@ export default function KhuyenMaiModal({ currentId, setCurrentId }) {
 
   const checkData = () => {
     const isExistMaKM = KhuyenMais.find((KhuyenMai) =>
-      KhuyenMai.MaKM === data.MaKM && data.MaKM!=KhuyenMaiValue.MaKM ? true : false
+      KhuyenMaiValue
+        ? KhuyenMai.MaKM === data.MaKM && data.MaKM !== KhuyenMaiValue.MaKM
+          ? true
+          : false
+        : KhuyenMai.MaKM === data.MaKM
+        ? true
+        : false
     );
     if (isExistMaKM) {
       messageError("Đã tồn tại mã chương trình");

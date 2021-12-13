@@ -36,7 +36,7 @@ export const login = async (req, res) => {
         return res.status(400).json({
           success: false,
           message: "Người dùng đã nghỉ làm",
-        })
+        });
       }
     }
 
@@ -66,10 +66,10 @@ export const login = async (req, res) => {
 };
 
 export const getTaiKhoan = async (req, res) => {
-  console.log('getTaiKhoan');
+  console.log("getTaiKhoan");
   try {
     const TaiKhoans = await TaiKhoanModel.find();
-    console.log('TaiKhoans',TaiKhoans)
+    console.log("TaiKhoans", TaiKhoans);
     res.status(200).json(TaiKhoans);
   } catch (err) {
     res.status(500).json({ success: false, error: err });
@@ -121,27 +121,19 @@ export const createTaiKhoan = async (req, res) => {
 export const updateTaiKhoan = async (req, res) => {
   try {
     const { TenTK, MatKhau, newMatKhau, confirmedMatKhau } = req.body;
-    
 
     if (!TenTK || !MatKhau || !newMatKhau || !confirmedMatKhau) {
-      return res
-        .status(400)
-        .send("Thiếu tài khoản hoặc mật khẩu");
+      return res.status(400).send("Thiếu tài khoản hoặc mật khẩu");
     }
 
     if (newMatKhau !== confirmedMatKhau) {
-      return res
-        .status(400)
-        .send("Xác nhận mật khẩu không đúng");
+      return res.status(400).send("Xác nhận mật khẩu không đúng");
     }
 
     const TaiKhoan = await TaiKhoanModel.findOne({ TenTK: TenTK });
 
     if (!TaiKhoan) {
-      return res.status(400).json({
-        success: false,
-        message: "Tên tài khoản hoặc mật khẩu không đúng",
-      });
+      return res.status(400).send("Tên tài khoản hoặc mật khẩu không đúng");
     }
 
     const passwordValid = await argon2.verify(TaiKhoan.MatKhau, MatKhau);
@@ -153,9 +145,9 @@ export const updateTaiKhoan = async (req, res) => {
 
     TaiKhoan.MatKhau = hashedMatKhau;
     await TaiKhoan.save();
-    
+
     res.status(200).json(TaiKhoan);
   } catch (err) {
-    res.status(500).json({ success: false, error: err });
+    res.status(500).json({ error: err });
   }
 };

@@ -75,14 +75,15 @@ export default function TaiKhoanModal() {
 
   const onClose = useCallback(() => {
     dispatch(hideTaiKhoanModal());
-    setData({
-      MaNV: NhanVienValue.MaNV,
-      TenNV: NhanVienValue.TenNV,
-      TenTK: TaiKhoan.TenTK,
-      MatKhau: "",
-      newMatKhau: "",
-      confirmedMatKhau: "",
-    });
+    if (NhanVienValue)
+      setData({
+        MaNV: NhanVienValue.MaNV,
+        TenNV: NhanVienValue.TenNV,
+        TenTK: TaiKhoan.TenTK,
+        MatKhau: "",
+        newMatKhau: "",
+        confirmedMatKhau: "",
+      });
   }, [data, dispatch]);
 
   const onSubmit = useCallback(() => {

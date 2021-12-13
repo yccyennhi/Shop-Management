@@ -21,7 +21,7 @@ export const INIT_STATE = {
     isShow: false,
   },
   //#endregion
-  
+
   //#region TaiKhoan
   TaiKhoans: {
     isLoading: false,
@@ -74,15 +74,6 @@ export const INIT_STATE = {
   },
   TaoPhieuHenModal: {
     isShow: false,
-  },
-
-  CTHDs: {
-    isLoading: false,
-    data: [],
-  },
-  CTPDTs: {
-    isLoading: false,
-    data: [],
   },
   TaoPhieuBaoHanhModal: {
     isShow: false,

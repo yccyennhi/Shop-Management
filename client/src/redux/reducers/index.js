@@ -1,6 +1,4 @@
 import { combineReducers } from "redux";
-import CTHDs from "./CTHDs";
-import CTPDTs from "./CTPDTs";
 import HoaDons from "./HoaDons";
 import KhachHangModal from "./KhachHangModal";
 import KhachHangs from "./KhachHangs";
@@ -23,11 +21,11 @@ import CuoiNgays from "./CuoiNgays";
 import BCBanHangs from "./BCBanHangs";
 import BCHangHoas from "./BCHangHoas";
 import PhieuNhaps from "./PhieuNhaps";
-import TaoPhieuNhapModal  from "./TaoPhieuNhapModal";
-import ThemPhieuNhapPage  from "./ThemPhieuNhapPage";
-import PhieuBaoHanhBanHangModal  from "./PhieuBaoHanhBanHangModal";
-import PhieuHenBanHangModal  from "./PhieuHenBanHangModal";
-import ArrHangHoaNhap  from "./ArrHangHoaNhap";
+import TaoPhieuNhapModal from "./TaoPhieuNhapModal";
+import ThemPhieuNhapPage from "./ThemPhieuNhapPage";
+import PhieuBaoHanhBanHangModal from "./PhieuBaoHanhBanHangModal";
+import PhieuHenBanHangModal from "./PhieuHenBanHangModal";
+import ArrHangHoaNhap from "./ArrHangHoaNhap";
 import TaiKhoanModal from "./TaiKhoanModal";
 
 export default combineReducers({
@@ -49,8 +47,6 @@ export default combineReducers({
   TaoPhieuTraHangModal,
   TaoPhieuBaoHanhModal,
   TaoPhieuHenModal,
-  CTHDs,
-  CTPDTs,
   TongQuans,
   CuoiNgays,
   BCBanHangs,

@@ -1,7 +1,6 @@
 import moment from "moment";
 import { HoaDonModel } from "../models/HoaDonModel.js";
 import { PhieuDoiTraModel } from "./../models/PhieuDoiTraModel.js";
-import { CTHDModel } from "./../models/CTHDModel.js";
 
 export const getHoaDonsByDay = async (day) => {
   // find in day

@@ -1,10 +1,7 @@
 import moment from "moment";
 import { HoaDonModel } from "../models/HoaDonModel.js";
 import { PhieuDoiTraModel } from "./../models/PhieuDoiTraModel.js";
-import { CTHDModel } from "./../models/CTHDModel.js";
-import { NhanVienModel } from "./../models/NhanVienModel.js";
 import { PhieuNhapModel } from "./../models/PhieuNhapModel.js";
-import { CTPDTModel } from "./../models/CTPDTModel.js";
 
 export const getCuoiNgays = async (req, res) => {
   try {
@@ -152,7 +149,6 @@ export const getBCHangHoas = async (req, res) => {
       }
     });
 
-    
     await HoaDonModel.find().then((HoaDons) => {
       if (HoaDons.length) {
         Object.values(HoaDons).forEach((HoaDon) => {
@@ -184,7 +180,7 @@ export const getBCHangHoas = async (req, res) => {
         });
       }
     });
-    console.log('hangHoaList',hangHoaList);
+    console.log("hangHoaList", hangHoaList);
     res.status(200).json(hangHoaList);
   } catch (err) {
     res.status(500).json({ error: err });

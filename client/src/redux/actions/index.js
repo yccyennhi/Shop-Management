@@ -107,7 +107,6 @@ export const deletePhieuHen = createActions({
   deletePhieuHenFailure: (err) => err,
 });
 
-
 //PhieuBaoHanhFeature
 
 export const getPhieuBaoHanhs = createActions({
@@ -159,7 +158,6 @@ export const hideTaiKhoanModal = createAction("HIDE_TAIKHOAN_MODAL");
 
 //PhieuNhapFeature
 
-
 export const getPhieuNhaps = createActions({
   getPhieuNhapsRequest: undefined,
   getPhieuNhapsSuccess: (payload) => payload,
@@ -183,7 +181,6 @@ export const deletePhieuNhap = createActions({
   deletePhieuNhapSuccess: (payload) => payload,
   deletePhieuNhapFailure: (err) => err,
 });
-
 
 /* #region  KhuyenMaiFeature */
 export const getKhuyenMais = createActions({
@@ -217,44 +214,19 @@ export const getPhieuDoiTras = createActions({
   getPhieuDoiTrasFailure: (err) => err,
 });
 
-export const getCTHDs = createActions({
-  getCTHDsRequest: undefined,
-  getCTHDsSuccess: (payload) => payload,
-  getCTHDsFailure: (err) => err,
-});
-
-export const getCTPDTs = createActions({
-  getCTPDTsRequest: undefined,
-  getCTPDTsSuccess: (payload) => payload,
-  getCTPDTsFailure: (err) => err,
-});
-
 export const createHoaDon = createActions({
   createHoaDonRequest: (payload) => payload,
   createHoaDonSuccess: (payload) => payload,
   createHoaDonFailure: (err) => err,
-})
-
-export const createCTHD = createActions({
-  createCTHDRequest: (payload) => payload,
-  createCTHDSuccess: (payload) => payload,
-  createCTHDFailure: (err) => err,
-})
-
+});
 
 export const createPhieuDoiTra = createActions({
   createPhieuDoiTraRequest: (payload) => payload,
   createPhieuDoiTraSuccess: (payload) => payload,
   createPhieuDoiTraFailure: (err) => err,
-})
+});
 
-export const createCTPDT = createActions({
-  createCTPDTRequest: (payload) => payload,
-  createCTPDTSuccess: (payload) => payload,
-  createCTPDTFailure: (err) => err,
-})
-
- /* Tổng quan*/
+/* Tổng quan*/
 export const getTongQuans = createActions({
   getDataRequest: undefined,
   getDataSuccess: (payload) => payload,
@@ -287,29 +259,42 @@ export const getBCHangHoas = createActions({
 });
 /* #endregion */
 
-
 export const showTaoSanPhamModal = createAction("SHOW_TAOSANPHAM_MODAL");
 export const hideTaoSanPhamModal = createAction("HIDE_TAOSANPHAM_MODAL");
 
 export const setIdThemPhieuNhapPage = createAction("SET_IDTHEMPHIEUNHAP_PAGE");
 export const setArrHangHoaNhap = createAction("SET_ARRHANGHOANHAP");
 
+export const showTaoPhieuBaoHanhModal = createAction(
+  "SHOW_TAOPHIEUBAOHANH_MODAL"
+);
+export const hideTaoPhieuBaoHanhModal = createAction(
+  "HIDE_TAOPHIEUBAOHANH_MODAL"
+);
 
-export const showTaoPhieuBaoHanhModal = createAction("SHOW_TAOPHIEUBAOHANH_MODAL");
-export const hideTaoPhieuBaoHanhModal = createAction("HIDE_TAOPHIEUBAOHANH_MODAL");
+export const showPhieuBaoHanhBanHangModal = createAction(
+  "SHOW_PHIEUBAOHANH_BANHANG_MODAL"
+);
+export const hidePhieuBaoHanhBanHangModal = createAction(
+  "HIDE_PHIEUBAOHANH_BANHANG_MODAL"
+);
 
-
-export const showPhieuBaoHanhBanHangModal = createAction("SHOW_PHIEUBAOHANH_BANHANG_MODAL");
-export const hidePhieuBaoHanhBanHangModal = createAction("HIDE_PHIEUBAOHANH_BANHANG_MODAL");
-
-export const showPhieuHenBanHangModal = createAction("SHOW_PHIEUHEN_BANHANG_MODAL");
-export const hidePhieuHenBanHangModal = createAction("HIDE_PHIEUHEN_BANHANG_MODAL");
+export const showPhieuHenBanHangModal = createAction(
+  "SHOW_PHIEUHEN_BANHANG_MODAL"
+);
+export const hidePhieuHenBanHangModal = createAction(
+  "HIDE_PHIEUHEN_BANHANG_MODAL"
+);
 
 export const showTaoPhieuHenModal = createAction("SHOW_TAOPHIEUHEN_MODAL");
 export const hideTaoPhieuHenModal = createAction("HIDE_TAOPHIEUHEN_MODAL");
 
-export const showThanhToanTichDiemModal = createAction("SHOW_THANHTOANTICHDIEM_MODAL");
-export const hideThanhToanTichDiemModal = createAction("HIDE_THANHTOANTICHDIEM_MODAL");
+export const showThanhToanTichDiemModal = createAction(
+  "SHOW_THANHTOANTICHDIEM_MODAL"
+);
+export const hideThanhToanTichDiemModal = createAction(
+  "HIDE_THANHTOANTICHDIEM_MODAL"
+);
 
 export const showTaoPhieuTraHangModal = createAction(
   "SHOW_TAOPHIEUTRAHANG_MODAL"
@@ -318,9 +303,8 @@ export const hideTaoPhieuTraHangModal = createAction(
   "HIDE_TAOPHIEUTRAHANG_MODAL"
 );
 
-export const showModal = createAction('SHOW_CREATE_MODAL');
-export const hideModal = createAction('HIDE_CREATE_MODAL');
+export const showModal = createAction("SHOW_CREATE_MODAL");
+export const hideModal = createAction("HIDE_CREATE_MODAL");
 
 export const showTaoPhieuNhapModal = createAction("SHOW_TAOPHIEUNHAP_MODAL");
 export const hideTaoPhieuNhapModal = createAction("HIDE_TAOPHIEUNHAP_MODAL");
-

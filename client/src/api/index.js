@@ -3,7 +3,8 @@ import axios from "axios";
 const URL = "http://localhost:5000";
 
 //#region Auth
-export const loginTaiKhoan = (userForm) => axios.post(`${URL}/TaiKhoans/Auth`, userForm);
+export const loginTaiKhoan = (userForm) =>
+  axios.post(`${URL}/TaiKhoans/Auth`, userForm);
 
 export const verifyAuthToken = () => axios.get(`${URL}/TaiKhoans/Auth`);
 
@@ -13,7 +14,7 @@ export const setAuthToken = (token) => {
   } else {
     delete axios.defaults.headers.common["Authorization"];
   }
-}
+};
 //#endregion
 
 //#region Khach hang
@@ -96,29 +97,24 @@ export const deletePhieuNhap = (id) => axios.delete(`${URL}/PhieuNhaps/${id}`);
 
 //
 
-
 //GiaoDich
 export const fetchHoaDons = () => axios.get(`${URL}/HoaDons`);
 export const fetchTraHangs = () => axios.get(`${URL}/PhieuDoiTras`);
-export const fetchCTHDs = () => axios.get(`${URL}/CTHDs`);
-export const fetchCTPDTs = () => axios.get(`${URL}/CTPDTs`);
 export const createHoaDon = (payload) => axios.post(`${URL}/HoaDons`, payload);
-export const createCTHD = (payload) => axios.post(`${URL}/CTHDs`, payload);
-export const createPhieuDoiTra = (payload) => axios.post(`${URL}/PhieuDoiTras`, payload);
-export const createCTPDT = (payload) => axios.post(`${URL}/CTPDTs`, payload);
-
+export const createPhieuDoiTra = (payload) =>
+  axios.post(`${URL}/PhieuDoiTras`, payload);
 
 //TongQuan
 export const getHoaDonsToday = () => axios.get(`${URL}/TongQuans/HoaDonsToday`);
 export const getDoiTrasToday = () => axios.get(`${URL}/TongQuans/DoiTrasToday`);
 export const getRanking = () => axios.get(`${URL}/TongQuans/Ranking`);
-export const getHighestSanPhamList = () => axios.get(`${URL}/TongQuans/SanPhanList`);
+export const getHighestSanPhamList = () =>
+  axios.get(`${URL}/TongQuans/SanPhanList`);
 
 //BaoCao
 export const getCuoiNgays = () => axios.get(`${URL}/CuoiNgays`);
 export const getBCBanHangs = () => axios.get(`${URL}/BCBanHangs`);
 export const getBCHangHoas = () => axios.get(`${URL}/BCHangHoas`);
-
 
 //#region Tai khoan
 export const fetchTaiKhoans = () => axios.get(`${URL}/TaiKhoans`);

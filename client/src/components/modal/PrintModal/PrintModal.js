@@ -12,10 +12,10 @@ export default function ThanhToanTichDiemModal() {
   React.useEffect(() => {}, [dispatch]);
 
   const onCancel = React.useCallback(() => {
-    localStorage.setItem("NV", JSON.stringify(""));
-    localStorage.setItem("KH", JSON.stringify(""));
-    localStorage.setItem("HoaDon", JSON.stringify(""));
-    localStorage.setItem("CTHDs", JSON.stringify(""));
+    localStorage.setItem("NV", JSON.stringify(null));
+    localStorage.setItem("KH", JSON.stringify(null));
+    localStorage.setItem("HoaDon", JSON.stringify(null));
+    localStorage.setItem("CTHDs", JSON.stringify(null));
     dispatch(hideThanhToanTichDiemModal());
   }, [dispatch]);
 

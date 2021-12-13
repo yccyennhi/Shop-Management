@@ -77,7 +77,8 @@ export default function SalePage() {
     dispatch(actions.getKhuyenMais.getKhuyenMaisRequest());
     dispatch(actions.getKhachHangs.getKhachHangsRequest());
     dispatch(actions.getNhanViens.getNhanViensRequest());
-  }, [dispatch]);
+    console.log("HD", HoaDons.length, "SP", SanPhams);
+  }, [HoaDons.length, dispatch]);
 
   const openKhachHangModal = useCallback(() => {
     dispatch(showKhachHangModal());

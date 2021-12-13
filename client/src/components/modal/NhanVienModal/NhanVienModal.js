@@ -1,4 +1,5 @@
-import { DatePicker, Form, Input, Modal, Switch } from "antd";
+import { RetweetOutlined } from "@ant-design/icons";
+import { Button, DatePicker, Form, Input, Modal, Switch } from "antd";
 import moment from "moment";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,7 +7,7 @@ import {
   createNhanVien,
   createTaiKhoan,
   hideNhanVienModal,
-  updateNhanVien
+  updateNhanVien,
 } from "../../../redux/actions";
 import { NhanVienModalState$, NhanViensState$ } from "../../../redux/selectors";
 import { messageError } from "../../message";
@@ -42,9 +43,27 @@ export default function NhanVienModal({ currentId, setCurrentId }) {
 
   const { isShow } = useSelector(NhanVienModalState$);
 
+  const RandomMa = useCallback(() => {
+    if (data.MaNV === "" || data.MaNV === undefined) {
+      let NhanVien;
+      do {
+        const min = 1000000;
+        const max = 9999999;
+        const rand = min + Math.random() * (max - min);
+        const Ma = "NV" + Math.round(rand);
+        setData({ ...data, MaNV: Ma });
+        NhanVien = NhanViens.find((NhanVien) => NhanVien.MaNV == Ma);
+      } while (NhanVien !== undefined);
+    }
+  }, [data]);
+
   const checkData = () => {
     const isExistMaNV = NhanViens.find((NhanVien) =>
-      NhanVien.MaNV === data.MaNV && data.MaNV != NhanVienValue.MaNV
+      NhanVienValue
+        ? NhanVien.MaNV === data.MaNV && data.MaNV !== NhanVienValue.MaNV
+          ? true
+          : false
+        : NhanVien.MaNV === data.MaNV
         ? true
         : false
     );
@@ -100,7 +119,7 @@ export default function NhanVienModal({ currentId, setCurrentId }) {
         const TK = {
           TenTK: data.MaNV,
           MatKhau: data.MaNV,
-        }
+        };
         dispatch(createTaiKhoan.createTaiKhoanRequest(TK));
       }
       onClose();
@@ -119,15 +138,20 @@ export default function NhanVienModal({ currentId, setCurrentId }) {
       >
         <Form.Item label="Mã nhân viên" required>
           <Input
+            allowClear
+            style={{ width: "calc(100% - 32px)" }}
             placeholder="Nhập mã nhân viên"
             value={data.MaNV.toUpperCase()}
             onChange={(e) =>
               setData({ ...data, MaNV: e.target.value.toUpperCase() })
             }
+            disabled={currentId ? true : false}
           />
+          <Button icon={<RetweetOutlined />} onClick={RandomMa} />
         </Form.Item>
         <Form.Item label="Tên nhân viên" required>
           <Input
+            allowClear
             placeholder="Nhập tên nhân viên"
             value={data.TenNV}
             onChange={(e) => setData({ ...data, TenNV: e.target.value })}
@@ -135,6 +159,7 @@ export default function NhanVienModal({ currentId, setCurrentId }) {
         </Form.Item>
         <Form.Item label="Ngày sinh" required>
           <DatePicker
+            allowClear
             value={moment(data.NgaySinh)}
             onChange={(e) => {
               if (e) setData({ ...data, NgaySinh: e });
@@ -143,6 +168,7 @@ export default function NhanVienModal({ currentId, setCurrentId }) {
         </Form.Item>
         <Form.Item label="Số điện thoại" required>
           <Input
+            allowClear
             placeholder="Nhập số điện thoại"
             value={data.SDT}
             onChange={(e) => {
@@ -152,6 +178,7 @@ export default function NhanVienModal({ currentId, setCurrentId }) {
         </Form.Item>
         <Form.Item label="Email" required>
           <Input
+            allowClear
             placeholder="Nhập email"
             value={data.Email}
             onChange={(e) => {
@@ -161,6 +188,7 @@ export default function NhanVienModal({ currentId, setCurrentId }) {
         </Form.Item>
         <Form.Item label="Địa chỉ">
           <Input
+            allowClear
             placeholder="Nhập địa chỉ"
             value={data.DiaChi}
             onChange={(e) => {
@@ -170,6 +198,7 @@ export default function NhanVienModal({ currentId, setCurrentId }) {
         </Form.Item>
         <Form.Item label="Ngày vào làm">
           <DatePicker
+            allowClear
             value={moment(data.NgayVaoLam)}
             onChange={(e) => {
               if (e) setData({ ...data, NgayVaoLam: e });

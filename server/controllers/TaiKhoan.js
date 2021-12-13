@@ -22,16 +22,29 @@ export const isTaiKhoanLoggedIn = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { TenTK, MatKhau } = req.body;
-
+    
     if (!TenTK || !MatKhau) {
       return res
         .status(400)
         .json({ success: false, message: "Thiếu tài khoản hoặc mật khẩu" });
     }
 
+    const NhanVien = await NhanVienModel.findOne({ MaNV: TenTK });
+
+    if (NhanVien) {
+      if (!NhanVien.TrangThai) {
+        return res.status(400).json({
+          success: false,
+          message: "Người dùng đã nghỉ làm",
+        })
+      }
+    }
+    
     const TaiKhoan = await TaiKhoanModel.findOne({ TenTK: TenTK });
 
     if (!TaiKhoan) {
+      // console.log(TenTK);
+      // console.log(MatKhau);
       return res.status(400).json({
         success: false,
         message: "Tên tài khoản hoặc mật khẩu không đúng",
@@ -40,6 +53,9 @@ export const login = async (req, res) => {
 
     const passwordValid = await argon2.verify(TaiKhoan.MatKhau, MatKhau);
     if (!passwordValid) {
+      // console.log(TaiKhoan.MatKhau);
+      // console.log(TenTK);
+      // console.log(MatKhau);
       return res.status(400).json({
         success: false,
         message: "Tên tài khoản hoặc mật khẩu không đúng",
@@ -58,7 +74,6 @@ export const getTaiKhoan = async (req, res) => {
   console.log('getTaiKhoan');
   try {
     const TaiKhoans = await TaiKhoanModel.find();
-    console.log('TaiKhoans',TaiKhoans)
     res.status(200).json(TaiKhoans);
   } catch (err) {
     res.status(500).json({ success: false, error: err });

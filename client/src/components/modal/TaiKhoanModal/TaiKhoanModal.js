@@ -1,7 +1,11 @@
 import { Form, Input, Modal } from "antd";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { hideTaiKhoanModal, updateTaiKhoan } from "../../../redux/actions";
+import {
+  getNhanViens,
+  hideTaiKhoanModal,
+  updateTaiKhoan,
+} from "../../../redux/actions";
 import {
   NhanViensState$,
   TaiKhoanModalState$,
@@ -19,11 +23,17 @@ export default function TaiKhoanModal() {
   } = useContext(AuthContext);
 
   //#region data
+  useEffect(() => {
+    dispatch(getNhanViens.getNhanViensRequest());
+  }, [dispatch]);
+
   const NhanViens = useSelector(NhanViensState$);
 
-  const NhanVienValue = TaiKhoan ? NhanViens.find((NhanVien) =>
-    NhanVien._id === TaiKhoan.MaNV ? NhanVien : null
-  ) : null;
+  const NhanVienValue = TaiKhoan
+    ? NhanViens.find((NhanVien) =>
+        NhanVien._id === TaiKhoan.MaNV ? NhanVien : null
+      )
+    : null;
 
   const [data, setData] = useState({
     MaNV: "",
@@ -43,7 +53,7 @@ export default function TaiKhoanModal() {
         TenTK: TaiKhoan.TenTK,
       });
     }
-  }, [NhanVienValue]);
+  }, [data, NhanVienValue]);
   //#endregion
 
   //#region Form handle
@@ -69,17 +79,20 @@ export default function TaiKhoanModal() {
       return false;
     }
     return true;
-  }
+  };
 
   const onClose = useCallback(() => {
     dispatch(hideTaiKhoanModal());
     setData({
       ...data,
+      MaNV: NhanVienValue.MaNV,
+      TenNV: NhanVienValue.TenNV,
+      TenTK: TaiKhoan.TenTK,
       MatKhau: "",
       newMatKhau: "",
       confirmedMatKhau: "",
     });
-  }, [dispatch]);
+  }, [data, dispatch]);
 
   const onSubmit = useCallback(() => {
     if (checkData()) {

@@ -1,8 +1,10 @@
-import { DatePicker, Form, Input, Modal, Switch } from "antd";
+import { RetweetOutlined } from "@ant-design/icons";
+import { Button, DatePicker, Form, Input, Modal, Switch } from "antd";
 import moment from "moment";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  getKhachHangs,
   createKhachHang,
   hideKhachHangModal,
   updateKhachHang,
@@ -17,12 +19,16 @@ export default function KhachHangModal({ currentId, setCurrentId }) {
   const dispatch = useDispatch();
 
   //#region Data
+  useEffect(() => {
+    dispatch(getKhachHangs.getKhachHangsRequest());
+  }, [dispatch]);
+
   const KhachHangs = useSelector(KhachHangsState$);
 
   const [data, setData] = useState({
     MaKH: "",
     TenKH: "",
-    NgaySinh: "",
+    NgaySinh: new Date(),
     SDT: "",
     Email: "",
     DiaChi: "",
@@ -44,9 +50,27 @@ export default function KhachHangModal({ currentId, setCurrentId }) {
 
   const { isShow } = useSelector(KhachHangModalState$);
 
+  const RandomMa = useCallback(() => {
+    if (data.MaKH === "" || data.MaKH === undefined) {
+      let KhachHang;
+      do {
+        const min = 1000000;
+        const max = 9999999;
+        const rand = min + Math.random() * (max - min);
+        const Ma = "KH" + Math.round(rand);
+        setData({ ...data, MaKH: Ma });
+        KhachHang = KhachHangs.find((KhachHang) => KhachHang.MaKH == Ma);
+      } while (KhachHang !== undefined);
+    }
+  }, [data]);
+
   const checkData = () => {
     const isExistMaKH = KhachHangs.find((KhachHang) =>
-      KhachHang.MaKH === data.MaKH && data.MaKH != KhachHangValue.MaKH
+      KhachHangValue
+        ? KhachHang.MaKH === data.MaKH && data.MaKH !== KhachHangValue.MaKH
+          ? true
+          : false
+        : KhachHang.MaKH === data.MaKH
         ? true
         : false
     );
@@ -115,15 +139,20 @@ export default function KhachHangModal({ currentId, setCurrentId }) {
       >
         <Form.Item label="Mã khách hàng" required>
           <Input
+            allowClear
+            style={{ width: "calc(100% - 32px)" }}
             placeholder="Nhập mã khách hàng"
             value={data.MaKH.toUpperCase()}
             onChange={(e) => {
               setData({ ...data, MaKH: e.target.value.toUpperCase() });
             }}
+            disabled={currentId ? true : false}
           />
+          <Button icon={<RetweetOutlined />} onClick={RandomMa} />
         </Form.Item>
         <Form.Item label="Tên khách hàng" required>
           <Input
+            allowClear
             placeholder="Nhập tên khách hàng"
             value={data.TenKH}
             onChange={(e) => {
@@ -133,6 +162,7 @@ export default function KhachHangModal({ currentId, setCurrentId }) {
         </Form.Item>
         <Form.Item label="Ngày sinh" required>
           <DatePicker
+            allowClear
             value={moment(data.NgaySinh)}
             onChange={(e) => {
               if (e) setData({ ...data, NgaySinh: e });
@@ -141,6 +171,7 @@ export default function KhachHangModal({ currentId, setCurrentId }) {
         </Form.Item>
         <Form.Item label="Số điện thoại" required>
           <Input
+            allowClear
             placeholder="Nhập số điện thoại"
             value={data.SDT}
             onChange={(e) => {
@@ -150,6 +181,7 @@ export default function KhachHangModal({ currentId, setCurrentId }) {
         </Form.Item>
         <Form.Item label="Email" required>
           <Input
+            allowClear
             placeholder="Nhập email"
             value={data.Email}
             onChange={(e) => {
@@ -159,6 +191,7 @@ export default function KhachHangModal({ currentId, setCurrentId }) {
         </Form.Item>
         <Form.Item label="Địa chỉ">
           <Input
+            allowClear
             placeholder="Nhập địa chỉ"
             value={data.DiaChi}
             onChange={(e) => {

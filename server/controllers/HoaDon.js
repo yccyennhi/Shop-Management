@@ -9,44 +9,8 @@ import { KhachHangModel } from "../models/KhachHangModel.js";
 
 export const getHoaDons = async (req, res) => {
   try {
-    // const HD = new HoaDonModel({
-    //   MaHD: "HD006",
-    //   ThoiGian: '2021/12/01',
-    //   MaNV: "NV001",
-    //   idNV: "618f87add7f3f02b3fe340d5",
-    //   idKM: "619efcec8c13dc80932e4f44",
-    //   MaKM: "KM004",
-    //   idKH: "61957aa9e198c2fe3f3f53f6",
-    //   MaKH: "KH000",
-    //   DiemTru: 0,
-    //   GiamGia: 112000,
-    //   SoLuong: 3,
-    //   GiaVon: 45449,
-    //   TongTienHang: 1120000,
-    //   ThanhTien: 1008000,
-    //   TienKhachTra: 1100000,
-    //   TienTraKhach: 92000,
-    //   GhiChu: "",
-    //   CTHD: [
-    //     {
-    //       idSP: "6190dcdea86eb32001319d39",
-    //       MaSP: "MA001",
-    //       TenSP: "Giày Sandals quai hậu da",
-    //       SoLuong: 2,
-    //       MauSac: "Nâu",
-    //       Size: 39,
-    //       GiaVon: 250000,
-    //       DonGia: 320000,
-    //       BaoHanh: "Không bảo hành",
-    //       ThoiGian: '2021/11/27',
-    //       ThanhTien: 640000,
-    //     },
-    //   ],
-    // });
-    // await HD.save();
     const HoaDons = await HoaDonModel.find();
 
-    //console.log("HoaDons", HoaDons);
     res.status(200).json(HoaDons);
   } catch (err) {
     res.status(500).json({ error: err });
@@ -81,7 +45,7 @@ export const createHoaDon = async (req, res) => {
     HoaDon.CTHD.map(async (CTHD) => {
       const SP = await SanPhamModel.findOne({ _id: CTHD.idSP });
       SP.TonKho = SP.TonKho - CTHD.SoLuong;
-      if (SP.TonKho <= 0) SP.TrangThai = "Hết hàng";
+      if (SP.TonKho === 0) SP.TrangThai = "Hết hàng";
       await SanPhamModel.findOneAndUpdate({ _id: SP._id }, SP, {
         new: true,
       });
@@ -123,8 +87,6 @@ export const createHoaDon = async (req, res) => {
         }
       }
     });
-    console.log("datapbh", HoaDon);
-
     res.status(200).json(HoaDon);
   } catch (err) {
     console.log(err);

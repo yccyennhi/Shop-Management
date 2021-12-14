@@ -98,6 +98,7 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
             <Descriptions title="Thông tin chi tiết" size="default">
               <Descriptions.Item label="Mô tả">{record.MoTa}</Descriptions.Item>
               <Descriptions.Item label="Size">{record.Size}</Descriptions.Item>
+              <Descriptions.Item label="Màu sắc">{record.MauSac}</Descriptions.Item>
               <Descriptions.Item label="Loại hàng">
                 {`${record.LoaiHang}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
               </Descriptions.Item>

@@ -55,8 +55,7 @@ function PhieuNhaptable({
     }
     if (trangthai == 0 && thoigian == 1) {
       let listPN = PN.filter(
-        (data) =>
-          moment(data.NgayTao).format("M") == thang
+        (data) => moment(data.NgayTao).format("M") == thang
       );
       setPhieuNhaps(listPN);
     }
@@ -91,6 +90,7 @@ function PhieuNhaptable({
       title: "",
       key: "createdAt",
       sorter: (a, b) => moment(a.createdAt) - moment(b.createdAt),
+      defaultSortOrder: "descend",
     },
     {
       title: "Mã nhập hàng",
@@ -178,16 +178,14 @@ function PhieuNhaptable({
       title: "Tổng tiền hàng",
       dataIndex: "TongTien",
       key: "TongTien",
-      render: (value) =>
-        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      render: (value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
       sorter: (a, b) => a.TongTien - b.TongTien,
     },
     {
       title: "Tiền đã trả NCC",
       dataIndex: "TienTra",
       key: "TienTra",
-      render: (value) =>
-        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      render: (value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
       sorter: (a, b) => a.TienTra - b.TienTra,
     },
     {

@@ -2,7 +2,6 @@ import { HoaDonModel } from "../models/HoaDonModel.js";
 import { KhuyenMaiModel } from "../models/KhuyenMaiModel.js";
 import { SanPhamModel } from "../models/SanPhamModel.js";
 import { PhieuBaoHanhModel } from "../models/PhieuBaoHanhModel.js";
-import { Modal } from "antd";
 
 import moment from "moment";
 import { KhachHangModel } from "../models/KhachHangModel.js";

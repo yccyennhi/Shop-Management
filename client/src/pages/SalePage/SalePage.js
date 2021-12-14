@@ -75,8 +75,8 @@ export default function SalePage() {
       MaHD: "",
       MaNV: "",
       idNV: "",
-      MaKH: "KH000",
-      idKH: "61957aa9e198c2fe3f3f53f6",
+      MaKH: "KH0000000",
+      idKH: "61b769ba26b4dbbca417c4de",
       MaKM: "KM000",
       idKM: "619f673906c0b162302fb7f2",
       SoLuong: 0,
@@ -110,8 +110,8 @@ export default function SalePage() {
     MaHD: "",
     MaNV: "",
     idNV: "",
-    MaKH: "KH000",
-    idKH: "61957aa9e198c2fe3f3f53f6",
+    MaKH: "KH0000000",
+    idKH: "61b769ba26b4dbbca417c4de",
     MaKM: "KM000",
     idKM: "619f673906c0b162302fb7f2",
     SoLuong: 0,
@@ -251,7 +251,7 @@ export default function SalePage() {
   };
 
   const KhachHangChange = (e) => {
-    if (!e || e === "KH000") setKH(null);
+    if (!e || e === "61b769ba26b4dbbca417c4de") setKH(null);
     else {
       const KH = KhachHangs.find((kh) => e === kh.MaKH);
       setKH(KH);

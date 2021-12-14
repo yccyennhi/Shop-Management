@@ -28,7 +28,7 @@ export default function AuthPage() {
     try {
       const loginData = await loginTaiKhoan(loginForm);
       if (!loginData.success) {
-        messageError("Tài khoản hoặc mật khẩu không đúng");
+        messageError("Tài khoản hoặc mật khẩu không đúng hoặc đã ngưng hoạt động");
       }
     } catch (error) {
       console.log(error);

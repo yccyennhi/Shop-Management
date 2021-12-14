@@ -1,4 +1,5 @@
-import { DatePicker, Form, Input, Modal, Switch } from "antd";
+import { RetweetOutlined } from "@ant-design/icons";
+import { Button, DatePicker, Form, Input, Modal, Switch } from "antd";
 import moment from "moment";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,7 +7,7 @@ import {
   createNhanVien,
   createTaiKhoan,
   hideNhanVienModal,
-  updateNhanVien
+  updateNhanVien,
 } from "../../../redux/actions";
 import { NhanVienModalState$, NhanViensState$ } from "../../../redux/selectors";
 import { messageError } from "../../message";
@@ -42,11 +43,27 @@ export default function NhanVienModal({ currentId, setCurrentId }) {
 
   const { isShow } = useSelector(NhanVienModalState$);
 
+  const RandomMa = useCallback(() => {
+    if (data.MaNV === "" || data.MaNV === undefined) {
+      let NhanVien;
+      do {
+        const min = 1000000;
+        const max = 9999999;
+        const rand = min + Math.random() * (max - min);
+        const Ma = "NV" + Math.round(rand);
+        setData({ ...data, MaNV: Ma });
+        NhanVien = NhanViens.find((NhanVien) => NhanVien.MaNV == Ma);
+      } while (NhanVien !== undefined);
+    }
+  }, [data, dispatch]);
+
   const checkData = () => {
     const isExistMaNV = NhanViens.find((NhanVien) =>
-      NhanVien.MaNV === data.MaNV && data.MaNV != NhanVienValue.MaNV
-        ? true
-        : false
+      NhanVienValue
+        ? NhanVien.MaNV === data.MaNV && data.MaNV !== NhanVienValue.MaNV
+          ? true
+          : false
+        : NhanVien.MaNV === data.MaNV
     );
     if (isExistMaNV) {
       messageError("Đã tồn tại mã nhân viên");
@@ -100,7 +117,7 @@ export default function NhanVienModal({ currentId, setCurrentId }) {
         const TK = {
           TenTK: data.MaNV,
           MatKhau: data.MaNV,
-        }
+        };
         dispatch(createTaiKhoan.createTaiKhoanRequest(TK));
       }
       onClose();
@@ -119,12 +136,15 @@ export default function NhanVienModal({ currentId, setCurrentId }) {
       >
         <Form.Item label="Mã nhân viên" required>
           <Input
+            style={{ width: "calc(100% - 32px)" }}
             placeholder="Nhập mã nhân viên"
             value={data.MaNV.toUpperCase()}
             onChange={(e) =>
               setData({ ...data, MaNV: e.target.value.toUpperCase() })
             }
+            disabled={currentId ? true : false}
           />
+          <Button icon={<RetweetOutlined />} onClick={RandomMa} />
         </Form.Item>
         <Form.Item label="Tên nhân viên" required>
           <Input

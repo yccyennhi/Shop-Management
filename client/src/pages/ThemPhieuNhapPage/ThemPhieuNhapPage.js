@@ -165,8 +165,9 @@ export default function ThemPhieuNhapPage({}) {
           (GiaNhap + data.GiaNhap[i] * data.SoLuong[i]) /
             (SoLuong + data.SoLuong[i])
         );
+        if (SanPham.TonKho==0) {SanPham.TrangThai="Đang kinh doanh"}
         SanPham.TonKho = SanPham.TonKho + data.SoLuong[i];
-        //Cập nhật giá vốn, số lượng sản phẩm
+        //Cập nhật giá vốn, số lượng sản phẩm, trạng thái kinh doanh
         dispatch(actions.updateSanPham.updateSanPhamRequest(SanPham));
       }
       //handleNhapHang();

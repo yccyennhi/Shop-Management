@@ -84,7 +84,7 @@ function PhieuNhaptable({
       );
       setPhieuNhaps(listPN);
     }
-  }, [thoigian, trangthai]);
+  }, [thoigian, trangthai, thang]);
   const dataSource = PhieuNhaps;
   const columns = [
     {

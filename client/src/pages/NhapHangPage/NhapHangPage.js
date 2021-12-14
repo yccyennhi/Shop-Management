@@ -62,6 +62,7 @@ export default function PhieuNhapPage() {
 
   function onChange(date, dateString) {
     setThang(moment(date).format("M"));
+    console.log(moment(date).format("M"));
   }
   const {
     authState: { TaiKhoan },

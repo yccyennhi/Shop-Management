@@ -265,6 +265,7 @@ export default function PhieuHen({ currentId, setCurrentId }) {
           required
         >
           <DatePicker
+            format={"DD/MM/YYYY"}
             value={moment(data.NgayHen)}
             defaultValue={moment(data.NgayHen)}
             onChange={(e) => {

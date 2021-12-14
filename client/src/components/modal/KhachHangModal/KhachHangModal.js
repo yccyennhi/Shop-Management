@@ -153,7 +153,7 @@ export default function KhachHangModal({ currentId, setCurrentId }) {
         </Form.Item>
         <Form.Item label="Ngày sinh" required>
           <DatePicker
-            format={"DD-MM-YYYY"}
+            format={"DD/MM/YYYY"}
             value={moment(data.NgaySinh)}
             onChange={(e) => {
               if (e) setData({ ...data, NgaySinh: e });

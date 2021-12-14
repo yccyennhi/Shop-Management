@@ -128,7 +128,7 @@ export default function KhuyenMaiModal({ currentId, setCurrentId }) {
             style={{ display: "inline-block", width: "calc(30% - 12px)" }}
           >
             <DatePicker
-              format={"DD-MM-YYYY"}
+              format={"DD/MM/YYYY"}
               defaultValue={moment(data.NgayBD)}
               onChange={(e) => {
                 if (e) setData({ ...data, NgayBD: e });
@@ -151,7 +151,7 @@ export default function KhuyenMaiModal({ currentId, setCurrentId }) {
             rules={[{ required: true, message: "Vui lòng nhập ngày" }]}
           >
             <DatePicker
-              format={"DD-MM-YYYY"}
+              format={"DD/MM/YYYY"}
               min
               defaultValue={moment(data.NgayKT)}
               onChange={(e) => {

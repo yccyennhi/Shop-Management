@@ -155,6 +155,7 @@ export default function NhanVienModal({ currentId, setCurrentId }) {
         </Form.Item>
         <Form.Item label="Ngày sinh" required>
           <DatePicker
+            format={"DD/MM/YYYY"}
             value={moment(data.NgaySinh)}
             onChange={(e) => {
               if (e) setData({ ...data, NgaySinh: e });
@@ -190,6 +191,7 @@ export default function NhanVienModal({ currentId, setCurrentId }) {
         </Form.Item>
         <Form.Item label="Ngày vào làm">
           <DatePicker
+            format={"DD/MM/YYYY"}
             value={moment(data.NgayVaoLam)}
             onChange={(e) => {
               if (e) setData({ ...data, NgayVaoLam: e });

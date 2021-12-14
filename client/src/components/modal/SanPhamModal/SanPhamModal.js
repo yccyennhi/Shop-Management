@@ -67,7 +67,6 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
         const rand = min + Math.random() * (max - min);
         const Ma = "MA" + Math.round(rand);
         setData({ ...data, MaSP: Ma });
-        console.log(Ma);
         SanPham = SP.find((data) => data.MaSP == Ma);
       } while (SanPham !== undefined);
     }

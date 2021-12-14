@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import * as actions from "../../../redux/actions";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -12,7 +12,17 @@ import {
   updatePhieuHen,
   hideTaoPhieuHenModal,
 } from "../../../redux/actions";
-import { Form, Input, DatePicker, Modal, Select } from "antd";
+import {
+  Form,
+  Input,
+  DatePicker,
+  Modal,
+  Select,
+  Button,
+  Tooltip,
+  AutoComplete,
+} from "antd";
+import { RetweetOutlined } from "@ant-design/icons";
 import { messageError } from "../../message";
 import moment from "moment";
 const { Option } = Select;
@@ -32,6 +42,7 @@ export default function PhieuHen({ currentId, setCurrentId }) {
   const [form] = Form.useForm();
   const PH = useSelector(PhieuHensState$);
   const PBH = useSelector(PhieuBaoHanhsState$);
+  const SP = useSelector(SanPhamsState$);
   const dateNow = moment().toDate();
   const [data, setData] = useState({
     MaPH: "",
@@ -53,6 +64,33 @@ export default function PhieuHen({ currentId, setCurrentId }) {
 
   const dispatch = useDispatch();
 
+  const RandomMa = useCallback(() => {
+    if (data.MaPH === "" || data.MaPH === undefined) {
+      let PhieuHen;
+      do {
+        const min = 1000000;
+        const max = 9999999;
+        const rand = min + Math.random() * (max - min);
+        const Ma = "PH" + Math.round(rand);
+        setData({ ...data, MaPH: Ma });
+        PhieuHen = PH.find((PhieuHen) => PhieuHen.MaPH == Ma);
+      } while (PhieuHen !== undefined);
+    }
+  }, [data, dispatch]);
+
+  const optionsPBH = PBH.map((data) => {
+    var o = Object.assign({});
+    o.value = data.MaPBH;
+    o.label = `${data.MaPBH}`;
+    return o;
+  });
+  const optionsSP = SP.map((data) => {
+    var o = Object.assign({});
+    o.value = data.MaSP;
+    o.label = `${data.MaSP}`;
+    return o;
+  });
+
   React.useEffect(() => {
     dispatch(actions.getSanPhams.getSanPhamsRequest());
     dispatch(actions.getPhieuBaoHanhs.getPhieuBaoHanhsRequest());
@@ -60,6 +98,7 @@ export default function PhieuHen({ currentId, setCurrentId }) {
 
   const onClose = React.useCallback(() => {
     dispatch(hideTaoPhieuHenModal());
+    form.resetFields();
     setCurrentId(null);
     setData({
       MaPH: "",
@@ -84,9 +123,12 @@ export default function PhieuHen({ currentId, setCurrentId }) {
       if (listPBH == undefined) {
         messageError("Mã phiếu bảo hành không tồn tại");
       } else if (listPBH.MaSP != data.MaSP) {
-        messageError("Mã sản phẩm không tồn tại");
-      } else if (moment(data.NgayHen) < moment(dateNow)) {
-        messageError("Ngày hẹn phải lớn hơn hôm nay");
+        messageError("Mã sản phẩm không tồn tại trong phiếu bảo hành");
+      } else if (
+        moment(data.NgayHen).format("DD/MM/YYYY") <
+        moment(dateNow).format("DD/MM/YYYY")
+      ) {
+        messageError("Ngày hẹn không hợp lệ");
       } else if (currentId) {
         if (moment(listPBH.NgayKT) > moment(dateNow)) {
           if (listPH && listPH.MaPH != PhieuHenValue.MaPH) {
@@ -134,36 +176,75 @@ export default function PhieuHen({ currentId, setCurrentId }) {
           required
         >
           <Input
+            style={{ width: "calc(100% - 32px)" }}
+            disabled={currentId ? true : false}
             placeholder="Nhập mã phiếu hẹn"
             value={data.MaPH}
             onChange={(e) => setData({ ...data, MaPH: e.target.value })}
             defaultValue={data.MaPH}
+            allowClear
           />
+          <Button icon={<RetweetOutlined />} onClick={RandomMa} />
         </Form.Item>
-
         <Form.Item
           label="Mã phiếu bảo hành"
           tooltip="Mã phiếu bảo hành của sản phẩm hẹn bảo hành"
           required
         >
-          <Input
+          {/* <Input
             placeholder="Nhập mã phiếu bảo hành"
             value={data.MaPBH}
             onChange={(e) => setData({ ...data, MaPBH: e.target.value })}
             defaultValue={data.MaPBH}
-          />
+          /> */}
+
+          <AutoComplete
+            dropdownClassName="certain-category-search-dropdown"
+            options={optionsPBH}
+            disabled={currentId ? true : false}
+            value={data.MaPBH}
+            filterOption
+            onSelect={(e) => {
+              setData({ ...data, MaPBH: e });
+            }}
+          >
+            <Input.Search
+              disabled={currentId ? true : false}
+              allowClear
+              size="medium"
+              placeholder="Nhập mã phiếu bảo hành"
+            />
+          </AutoComplete>
         </Form.Item>
         <Form.Item
           label="Mã sản phẩm"
           tooltip="Mã sản phẩm được bảo hành"
           required
         >
-          <Input
+          {/* <Input
             placeholder="Nhập mã sản phẩm"
             value={data.MaSP}
             onChange={(e) => setData({ ...data, MaSP: e.target.value })}
             defaultValue={data.MaSP}
-          />
+          /> */}
+
+          <AutoComplete
+            dropdownClassName="certain-category-search-dropdown"
+            disabled={currentId ? true : false}
+            value={data.MaSP}
+            options={optionsSP}
+            filterOption
+            onSelect={(e) => {
+              setData({ ...data, MaSP: e });
+            }}
+          >
+            <Input.Search
+              allowClear
+              disabled={currentId ? true : false}
+              size="medium"
+              placeholder="Nhập mã sản phẩm"
+            />
+          </AutoComplete>
         </Form.Item>
         <Form.Item required label="Trạng thái" tooltip="Trạng thái phiếu hẹn">
           <Select
@@ -184,6 +265,7 @@ export default function PhieuHen({ currentId, setCurrentId }) {
           required
         >
           <DatePicker
+            format={"DD/MM/YYYY"}
             value={moment(data.NgayHen)}
             defaultValue={moment(data.NgayHen)}
             onChange={(e) => {
@@ -191,7 +273,6 @@ export default function PhieuHen({ currentId, setCurrentId }) {
             }}
           />
         </Form.Item>
-        
       </Form>
     </>
   );

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL = "http://localhost:5000";
+const URL = "https://nlmt-shop-management.herokuapp.com";
 
 //#region Auth
 export const loginTaiKhoan = (userForm) =>

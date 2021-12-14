@@ -10,7 +10,7 @@ export default function ThanhToanTichDiemModal() {
   const dispatch = useDispatch();
   const componentRef = useRef(null);
   const { isShow } = useSelector(ThanhToanTichDiemModalState$);
-  const HoaDon = JSON.parse(localStorage.getItem("HoaDon"));
+  const dataHD = JSON.parse(localStorage.getItem("HoaDon"));
   const onCancel = React.useCallback(() => {
     localStorage.setItem("NV", JSON.stringify(null));
     localStorage.setItem("KH", JSON.stringify(null));
@@ -30,7 +30,8 @@ export default function ThanhToanTichDiemModal() {
           )}
           onAfterPrint={() => {
             onCancel();
-            dispatch(actions.createHoaDon.createHoaDonRequest(HoaDon));
+            dispatch(actions.createHoaDon.createHoaDonRequest(dataHD));
+            dispatch(actions.getSanPhams.getSanPhamsRequest());
           }}
           content={() => componentRef.current}
         />

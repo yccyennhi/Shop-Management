@@ -27,11 +27,11 @@ import * as actions from "../../redux/actions";
 import "./styles.css";
 import moment from "moment";
 import {
+  SanPhamsState$,
   HoaDonsState$,
   KhachHangsState$,
   KhuyenMaisState$,
   NhanViensState$,
-  SanPhamsState$,
 } from "../../redux/selectors";
 import SanPhamHoaDonPanel from "../../components/ControlPanel/SanPhamHoaDonPanel";
 import {
@@ -48,8 +48,8 @@ export default function SalePage() {
   //Khai báo
   const dispatch = useDispatch();
   const dateNow = moment().toDate();
-  const HoaDons = useSelector(HoaDonsState$);
   const SanPhams = useSelector(SanPhamsState$);
+  const HoaDons = useSelector(HoaDonsState$);
   const NhanViens = useSelector(NhanViensState$);
   const KhachHangs = useSelector(KhachHangsState$);
   const KhuyenMais = useSelector(KhuyenMaisState$);
@@ -93,14 +93,11 @@ export default function SalePage() {
       CTHD: [],
     });
     setSPsInfo([]);
+    console.log(SanPhams, HoaDons.length, KhachHangs.length, KhuyenMais.length);
   }, [HoaDons.length, dispatch]);
 
   const openKhachHangModal = useCallback(() => {
     dispatch(showKhachHangModal());
-  }, [dispatch]);
-
-  const openprint = useCallback(() => {
-    dispatch(showThanhToanTichDiemModal());
   }, [dispatch]);
 
   useEffect(() => {
@@ -299,7 +296,7 @@ export default function SalePage() {
     dataHD.ThoiGian = moment().toDate();
     localStorage.setItem("HoaDon", JSON.stringify(dataHD));
     localStorage.setItem("CTHDs", JSON.stringify(SPsInfo));
-    openprint();
+    dispatch(showThanhToanTichDiemModal());
   }, [dispatch, dataHD, SPsInfo]);
 
   const headerTable = (

@@ -48,7 +48,7 @@ export default function KhuyenMaiPage() {
     const listHD = HoaDons.sort((a, b) =>
       moment(a.createdAt) < moment(b.createdAt) ? 1 : -1
     );
-    const listPN= PhieuNhaps.sort((a, b) =>
+    const listPN = PhieuNhaps.sort((a, b) =>
       moment(a.createdAt) < moment(b.createdAt) ? 1 : -1
     );
 
@@ -130,8 +130,12 @@ export default function KhuyenMaiPage() {
                                 NhanViens.find((data) => data.MaNV == item.MaNV)
                                   ?.TenNV
                               }{" "}
-                              vừa bán đơn hàng {item.MaHD} trị giá{" "}
-                              {item.ThanhTien} VNĐ
+                              vừa bán đơn hàng {item.MaHD}
+                              {" "}
+                              trị giá {`${item.ThanhTien}`.replace(
+                                /\B(?=(\d{3})+(?!\d))/g,
+                                ","
+                              )} VNĐ
                             </a>
                           }
                           description={

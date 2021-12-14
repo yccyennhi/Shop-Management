@@ -39,7 +39,7 @@ export default function Headerbar() {
       </Menu.Item>
       <Menu.Item
         key="2"
-        disabled={TaiKhoan? false :true}
+        disabled={TaiKhoan ? false : true}
         onClick={() => {
           history.push("/Sales");
         }}
@@ -48,7 +48,7 @@ export default function Headerbar() {
       </Menu.Item>
       <Menu.Item
         key="3"
-        disabled={TaiKhoan?.TenTK === "ADMIN"?false:true}
+        disabled={TaiKhoan?.TenTK === "ADMIN" ? false : true}
         onClick={() => {
           history.push("/");
         }}

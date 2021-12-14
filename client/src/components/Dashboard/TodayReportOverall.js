@@ -34,7 +34,7 @@ export default function TodayReportOverall() {
             <Space direction="vertical" size={0}>
               <Text strong> {hoaDonTodayCount} Hóa đơn</Text>
               <Text strong style={{ fontSize: "1.5rem", color: "#1890ff" }}>
-                {doanhThuToday}
+                {`${doanhThuToday}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
               </Text>
               <Text type="secondary">Doanh thu</Text>
             </Space>

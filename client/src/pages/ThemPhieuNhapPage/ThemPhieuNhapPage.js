@@ -384,6 +384,7 @@ export default function ThemPhieuNhapPage({}) {
               >
                 <DatePicker
                   defaultValue={moment(data.NgayTao)}
+                  format={ "DD-MM-YYYY"}
                   value={moment(data.NgayTao)}
                   disabled={true}
                   onChange={(e) => {

@@ -248,7 +248,7 @@ export default function SalePage() {
   };
 
   const KhachHangChange = (e) => {
-    if (!e || e === "61b769ba26b4dbbca417c4de") setKH(null);
+    if (!e || e === "KH0000000") setKH(null);
     else {
       const KH = KhachHangs.find((kh) => e === kh.MaKH);
       setKH(KH);

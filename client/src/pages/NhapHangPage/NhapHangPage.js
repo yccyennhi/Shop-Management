@@ -23,7 +23,7 @@ import {
   SafetyCertificateTwoTone,
   PlusOutlined,
   CheckCircleTwoTone,
-  CloseCircleTwoTone,
+  FileTextTwoTone,
   DollarTwoTone,
 } from "@ant-design/icons";
 import * as actions from "../../redux/actions";
@@ -186,7 +186,7 @@ export default function PhieuNhapPage() {
                   </Col>
                   <Col span={6}>
                     <Space align="center" size={20}>
-                      <CheckCircleTwoTone style={{ fontSize: "40px" }} />
+                      <FileTextTwoTone style={{ fontSize: "40px" }} />
                       <Space direction="vertical" size={0}>
                         <Text strong>{PNTN.length} phiếu nhập</Text>
                         <Text strong style={{ fontSize: "1.5rem" }}>
@@ -199,7 +199,7 @@ export default function PhieuNhapPage() {
                   <Col span={6}>
                     <Space direction="horizontal" size={200}>
                       <Space align="center" size={20}>
-                        <CloseCircleTwoTone style={{ fontSize: "40px" }} />
+                        <CheckCircleTwoTone style={{ fontSize: "40px" }} />
                         <Space direction="vertical" size={0}>
                           <Text strong>{PNHT.length} phiếu nhập</Text>
                           <Text strong style={{ fontSize: "1.5rem" }}>
@@ -228,7 +228,7 @@ export default function PhieuNhapPage() {
                                 return (sum += data.TienTra);
                               }, 0)
                             }`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
-                            VNĐ
+                            
                           </Text>
                           <Text type="secondary">Còn nợ nhà cung cấp</Text>
                         </Space>

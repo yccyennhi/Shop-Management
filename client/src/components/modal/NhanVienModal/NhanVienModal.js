@@ -1,5 +1,13 @@
 import { RetweetOutlined } from "@ant-design/icons";
-import { Button, DatePicker, Form, Input, Modal, Switch } from "antd";
+import {
+  Button,
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Switch,
+} from "antd";
 import moment from "moment";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -89,6 +97,14 @@ export default function NhanVienModal({ currentId, setCurrentId }) {
       messageError("Chưa nhập email nhân viên");
       return false;
     }
+    if (!(moment(data.NgaySinh) < moment().toDate())) {
+      messageError("Ngày sinh phải nhỏ hơn hôm nay");
+      return false;
+    }
+    if (!(moment(data.NgaySinh) < moment(data.NgayVaoLam))) {
+      messageError("Ngày sinh phải nhỏ hơn ngày vào làm");
+      return false;
+    }
     return true;
   };
 
@@ -163,11 +179,13 @@ export default function NhanVienModal({ currentId, setCurrentId }) {
           />
         </Form.Item>
         <Form.Item label="Số điện thoại" required>
-          <Input
+          <InputNumber
+            controls={false}
+            addonBefore="0"
             placeholder="Nhập số điện thoại"
             value={data.SDT}
             onChange={(e) => {
-              setData({ ...data, SDT: e.target.value });
+              setData({ ...data, SDT: e ? `0${e}` : "" });
             }}
           />
         </Form.Item>
@@ -200,6 +218,7 @@ export default function NhanVienModal({ currentId, setCurrentId }) {
         </Form.Item>
         <Form.Item label="Trạng thái">
           <Switch
+            disabled={currentId ? false : true}
             checked={data.TrangThai}
             onChange={(e) => setData({ ...data, TrangThai: e })}
           />

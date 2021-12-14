@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from "react";
-
-import { useSelector, useDispatch } from "react-redux";
+import { DatePicker, Form, Input, InputNumber, Modal, Switch } from "antd";
 import { KhuyenMaisState$, modalState$ } from "../../../redux/selectors";
+import React, { useEffect, useState } from "react";
 import {
   createKhuyenMai,
-  updateKhuyenMai,
   hideModal,
+  updateKhuyenMai,
 } from "../../../redux/actions";
-import { Form, Input, DatePicker, InputNumber, Switch, Modal } from "antd";
-import { messageError } from "../../message";
+import { useDispatch, useSelector } from "react-redux";
 
+import { messageError } from "../../message";
 import moment from "moment";
 
 export default function KhuyenMaiModal({ currentId, setCurrentId }) {
@@ -184,6 +183,7 @@ export default function KhuyenMaiModal({ currentId, setCurrentId }) {
         <Form.Item label="Số lượng">
           <InputNumber
             value={data.SoLuong}
+            min={0}
             onChange={(e) => setData({ ...data, SoLuong: e })}
           />
         </Form.Item>

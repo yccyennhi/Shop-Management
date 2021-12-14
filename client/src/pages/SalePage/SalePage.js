@@ -93,7 +93,7 @@ export default function SalePage() {
       CTHD: [],
     });
     setSPsInfo([]);
-    console.log(SanPhams, HoaDons.length, KhachHangs.length, KhuyenMais.length);
+    localStorage.setItem("KH", JSON.stringify(null));
   }, [HoaDons.length, dispatch]);
 
   const openKhachHangModal = useCallback(() => {

@@ -148,7 +148,12 @@ export default function SalePage() {
     setOptionKH(
       KhachHangs.filter((kh) => kh.TrangThai === true).map((KH) => ({
         value: KH.MaKH,
-        label: KH.TenKH + "-" + KH.SDT + " (" + KH.DiemTichLuy + "điểm)",
+        label:
+          KH.TenKH +
+          (KH.MaKH != "KH0000000" ? "-" + KH.SDT : "") +
+          " (" +
+          KH.DiemTichLuy +
+          "điểm)",
       }))
     );
   }, [KhachHangs]);
@@ -348,7 +353,19 @@ export default function SalePage() {
   );
 
   const ObjectSP = (sp) => (
-    <Tooltip title={sp.TenSP + " (" + sp.TonKho + ")"}>
+    <Tooltip
+      title={
+        <>
+          {sp.TenSP}
+          <br />
+          {"Size: "}
+          {sp.Size}
+          <br />
+          {"Tồn kho: "}
+          {sp.TonKho}
+        </>
+      }
+    >
       <Button style={{ height: 130, width: 130 }}>
         <Row style={{ marginLeft: 3 }}>
           <Image width={90} height={90} src={sp.HinhAnh} />

@@ -22,7 +22,9 @@ export default function FormHoaDon({ record }) {
               {record.MaNV}
             </Descriptions.Item>
             <Descriptions.Item label="Khách hàng">
-              {record.MaKH != "KH000" ? record.MaKH : "Không"}
+              {record.MaKH != "61b769ba26b4dbbca417c4de"
+                ? record.MaKH
+                : "Không"}
             </Descriptions.Item>
             <Descriptions.Item label="Mã khuyến mãi">
               {record.MaKM != "KM000" ? record.MaKM : "Không"}

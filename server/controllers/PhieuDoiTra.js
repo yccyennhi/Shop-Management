@@ -29,7 +29,7 @@ export const createPhieuDoiTra = async (req, res) => {
       });
     });
     console.log(PhieuDoiTra);
-    if (PhieuDoiTra.MaKH != "KH000") {
+    if (PhieuDoiTra.MaKH != "KH0000000") {
       const KhachHang = await KhachHangModel.findOne({ _id: PhieuDoiTra.idKH });
       KhachHang.DiemTichLuy -= parseInt(PhieuDoiTra.ThanhTien / 100);
       await KhachHangModel.findOneAndUpdate({ _id: KhachHang._id }, KhachHang, {

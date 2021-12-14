@@ -75,8 +75,8 @@ export default function SalePage() {
       MaHD: "",
       MaNV: "",
       idNV: "",
-      MaKH: "KH000",
-      idKH: "61957aa9e198c2fe3f3f53f6",
+      MaKH: "KH0000000",
+      idKH: "61b769ba26b4dbbca417c4de",
       MaKM: "KM000",
       idKM: "619f673906c0b162302fb7f2",
       SoLuong: 0,
@@ -110,8 +110,8 @@ export default function SalePage() {
     MaHD: "",
     MaNV: "",
     idNV: "",
-    MaKH: "KH000",
-    idKH: "61957aa9e198c2fe3f3f53f6",
+    MaKH: "KH0000000",
+    idKH: "61b769ba26b4dbbca417c4de",
     MaKM: "KM000",
     idKM: "619f673906c0b162302fb7f2",
     SoLuong: 0,
@@ -148,7 +148,12 @@ export default function SalePage() {
     setOptionKH(
       KhachHangs.filter((kh) => kh.TrangThai === true).map((KH) => ({
         value: KH.MaKH,
-        label: KH.TenKH + "-" + KH.SDT + " (" + KH.DiemTichLuy + "điểm)",
+        label:
+          KH.TenKH +
+          (KH.MaKH != "KH0000000" ? "-" + KH.SDT : "") +
+          " (" +
+          KH.DiemTichLuy +
+          "điểm)",
       }))
     );
   }, [KhachHangs]);
@@ -246,7 +251,7 @@ export default function SalePage() {
   };
 
   const KhachHangChange = (e) => {
-    if (!e || e === "KH000") setKH(null);
+    if (!e || e === "61b769ba26b4dbbca417c4de") setKH(null);
     else {
       const KH = KhachHangs.find((kh) => e === kh.MaKH);
       setKH(KH);
@@ -348,7 +353,19 @@ export default function SalePage() {
   );
 
   const ObjectSP = (sp) => (
-    <Tooltip title={sp.TenSP + " (" + sp.TonKho + ")"}>
+    <Tooltip
+      title={
+        <>
+          {sp.TenSP}
+          <br />
+          {"Size: "}
+          {sp.Size}
+          <br />
+          {"Tồn kho: "}
+          {sp.TonKho}
+        </>
+      }
+    >
       <Button style={{ height: 130, width: 130 }}>
         <Row style={{ marginLeft: 3 }}>
           <Image width={90} height={90} src={sp.HinhAnh} />

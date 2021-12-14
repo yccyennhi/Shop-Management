@@ -12,10 +12,6 @@ export default function ThanhToanTichDiemModal() {
   const { isShow } = useSelector(ThanhToanTichDiemModalState$);
   const dataHD = JSON.parse(localStorage.getItem("HoaDon"));
   const onCancel = React.useCallback(() => {
-    localStorage.setItem("NV", JSON.stringify(null));
-    localStorage.setItem("KH", JSON.stringify(null));
-    localStorage.setItem("HoaDon", JSON.stringify(null));
-    localStorage.setItem("CTHDs", JSON.stringify(null));
     dispatch(hideThanhToanTichDiemModal());
   }, [dispatch]);
 

@@ -36,7 +36,7 @@ export const createHoaDon = async (req, res) => {
       }
     }
 
-    if (HoaDon.MaKH != "61b769ba26b4dbbca417c4de") {
+    if (HoaDon.MaKH != "KH0000000") {
       const KH = await KhachHangModel.findOne({ MaKH: HoaDon.MaKH });
       if (KH != undefined) {
         KH.DiemTichLuy =

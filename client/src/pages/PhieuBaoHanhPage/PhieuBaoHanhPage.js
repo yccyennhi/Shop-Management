@@ -205,13 +205,13 @@ export default function PhieuBaoHanhPage() {
                   </Col>
                 </Row>
                 <Divider orientation="left"></Divider>
-                <Button
+                {/* <Button
                   type="primary"
                   icon={<PlusOutlined />}
                   onClick={openCreatePhieuBaoHanhModal}
                 >
                   Thêm phiếu bảo hành
-                </Button>
+                </Button> */}
                 <PhieuBaoHanhtable
                   trangthai={trangthai}
                   thoigian={thoigian}

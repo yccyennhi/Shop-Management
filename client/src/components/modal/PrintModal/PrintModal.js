@@ -1,5 +1,6 @@
 import { Modal, Button, Row } from "antd";
 import React, { useCallback, useState, useRef } from "react";
+import * as actions from "../../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { ThanhToanTichDiemModalState$ } from "../../../redux/selectors/index.js";
 import { hideThanhToanTichDiemModal } from "../../../redux/actions";
@@ -9,8 +10,7 @@ export default function ThanhToanTichDiemModal() {
   const dispatch = useDispatch();
   const componentRef = useRef(null);
   const { isShow } = useSelector(ThanhToanTichDiemModalState$);
-  React.useEffect(() => {}, [dispatch]);
-
+  const HoaDon = JSON.parse(localStorage.getItem("HoaDon"));
   const onCancel = React.useCallback(() => {
     localStorage.setItem("NV", JSON.stringify(null));
     localStorage.setItem("KH", JSON.stringify(null));
@@ -28,7 +28,10 @@ export default function ThanhToanTichDiemModal() {
               In hóa đơn
             </Button>
           )}
-          onAfterPrint={() => onCancel()}
+          onAfterPrint={() => {
+            onCancel();
+            dispatch(actions.createHoaDon.createHoaDonRequest(HoaDon));
+          }}
           content={() => componentRef.current}
         />
         <Button onClick={() => onCancel()} type="primary" danger>

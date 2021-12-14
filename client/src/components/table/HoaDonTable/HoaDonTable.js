@@ -59,6 +59,7 @@ export default function HoaDontable({ HoaDons }) {
         return <label>{moment(date).format("DD/MM/YYYY  HH:mm:ss")}</label>;
       },
       sorter: (a, b) => moment(a.ThoiGian) > moment(b.ThoiGian),
+      defaultSortOrder: "descend",
     },
     {
       title: "Mã nhân viên",

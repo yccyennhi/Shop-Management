@@ -98,6 +98,7 @@ export default function TraHangTable({ PhieuDoiTras }) {
       render: (date) => {
         return <label>{moment(date).format("DD/MM/YYYY  HH:mm:ss")}</label>;
       },
+      defaultSortOrder: "descend",
     },
     {
       title: "Mã nhân viên",

@@ -48,7 +48,10 @@ function PhieuHentable({ trangthai, thoigian, ngayBD, ngayKT, setCurrentId }) {
     if (trangthai === 0 && thoigian === 1) {
       if (ngayBD != null) {
         const listPH = PH.filter(function (e) {
-          return moment(e.NgayHen) <= moment(ngayKT) && moment(e.NgayHen) >= moment(ngayBD);
+          return (
+            moment(e.NgayHen) <= moment(ngayKT) &&
+            moment(e.NgayHen) >= moment(ngayBD)
+          );
         });
         setPhieuHens(listPH);
       }
@@ -56,7 +59,10 @@ function PhieuHentable({ trangthai, thoigian, ngayBD, ngayKT, setCurrentId }) {
     if (trangthai === 1 && thoigian === 1) {
       if (ngayBD != null) {
         const listPH = SPHHT.filter(function (e) {
-          return moment(e.NgayHen) <= moment(ngayKT) && moment(e.NgayHen) >= moment(ngayBD);
+          return (
+            moment(e.NgayHen) <= moment(ngayKT) &&
+            moment(e.NgayHen) >= moment(ngayBD)
+          );
         });
         setPhieuHens(listPH);
       }
@@ -64,7 +70,10 @@ function PhieuHentable({ trangthai, thoigian, ngayBD, ngayKT, setCurrentId }) {
     if (trangthai === 2 && thoigian === 1) {
       if (ngayBD != null) {
         const listPH = SPHCHT.filter(function (e) {
-          return moment(e.NgayHen) <= moment(ngayKT) && moment(e.NgayHen) >= moment(ngayBD);
+          return (
+            moment(e.NgayHen) <= moment(ngayKT) &&
+            moment(e.NgayHen) >= moment(ngayBD)
+          );
         });
         setPhieuHens(listPH);
       }
@@ -76,6 +85,7 @@ function PhieuHentable({ trangthai, thoigian, ngayBD, ngayKT, setCurrentId }) {
       title: "",
       key: "createdAt",
       sorter: (a, b) => moment(a.createdAt) - moment(b.createdAt),
+      defaultSortOrder: "descend",
     },
     {
       title: "Mã phiếu hẹn",

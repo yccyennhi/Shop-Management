@@ -84,6 +84,7 @@ function PhieuBaoHanhtable({ trangthai, thoigian, thang, setCurrentId }) {
       title: "",
       key: "createdAt",
       sorter: (a, b) => moment(a.createdAt) - moment(b.createdAt),
+      defaultSortOrder: "descend",
     },
     {
       title: "Mã phiếu bảo hành",

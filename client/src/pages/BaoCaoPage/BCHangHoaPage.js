@@ -85,7 +85,7 @@ export default function BCHangHoaPage() {
       <Layout>
         <Sider
           width={300}
-          style={{ padding: "0px 0px 0px 24px" }}
+          style={{ padding: "0px 0px 0px 24px", background:"#F0F2F5"  }}
           className="site-layout-sider"
         >
           <div className="site-card-border-less-wrapper">
@@ -93,7 +93,7 @@ export default function BCHangHoaPage() {
               <Card
                 title="Kiểu hiển thị"
                 bordered={false}
-                style={{ width: 250, color: COLOR.darkblue, background:"#F0F2F5"  }}
+                style={{ width: 250, color: COLOR.darkblue }}
               >
                 <Radio.Group defaultValue={1}>
                   <Space direction="vertical">

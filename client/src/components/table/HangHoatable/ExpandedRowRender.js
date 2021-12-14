@@ -11,6 +11,7 @@ import {
   Tag,
   Button,
   Space,
+  Tabs,
   Modal,
 } from "antd";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,7 +19,10 @@ import {
   deleteSanPham,
   showTaoSanPhamModal,
   updateSanPham,
+  getPhieuNhaps,
 } from "../../../redux/actions";
+import NhapHangTab from "./Tabs/NhapHangTab";
+const { TabPane } = Tabs;
 
 export default function ExpandedRowRender({ record, setCurrentId }) {
   const dispatch = useDispatch();
@@ -33,7 +37,6 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
       onOk() {
         handleDelete();
       },
-      
     });
   }
   const openUpdateSanPhamModal = React.useCallback(() => {
@@ -55,7 +58,6 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
 
   return (
     <>
-    
       <PageHeader
         className="site-page-header"
         title={record.TenSP}
@@ -86,7 +88,9 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
           </Tag>,
         ]}
       >
-        <Row justify="start">
+        <Tabs type="card" defaultActiveKey="1">
+          <TabPane tab="Thông tin chi tiết" key="1">
+          <Row justify="start">
           <Col flex={1}>
             <Image width={300} src={record.HinhAnh || ""} />
           </Col>
@@ -119,6 +123,12 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
             </Descriptions>
           </Col>
         </Row>
+          </TabPane>
+          <TabPane tab="Hóa đơn đã nhập" key="2">
+            <NhapHangTab maSP={record.MaSP}/>
+          </TabPane>
+        </Tabs>
+        
       </PageHeader>
     </>
   );

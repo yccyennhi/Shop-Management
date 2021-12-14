@@ -482,6 +482,7 @@ export default function SalePage() {
                 borderBottomStyle: "solid",
                 width: "87%",
               }}
+              //defaultValue="Khách lẻ"
               placeholder="Tìm khách hàng"
               showSearch={filter}
               onChange={(e) => {

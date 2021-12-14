@@ -51,10 +51,14 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
   const [data, setData] = useState(SanPhamValue);
   const handleDelete = React.useCallback(() => {
     setData({ ...data, TonKho: 0, TrangThai: "Hết hàng" });
-    dispatch(updateSanPham.updateSanPhamRequest(data));
+    let d= data;
+    d.TonKho=0;
+    d.TrangThai="Hết hàng";
+    dispatch(updateSanPham.updateSanPhamRequest(d));
+    console.log("Cập nhật thành công!")
     setIsShow(false);
     // dispatch(deleteSanPham.deleteSanPhamRequest(record._id));
-  }, [record, data, dispatch]);
+  }, [data, record, dispatch]);
 
   return (
     <>

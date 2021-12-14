@@ -207,7 +207,6 @@ export default function SalePage() {
     const KM = KhuyenMais.find((km) => e === km.MaKM);
     if (
       !e ||
-      KM.SoLuong == 0 ||
       KM.TrangThai == false ||
       KM.NgayKT < dateNow ||
       KM.GiaTri > dataHD.ThanhTien

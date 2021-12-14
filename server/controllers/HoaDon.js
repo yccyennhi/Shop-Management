@@ -27,9 +27,13 @@ export const createHoaDon = async (req, res) => {
 
     if (HoaDon.MaKM != "KM000") {
       const KM = await KhuyenMaiModel.findOne({ _id: HoaDon.idKM });
-      KM.SoLuong -= 1;
-      if (KM.SoLuong === 0) KM.TrangThai = false;
-      await KhuyenMaiModel.findOneAndUpdate({ _id: KM._id }, KM, { new: true });
+      if (!KM.SoLuong) {
+        KM.SoLuong -= 1;
+        if (KM.SoLuong === 0) KM.TrangThai = false;
+        await KhuyenMaiModel.findOneAndUpdate({ _id: KM._id }, KM, {
+          new: true,
+        });
+      }
     }
 
     if (HoaDon.MaKH != "KH000") {

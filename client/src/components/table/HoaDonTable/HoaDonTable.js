@@ -202,7 +202,9 @@ export default function HoaDontable({ HoaDons }) {
     <div>
       <Row justify="end" style={{ marginBottom: 16 }}>
         <ExportTableButton
-          dataSource={dataSource}
+          dataSource={dataSource.sort(
+            (a, b) => moment(b.ThoiGian) - moment(a.ThoiGian)
+          )}
           columns={columns}
           btnProps={{ icon: <FileExcelOutlined /> }}
           showColumnPicker={true}

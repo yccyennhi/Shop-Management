@@ -187,7 +187,9 @@ export default function TraHangTable({ PhieuDoiTras }) {
           expandedRowRender: (record) => <FormTraHang record={record} />,
           rowExpandable: (record) => record.MaPDT !== "Not Expandable",
         }}
-        dataSource={dataSource}
+        dataSource={dataSource.sort(
+          (a, b) => moment(b.ThoiGian) - moment(a.ThoiGian)
+        )}
         rowKey="_id"
       ></Table>
     </div>

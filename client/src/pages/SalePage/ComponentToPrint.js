@@ -41,7 +41,7 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
       key: "DonGia",
     },
     {
-      title: "Bảo hành",
+      title: "Bảo hành (tháng)",
       dataIndex: "BaoHanh",
       key: "BaoHanh",
     },

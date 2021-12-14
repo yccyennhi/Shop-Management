@@ -21,13 +21,7 @@ import {
   PlusOutlined,
   EditOutlined,
 } from "@ant-design/icons";
-import React, {
-  useCallback,
-  useState,
-  useContext,
-  useEffect,
-  useMemo,
-} from "react";
+import React, { useCallback, useState, useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../redux/actions";
 import "./styles.css";
@@ -77,6 +71,28 @@ export default function SalePage() {
     dispatch(actions.getKhuyenMais.getKhuyenMaisRequest());
     dispatch(actions.getKhachHangs.getKhachHangsRequest());
     dispatch(actions.getNhanViens.getNhanViensRequest());
+    setDataHD({
+      MaHD: "",
+      MaNV: "",
+      idNV: "",
+      MaKH: "KH000",
+      idKH: "61957aa9e198c2fe3f3f53f6",
+      MaKM: "KM000",
+      idKM: "619f673906c0b162302fb7f2",
+      SoLuong: 0,
+      ThoiGian: "",
+      GiamGia: 0,
+      PhanTram: 0,
+      GiaVon: 0,
+      DiemTru: 0,
+      TongTienHang: 0,
+      ThanhTien: 0,
+      TienKhachTra: 0,
+      TienTraKhach: 0,
+      GhiChu: "",
+      CTHD: [],
+    });
+    setSPsInfo([]);
   }, [HoaDons.length, dispatch]);
 
   const openKhachHangModal = useCallback(() => {
@@ -249,9 +265,7 @@ export default function SalePage() {
   useEffect(() => {
     setDataHD({ ...dataHD, TienKhachTra: dataHD.ThanhTien });
   }, [dataHD.ThanhTien]);
-  const createHD = () => {
-    dispatch(actions.createHoaDon.createHoaDonRequest(dataHD));
-  };
+
   const onSubmit = React.useCallback(() => {
     if (!dataHD.SoLuong) {
       message.warning("Vui lòng thêm sản phẩm vào hóa đon");
@@ -280,30 +294,7 @@ export default function SalePage() {
     dataHD.ThoiGian = moment().toDate();
     localStorage.setItem("HoaDon", JSON.stringify(dataHD));
     localStorage.setItem("CTHDs", JSON.stringify(SPsInfo));
-    createHD();
     openprint();
-    setDataHD({
-      MaHD: "",
-      MaNV: "",
-      idNV: "",
-      MaKH: "KH000",
-      idKH: "61957aa9e198c2fe3f3f53f6",
-      MaKM: "KM000",
-      idKM: "619f673906c0b162302fb7f2",
-      SoLuong: 0,
-      ThoiGian: "",
-      GiamGia: 0,
-      PhanTram: 0,
-      GiaVon: 0,
-      DiemTru: 0,
-      TongTienHang: 0,
-      ThanhTien: 0,
-      TienKhachTra: 0,
-      TienTraKhach: 0,
-      GhiChu: "",
-      CTHD: [],
-    });
-    setSPsInfo([]);
   }, [dispatch, dataHD, SPsInfo]);
 
   const headerTable = (

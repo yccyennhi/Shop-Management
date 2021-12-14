@@ -43,7 +43,7 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
     {
       title: "Bảo hành",
       dataIndex: "BaoHanh",
-      key: "BaoHanh"
+      key: "BaoHanh",
     },
     {
       title: "Thành tiền",
@@ -164,7 +164,11 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
           </li>
           <li>
             {"Điểm tích lũy: "}
-            {KhachHang ? KhachHang.DiemTichLuy + parseInt(HoaDon.ThanhTien/100) - HoaDon.DiemTru: ""}
+            {KhachHang
+              ? KhachHang.DiemTichLuy +
+                parseInt(HoaDon.ThanhTien / 100) -
+                HoaDon.DiemTru
+              : ""}
           </li>
           <li>
             {"Địa chỉ: "}
@@ -183,15 +187,6 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
         rowKey="MaSP"
       />
       {footer()}
-      <Divider />
-      <Row>
-        <Col flex="50%">
-          <h3 style={{ textAlign: "center" }}>Người mua hàng</h3>
-        </Col>
-        <Col flex="50%">
-          <h3 style={{ textAlign: "center" }}>Người bán hàng</h3>
-        </Col>
-      </Row>
     </div>
   );
 });

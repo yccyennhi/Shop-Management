@@ -22,6 +22,7 @@ export default function TaoPhieuTraHang() {
   const NhanViens = useSelector(NhanViensState$);
   const [form] = Form.useForm();
   const [NV, setNV] = useState();
+  const [optionHD, setOptionHD] = useState();
   const {
     authState: { TaiKhoan },
   } = useContext(AuthContext);
@@ -121,11 +122,14 @@ export default function TaoPhieuTraHang() {
   data.GiamGia = parseInt(giamgia * data.SoLuong);
   data.ThanhTien = data.TongTienHang - data.GiamGia;
 
-  const optionHD = React.useMemo(() => {
-    return HoaDons.map((HD) => ({
-      value: HD.MaHD,
-      label: HD.MaHD + " " + moment(HD.ThoiGian).format("DD/MM/YYYY  HH:mm:ss"),
-    }));
+  React.useMemo(() => {
+    setOptionHD(
+      HoaDons.map((HD) => ({
+        value: HD.MaHD,
+        label:
+          HD.MaHD + " " + moment(HD.ThoiGian).format("DD/MM/YYYY  HH:mm:ss"),
+      }))
+    );
   }, [HoaDons]);
 
   const headerTable = (

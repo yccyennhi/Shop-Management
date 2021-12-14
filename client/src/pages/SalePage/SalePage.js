@@ -93,6 +93,7 @@ export default function SalePage() {
       CTHD: [],
     });
     setSPsInfo([]);
+    setKH("");
     localStorage.setItem("KH", JSON.stringify(null));
   }, [HoaDons.length, dispatch]);
 

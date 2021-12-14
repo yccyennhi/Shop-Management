@@ -1,5 +1,4 @@
 import { SanPhamModel } from "../models/SanPhamModel.js";
-
 export const getSanPhams = async (req, res) => {
   try {
     const SanPhams = await SanPhamModel.find();
@@ -29,7 +28,7 @@ export const updateSanPham = async (req, res) => {
       updateSanPham,
       { new: true }
     );
-    res.status(200).json(SanPham);
+    res.status(200).json(SanPham); 
   } catch (err) {
     res.status(404).json({ error: err });
   }

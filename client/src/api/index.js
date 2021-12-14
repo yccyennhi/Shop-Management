@@ -1,6 +1,8 @@
 import axios from "axios";
+import { BACKEND_URL } from "../constant.js";
 
-const URL = "https://nlmt-shop-management.herokuapp.com";
+
+const URL = BACKEND_URL;
 
 //#region Auth
 export const loginTaiKhoan = (userForm) =>

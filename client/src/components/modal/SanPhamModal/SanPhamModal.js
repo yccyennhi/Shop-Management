@@ -365,7 +365,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
   return (
     <div>
       <Modal
-        title={currentId ? "Câp nhật hàng hóa" : "Thêm hàng hóa"}
+        title={currentId ? "Câp nhật sản phẩm" : "Thêm sản phẩm"}
         visible={isShow}
         onCancel={handleCancel}
         onOk={handleOk}

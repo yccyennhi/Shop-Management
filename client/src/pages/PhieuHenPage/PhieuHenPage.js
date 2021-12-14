@@ -84,7 +84,7 @@ export default function PhieuHenPage() {
           <PageHeader
             onBack={() => window.history.back()}
             className="site-page-header"
-            title="Phiếu hẹn"
+            title="Yêu cầu sửa chữa"
           />
         </Layout>
         <Layout>

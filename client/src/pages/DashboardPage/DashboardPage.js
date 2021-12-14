@@ -110,6 +110,9 @@ export default function KhuyenMaiPage() {
                       onChange: (page) => {
                         console.log(page);
                       },
+                      //defaultPageSize:5,
+                      showSizeChanger:false,
+
                       pageSize: 5,
                       size: "small",
                     }}
@@ -155,6 +158,7 @@ export default function KhuyenMaiPage() {
                       onChange: (page) => {
                         console.log(page);
                       },
+                      showSizeChanger:false,
                       pageSize: 5,
                       size: "small",
                     }}

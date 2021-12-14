@@ -35,6 +35,8 @@ export default function KhuyenMaiPage() {
   const NhanViens = useSelector(NhanViensState$);
 
   const [HD, setHD] = useState(HoaDons);
+  const [PN, setPN] = useState(PhieuNhaps);
+
   React.useEffect(() => {
     dispatch(actions.getPhieuNhaps.getPhieuNhapsRequest());
     dispatch(actions.getHoaDons.getHoaDonsRequest());
@@ -46,12 +48,13 @@ export default function KhuyenMaiPage() {
     const listHD = HoaDons.sort((a, b) =>
       moment(a.createdAt) < moment(b.createdAt) ? 1 : -1
     );
-    PhieuNhaps.sort((a, b) =>
+    const listPN= PhieuNhaps.sort((a, b) =>
       moment(a.createdAt) < moment(b.createdAt) ? 1 : -1
     );
 
     setHD(listHD);
-  }, [dispatch, HoaDons]);
+    setPN(listPN);
+  }, [dispatch, HoaDons, PhieuNhaps]);
 
   const {
     authState: { TaiKhoan },

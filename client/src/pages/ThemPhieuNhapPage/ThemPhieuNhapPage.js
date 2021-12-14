@@ -207,6 +207,8 @@ export default function ThemPhieuNhapPage({}) {
               } else ten = "ADMIN";
               d.NguoiTao = ten;
               dispatch(actions.createPhieuNhap.createPhieuNhapRequest(d));
+              handleNhapHang();
+
             }
           } else {
             const d = data;
@@ -216,9 +218,10 @@ export default function ThemPhieuNhapPage({}) {
             } else ten = "ADMIN";
             d.NguoiTao = ten;
             dispatch(actions.createPhieuNhap.createPhieuNhapRequest(d));
+            handleNhapHang();
+
           }
 
-          handleNhapHang();
         }
       } else {
         //Trang thai nhap hang thi tinh gia von va cap nhat san pham
@@ -230,12 +233,14 @@ export default function ThemPhieuNhapPage({}) {
           } else {
             tinhGiaVon();
             dispatch(actions.updatePhieuNhap.updatePhieuNhapRequest(data));
+            handleNhapHang();
           }
           //Lấy Mã sản phẩm trong phiếu nhập
         } else {
           dispatch(actions.updatePhieuNhap.updatePhieuNhapRequest(data));
+          handleNhapHang();
+
         }
-        handleNhapHang();
       }
     }
   }, [data, dispatch]);

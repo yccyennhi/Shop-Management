@@ -98,6 +98,7 @@ export default function TraHangTable({ PhieuDoiTras }) {
       render: (date) => {
         return <label>{moment(date).format("DD/MM/YYYY  HH:mm:ss")}</label>;
       },
+      defaultSortOrder: "descend",
     },
     {
       title: "Mã nhân viên",
@@ -187,9 +188,7 @@ export default function TraHangTable({ PhieuDoiTras }) {
           expandedRowRender: (record) => <FormTraHang record={record} />,
           rowExpandable: (record) => record.MaPDT !== "Not Expandable",
         }}
-        dataSource={dataSource.sort(
-          (a, b) => moment(b.ThoiGian) - moment(a.ThoiGian)
-        )}
+        dataSource={dataSource}
         rowKey="_id"
       ></Table>
     </div>

@@ -59,6 +59,7 @@ export default function HoaDontable({ HoaDons }) {
         return <label>{moment(date).format("DD/MM/YYYY  HH:mm:ss")}</label>;
       },
       sorter: (a, b) => moment(a.ThoiGian) > moment(b.ThoiGian),
+      defaultSortOrder: "descend",
     },
     {
       title: "Mã nhân viên",
@@ -202,9 +203,7 @@ export default function HoaDontable({ HoaDons }) {
     <div>
       <Row justify="end" style={{ marginBottom: 16 }}>
         <ExportTableButton
-          dataSource={dataSource.sort(
-            (a, b) => moment(b.ThoiGian) - moment(a.ThoiGian)
-          )}
+          dataSource={dataSource}
           columns={columns}
           btnProps={{ icon: <FileExcelOutlined /> }}
           showColumnPicker={true}

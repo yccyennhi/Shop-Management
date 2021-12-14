@@ -134,6 +134,44 @@ export default function ThemPhieuNhapPage({}) {
     dispatch(actions.showTaoSanPhamModal());
   }, [dispatch]);
 
+  const tinhGiaVon = React.useCallback(() => {
+    const MaSanPham = dataSource.map((data) => data.MaSP);
+    for (let i = 0; i < MaSanPham.length; i++) {
+      //Lưu mảng sản phẩm tìm được trong danh sách sản phẩm theo phiếu nhập
+      let SanPham = SP.find((data) => data.MaSP == MaSanPham[i]);
+      if (SanPham != undefined) {
+        let arrGiaNhap = [];
+        let arrSoLuong = [];
+        for (let j = 0; j < PN?.length; j++) {
+          for (let k = 0; k < PN[j]?.MaSP?.length; k++) {
+            if (
+              PN[j].MaSP[k] == SanPham.MaSP &&
+              PN[j].TrangThai == "Đã nhập hàng"
+            ) {
+              arrGiaNhap.push(PN[j].GiaNhap[k]);
+              arrSoLuong.push(PN[j].SoLuong[k]);
+            }
+          }
+        }
+        let GiaNhap = 0;
+        for (let item = 0; item < arrGiaNhap.length; item++) {
+          GiaNhap = GiaNhap + arrGiaNhap[item] * arrSoLuong[item];
+        }
+
+        let SoLuong = arrSoLuong.reduce((sum, data) => {
+          return (sum += data);
+        }, 0);
+        SanPham.GiaVon = Math.round(
+          (GiaNhap + data.GiaNhap[i] * data.SoLuong[i]) /
+            (SoLuong + data.SoLuong[i])
+        );
+        SanPham.TonKho = SanPham.TonKho + data.SoLuong[i];
+        //Cập nhật giá vốn, số lượng sản phẩm
+        dispatch(actions.updateSanPham.updateSanPhamRequest(SanPham));
+      }
+      //handleNhapHang();
+    }
+  }, [data, dispatch]);
   const onHoanThanh = React.useCallback(() => {
     if (
       data.MaPN == "" ||
@@ -142,6 +180,8 @@ export default function ThemPhieuNhapPage({}) {
       data.TongSoLuong == 0
     ) {
       messageError("Vui lòng nhập đầy đủ thông tin!");
+    } else if (data.GiamGiaTongTien > data.TongTien) {
+      messageError("Tiền giảm giá phải bé hơn tổng tiền!");
     } else {
       let PhieuNhap = PN.find(function (e) {
         return e.MaPN == data.MaPN;
@@ -150,65 +190,48 @@ export default function ThemPhieuNhapPage({}) {
         if (PhieuNhap != undefined) {
           messageError("Mã phiếu nhập đã tồn tại!");
         } else {
-          const MaSanPham = dataSource.map((data) => data.MaSP);
-
-          for (let i = 0; i < MaSanPham.length; i++) {
-            let SanPham = SP.find((data) => data.MaSP == MaSanPham[i]);
-            if (SanPham != undefined && data.TrangThai == "Đã nhập hàng") {
-              let arrGiaNhap = [];
-              let arrSoLuong = [];
-              for (let j = 0; j < PN?.length; j++) {
-                for (let k = 0; k < PN[j]?.MaSP?.length; k++) {
-                  if (
-                    PN[j].MaSP[k] == SanPham.MaSP &&
-                    PN[j].TrangThai == "Đã nhập hàng"
-                  ) {
-                    arrGiaNhap.push(PN[j].GiaNhap[k]);
-                    arrSoLuong.push(PN[j].SoLuong[k]);
-                  }
-                }
-              }
-
-              let GiaNhap = arrGiaNhap.reduce((sum, data) => {
-                return (sum += data);
-              }, 0);
-              let SoLuong = arrSoLuong.reduce((sum, data) => {
-                return (sum += data);
-              }, 0);
-              SanPham.GiaVon = Math.round(
-                (GiaNhap + data.GiaNhap[i]) / (SoLuong + data.SoLuong[i])
-              );
-              SanPham.TonKho = SanPham.TonKho + data.SoLuong[i];
-              dispatch(actions.updateSanPham.updateSanPhamRequest(SanPham));
-              messageSuccess("Thêm phiếu nhập thành công");
-              handleNhapHang();
+          if (data.TrangThai == "Đã nhập hàng") {
+            if (data.TienTra < data.TongTien - data.GiamGiaTongTien) {
+              messageError("Vui lòng nhập đủ tiền trả nhà cung cấp!");
+            } else if (data.TienTra > data.TongTien - data.GiamGiaTongTien) {
+              messageError("Tiền trả không được quá số tiền cần trả!");
             } else {
-              if (SanPham == undefined) {
-                messageError("Trong danh sách có sản phẩm không tồn tại!");
-              }
+              tinhGiaVon();
+              const d = data;
+              let ten = "";
+              if (NhanVien != undefined) {
+                ten = NhanVien.TenNV;
+              } else ten = "ADMIN";
+              d.NguoiTao = ten;
+              dispatch(actions.createPhieuNhap.createPhieuNhapRequest(d));
             }
+          } else {
+            const d = data;
+            let ten = "";
+            if (NhanVien != undefined) {
+              ten = NhanVien.TenNV;
+            } else ten = "ADMIN";
+            d.NguoiTao = ten;
+            dispatch(actions.createPhieuNhap.createPhieuNhapRequest(d));
           }
-          const d = data;
-          let ten = "";
-          if (NhanVien != undefined) {
-            ten = NhanVien.TenNV;
-          } else ten = "ADMIN";
-          d.NguoiTao = ten;
-          dispatch(actions.createPhieuNhap.createPhieuNhapRequest(d));
+
           handleNhapHang();
         }
       } else {
-        const MaSanPham = dataSource.map((data) => data.MaSP);
-        for (let i = 0; i < MaSanPham.length; i++) {
-          let SanPham = SP.find((data) => data.MaSP == MaSanPham[i]);
-          if (SanPham != undefined && data.TrangThai == "Đã nhập hàng") {
-            SanPham.TonKho = SanPham.TonKho + data.SoLuong[i];
-            dispatch(actions.updateSanPham.updateSanPhamRequest(SanPham));
-            messageSuccess("Thêm phiếu nhập thành công)");
-            handleNhapHang();
+        //Trang thai nhap hang thi tinh gia von va cap nhat san pham
+        if (data.TrangThai == "Đã nhập hàng") {
+          if (data.TienTra < data.TongTien - data.GiamGiaTongTien) {
+            messageError("Vui lòng nhập đủ tiền trả nhà cung cấp!");
+          } else if (data.TienTra > data.TongTien - data.GiamGiaTongTien) {
+            messageError("Tiền trả không được quá số tiền cần trả!");
+          } else {
+            tinhGiaVon();
+            dispatch(actions.updatePhieuNhap.updatePhieuNhapRequest(data));
           }
+          //Lấy Mã sản phẩm trong phiếu nhập
+        } else {
+          dispatch(actions.updatePhieuNhap.updatePhieuNhapRequest(data));
         }
-        dispatch(actions.updatePhieuNhap.updatePhieuNhapRequest(data));
         handleNhapHang();
       }
     }
@@ -384,7 +407,13 @@ export default function ThemPhieuNhapPage({}) {
                       id.payload == "" || id.payload == null ? false : true
                     }
                   />
-                  <Button icon={<RetweetOutlined />} onClick={RandomMa} />
+                  <Button
+                    disabled={
+                      id.payload == "" || id.payload == null ? false : true
+                    }
+                    icon={<RetweetOutlined />}
+                    onClick={RandomMa}
+                  />
                 </Input.Group>
               </Form.Item>
 

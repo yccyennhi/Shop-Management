@@ -1,33 +1,34 @@
-import React, { useState, useContext } from "react";
 import * as actions from "../../redux/actions";
-import { useDispatch, useSelector } from "react-redux";
-import { showModal } from "../../redux/actions";
-import { KhuyenMaisState$ } from "../../redux/selectors";
-import { AuthContext } from "../../contexts/AuthContext";
+
 import {
-  PageHeader,
-  Row,
   Button,
-  Space,
-  Layout,
   Card,
-  Radio,
-  Typography,
   Col,
   Divider,
+  Layout,
+  PageHeader,
+  Radio,
   Result,
+  Row,
+  Space,
+  Typography,
 } from "antd";
 import {
-  DatabaseTwoTone,
-  StopTwoTone,
   ClockCircleTwoTone,
+  DatabaseTwoTone,
   PlusOutlined,
+  StopTwoTone,
 } from "@ant-design/icons";
-import COLOR from "../../color.js";
+import React, { useContext, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import KhuyenMaitable from "../../components/table/KhuyenMaitable/KhuyenMaitable";
+import { AuthContext } from "../../contexts/AuthContext";
+import COLOR from "../../color.js";
 import KhuyenMaiModal from "../../components/modal/KhuyenMaiModal/KhuyenMaiModal";
+import { KhuyenMaisState$ } from "../../redux/selectors";
+import KhuyenMaitable from "../../components/table/KhuyenMaitable/KhuyenMaitable";
 import Menubar from "../../components/header/Menubar/Menubar";
+import { showModal } from "../../redux/actions";
 
 const { Content, Sider, Header } = Layout;
 const { Text } = Typography;
@@ -155,7 +156,7 @@ export default function KhuyenMaiPage() {
                     <Text strong style={{ fontSize: "1.5rem" }}>
                       {SLKMDangApDung}
                     </Text>
-                    <Text type="secondary">Số khuyến mãi đang áp dụng</Text>
+                    <Text type="secondary">Khuyến mãi đang áp dụng</Text>
                   </Space>
                 </Space>
               </Col>
@@ -170,7 +171,7 @@ export default function KhuyenMaiPage() {
                       {KhuyenMais.length - SLKMDangApDung}
                     </Text>
                     <Text type="secondary">
-                      Số khuyến mãi không còn áp dụng
+                      Khuyến mãi không áp dụng
                     </Text>
                   </Space>
                 </Space>

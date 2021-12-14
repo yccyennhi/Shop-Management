@@ -6,7 +6,6 @@ import {
   updateSanPham,
   deleteSanPham,
 } from "../actions";
-import { messageSuccess, messageError } from "../../components/message";
 
 export default function SanPhamsReducer(state = INIT_STATE.SanPhams, action) {
   switch (action.type) {
@@ -27,13 +26,11 @@ export default function SanPhamsReducer(state = INIT_STATE.SanPhams, action) {
         isLoading: false,
       };
     case getType(createSanPham.createSanPhamSuccess):
-      messageSuccess("Thêm mới thành công");
       return {
         ...state,
         data: [...state.data, action.payload],
       };
     case getType(updateSanPham.updateSanPhamSuccess):
-      messageSuccess("Chỉnh sửa thành công");
       return {
         ...state,
         data: state.data.map((SanPham) =>
@@ -41,7 +38,6 @@ export default function SanPhamsReducer(state = INIT_STATE.SanPhams, action) {
         ),
       };
     case getType(deleteSanPham.deleteSanPhamSuccess):
-      messageSuccess("Xóa thành công");
       return {
         ...state,
         data: state.data.filter((SanPham) => SanPham._id !== action.payload),

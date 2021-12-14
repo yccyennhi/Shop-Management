@@ -27,7 +27,7 @@ export default function PhieuNhapsReducer(state = INIT_STATE.PhieuNhaps, action)
         isLoading: false,
       };
     case getType(createPhieuNhap.createPhieuNhapSuccess):
-      messageSuccess("Thêm mới thành công");
+      messageSuccess("Thêm phiếu nhập thành công");
       return {
         ...state,
         data: [...state.data, action.payload],
@@ -40,7 +40,7 @@ export default function PhieuNhapsReducer(state = INIT_STATE.PhieuNhaps, action)
         ),
       };
     case getType(deletePhieuNhap.deletePhieuNhapSuccess):
-      messageSuccess("Xóa thành công");
+      messageSuccess("Xóa phiếu nhập thành công");
       return {
         ...state,
         data: state.data.filter((PhieuNhap) => PhieuNhap._id !== action.payload),

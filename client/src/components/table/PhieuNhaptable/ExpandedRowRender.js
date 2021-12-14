@@ -137,22 +137,22 @@ export default function ExpandedRowRender({ record }) {
             }
           }
         }
+        let GiaNhap = 0;
+        for (let item = 0; item < arrGiaNhap.length; item++) {
+          GiaNhap = GiaNhap + arrGiaNhap[item] * arrSoLuong[item];
+        }
 
-        let GiaNhap = arrGiaNhap.reduce((sum, data) => {
-          return (sum += data);
-        }, 0);
         let SoLuong = arrSoLuong.reduce((sum, data) => {
           return (sum += data);
         }, 0);
-
-        console.log(data.GiaNhap, data.SoLuong);
-
         SanPham.GiaVon = Math.round(
-          (GiaNhap + data.GiaNhap[i]) / (SoLuong + data.SoLuong[i])
+          (GiaNhap + data.GiaNhap[i] * data.SoLuong[i]) /
+            (SoLuong + data.SoLuong[i])
         );
         SanPham.TonKho = SanPham.TonKho + data.SoLuong[i];
+        //Cập nhật giá vốn, số lượng sản phẩm
         dispatch(updateSanPham.updateSanPhamRequest(SanPham));
-        setData({ ...data, TrangThai: "Đã nhập hàng" });
+        setData({ ...data, TrangThai: "Đã nhập hàng", TienTra: data.TongTien - data.GiamGiaTongTien });
         messageSuccess("Nhập hàng thành công");
       } else {
         messageError("Trong danh sách có sản phẩm không tồn tại!");

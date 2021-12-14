@@ -1,19 +1,19 @@
 import { NhanVienModel } from "../models/NhanVienModel.js";
 
-export const getNhanVien = async (req, res) => {
+export const getNhanVien = async (req, res,next) => {
   try {
     const NhanViens = await NhanVienModel.find();
 
     res.status(200).json(NhanViens);
   } catch (err) {
     res.status(500).json({ error: err });
+    next();
   }
 };
 
-export const createNhanVien = async (req, res) => {
+export const createNhanVien = async (req, res, next) => {
   try {
     const newNhanVien = req.body;
-
     const NhanVien = new NhanVienModel(newNhanVien);
     await NhanVien.save();
     res.status(200).json(NhanVien);
@@ -23,7 +23,7 @@ export const createNhanVien = async (req, res) => {
   }
 };
 
-export const updateNhanVien = async (req, res) => {
+export const updateNhanVien = async (req, res, next) => {
   try {
     const updateNhanVien = req.body;
 
@@ -35,5 +35,6 @@ export const updateNhanVien = async (req, res) => {
     res.status(200).json(NhanVien);
   } catch (err) {
     res.status(500).json({ error: err });
+    next();
   }
 };

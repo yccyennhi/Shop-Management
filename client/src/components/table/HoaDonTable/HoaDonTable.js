@@ -100,7 +100,7 @@ export default function HoaDontable({ HoaDons }) {
       title: "Khách hàng",
       dataIndex: "MaKH",
       key: "MaKH",
-      render: (value) => (value === "KH000" ? "Không" : value),
+      render: (value) => (value === "KH0000000" ? "Không" : value),
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
         return (
           <Search

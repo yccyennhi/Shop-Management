@@ -124,7 +124,7 @@ export default function PhieuHen({ currentId, setCurrentId }) {
         messageError("Mã phiếu bảo hành không tồn tại");
       } else if (listPBH.MaSP != data.MaSP) {
         messageError("Mã sản phẩm không tồn tại trong phiếu bảo hành");
-      } else if (
+      } else if ( data.TrangThai=="Chưa hoàn thành" &&
         moment(data.NgayHen).format("DD/MM/YYYY") <
         moment(dateNow).format("DD/MM/YYYY")
       ) {

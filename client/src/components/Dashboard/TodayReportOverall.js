@@ -54,6 +54,8 @@ export default function TodayReportOverall() {
           <Space align="center">
             {iconUporDown}
             <Space direction="vertical" size={0}>
+            <Text strong>Phần trăm</Text>
+
               <Text
                 strong
                 style={{

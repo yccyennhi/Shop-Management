@@ -15,12 +15,10 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
     Modal.confirm({
       visible: isShow,
       title: "Cảnh báo",
-      content:
-        "Xác nhận xóa phiếu bảo hành?",
+      content: "Xác nhận xóa phiếu bảo hành?",
       onOk() {
         onDelete();
       },
-      
     });
   }
   React.useEffect(() => {
@@ -45,20 +43,33 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
         title={record.MaPH}
         subTitle={record.MaSP}
         extra={[
-          <Button key="1" type="primary" onClick={openCreatePHModal}>
+          <Button
+            key="1"
+            type="primary"
+            disabled={record.TrangThai == "Hoàn thành" ? true : false}
+            onClick={openCreatePHModal}
+          >
             Sửa
           </Button>,
-          <Button key="2" onClick={confirm}>
+          <Button
+            disabled={record.TrangThai == "Hoàn thành" ? true : false}
+            key="2"
+            onClick={confirm}
+          >
             Xóa
           </Button>,
+          
         ]}
-      >
-        <Tag color="red" visible={record.TrangThai == "Chưa hoàn thành"}>
+        tags={[
+          <Tag color="red" visible={record.TrangThai == "Chưa hoàn thành"}>
           {record.TrangThai}
-        </Tag>
+        </Tag>,
         <Tag color="blue" visible={record.TrangThai == "Hoàn thành"}>
           {record.TrangThai}
         </Tag>
+        ]}
+      >
+        
         <Descriptions title="Thông tin chi tiết" size="default" column={2}>
           <Descriptions.Item label="Mã phiếu bảo hành">
             {record.MaPBH}
@@ -67,7 +78,7 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
             {listSP.TenSP}
           </Descriptions.Item>
           <Descriptions.Item label="Ngày hẹn">
-            {moment(record.NgayBD).format("DD/MM/YYYY")}
+            {moment(record.NgayHen).format("DD/MM/YYYY")}
           </Descriptions.Item>
           <Descriptions.Item label="Ghi chú">{record.GhiChu}</Descriptions.Item>
         </Descriptions>

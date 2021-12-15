@@ -18,7 +18,7 @@ import {
   UploadOutlined,
   RetweetOutlined,
 } from "@ant-design/icons";
-import { messageError, messageLoadingSuccess } from "../../message";
+import { messageError, messageLoadingSuccess, messageSuccess } from "../../message";
 import {
   TaoSanPhamModalState$,
   SanPhamsState$,
@@ -139,6 +139,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
           messageError("Mã sản phẩm đã tồn tại!");
         } else {
           dispatch(updateSanPham.updateSanPhamRequest(data));
+          messageSuccess("Cập nhật sản phẩm thành công!");
           handleCancel();
         }
       } else {
@@ -149,6 +150,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
           messageError("Mã sản phẩm đã tồn tại!");
         } else {
           dispatch(createSanPham.createSanPhamRequest(data));
+          messageSuccess("Tạo mới sản phẩm thành công!");
           handleCancel();
         }
       }

@@ -208,7 +208,7 @@ function KhuyenMaitable({ dataSource, setCurrentId, loadingData }) {
 
       <Table
         tableLayout={"auto"}
-        loading={loadingData}
+        loading={false}
         searchable
         searchableProps={{
           inputProps: {

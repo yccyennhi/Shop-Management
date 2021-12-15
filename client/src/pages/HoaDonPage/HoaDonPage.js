@@ -285,13 +285,13 @@ export default function HoaDonPage() {
                       Tất cả
                     </Radio>
                     <Radio value={2} onClick={() => SetGiaTien(2)}>
-                      Dưới 1.000.000đ
+                      Dưới 1,000,000 VNĐ
                     </Radio>
                     <Radio value={3} onClick={() => SetGiaTien(3)}>
-                      Từ 1.000.000đ đến 5.000.000đ
+                      Từ 1,000,000 VNĐ đến 5,000,000 VNĐ
                     </Radio>
                     <Radio value={4} onClick={() => SetGiaTien(4)}>
-                      Trên 5.000.000đ
+                      Trên 5,000,000 VNĐ
                     </Radio>
                   </Space>
                 </Radio.Group>
@@ -336,7 +336,7 @@ export default function HoaDonPage() {
                               moment(hd.ThoiGian).format("DD-MM-YYYY") ===
                               moment().format("DD-MM-YYYY")
                           ).length
-                        }
+                        } {" "}
                         hóa đơn
                       </Text>
                     </Space>
@@ -351,7 +351,7 @@ export default function HoaDonPage() {
                         {`${tongTien}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                       </Text>
                       <Text type="secondary">
-                        {`${tongTien}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        {`${tongTien}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")} {" "}
                         VNĐ
                       </Text>
                     </Space>

@@ -7,6 +7,7 @@ import {
   Input,
   Space,
   message,
+  AutoComplete,
   Upload,
   Row,
 } from "antd";
@@ -17,8 +18,13 @@ import {
   SettingOutlined,
   UploadOutlined,
   RetweetOutlined,
+  DatabaseFilled,
 } from "@ant-design/icons";
-import { messageError, messageLoadingSuccess, messageSuccess } from "../../message";
+import {
+  messageError,
+  messageLoadingSuccess,
+  messageSuccess,
+} from "../../message";
 import {
   TaoSanPhamModalState$,
   SanPhamsState$,
@@ -149,13 +155,36 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
         if (listSP) {
           messageError("Mã sản phẩm đã tồn tại!");
         } else {
-          dispatch(createSanPham.createSanPhamRequest(data));
+          const d = data;
+          d.TrangThai = "Hết hàng";
+          if (d.BaoHanh == "Không bảo hành") d.ThoiGianBaoHanh = 0;
+          dispatch(createSanPham.createSanPhamRequest(d));
           messageSuccess("Tạo mới sản phẩm thành công!");
           handleCancel();
         }
       }
     }
   }, [data, dispatch, handleCancel, messageLoadingSuccess]);
+  
+  const SPLoai = SP.map((data) => data.LoaiHang);
+  const SPLoais = SPLoai.filter((item, index) => (
+    SPLoai.indexOf(item) === index));
+  const optionsLoaiSP = SPLoais.map((data) => {
+    var o = Object.assign({});
+    o.value = data;
+    o.label = `${data}`;
+    return o;
+  });
+  const SPMau = SP.map((data) => data.MauSac);
+  const SPMaus = SPMau.filter((item, index) => (
+  SPMau.indexOf(item) === index));
+  const optionsMau = SPMaus.map((data) => {
+    var o = Object.assign({});
+    o.value = data;
+    o.label = `${data}`;
+    return o;
+  });
+
 
   const body = (
     <>
@@ -228,21 +257,51 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
           tooltip="Nhập màu sắc hoặc họa tiết sản phẩm"
           required
         >
-          <Input
+          {/* <Input
             value={data.MauSac}
             defaultValue={data.MauSac}
             onChange={(e) => setData({ ...data, MauSac: e.target.value })}
             placeholder="Nhập màu"
-          />
+          /> */}
+          <AutoComplete
+            dropdownClassName="certain-category-search-dropdown"
+            options={optionsMau}
+            value={data.MauSac}
+            filterOption
+            onSelect={(e) => {
+              setData({ ...data, MauSac: e });
+            }}
+          >
+            <Input.Search
+              allowClear
+              size="medium"
+              placeholder="Nhập màu sắc sản phẩm"
+            />
+          </AutoComplete>
         </Form.Item>
         <Form.Item label="Loại sản phẩm" tooltip="Nhập loại sản phẩm" required>
-          <Input
+          {/* <Input
             allowClear
             value={data.LoaiHang}
             defaultValue={data.LoaiHang}
             onChange={(e) => setData({ ...data, LoaiHang: e.target.value })}
             placeholder="Nhập loại sản phẩm"
-          />
+          /> */}
+          <AutoComplete
+            dropdownClassName="certain-category-search-dropdown"
+            options={optionsLoaiSP}
+            value={data.LoaiHang}
+            filterOption
+            onSelect={(e) => {
+              setData({ ...data, LoaiHang: e });
+            }}
+          >
+            <Input.Search
+              allowClear
+              size="medium"
+              placeholder="Nhập loại sản phẩm"
+            />
+          </AutoComplete>
         </Form.Item>
         {/* <Form.Item
           label="Giá vốn"
@@ -297,7 +356,11 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
         <Form.Item label="Trạng thái" tooltip="Trạng thái kinh doanh sản phẩm">
           <Select
             disabled={
-              currentId==null ? true : data.TrangThai == "Hết hàng" ? true : false
+              currentId == null
+                ? true
+                : data.TrangThai == "Hết hàng"
+                ? true
+                : false
             }
             placeholder="Chọn trạng thái"
             value={data.TrangThai}
@@ -324,12 +387,14 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
         </Form.Item>
         <Form.Item
           label="Thời gian bảo hành"
-          defaultValue={data.ThoiGianBaoHanh}
+          defaultValue={
+            data.BaoHanh == "Có bảo hành" ? data.ThoiGianBaoHanh : 0
+          }
           tooltip="Số tháng bảo hành của sản phẩm"
         >
           <InputNumber
             disabled={data.BaoHanh !== "Có bảo hành"}
-            value={data.ThoiGianBaoHanh}
+            value={data.BaoHanh == "Có bảo hành" ? data.ThoiGianBaoHanh : 0}
             formatter={(value) =>
               `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             }

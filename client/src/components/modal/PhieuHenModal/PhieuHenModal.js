@@ -84,12 +84,18 @@ export default function PhieuHen({ currentId, setCurrentId }) {
     o.label = `${data.MaPBH}`;
     return o;
   });
-  const optionsSP = SP.map((data) => {
-    var o = Object.assign({});
-    o.value = data.MaSP;
-    o.label = `${data.MaSP}`;
-    return o;
-  });
+  var optionsSP = [];
+  const listSP = PBH.filter((e) => e.MaPBH == data.MaPBH);
+  console.log(listSP);
+  if (listSP != undefined) {
+    optionsSP = listSP.map((data) => {
+      var o = Object.assign({});
+      o.value = data.MaSP;
+      const sanpham = SP.find((e) => e.MaSP == data.MaSP);
+      o.label = `Mã sản phẩm: ${data.MaSP}. Tên sản phẩm: ${sanpham.TenSP}`;
+      return o;
+    });
+  } else optionsSP = [];
 
   React.useEffect(() => {
     dispatch(actions.getSanPhams.getSanPhamsRequest());
@@ -124,9 +130,10 @@ export default function PhieuHen({ currentId, setCurrentId }) {
         messageError("Mã phiếu bảo hành không tồn tại");
       } else if (listPBH.MaSP != data.MaSP) {
         messageError("Mã sản phẩm không tồn tại trong phiếu bảo hành");
-      } else if ( data.TrangThai=="Chưa hoàn thành" &&
+      } else if (
+        data.TrangThai == "Chưa hoàn thành" &&
         moment(data.NgayHen).format("DD/MM/YYYY") <
-        moment(dateNow).format("DD/MM/YYYY")
+          moment(dateNow).format("DD/MM/YYYY")
       ) {
         messageError("Ngày hẹn không hợp lệ");
       } else if (currentId) {
@@ -213,6 +220,8 @@ export default function PhieuHen({ currentId, setCurrentId }) {
               allowClear
               size="medium"
               placeholder="Nhập mã phiếu bảo hành"
+              value={data.MaPBH}
+              onChange={(e) => setData({ ...data, MaPBH: e.target.value })}
             />
           </AutoComplete>
         </Form.Item>
@@ -243,6 +252,8 @@ export default function PhieuHen({ currentId, setCurrentId }) {
               disabled={currentId ? true : false}
               size="medium"
               placeholder="Nhập mã sản phẩm"
+              value={data.MaSP}
+              onChange={(e) => setData({ ...data, MaSP: e.target.value })}
             />
           </AutoComplete>
         </Form.Item>

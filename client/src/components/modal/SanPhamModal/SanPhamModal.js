@@ -276,6 +276,8 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
               allowClear
               size="medium"
               placeholder="Nhập màu sắc sản phẩm"
+              onChange={(e)=>setData({ ...data, MauSac: e.target.value })}
+              value={data.MauSac}
             />
           </AutoComplete>
         </Form.Item>
@@ -300,6 +302,8 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
               allowClear
               size="medium"
               placeholder="Nhập loại sản phẩm"
+              value={data.LoaiHang}
+              onChange={(e)=>setData({ ...data, LoaiHang: e.target.value })}
             />
           </AutoComplete>
         </Form.Item>

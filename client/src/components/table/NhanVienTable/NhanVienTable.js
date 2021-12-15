@@ -1,11 +1,15 @@
-import { DownOutlined, SearchOutlined } from "@ant-design/icons";
+import { SearchOutlined } from "@ant-design/icons";
 import { Table } from "ant-table-extensions";
-import { Button, Dropdown, Input, Menu, Row } from "antd";
+import { Input } from "antd";
 import moment from "moment";
 import { useState } from "react";
 import ExpandedRowRender from "./ExpandedRowRender";
 
-export default function NhanVienTable({ dataSource, setCurrentId }) {
+export default function NhanVienTable({
+  dataSource,
+  isLoadingTable,
+  setCurrentId,
+}) {
   // NVởi tạo cột table
   const columns = [
     {
@@ -370,6 +374,7 @@ export default function NhanVienTable({ dataSource, setCurrentId }) {
               width: 200,
             },
           }}
+          loading={isLoadingTable}
           columns={columns}
           dataSource={dataSource}
           expandable={{
@@ -381,7 +386,7 @@ export default function NhanVienTable({ dataSource, setCurrentId }) {
           pagination={true}
           rowKey="_id"
           rowSelection={rowSelection}
-          scroll={{ x: 1300}}
+          scroll={{ x: 1300 }}
         ></Table>
       </div>
     </>

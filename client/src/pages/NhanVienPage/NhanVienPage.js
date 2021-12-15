@@ -12,21 +12,24 @@ import {
   Layout,
   PageHeader,
   Radio,
+  Result,
   Row,
   Space,
   Typography,
-  Result,
 } from "antd";
-import { useCallback, useEffect, useState, useContext } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import COLOR from "../../color";
 import Menubar from "../../components/header/Menubar/Menubar";
 import NhanVienModal from "../../components/modal/NhanVienModal/NhanVienModal";
 import NhanVienTable from "../../components/table/NhanVienTable/NhanVienTable";
+import { AuthContext } from "../../contexts/AuthContext";
 import * as actions from "../../redux/actions";
 import { showNhanVienModal } from "../../redux/actions";
-import { NhanViensState$ } from "../../redux/selectors";
-import { AuthContext } from "../../contexts/AuthContext";
+import {
+  isLoadingNhanViensState$,
+  NhanViensState$,
+} from "../../redux/selectors";
 const { Content, Sider, Header } = Layout;
 const { Text } = Typography;
 
@@ -43,6 +46,8 @@ export default function NhanVienPage() {
 
   //#region Data NhanViens
   const NhanViens = useSelector(NhanViensState$);
+
+  const isLoadingTable = useSelector(isLoadingNhanViensState$);
 
   const [dataSource, setdataSoure] = useState(NhanViens);
 
@@ -187,6 +192,7 @@ export default function NhanVienPage() {
               </Row>
               <NhanVienTable
                 dataSource={dataSource}
+                isLoadingTable={isLoadingTable}
                 setCurrentId={setCurrentId}
               />
               <NhanVienModal

@@ -1,4 +1,5 @@
 //#region KhachHang
+export const isLoadingKhachHangsState$ = (state) => state.KhachHangs.isLoading;
 export const KhachHangsState$ = (state) => state.KhachHangs.data;
 export const KhachHangModalState$ = (state) => state.KhachHangModal;
 //#endregion
@@ -11,6 +12,7 @@ export const TaiKhoanModalState$ = (state) => state.TaiKhoanModal;
 export const KhuyenMaisState$ = (state) => state.KhuyenMais.data;
 
 //#region NhanVien
+export const isLoadingNhanViensState$ = (state) => state.NhanViens.isLoading;
 export const NhanViensState$ = (state) => state.NhanViens.data;
 export const NhanVienModalState$ = (state) => state.NhanVienModal;
 //#endregion

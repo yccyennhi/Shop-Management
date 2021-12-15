@@ -26,7 +26,7 @@ import KhachHangModal from "../../components/modal/KhachHangModal/KhachHangModal
 import KhachHangTable from "../../components/table/KhachHangTable/KhachHangTable";
 import * as actions from "../../redux/actions";
 import { showKhachHangModal } from "../../redux/actions";
-import { KhachHangsState$ } from "../../redux/selectors/index.js";
+import { isLoadingKhachHangsState$, KhachHangsState$ } from "../../redux/selectors/index.js";
 
 const { Content, Sider, Header } = Layout;
 const { Text } = Typography;
@@ -44,6 +44,8 @@ export default function KhachHangPage() {
 
   //#region Data KhachHangs
   const KhachHangs = useSelector(KhachHangsState$);
+
+  const isLoadingTable = useSelector(isLoadingKhachHangsState$);
 
   const [dataSource, setdataSoure] = useState(KhachHangs);
 
@@ -188,6 +190,7 @@ export default function KhachHangPage() {
             </Row>
             <KhachHangTable
               dataSource={dataSource}
+              isLoadingTable={isLoadingTable}
               setCurrentId={setCurrentId}
             />
             <KhachHangModal currentId={currentId} setCurrentId={setCurrentId} />

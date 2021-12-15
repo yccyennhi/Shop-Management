@@ -332,7 +332,7 @@ export default function HoaDonPage() {
                               moment().format("DD-MM-YYYY")
                           ).length
                         }
-                        hóa đơn
+                         hóa đơn
                       </Text>
                     </Space>
                   </Space>

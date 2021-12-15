@@ -1,11 +1,11 @@
-import { DownOutlined, SearchOutlined } from "@ant-design/icons";
+import { SearchOutlined } from "@ant-design/icons";
 import { Table } from "ant-table-extensions";
-import { Button, Dropdown, Input, Menu, Row } from "antd";
+import { Input } from "antd";
 import moment from "moment";
 import { useState } from "react";
 import ExpandedRowRender from "./ExpandedRowRender";
 
-export default function KhachHangTable({ dataSource, setCurrentId }) {
+export default function KhachHangTable({ dataSource, isLoadingTable, setCurrentId }) {
   //#region Table column
   const columns = [
     {
@@ -331,7 +331,8 @@ export default function KhachHangTable({ dataSource, setCurrentId }) {
               width: 200,
             },
           }}
-          scroll={{ x: 1000 }} 
+          loading={isLoadingTable}
+          scroll={{ x: 1000 }}
           columns={columns}
           dataSource={dataSource}
           expandable={{

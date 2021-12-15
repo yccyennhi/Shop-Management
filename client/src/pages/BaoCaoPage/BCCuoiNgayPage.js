@@ -21,7 +21,6 @@ const { Content, Sider, Header } = Layout;
 
 export default function BCCuoiNgayPage() {
   const today = moment().startOf("day");
-
   /* #region  lấy data từ server */
   const dispatch = useDispatch();
   React.useEffect(() => {

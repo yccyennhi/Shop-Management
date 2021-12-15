@@ -16,16 +16,13 @@ const tabList = [
   },
 ];
 
-
-export const HighestSanPhamList = () => {
-
+export const HighestSanPhamList = ({ loadingData }) => {
   const highestSanPhamObj = useSelector(TongQuanHighestSanPhamList$);
-  
-  const contentList = {
-  soLuong: BarReport (highestSanPhamObj, 0) ,
-  doanhThu: BarReport (highestSanPhamObj, 1) ,
-};
 
+  const contentList = {
+    soLuong: BarReport(highestSanPhamObj, 0, loadingData),
+    doanhThu: BarReport(highestSanPhamObj, 1, loadingData),
+  };
 
   const [activeTabKey, setActiveTabKey] = useState("soLuong");
 

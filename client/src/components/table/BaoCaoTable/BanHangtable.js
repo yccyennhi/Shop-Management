@@ -8,11 +8,13 @@ import moment from "moment";
 const { Search } = Input;
 
 const columnMoneySample = (title, index) => ({
-  title:  title ,
-  dataIndex:  index ,
-  key:  index ,
+  title: title,
+  dataIndex: index,
+  key: index,
   render: (value) => {
-    return `${(value<0?'-':'')} ${(Math.abs(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))}`;
+    return `${value < 0 ? "-" : ""} ${Math.abs(value)
+      .toString()
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
   },
   sorter: (a, b) => a.index - b.index,
 });
@@ -77,14 +79,13 @@ function BanHangtable({ currentDataSource }) {
       sorter: (a, b) => a.SoLuong - b.SoLuong,
     },
 
-   
     columnMoneySample("Tổng tiền hàng", "TongTienHang"),
 
     columnMoneySample("Giảm giá", "GiamGia"),
 
     columnMoneySample("Thành tiền", "ThanhTien"),
 
-    columnMoneySample("Lợi nhuận", "LoiNhuan")
+    columnMoneySample("Lợi nhuận", "LoiNhuan"),
   ];
 
   const [select, setSelect] = useState({
@@ -107,7 +108,6 @@ function BanHangtable({ currentDataSource }) {
         </Space>
         <Table
           tableLayout={"auto"}
-          loading={false}
           pagination={true}
           searchable
           searchableProps={{
@@ -116,7 +116,7 @@ function BanHangtable({ currentDataSource }) {
               prefix: <SearchOutlined />,
             },
           }}
-          scroll={{x:200}}
+          scroll={{ x: 200 }}
           columns={columns}
           rowKey="ThoiGian"
           dataSource={dataSource}

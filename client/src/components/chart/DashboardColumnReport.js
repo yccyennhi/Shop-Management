@@ -1,24 +1,26 @@
-import React from 'react';
-import { Column } from '@ant-design/charts';
-import { Card} from "antd";
+import React from "react";
+import { Column } from "@ant-design/charts";
+import { Card } from "antd";
 
-import { useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 import { TongQuanRankingByDoanhThu$ } from "../../redux/selectors";
 
-const DemoColumn = () => {
-  
+const DemoColumn = ({ loadingData }) => {
   const rankingList = useSelector(TongQuanRankingByDoanhThu$);
-   //console.log(rankingList);
+  //console.log(rankingList);
   //const data = Array(30).fill().map((_,i) => ({'type': i+1, 'sales':Math.round(Math.random() * 1000000)}));
-  const data = Object.keys(rankingList).map((key) => ({'type': key, 'sales': rankingList [key] }))
+  const data = Object.keys(rankingList).map((key) => ({
+    type: key,
+    sales: rankingList[key],
+  }));
   var config = {
     data: data,
-    xField: 'type',
-    yField: 'sales',
+    xField: "type",
+    yField: "sales",
     label: {
-      position: 'middle',
+      position: "middle",
       style: {
-        fill: '#FFFFFF',
+        fill: "#FFFFFF",
         opacity: 0.6,
       },
     },
@@ -29,15 +31,15 @@ const DemoColumn = () => {
       },
     },
     meta: {
-      type: { alias: 'Tháng' },
-      sales: { alias: 'Doanh thu' },
+      type: { alias: "Tháng" },
+      sales: { alias: "Doanh thu" },
     },
   };
   return (
     <Card title="Doanh thu thuần tháng này">
-      <Column {...config} />
-      </Card>
-  )
+      <Column {...config} loading={loadingData} />
+    </Card>
+  );
 };
 
 export default DemoColumn;

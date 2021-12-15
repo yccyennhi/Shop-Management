@@ -25,7 +25,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { AuthContext } from "../../contexts/AuthContext";
 import COLOR from "../../color.js";
 import KhuyenMaiModal from "../../components/modal/KhuyenMaiModal/KhuyenMaiModal";
-import { KhuyenMaisState$ } from "../../redux/selectors";
+import {
+  KhuyenMaisState$,
+  isloadingKhuyenMaisState$,
+} from "../../redux/selectors";
 import KhuyenMaitable from "../../components/table/KhuyenMaitable/KhuyenMaitable";
 import Menubar from "../../components/header/Menubar/Menubar";
 import { showModal } from "../../redux/actions";
@@ -35,7 +38,7 @@ const { Text } = Typography;
 
 export default function KhuyenMaiPage() {
   const [currentId, setCurrentId] = useState(null);
-
+  const loadingData = useSelector(isloadingKhuyenMaisState$);
   const dispatch = useDispatch();
 
   //KhuyenMais
@@ -170,9 +173,7 @@ export default function KhuyenMaiPage() {
                     <Text strong style={{ fontSize: "1.5rem" }}>
                       {KhuyenMais.length - SLKMDangApDung}
                     </Text>
-                    <Text type="secondary">
-                      Khuyến mãi không áp dụng
-                    </Text>
+                    <Text type="secondary">Khuyến mãi không áp dụng</Text>
                   </Space>
                 </Space>
               </Col>
@@ -193,6 +194,7 @@ export default function KhuyenMaiPage() {
             <KhuyenMaitable
               dataSource={dataSoure}
               setCurrentId={setCurrentId}
+              loadingData={loadingData}
             />
           </div>
         </Content>

@@ -24,9 +24,11 @@ import {
 } from "@ant-design/icons";
 import TraHangTable from "../../components/table/DoiTraTable/TraHangTable";
 import { AuthContext } from "../../contexts/AuthContext";
-import TaoPhieuTraHangModal from "../../components/modal/DoiTraModal/TaoPhieuDoiTraModal";
-import { showTaoPhieuTraHangModal } from "../../redux/actions";
-import { PhieuDoiTrasState$, NhanViensState$ } from "../../redux/selectors";
+import {
+  PhieuDoiTrasState$,
+  NhanViensState$,
+  isloadingPhieuDoiTrasState$,
+} from "../../redux/selectors";
 import * as actions from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import Menubar from "../../components/header/Menubar/Menubar";
@@ -42,6 +44,7 @@ export default function DoiTraPage() {
   const dispatch = useDispatch();
   const history = useHistory();
   const PhieuDoiTras = useSelector(PhieuDoiTrasState$);
+  const loadingPhieuDoiTras = useSelector(isloadingPhieuDoiTrasState$);
   const NhanViens = useSelector(NhanViensState$);
   const [ThoiGian, setThoiGian] = useState("");
   const [NV, setNV] = useState("");
@@ -154,7 +157,7 @@ export default function DoiTraPage() {
       <Layout>
         <Sider
           width={300}
-          style={{ padding: "0px 0px 0px 20px", background:"#F0F2F5" }}
+          style={{ padding: "0px 0px 0px 20px", background: "#F0F2F5" }}
           className="site-layout-sider"
         >
           <div className="site-card-border-less-wrapper">
@@ -335,7 +338,10 @@ export default function DoiTraPage() {
                   </Button>
                 </Space>
               </Row>
-              <TraHangTable PhieuDoiTras={data} />
+              <TraHangTable
+                PhieuDoiTras={data}
+                loadingPhieuDoiTras={loadingPhieuDoiTras}
+              />
             </div>
           </Layout>
         </Content>

@@ -1,7 +1,7 @@
 import React from "react";
 import { Bar } from "@ant-design/charts";
 
-const BarReport = (highestSanPhamObj, type) => {
+const BarReport = (highestSanPhamObj, type, loadingData) => {
   console.log(highestSanPhamObj, type);
   const dataSource = Object.entries(highestSanPhamObj).map(([key, value]) => ({
     type: key,
@@ -31,7 +31,7 @@ const BarReport = (highestSanPhamObj, type) => {
     minBarWidth: 20,
     maxBarWidth: 20,
   };
-  return <Bar {...config} />;
+  return <Bar {...config} loadingData />;
 };
 
 export default BarReport;

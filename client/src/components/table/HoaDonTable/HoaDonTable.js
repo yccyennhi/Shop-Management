@@ -4,12 +4,10 @@ import { Table, ExportTableButton } from "ant-table-extensions";
 import { SearchOutlined, FileExcelOutlined } from "@ant-design/icons";
 import FormHoaDon from "./FormHoaDon";
 import moment from "moment";
-
 const { Search } = Input;
 
-export default function HoaDontable({ HoaDons }) {
+export default function HoaDontable({ HoaDons, loadingHoaDons }) {
   const dataSource = HoaDons;
-
   const columns = [
     {
       title: "Mã hóa đơn",
@@ -215,7 +213,7 @@ export default function HoaDontable({ HoaDons }) {
       </Row>
       <Table
         tableLayout={"auto"}
-        loading={false}
+        loading={loadingHoaDons}
         searchable
         searchableProps={{
           inputProps: {

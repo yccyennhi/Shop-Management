@@ -198,7 +198,6 @@ function HangHoatable({ currentDataSource }) {
         </Space>
         <Table
           tableLayout={"auto"}
-          loading={false}
           pagination={true}
           searchable
           searchableProps={{
@@ -207,7 +206,7 @@ function HangHoatable({ currentDataSource }) {
               prefix: <SearchOutlined />,
             },
           }}
-          scroll={{x:200}}
+          scroll={{ x: 200 }}
           columns={columns}
           rowKey="MaSP"
           dataSource={dataSource}

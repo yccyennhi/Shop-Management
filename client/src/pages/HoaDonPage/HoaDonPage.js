@@ -28,7 +28,11 @@ import DataTableHoaDon from "../../components/table/HoaDonTable/HoaDonTable.js";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useDispatch, useSelector } from "react-redux";
 import { getHoaDons, getNhanViens } from "../../redux/actions";
-import { HoaDonsState$, NhanViensState$ } from "../../redux/selectors";
+import {
+  HoaDonsState$,
+  NhanViensState$,
+  isloadingHoaDonsState$,
+} from "../../redux/selectors";
 import { useHistory } from "react-router-dom";
 import Menubar from "../../components/header/Menubar/Menubar";
 import moment from "moment";
@@ -39,6 +43,7 @@ export default function HoaDonPage() {
   const dispatch = useDispatch();
   const history = useHistory();
   const HoaDons = useSelector(HoaDonsState$);
+  const loadingHoaDons = useSelector(isloadingHoaDonsState$);
   const NhanViens = useSelector(NhanViensState$);
   const [GiaTien, SetGiaTien] = useState(1);
   const [ThoiGian, setThoiGian] = useState("");
@@ -332,7 +337,7 @@ export default function HoaDonPage() {
                               moment().format("DD-MM-YYYY")
                           ).length
                         }
-                         hóa đơn
+                        hóa đơn
                       </Text>
                     </Space>
                   </Space>
@@ -365,7 +370,7 @@ export default function HoaDonPage() {
                   </Button>
                 </Space>
               </Row>
-              <DataTableHoaDon HoaDons={data} />
+              <DataTableHoaDon HoaDons={data} loadingHoaDons={loadingHoaDons} />
             </div>
           </Layout>
         </Content>

@@ -4,9 +4,10 @@ import { Table, ExportTableButton } from "ant-table-extensions";
 import { SearchOutlined, FileExcelOutlined } from "@ant-design/icons";
 import FormTraHang from "./FormTraHang";
 import moment from "moment";
+import { isloadingPhieuDoiTrasState$ } from "../../../redux/selectors";
 const { Search } = Input;
 
-export default function TraHangTable({ PhieuDoiTras }) {
+export default function TraHangTable({ PhieuDoiTras, loadingPhieuDoiTras }) {
   const dataSource = PhieuDoiTras;
 
   const columns = [
@@ -172,7 +173,7 @@ export default function TraHangTable({ PhieuDoiTras }) {
         </ExportTableButton>
       </Row>
       <Table
-        loading={false}
+        loading={loadingPhieuDoiTras}
         pagination={true}
         columns={columns}
         searchable

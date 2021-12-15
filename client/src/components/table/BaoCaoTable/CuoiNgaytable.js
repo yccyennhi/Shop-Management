@@ -13,11 +13,13 @@ import moment from "moment";
 const { Search } = Input;
 
 const columnMoneySample = (title, index) => ({
-  title:  title ,
-  dataIndex:  index ,
-  key:  index ,
+  title: title,
+  dataIndex: index,
+  key: index,
   render: (value) => {
-    return `${(value<0?'-':'')} ${(Math.abs(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))}`;
+    return `${value < 0 ? "-" : ""} ${Math.abs(value)
+      .toString()
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
   },
   sorter: (a, b) => a.index - b.index,
 });
@@ -140,7 +142,6 @@ function CuoiNgaytable(currentDataSource, type) {
       sorter: (a, b) => a.SoLuong - b.SoLuong,
     },
 
-   
     columnMoneySample("Tổng tiền hàng", "TongTienHang"),
 
     columnMoneySample("Giảm giá", "GiamGia"),
@@ -168,9 +169,8 @@ function CuoiNgaytable(currentDataSource, type) {
         </Space>
         <Table
           tableLayout={"auto"}
-          loading={false}
           pagination={true}
-          scroll={{x:200}}
+          scroll={{ x: 200 }}
           searchableProps={{
             inputProps: {
               placeholder: "Nhập thông tin cần tìm",

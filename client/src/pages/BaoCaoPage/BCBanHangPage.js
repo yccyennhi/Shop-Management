@@ -24,7 +24,6 @@ const { RangePicker } = DatePicker;
 export default function BCBanHangPage() {
   const today = [moment().subtract(7, "day").startOf("day"), moment()];
   const [currentDate, setCurrentDate] = useState(today);
-
   /* #region  Lấy data từ server */
 
   const dispatch = useDispatch();
@@ -88,7 +87,7 @@ export default function BCBanHangPage() {
       <Layout>
         <Sider
           width={300}
-          style={{ padding: "0px 0px 0px 24px", background:"#F0F2F5"  }}
+          style={{ padding: "0px 0px 0px 24px", background: "#F0F2F5" }}
           className="site-layout-sider"
         >
           <div className="site-card-border-less-wrapper">

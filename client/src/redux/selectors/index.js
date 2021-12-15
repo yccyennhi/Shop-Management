@@ -10,6 +10,7 @@ export const TaiKhoanModalState$ = (state) => state.TaiKhoanModal;
 //#endregion
 
 export const KhuyenMaisState$ = (state) => state.KhuyenMais.data;
+export const isloadingKhuyenMaisState$ = (state) => state.KhuyenMais.isLoading;
 
 //#region NhanVien
 export const isLoadingNhanViensState$ = (state) => state.NhanViens.isLoading;
@@ -20,6 +21,9 @@ export const NhanVienModalState$ = (state) => state.NhanVienModal;
 export const HoaDonsState$ = (state) => state.HoaDons.data;
 export const ThanhToanTichDiemModalState$ = (state) =>
   state.ThanhToanTichDiemModal;
+export const isloadingHoaDonsState$ = (state) => state.HoaDons.isLoading;
+export const isloadingPhieuDoiTrasState$ = (state) =>
+  state.PhieuDoiTras.isLoading;
 export const TaoPhieuTraHangState$ = (state) => state.TaoPhieuTraHangModal;
 export const modalState$ = (state) => state.Modal;
 export const PhieuDoiTrasState$ = (state) => state.PhieuDoiTras.data;
@@ -51,10 +55,14 @@ export const TongQuanRankingByDoanhThu$ = (state) =>
   state.TongQuans.rankingByDoanhThu;
 export const TongQuanHighestSanPhamList$ = (state) =>
   state.TongQuans.highestSanPhamList;
+export const isloadingTongQuansState$ = (state) => state.TongQuans.isLoading;
 
 //BaoCao
 export const CuoiNgaysState$ = (state) => state.CuoiNgays.data;
 export const BCBanHangsState$ = (state) => state.BCBanHangs.data;
+export const isloadingCuoiNgaysState$ = (state) => state.CuoiNgays.isLoading;
+export const isloadingBCBanHangsState$ = (state) => state.BCBanHangs.isLoading;
+export const isloadingBCHangHoasState$ = (state) => state.BCHangHoas.isLoading;
 export const BCHangHoasState$ = (state) => state.BCHangHoas.data;
 
 //PhieuNhap

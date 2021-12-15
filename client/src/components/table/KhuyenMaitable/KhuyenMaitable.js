@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Input, Row} from "antd";
+import { Input, Row } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 // import { useSelector, useDispatch } from "react-redux";
 // import * as actions from "../../../redux/actions";
@@ -11,7 +11,7 @@ import { ExportTableButton, Table } from "ant-table-extensions";
 
 const { Search } = Input;
 
-function KhuyenMaitable({ dataSource, setCurrentId }) {
+function KhuyenMaitable({ dataSource, setCurrentId, loadingData }) {
   const columns = [
     {
       title: "",
@@ -207,7 +207,8 @@ function KhuyenMaitable({ dataSource, setCurrentId }) {
       </span>
 
       <Table
-        tableLayout={"auto"}   
+        tableLayout={"auto"}
+        loading={loadingData}
         searchable
         searchableProps={{
           inputProps: {

@@ -20,6 +20,7 @@ import {
   HoaDonsState$,
   NhanViensState$,
   PhieuNhapsState$,
+  isloadingTongQuansState$,
 } from "../../redux/selectors";
 import * as actions from "../../redux/actions";
 import { HighestSanPhamList } from "../../components/Dashboard/highestSanPhamList";
@@ -33,7 +34,7 @@ export default function KhuyenMaiPage() {
   const HoaDons = useSelector(HoaDonsState$);
   const PhieuNhaps = useSelector(PhieuNhapsState$);
   const NhanViens = useSelector(NhanViensState$);
-
+  const loadingData = useSelector(isloadingTongQuansState$);
   const [HD, setHD] = useState(HoaDons);
   const [PN, setPN] = useState(PhieuNhaps);
 
@@ -90,8 +91,8 @@ export default function KhuyenMaiPage() {
                 style={{ width: "100%", padding: "0px 24px 0px 0px" }}
               >
                 <TodayReportOverall />
-                <DemoColumn />
-                <HighestSanPhamList />
+                <DemoColumn loadingData={loadingData} />
+                <HighestSanPhamList loadingData={loadingData} />
               </Space>
             </Col>
             <Col span={6}>
@@ -111,7 +112,7 @@ export default function KhuyenMaiPage() {
                         console.log(page);
                       },
                       //defaultPageSize:5,
-                      showSizeChanger:false,
+                      showSizeChanger: false,
 
                       pageSize: 5,
                       size: "small",
@@ -133,12 +134,12 @@ export default function KhuyenMaiPage() {
                                 NhanViens.find((data) => data.MaNV == item.MaNV)
                                   ?.TenNV
                               }{" "}
-                              vừa bán đơn hàng {item.MaHD}
-                              {" "}
-                              trị giá {`${item.ThanhTien}`.replace(
+                              vừa bán đơn hàng {item.MaHD} trị giá{" "}
+                              {`${item.ThanhTien}`.replace(
                                 /\B(?=(\d{3})+(?!\d))/g,
                                 ","
-                              )} VNĐ
+                              )}{" "}
+                              VNĐ
                             </a>
                           }
                           description={
@@ -158,7 +159,7 @@ export default function KhuyenMaiPage() {
                       onChange: (page) => {
                         console.log(page);
                       },
-                      showSizeChanger:false,
+                      showSizeChanger: false,
                       pageSize: 5,
                       size: "small",
                     }}

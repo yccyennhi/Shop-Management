@@ -11,7 +11,7 @@ import { ExportTableButton, Table } from "ant-table-extensions";
 
 const { Search } = Input;
 
-function KhuyenMaitable({ dataSource, setCurrentId, loadingData }) {
+function KhuyenMaitable({ dataSource, setCurrentId }) {
   const columns = [
     {
       title: "",

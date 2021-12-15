@@ -87,9 +87,9 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
         title={record.MaPBH}
         subTitle={record.MaSP}
         extra={[
-          <Button key="1" type="primary" onClick={openCreatePBHModal}>
-            Sửa
-          </Button>,
+          // <Button key="1" type="primary" onClick={openCreatePBHModal}>
+          //   Sửa
+          // </Button>,
           <Button key="2" onClick={confirm}>
             Xóa
           </Button>,

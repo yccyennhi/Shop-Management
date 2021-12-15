@@ -10,7 +10,7 @@ export const TaiKhoanModalState$ = (state) => state.TaiKhoanModal;
 //#endregion
 
 export const KhuyenMaisState$ = (state) => state.KhuyenMais.data;
-export const isloadingKhuyenMaisState$ = (state) => state.KhuyenMais.isLoading;
+//export const isloadingKhuyenMaisState$ = (state) => state.KhuyenMais.isLoading;
 
 //#region NhanVien
 export const isLoadingNhanViensState$ = (state) => state.NhanViens.isLoading;
@@ -60,9 +60,6 @@ export const isloadingTongQuansState$ = (state) => state.TongQuans.isLoading;
 //BaoCao
 export const CuoiNgaysState$ = (state) => state.CuoiNgays.data;
 export const BCBanHangsState$ = (state) => state.BCBanHangs.data;
-export const isloadingCuoiNgaysState$ = (state) => state.CuoiNgays.isLoading;
-export const isloadingBCBanHangsState$ = (state) => state.BCBanHangs.isLoading;
-export const isloadingBCHangHoasState$ = (state) => state.BCHangHoas.isLoading;
 export const BCHangHoasState$ = (state) => state.BCHangHoas.data;
 
 //PhieuNhap

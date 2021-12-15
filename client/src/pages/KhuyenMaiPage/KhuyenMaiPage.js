@@ -27,7 +27,7 @@ import COLOR from "../../color.js";
 import KhuyenMaiModal from "../../components/modal/KhuyenMaiModal/KhuyenMaiModal";
 import {
   KhuyenMaisState$,
-  isloadingKhuyenMaisState$,
+  //isloadingKhuyenMaisState$,
 } from "../../redux/selectors";
 import KhuyenMaitable from "../../components/table/KhuyenMaitable/KhuyenMaitable";
 import Menubar from "../../components/header/Menubar/Menubar";
@@ -38,7 +38,7 @@ const { Text } = Typography;
 
 export default function KhuyenMaiPage() {
   const [currentId, setCurrentId] = useState(null);
-  const loadingData = useSelector(isloadingKhuyenMaisState$);
+  //const loadingData = useSelector(isloadingKhuyenMaisState$);
   const dispatch = useDispatch();
 
   //KhuyenMais
@@ -194,7 +194,7 @@ export default function KhuyenMaiPage() {
             <KhuyenMaitable
               dataSource={dataSoure}
               setCurrentId={setCurrentId}
-              loadingData={loadingData}
+              //loadingData={loadingData}
             />
           </div>
         </Content>

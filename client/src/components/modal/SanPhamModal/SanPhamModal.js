@@ -90,7 +90,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
       GiaBan: 0,
       TonKho: 0,
       ThoiGianBaoHanh: 0,
-      TrangThai: "Đang kinh doanh",
+      TrangThai: "Hết hàng",
       BaoHanh: "Có bảo hành",
       HinhAnh: "",
       MoTa: "",
@@ -109,7 +109,7 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
       GiaBan: 0,
       TonKho: 0,
       ThoiGianBaoHanh: 0,
-      TrangThai: "Đang kinh doanh",
+      TrangThai: "Hết hàng",
       BaoHanh: "Có bảo hành",
       HinhAnh: "",
       MoTa: "",
@@ -118,13 +118,9 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
 
   const handleOk = React.useCallback(() => {
     console.log(data);
-    if (data.BaoHanh == "Có bảo hành" && data.ThoiGianBaoHanh < 1)
-    {messageError("Vui lòng nhập thời gian bảo hành lớn hơn 0")}
-    else
-    if (
-      data.GiaBan < 0 ||
-      data.Size < 0 ||
-      data.ThoiGianBaoHanh < 0 ) {
+    if (data.BaoHanh == "Có bảo hành" && data.ThoiGianBaoHanh < 1) {
+      messageError("Vui lòng nhập thời gian bảo hành lớn hơn 0");
+    } else if (data.GiaBan < 0 || data.Size < 0 || data.ThoiGianBaoHanh < 0) {
       messageError("Vui lòng nhập đúng thông tin");
     } else if (
       data.MaSP == "" ||
@@ -298,7 +294,9 @@ export default function SanPhamModal({ currentId, setCurrentId }) {
         </Form.Item> */}
         <Form.Item label="Trạng thái" tooltip="Trạng thái kinh doanh sản phẩm">
           <Select
-            disabled={data.TrangThai == "Hết hàng"}
+            disabled={
+              currentId==null ? true : data.TrangThai == "Hết hàng" ? true : false
+            }
             placeholder="Chọn trạng thái"
             value={data.TrangThai}
             onChange={(e) => setData({ ...data, TrangThai: e })}

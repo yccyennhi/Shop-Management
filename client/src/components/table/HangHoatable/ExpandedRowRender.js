@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import {
-  Table,
-  Input,
-  Badge,
+ 
   Col,
   Row,
   Image,
@@ -10,16 +8,13 @@ import {
   Descriptions,
   Tag,
   Button,
-  Space,
   Tabs,
   Modal,
 } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  deleteSanPham,
   showTaoSanPhamModal,
   updateSanPham,
-  getPhieuNhaps,
 } from "../../../redux/actions";
 import NhapHangTab from "./Tabs/NhapHangTab";
 const { TabPane } = Tabs;
@@ -75,19 +70,19 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
           </Button>,
         ]}
         tags={[
-          <Tag color="red" visible={record.TrangThai == "Ngừng kinh doanh"}>
+          <Tag color="red" visible={record.TrangThai === "Ngừng kinh doanh"}>
             {record.TrangThai}
           </Tag>,
-          <Tag color="yellow" visible={record.TrangThai == "Hết hàng"}>
+          <Tag color="yellow" visible={record.TrangThai === "Hết hàng"}>
             {record.TrangThai}
           </Tag>,
-          <Tag color="blue" visible={record.TrangThai == "Đang kinh doanh"}>
+          <Tag color="blue" visible={record.TrangThai === "Đang kinh doanh"}>
             {record.TrangThai}
           </Tag>,
-          <Tag color="grey" visible={record.BaoHanh == "Không bảo hành"}>
+          <Tag color="grey" visible={record.BaoHanh === "Không bảo hành"}>
             Không bảo hành
           </Tag>,
-          <Tag color="green" visible={record.BaoHanh == "Có bảo hành"}>
+          <Tag color="green" visible={record.BaoHanh === "Có bảo hành"}>
             Có bảo hành
           </Tag>,
         ]}
@@ -119,11 +114,10 @@ export default function ExpandedRowRender({ record, setCurrentId }) {
                 label="Thời gian bảo hành"
                 style={{ display: record.BaoHanh !== "Có bảo hành" }}
               >
-                {`${record.ThoiGianBaoHanh}`.replace(
+                { record.BaoHanh !== "Có bảo hành"?'Không bảo hành':`${record.ThoiGianBaoHanh}`.replace(
                   /\B(?=(\d{3})+(?!\d))/g,
                   ","
-                )}{" "}
-                tháng
+                )}{ record.BaoHanh !== "Có bảo hành"?'':" tháng"}
               </Descriptions.Item>
             </Descriptions>
           </Col>

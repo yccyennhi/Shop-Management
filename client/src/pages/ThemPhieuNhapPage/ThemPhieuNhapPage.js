@@ -169,6 +169,7 @@ export default function ThemPhieuNhapPage({}) {
           SanPham.TrangThai = "Đang kinh doanh";
         }
         SanPham.TonKho = SanPham.TonKho + data.SoLuong[i];
+        SanPham.TrangThai='Đang kinh doanh';
         //Cập nhật giá vốn, số lượng sản phẩm, trạng thái kinh doanh
         dispatch(actions.updateSanPham.updateSanPhamRequest(SanPham));
       }
@@ -335,7 +336,7 @@ export default function ThemPhieuNhapPage({}) {
                       width: 250,
                     }}
                     dropdownMatchSelectWidth={500}
-                    style={{ width: "880px" }}
+                    // style={{ width: "880px" }}
                     options={options}
                     filterOption
                     onSelect={(e) => {
@@ -508,9 +509,8 @@ export default function ThemPhieuNhapPage({}) {
                 />
               </Form.Item>
               <Form.Item
-                tooltip="Số tiền được giảm"
-                label="Giảm giá"
                 tooltip="Giảm giá trên tổng số tiền"
+                label="Giảm giá"
               >
                 <InputNumber
                   allowClear

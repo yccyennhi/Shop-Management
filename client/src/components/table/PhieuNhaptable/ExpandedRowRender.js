@@ -149,6 +149,7 @@ export default function ExpandedRowRender({ record }) {
           (GiaNhap + data.GiaNhap[i] * data.SoLuong[i]) /
             (SoLuong + data.SoLuong[i])
         );
+        SanPham.TrangThai='Đang kinh doanh';
         SanPham.TonKho = SanPham.TonKho + data.SoLuong[i];
         //Cập nhật giá vốn, số lượng sản phẩm
         dispatch(updateSanPham.updateSanPhamRequest(SanPham));
